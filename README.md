@@ -1,8 +1,6 @@
-## 
+### 环境初始化
 
-环境初始化
-
-1. 安装包管理工具 yarn 和 lerna
+#### 安装包管理工具 yarn 和 lerna
 
 ```
 
@@ -13,7 +11,7 @@ npm i -g lerna
 
 其中，yarn 可以用用[`安装包`](https://yarnpkg.com/zh-Hans/docs/install)安装。
 
-2. 下载代码，初始化
+#### 下载代码，初始化
 
 ```
 git clone git@build.chuanyang100.com:iota/projects-repo.git
@@ -22,7 +20,7 @@ cd projects-repo
 lerna bootstrap
 ```
 
-3. 目录结构
+#### 目录结构
 
 ```
 node_modules
@@ -38,7 +36,7 @@ packages
 
 ```
 
-4. 例子
+#### 例子
 
 前置条件待补充。
 
