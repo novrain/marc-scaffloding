@@ -1,0 +1,143 @@
+@import "./imports"
+@import "./animation"
+
+html
+  background $ii-white
+
+body
+  font-size 14px
+  font-family 'Roboto', 'Avenir', Helvetica, Arial, sans-serif
+  -webkit-font-smoothing antialiased
+  -moz-osx-font-smoothing grayscale
+  color $ii-gray-800
+  margin 0
+
+.ii-dark-mode
+  color $ii-white
+  background $ii-black
+  body
+    color @color
+
+hr
+  border none
+  height 1px
+  background $ii-primary-100
+
+a
+  color $ii-primary-500
+  text-decoration none
+  .ii-icon
+    svg
+      fill @color
+
+h1, h2, h3, h4, h5, h6
+  font-weight 300
+  margin 24px 0 8px
+  &:first-child
+    margin-top 0
+
+h1
+  font-size 42px
+
+h2
+  font-size 32px
+
+h3
+  font-size 26px
+
+h4
+  font-size 22px
+
+h5
+  font-size 18px
+
+h6
+  font-size 16px
+
+p
+  margin 0 0 8px
+
+ul
+  margin 4px 0
+
+.ii-bgc
+  background linear-gradient(180deg, $ii-gray-100, #FFFFFF)
+  
+.ii-no-scroll
+  overflow hidden
+
+.ii-spacer
+  flex auto 1 1 !important
+  width 0
+  height 0
+
+.ii-empty
+  color rgba($ii-gray-800, .5)
+  padding 24px
+  text-align center
+  box-sizing border-box
+  .ii-icon
+    svg
+      fill @color
+  .ii-dark-mode &
+    color rgba($ii-white, .5)
+
+.ii-text
+  &.banner
+    padding 12px
+    display flex
+    align-items center
+    border-radius $br
+    > .ii-icon
+      flex auto 0 0
+      &:first-child
+        margin-right 10px
+  &.primary
+    ii-text-colors($ii-primary-500)
+  &.accent
+    ii-text-colors($ii-accent-500)
+  &.danger
+    ii-text-colors($ii-danger-500)
+  &.warning
+    ii-text-colors($ii-warning-500)
+  &.info
+    ii-text-colors($ii-info-500)
+  &.success
+    ii-text-colors($ii-primary-500)
+
+.ii-grid
+  display grid
+  &.default-gap
+    grid-gap 12px
+  &.big-gap
+    grid-gap 24px
+  for n in (1..10)
+    &.col-{n}
+      grid-template-columns repeat(n, 1fr)
+
+    .span-{n}
+      grid-column span n
+
+::-webkit-scrollbar
+  width 10px
+  height @width
+::-webkit-scrollbar-track-piece
+  background transparent
+::-webkit-scrollbar-track:hover
+  background rgba($ii-gray-600, .05)
+  .ii-dark-mode &
+    background rgba($ii-gray-600, .1)
+::-webkit-scrollbar-thumb
+  background-color $ii-gray-300
+  border 3px solid transparent
+  background-clip padding-box
+  border-radius 5px
+  &:hover
+    background-color $ii-gray-600
+  .ii-dark-mode &
+    background-color $ii-gray-800
+    &:hover
+      background-color $ii-gray-500
+
+.ii-dark-mode
+  scrollbar-color $ii-gray-800 $ii-black

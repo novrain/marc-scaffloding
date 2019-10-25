@@ -1,0 +1,25 @@
+{
+    "name": "@iota-cn/svc-util",
+    "version": "1.0.0",
+    "description": "iOTA util",
+    "main": "./dist/index.js",
+    "scripts": {
+        "compile": "babel -d dist/ src/",
+        "prepublishOnly": "npm run compile",
+        "test": "istanbul cover -hook-run-in-content node_modules/mocha/bin/_mocha",
+        "check": "eslint src -f html  > eslintResults.html||true"
+    },
+    "author": "",
+    "license": "MIT",
+    "dependencies": {},
+    "devDependencies": {
+        "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
+        "babel-register": "^6.24.1",
+        "chai": "^4.0.2",
+        "mocha": "^3.4.2",
+        "mochawesome": "^2.3.0"
+    },
+    "publishConfig": {
+        "registry": "http://39.106.121.29:14873/"
+    }
+}

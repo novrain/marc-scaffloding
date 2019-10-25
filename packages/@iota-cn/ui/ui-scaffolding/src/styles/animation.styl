@@ -1,0 +1,57 @@
+// Focus
+
+@keyframes ii-focus
+  $color = $ii-accent-500
+  0%
+    border-color $color
+    box-shadow 0 0 20px rgba($color, 2)
+  100%
+    border-color rgba($color, .6)
+    box-shadow 0 0 4px rgba($color, .5)
+
+@keyframes ii-focus-dark
+  $color = $ii-accent-300
+  0%
+    border-color $color
+    box-shadow 0 0 20px rgba($color, 2)
+  100%
+    border-color rgba($color, .6)
+    box-shadow 0 0 4px rgba($color, .5)
+
+// Slide
+
+ii-slide($direction, $offset)
+  if $direction == bottom
+    $transform = "translateY(%s)" % $offset
+  else if $direction == top
+    $transform = "translateY(-%s)" % $offset
+  else if $direction == left
+    $transform = "translateX(-%s)" % $offset
+  else if $direction == right
+    $transform = "translateX(%s)" % $offset
+  @keyframes ii-slide-from-{$direction}
+    0%
+      transform $transform
+    100%
+      transform none
+  @keyframes ii-slide-to-{$direction}
+    0%
+      transform none
+    100%
+      transform $transform
+
+$offset = 6px
+ii-slide(bottom, $offset)
+ii-slide(top, $offset)
+ii-slide(left, $offset)
+ii-slide(right, $offset)
+
+// Fade
+
+.ii-fade-enter-active,
+.ii-fade-leave-active
+  transition opacity .15s linear
+
+.ii-fade-enter,
+.ii-fade-leave-to
+  opacity 0

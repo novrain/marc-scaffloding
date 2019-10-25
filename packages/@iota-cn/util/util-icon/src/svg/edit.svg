@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1"
+	 id="图层_1" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" sodipodi:docname="s-edit.svg" inkscape:version="0.91 r13725" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1024px" height="1024px"
+	 viewBox="0 0 1024 1024" enable-background="new 0 0 1024 1024" xml:space="preserve">
+<sodipodi:namedview  id="namedview9" borderopacity="1" pagecolor="#ffffff" inkscape:cx="512" guidetolerance="10" showgrid="false" bordercolor="#666666" inkscape:cy="512" objecttolerance="10" gridtolerance="10" inkscape:zoom="0.23046875" inkscape:current-layer="图层_1" inkscape:window-maximized="1" inkscape:window-y="-8" inkscape:window-x="-8" inkscape:window-height="847" inkscape:pageopacity="0" inkscape:window-width="1600" inkscape:pageshadow="2">
+	</sodipodi:namedview>
+<path id="path9" d="M546.854,505.418l217.635-215.099c5.739-5.673,5.739-15.127,0-20.8c-5.738-5.673-15.307-5.673-21.046,0
+	L525.807,484.616c-5.738,5.673-5.738,15.128,0,20.802C531.547,511.091,541.114,511.091,546.854,505.418z"/>
+<path id="path13" d="M325.219,252C284.822,252,252,293.22,252,343.952V680.05c0,50.731,32.821,91.95,73.219,91.95h339.584
+	c1.146-0.108,2.252-0.372,3.313-0.748h22.832c44.716,0,81.051-40.877,81.051-91.185V404.75c-17.246,0.614-25.63,0.904-31.439,1.176
+	v274.142c0,30.656-22.362,55.812-49.61,55.812h-26.403c-0.043,0.148-0.099,0.301-0.145,0.451H325.219
+	c-24.618,0-44.814-25.366-44.814-56.28V343.159c0-30.914,20.196-56.281,44.814-56.281h339.584c7.574,0,13.887-7.927,13.887-17.438
+	S672.377,252,664.803,252H325.219z"/>
+<path d="M512,962c-60.741,0-119.677-11.899-175.168-35.37c-53.586-22.665-101.71-55.109-143.031-96.432
+	c-41.32-41.32-73.765-89.442-96.43-143.03C73.901,631.677,62,572.741,62,512c0-60.738,11.9-119.676,35.371-175.167
+	c22.667-53.587,55.109-101.711,96.431-143.03c41.321-41.321,89.445-73.766,143.032-96.432C392.325,73.9,451.26,62,512,62
+	c60.739,0,119.676,11.901,175.166,35.371c53.589,22.666,101.711,55.11,143.032,96.432c41.32,41.319,73.766,89.443,96.432,143.031
+	C950.1,392.324,962,451.26,962,512c0,60.741-11.901,119.679-35.372,175.166c-22.666,53.59-55.108,101.714-96.432,143.033
+	c-41.319,41.32-89.442,73.768-143.03,96.433C631.676,950.099,572.74,962,512,962z M512,100.756
+	c-226.762,0-411.244,184.484-411.244,411.244c0,226.761,184.483,411.244,411.244,411.244c226.76,0,411.243-184.482,411.243-411.244
+	S738.76,100.756,512,100.756z"/>
+</svg>

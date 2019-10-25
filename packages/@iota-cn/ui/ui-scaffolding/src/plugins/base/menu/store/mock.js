@@ -1,0 +1,191 @@
+export default [{
+    "id": "0",
+    "name": "控制台菜单",
+    "key": "iota.console",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.598Z",
+    "updatedAt": "2018-05-15T11:26:27.598Z",
+    "parentId": null,
+    "hasRight": true
+}, {
+    "id": "1",
+    "name": "总览",
+    "key": "iota.console.overview",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.603Z",
+    "updatedAt": "2018-05-15T11:26:27.603Z",
+    "parentId": "0",
+    "hasRight": true
+}, {
+    "id": "2",
+    "name": "统计分析",
+    "key": "iota.console.metrics",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.609Z",
+    "updatedAt": "2018-05-15T11:26:27.609Z",
+    "parentId": "0",
+    "hasRight": true
+}, {
+    "id": "2.1",
+    "name": "原始数据",
+    "key": "iota.console.metrics.raw_data",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.614Z",
+    "updatedAt": "2018-05-15T11:26:27.614Z",
+    "parentId": "2",
+    "linkTo": '/console',
+    "hasRight": true
+}, {
+    "id": "2.2",
+    "name": "流量数据",
+    "key": "iota.console.metrics.streams",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.617Z",
+    "updatedAt": "2018-05-15T11:26:27.617Z",
+    "parentId": "2",
+    "hasRight": true
+}, {
+    "id": "2.3",
+    "name": "接口请求",
+    "key": "iota.console.metrics.api_requests",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.620Z",
+    "updatedAt": "2018-05-15T11:26:27.620Z",
+    "parentId": "2",
+    "hasRight": true
+}, {
+    "id": "3",
+    "name": "认证信息",
+    "key": "iota.console.certifications",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.624Z",
+    "updatedAt": "2018-05-15T11:26:27.624Z",
+    "parentId": "0",
+    "hasRight": true
+}, {
+    "id": "3.1",
+    "name": "个人认证",
+    "key": "iota.console.certifications.persons",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.634Z",
+    "updatedAt": "2018-05-15T11:26:27.634Z",
+    "parentId": "3",
+    "hasRight": true
+}, {
+    "id": "3.2",
+    "name": "企业认证",
+    "key": "iota.console.certifications.companies",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.636Z",
+    "updatedAt": "2018-05-15T11:26:27.636Z",
+    "parentId": "3",
+    "hasRight": true
+}, {
+    "id": "3.3",
+    "name": "协议认证",
+    "key": "iota.console.certifications.protocols",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.641Z",
+    "updatedAt": "2018-05-15T11:26:27.641Z",
+    "parentId": "3",
+    "hasRight": true
+}, {
+    "id": "3.4",
+    "name": "设备认证",
+    "key": "iota.console.certifications.devices",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.643Z",
+    "updatedAt": "2018-05-15T11:26:27.643Z",
+    "parentId": "3",
+    "hasRight": true
+}, {
+    "id": "4",
+    "name": "反馈管理",
+    "key": "iota.console.feedbacks",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.647Z",
+    "updatedAt": "2018-05-15T11:26:27.647Z",
+    "parentId": "0",
+    "hasRight": true
+}, {
+    "id": "4.1",
+    "name": "意见反馈",
+    "key": "iota.console.feedbacks.lists",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.651Z",
+    "updatedAt": "2018-05-15T11:26:27.651Z",
+    "parentId": "4",
+    "hasRight": true
+}, {
+    "id": "5",
+    "name": "工单系统",
+    "key": "iota.console.work_orders",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.651Z",
+    "updatedAt": "2018-05-15T11:26:27.651Z",
+    "parentId": "0",
+    "hasRight": true
+}, {
+    "id": "5.1",
+    "name": "工单处理",
+    "key": "iota.console.work_orders.lists",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.651Z",
+    "updatedAt": "2018-05-15T11:26:27.651Z",
+    "parentId": "5",
+    "hasRight": true
+}, {
+    "id": "6",
+    "name": "权限管理",
+    "key": "iota.console.authorizations",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.651Z",
+    "updatedAt": "2018-05-15T11:26:27.651Z",
+    "parentId": "0",
+    "hasRight": true
+}, {
+    "id": "6.1",
+    "name": "菜单与操作",
+    "key": "iota.console.authorizations.current",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.651Z",
+    "updatedAt": "2018-05-15T11:26:27.651Z",
+    "parentId": "6",
+    "hasRight": true
+}, {
+    "id": "6.2",
+    "name": "角色",
+    "key": "iota.console.authorizations.roles",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.651Z",
+    "updatedAt": "2018-05-15T11:26:27.651Z",
+    "parentId": "6",
+    "hasRight": true
+}, {
+    "id": "6.3",
+    "name": "组织",
+    "key": "iota.console.authorizations.organizations",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.651Z",
+    "updatedAt": "2018-05-15T11:26:27.651Z",
+    "parentId": "6",
+    "hasRight": true
+}, {
+    "id": "6.4",
+    "name": "职位",
+    "key": "iota.console.authorizations.positions",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.651Z",
+    "updatedAt": "2018-05-15T11:26:27.651Z",
+    "parentId": "6",
+    "hasRight": true
+}, {
+    "id": "6.5",
+    "name": "用户",
+    "key": "iota.console.authorizations.users",
+    "desc": "",
+    "createdAt": "2018-05-15T11:26:27.651Z",
+    "updatedAt": "2018-05-15T11:26:27.651Z",
+    "parentId": "6",
+    "hasRight": true
+}]

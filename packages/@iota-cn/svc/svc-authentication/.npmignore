@@ -1,0 +1,10 @@
+src/
+test/
+dev/
+coverage/
+mochawesome-report/
+mochawesome-reports/
+.babelrc
+.eslintrc
+.npmignore
+babel-watch.cmd

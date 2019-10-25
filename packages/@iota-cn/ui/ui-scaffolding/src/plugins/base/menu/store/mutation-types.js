@@ -1,0 +1,1 @@
+export const FETCH_MENU = 'iota.container.menu.fetch.menus'

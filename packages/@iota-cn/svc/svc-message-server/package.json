@@ -1,0 +1,40 @@
+{
+    "name": "@iota-cn/svc-message-server",
+    "version": "1.0.0",
+    "description": "iOTA notice server",
+    "main": "./dist/index.js",
+    "scripts": {
+        "compile": "babel -d dist/ src/",
+        "prepublishOnly": "npm run compile",
+        "test": "istanbul cover -hook-run-in-content node_modules/mocha/bin/_mocha",
+        "check": "eslint src -f html  > eslintResults.html||true"
+    },
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "@iota-fork/kafka-node": "^3.0.1",
+        "@iota-cn/svc-authorization": "^1.0.0",
+        "@iota-cn/svc-notice": "^1.0.0",
+        "@iota-cn/svc-user": "^1.0.0",
+        "@iota-cn/svc-dc": "^1.0.0",
+        "@iota-cn/svc-mmw": "^1.0.0",
+        "ioredis": "^3.1.1",
+        "socket.io": "^2.0.3",
+        "uuid": "^3.1.0"
+    },
+    "devDependencies": {
+        "@iota-cn/svc-scaffolding": "^1.0.0",
+        "@iota-cn/svc-message-client": "^1.0.0",
+        "babel-plugin-transform-class-properties": "^6.24.1",
+        "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
+        "babel-register": "^6.24.1",
+        "chai": "^4.0.2",
+        "mocha": "^3.4.2",
+        "mochawesome": "^2.3.0",
+        "socket.io-client": "^2.0.3",
+        "supertest": "^3.0.0"
+    },
+    "publishConfig": {
+        "registry": "http://39.106.121.29:14873/"
+    }
+}

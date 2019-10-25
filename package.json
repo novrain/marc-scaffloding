@@ -1,0 +1,18 @@
+{
+    "name": "root",
+    "private": true,
+    "devDependencies": {
+        "lerna": "^3.18.3"
+    },
+    "workspaces": [
+        "packages/@iota-cn/util/*",
+        "packages/@iota-cn/ui/*",
+        "packages/@iota-cn/svc/*",
+        "packages/services/back/*",
+        "packages/services/front/*"
+    ],
+    "scripts": {
+        "metapak": "metapak",
+        "postinstall": "npm run metapak --silent"
+    }
+}

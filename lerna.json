@@ -1,0 +1,17 @@
+{
+    "packages": [
+        "packages/@iota-cn/util/*",
+        "packages/@iota-cn/ui/*",
+        "packages/@iota-cn/svc/*",
+        "packages/services/back/*",
+        "packages/services/front/*"
+    ],
+    "version": "independent",
+    "npmClient": "yarn",
+    "useWorkspaces": true,
+    "command": {
+        "run": {
+            "npmClient": "yarn"
+        }
+    }
+}

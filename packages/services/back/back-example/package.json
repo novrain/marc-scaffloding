@@ -1,0 +1,35 @@
+{
+    "name": "@iota-cn/back-example",
+    "version": "1.0.0",
+    "private": true,
+    "description": "api test server",
+    "main": "index.js",
+    "scripts": {
+        "serve": "node index.js"
+    },
+    "author": "IOTA",
+    "license": "MIT",
+    "dependencies": {
+        "@iota-cn/svc-scaffolding": "^1.0.0",
+        "@iota-cn/svc-attachment": "^1.0.0",
+        "@iota-cn/svc-authentication": "^1.0.0",
+        "@iota-cn/svc-authorization": "^1.0.0",
+        "@iota-cn/svc-dc": "^1.0.0",
+        "@iota-cn/svc-message-client": "^1.0.0",
+        "@iota-cn/svc-notice": "^1.0.0",
+        "@iota-cn/svc-oauth2": "^1.0.0",
+        "@iota-cn/svc-rbac": "^1.0.0",
+        "@iota-cn/svc-user": "^1.0.0",
+        "@iota-cn/svc-util": "^1.0.0",
+        "@iota-cn/util-validation": "^1.0.10",
+        "commander": "^2.12.0"
+    },
+    "devDependencies": {
+        "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
+        "babel-register": "^6.24.1",
+        "chai": "^4.0.2",
+        "mocha": "^3.4.2",
+        "mochawesome": "^2.3.0",
+        "supertest": "^3.0.0"
+    }
+}

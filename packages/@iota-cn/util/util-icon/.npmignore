@@ -1,0 +1,7 @@
+node_modules/
+src/
+.npmignore
+gulpfile.js
+package.json
+README.md
+dist/index.html

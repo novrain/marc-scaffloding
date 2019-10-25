@@ -1,0 +1,16 @@
+test*.js
+*.swp
+.idea
+.DS_STORE
+node_modules
+npm-debug.log
+*~
+test/binary/tmp/*
+test/tmp/*
+test/dialects/sqlite/test.sqlite
+test/sqlite/test.sqlite
+coverage-*
+site
+docs/api/tmp.md
+ssce.js
+.vscode/
