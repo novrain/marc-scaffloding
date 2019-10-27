@@ -51,7 +51,6 @@ function createConfig(args) {
     const noticeEntry = require('@iota-cn/svc-notice').entry;
     const noticeModel = require('@iota-cn/svc-notice').models;
     const messageClientEntry = require('@iota-cn/svc-message-client').entry;
-    const metricsApiEntry = require('@iota-cn/svc-background-metrics-api').entry;
 
     const user = { entry: userEntry, opts: {} };
     const authentication = {
@@ -142,7 +141,6 @@ function createConfig(args) {
             models: [
                 userModel,
                 authorizationModel,
-                rulesModel,
                 noticeModel
             ]
         }

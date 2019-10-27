@@ -12,7 +12,7 @@ export default {
 </script>
 
 <style lang="stylus">
-@import '@iota-cn/ui-scaffolding/src/styles/imports';
+@import '~@iota-cn/ui-scaffolding/src/styles/imports';
 
 html, body, #app {
     height: 100%;

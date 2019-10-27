@@ -32,13 +32,16 @@ packages
   @iota-fork    // 修改的第三方包
   services
     back        // 整合服务侧相关包输出的独立应用服务端
-    front       // 整合客户端相关包输出的独立应用客户端
+    front       // 整合客户端相关包输出的独立应用客户端，与某应用服务端对应
 
 ```
 
 #### 例子
 
-前置条件待补充。
+待补充（或直接基于某个具体项目描述）:
+1. 前后端模块
+2. 需要数据库的初始化
+3. 前端与后端的实际接口调用
 
 客户端
 ```
@@ -56,4 +59,7 @@ packages/services/back/back-example
 启动：
 lerna run compile
 lerna run --scope @iota-cn/back-example serve
+
+访问：
+http://localhost:8080/app/signin
 ```
