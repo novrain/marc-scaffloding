@@ -1,40 +1,10 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import Router from 'vue-router'
+import run from '@iota-cn/ui-scaffolding/src/runner'
 
-import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.less';
-
-import VCharts from 'v-charts'
-import VueI18n from 'vue-i18n'
-
-// iota-cn
-import Avatar from '@iota-cn/avatar'
-Vue.use(Avatar)
-
-import AppLoader from '@iota-cn/ui-scaffolding/src/framework/AppLoader'
+// 应用提供 App（可以不提供，使用脚手架默认的） 与 config
 import App from './App.vue'
 import config from './config'
 
-const appLoader = new AppLoader(config)
-const { store, routes, messages } = appLoader.load()
+// 可以在启动前，做一些初始化工作，例如Vue.use定义一些全局组件等
 
-Vue.use(Antd)
-Vue.use(VCharts)
-Vue.use(VueI18n)
-
-const i18n = new VueI18n({
-    locale: Vue.config.locale || 'zh-cn',
-    fallbackLocale: 'zh-cn',
-    messages: messages || {}
-})
-
-Vue.use(Vuex)
-Vue.use(Router)
-
-new Vue({
-    router: new Router({ routes, mode: 'history' }),
-    store: new Vuex.Store(store),
-    render: h => h(App),
-    i18n
-}).$mount('#app')
+// 启动
+run({ config, App })

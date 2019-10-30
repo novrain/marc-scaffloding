@@ -1,6 +1,6 @@
 import LayoutContainer from './view/LayoutContainer'
-import MessageCenter from './view/MessageCenter'
 import SinglePageLayout from './view/SinglePageLayout'
+import MessageCenter from './mixins/MessageCenter'
 
 export default (opts) => {
     let { simple, complex } = opts
