@@ -48,7 +48,11 @@ packages
 目录(不需要切换)
 packages/services/front/front-example
 
-lerna run --scope @iota-cn/front-example serve
+lerna run --stream --scope @iota-cn/front-example serve
+```
+
+```
+客户端也支持使用 vue-ui 方式管理
 ```
 
 服务端
@@ -58,7 +62,7 @@ packages/services/back/back-example
 
 启动：
 lerna run compile
-lerna run --scope @iota-cn/back-example serve
+lerna run --stream --scope @iota-cn/back-example serve
 
 访问：
 http://localhost:8080/app/signin

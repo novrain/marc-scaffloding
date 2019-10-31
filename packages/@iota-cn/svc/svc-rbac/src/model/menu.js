@@ -15,6 +15,13 @@ export default function (dc) {
                 type: dc.ORM.STRING,
                 allowNull: false
             },
+            // 新增字段 界面端直接显示
+            linktTo: {
+                type: dc.ORM.STRING,
+            },
+            icon: {
+                type: dc.ORM.STRING,
+            },
             desc: {
                 type: dc.ORM.STRING
             }

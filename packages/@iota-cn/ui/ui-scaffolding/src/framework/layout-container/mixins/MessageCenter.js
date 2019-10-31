@@ -36,7 +36,6 @@ export default {
     },
 
     mounted() {
-        console.log('2')
         const state = this.$store.state.iota[this.id || 'container']
         if (state.messageCenter) {
             let location = window.location

@@ -4,6 +4,9 @@ const COMPLEX_CONTAINER_PATH = 'console'
 const SIMPLE_CONTAINER_PATH = 'app' // vue-router 多层 / 时，优先使用了深层次的 路由，所以必须区分开
 
 module.exports = {
+    cookie: {
+        prefix: 'ii-'
+    },
     plugins: [
         {
             plugin: require('./framework/root'), opts: {}
@@ -20,6 +23,7 @@ module.exports = {
                     type: 'console',
                     id: COMPLEX_CONTAINER_ID,
                     path: COMPLEX_CONTAINER_PATH,
+                    redirectTo: '/app/signin'
                 },
                 messageCenter: {
                     port: '18884',

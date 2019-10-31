@@ -44,10 +44,17 @@
                 {{t("signin")}}
             </a-button>
         </a-form-item>
+        <div v-if="user">
+            <a-divider>或</a-divider>
+            <router-link :to='redirect'
+                class="quick-signin">继续使用 {{user.username}}</router-link>
+        </div>
     </a-form>
 </template>
 
 <script>
+// import Actions from '../store/actions'  
+// ...mapActions(Objects.keys(Actions))
 import { createNamespacedHelpers } from 'vuex'
 
 const { mapActions } = createNamespacedHelpers('iota/global')
@@ -55,6 +62,9 @@ const { mapActions } = createNamespacedHelpers('iota/global')
 export default {
     beforeCreate() {
         this.form = this.$form.createForm(this, { name: 'normal_login' });
+    },
+    props: {
+        redirect: String
     },
     methods: {
         handleSubmit(e) {
@@ -73,6 +83,14 @@ export default {
 
         ...mapActions(['signin'])
     },
+
+    computed: {
+        user() {
+            // 这个模块需要从上层规定
+            const state = this.$store.state.iota.global.authentication
+            return state.user
+        }
+    }
 };
 </script>
 <style lang="stylus" scoped>
@@ -99,6 +117,12 @@ export default {
 
     .button {
         width: 100%;
+    }
+
+    .quick-signin {
+        width: 100%;
+        text-align: center;
+        display: inline-block;
     }
 }
 </style>

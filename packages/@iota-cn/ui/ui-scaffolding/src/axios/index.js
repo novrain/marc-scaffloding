@@ -1,43 +1,46 @@
 import axios from 'axios'
 import { message } from 'ant-design-vue/es'
 
-let baseURL = 'http://localhost:18885'
-if (window) {
-    let location = window.location
-    baseURL = `${location.protocol}//${location.hostname}:18885`
+let instance = axios.create({ withCredentials: true })
+const init = (opts) => {
+    let baseURL = `http://localhost:${opts.port || 9091}`
+    if (window) {
+        let location = window.location
+        baseURL = `${location.protocol}//${location.hostname}:${opts.port || 9091}`
+    }
+    instance.defaults.baseURL = baseURL
 }
 
-const instance = axios.create({
-    baseURL
-    // baseURL: 'http://10.8.25.31:18885'
-})
-
-const onRes = (res, { success, error }) => {
+const onRes = (res, { success, error, doNotHint }) => {
     // eslint-disable-next-line no-undef
-    res.status < 400 ? message.success(success || `Code: ${res.status}`)
-        // eslint-disable-next-line no-undef
-        : message.error(error || `Code: ${res.status}`)
+    if (!doNotHint) {
+        res.status < 400 ? message.success(success || `Code: ${res.status}`)
+            // eslint-disable-next-line no-undef
+            : message.error(error || `Code: ${res.status}`)
+    }
     return res
 }
 
-const onErr = (err, m) => {
+const onErr = (err, { message, doNotHint }) => {
     // eslint-disable-next-line no-undef
-    message.error(m || err.toString())
-    throw err
+    if (!doNotHint) {
+        message.error(message || err.toString())
+    }
+    //throw err
 }
 
 const noop = () => { }
 
-const commonGet = (url, { success, error, fatal }) => {
-    return instance.get(url).then((res) => onRes(res, { success, error }), (err) => onErr(err, fatal))
+const commonGet = (url, { success, error, fatal, doNotHint }) => {
+    return instance.get(url).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint }))
 }
 
-const commonPost = (url, payload, { success, error, fatal }) => {
-    return instance.post(url, payload).then((res) => onRes(res, { success, error }), (err) => onErr(err, fatal))
+const commonPost = (url, payload, { success, error, fatal, doNotHint }) => {
+    return instance.post(url, payload).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint }))
 }
 
-const commonDelete = (url, { success, error, fatal }) => {
-    return instance.delete(url).then((res) => onRes(res, { success, error }), (err) => onErr(err, fatal))
+const commonDelete = (url, { success, error, fatal, doNotHint }) => {
+    return instance.delete(url).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint }))
 }
 
 export default instance
@@ -48,5 +51,6 @@ export {
     commonDelete,
     noop,
     onRes,
-    onErr
+    onErr,
+    init as initAxios
 }

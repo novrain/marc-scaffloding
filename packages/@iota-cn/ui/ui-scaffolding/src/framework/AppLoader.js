@@ -1,9 +1,11 @@
 import createLogger from 'vuex/dist/logger'
 import merge from 'deepmerge'
+import { initCookie } from './util'
+import { initAxios } from '../axios'
 
 const debug = process.env.NODE_ENV !== 'production'
 
-// VueRouter keys
+// VueRouter keys to filter
 const ROUTE_CONFIG_KEYS = [
     'path',
     'name',
@@ -69,6 +71,11 @@ class AppLoader {
 
     constructor(config) {
         this.config = config
+        // 初始化 cookie 包，设置前缀
+        config.cookie = config.cookie ? config.cookie : {}
+        initCookie(config.cookie.prefix)
+        config.axios = config.axios ? config.axios : {}
+        initAxios(config.axios)
     }
 
     load = () => {

@@ -1,6 +1,5 @@
 import mutations from './mutations'
-import menus from './mock'
-import * as Util from '../util'
+import actions from './actions'
 import Vue from 'vue'
 
 import Menu from '../view/Menu'
@@ -10,7 +9,11 @@ Vue.component('ii-menu', Menu)
 export default (opts) => {
     const { id, containerId } = opts
     const state = {
-        menus: Util.convertMenus(menus)
+        menus: {
+            roots: [{ children: [] }],
+            idMap: [],
+            pathMap: []
+        }
     }
     const store = {
         modules: {
@@ -32,6 +35,7 @@ export default (opts) => {
                                 namespaced: true,
                                 state,
                                 mutations,
+                                actions
                             }
                         }
                     }

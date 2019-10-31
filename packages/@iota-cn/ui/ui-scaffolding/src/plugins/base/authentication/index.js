@@ -6,7 +6,7 @@ const entry = (opts) => {
     return {
         store: store(opts),
         messages,
-        routes
+        routes: routes(opts)
     }
 }
 
