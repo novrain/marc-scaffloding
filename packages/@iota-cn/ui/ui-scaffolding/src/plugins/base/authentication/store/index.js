@@ -16,9 +16,9 @@ export default (opts) => {
                                     user: U.createEmptyUser(),
                                     // ...opts
                                 },
-                                mutations,
+                                mutations: mutations(opts),
                                 getters,
-                                actions: actions(opts)
+                                actions
                             }
                         }
                     }

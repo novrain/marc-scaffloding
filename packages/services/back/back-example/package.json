@@ -10,7 +10,6 @@
     "author": "IOTA",
     "license": "MIT",
     "dependencies": {
-        "@iota-cn/svc-scaffolding": "^1.0.0",
         "@iota-cn/svc-attachment": "^1.0.0",
         "@iota-cn/svc-authentication": "^1.0.0",
         "@iota-cn/svc-authorization": "^1.0.0",
@@ -19,6 +18,7 @@
         "@iota-cn/svc-notice": "^1.0.0",
         "@iota-cn/svc-oauth2": "^1.0.0",
         "@iota-cn/svc-rbac": "^1.0.0",
+        "@iota-cn/svc-scaffolding": "^1.0.0",
         "@iota-cn/svc-user": "^1.0.0",
         "@iota-cn/svc-util": "^1.0.0",
         "@iota-cn/util-validation": "^1.0.10",

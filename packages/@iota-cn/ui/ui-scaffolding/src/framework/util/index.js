@@ -31,7 +31,7 @@ export const isUserValid = (user) => {
 
 export const isCookieValid = () => {
     try {
-        const iota = cookie.get('iota')
+        const iota = cookie.iotaGet('iota')
         return iota && iota.length > 0
     }
     catch (err) {
@@ -41,7 +41,7 @@ export const isCookieValid = () => {
 
 export const isUserStatusValid = (userInStore) => {
     try {
-        return userInStore && userInStore.get('loggedIn')
+        return userInStore && userInStore.loggedIn
     }
     catch (err) {
         return false

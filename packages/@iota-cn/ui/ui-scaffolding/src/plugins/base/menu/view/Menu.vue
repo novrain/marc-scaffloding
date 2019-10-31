@@ -8,9 +8,12 @@
         :class="collapsed?'ii-console-menu-collasped':''"
         :inlineCollapsed="collapsed">
         <template v-for="item in menus">
-            <a-menu-item v-if="!item.children || item.children.length<=0"
+            <a-menu-item v-if="!item.children || item.children.length <= 0"
                 :key="item.id">
-                <a-icon type="pie-chart" />
+                <!-- 菜单需要统一风格 仅支持 iota 自定义菜单 -->
+                <!-- 对其他 icon 方式的支持，需要考虑统一方式 -->
+                <!-- <a-icon :type="item.icon || 'pie-chart'" /> -->
+                <i :class="`iota-icon iota-icon-${item.icon}`" />
                 <span>{{item.name}}</span>
             </a-menu-item>
             <ii-sub-menu v-else
@@ -60,6 +63,9 @@ export default {
                 }
             }
         }
+        // 带变量的命名空间，暂时使用这种方式调用Action
+        // 模块应该清楚自己所在的命名空间
+        // this.$store.dispatch(`iota/${this.containerId}/${this.id}/fetchMenus`)
     },
 
     methods: {

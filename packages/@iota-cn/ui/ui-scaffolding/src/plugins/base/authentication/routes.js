@@ -1,14 +1,24 @@
 import Signin from './view/Signin'
+import { TrySigninInterceptor } from '../../../framework/mixins'
 
-const routes = {
-    iota: {
-        app: {
-            signin: {
-                path: 'signin',
-                component: Signin,
+export default (opts) => {
+    const signin = opts.signin || {}
+    return {
+        iota: {
+            app: {
+                signin: {
+                    path: 'signin',
+                    component: {
+                        mixins: [
+                            TrySigninInterceptor,
+                            Signin
+                        ]
+                    },
+                    props: {
+                        redirect: signin.redirect
+                    }
+                }
             }
         }
     }
 }
-
-export default routes
