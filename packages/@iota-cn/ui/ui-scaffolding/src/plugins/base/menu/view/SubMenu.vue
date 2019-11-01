@@ -17,7 +17,7 @@
                     <span class="ii-menu-item">{{ item.name }}</span>
                 </router-link>
                 <div v-else>
-                    <i :class="`iota-icon iota-icon-${item.icon}`" />
+                    <ii-icon :type='item.icon || "folder"' />
                     <span>{{ item.name }}</span>
                 </div>
             </a-menu-item>
