@@ -32,15 +32,23 @@ export default {
             const type = state.type
             const define = state.layout[type] || {// 控制台，左右（上下）
                 head: {
-                    rightItems: [],
-                    leftItems: []
+                    right: {
+                        items: []
+                    },
+                    left: {
+                        items: []
+                    }
                 },
                 left: {
-                    topItems: [],
+                    top: {
+                        items: []
+                    },
                     menu: {
                         items: [],
                     },
-                    bottomItems: []
+                    bottom: {
+                        items: []
+                    }
                 }
             }
             return {

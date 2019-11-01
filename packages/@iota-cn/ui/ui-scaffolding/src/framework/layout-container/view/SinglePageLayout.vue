@@ -54,6 +54,7 @@ export default {
         border-bottom: 1px solid $ii-gray-200;
 
         .logo {
+            height: 42px;
         }
     }
 

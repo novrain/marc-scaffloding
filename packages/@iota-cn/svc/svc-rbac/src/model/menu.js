@@ -16,7 +16,7 @@ export default function (dc) {
                 allowNull: false
             },
             // 新增字段 界面端直接显示
-            linktTo: {
+            linkTo: {
                 type: dc.ORM.STRING,
             },
             icon: {

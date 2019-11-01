@@ -23,7 +23,18 @@ module.exports = {
                     type: 'console',
                     id: COMPLEX_CONTAINER_ID,
                     path: COMPLEX_CONTAINER_PATH,
-                    redirectTo: '/app/signin'
+                    redirectTo: '/app/signin',
+                    // 覆盖内部配置
+                    layout: {
+                        console: {
+                            left: {
+                                top: {
+                                    defaultLogo: '/assets/imgs/defaultLogo.png',
+                                    defaultLogoCollapsed: '/assets/imgs/defaultLogoCollapsed.png',
+                                }
+                            }
+                        }
+                    }
                 },
                 messageCenter: {
                     port: '18884',
@@ -50,7 +61,8 @@ module.exports = {
             plugin: require('./plugins/base/authentication'), opts: {
                 signin: {
                     redirect: '/console'
-                }
+                },
+                containerId: COMPLEX_CONTAINER_ID
             }
         }
     ]

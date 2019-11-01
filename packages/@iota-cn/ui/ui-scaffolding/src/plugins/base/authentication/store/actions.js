@@ -1,6 +1,6 @@
 import * as T from './mutation-types'
 import axios, { commonPost, noop, commonGet } from '../../../../axios'
-import { createi18n, isCookieValid, isUserValid } from '../../../../framework/util'
+import cookie, { createi18n, isCookieValid, isUserValid } from '../../../../framework/util'
 
 const $i = createi18n('iota.global.authentication.')
 
@@ -44,7 +44,10 @@ export default {
         axios.post('/v1/api/signout').finally(() => {
             // 清理 localStorage
             localStorage.removeItem('ii:user')
+            cookie.iotaRemove('iota')
             commit(T.GLOBAL_AUTHENTICATION_SIGNOUT)
+            // 更新、判断登录状态
+            window.location.reload()
         })
     }
 }

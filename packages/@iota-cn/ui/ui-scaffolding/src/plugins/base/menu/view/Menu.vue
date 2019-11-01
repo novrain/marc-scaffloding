@@ -5,19 +5,30 @@
         @openChange='onOpenChange'
         :selectedKeys='selectedKeys'
         :openKeys='openKeys'
-        :class="collapsed?'ii-console-menu-collasped':''"
+        :class="collapsed?'ii-console-menu-collapsed':''"
         :inlineCollapsed="collapsed">
         <template v-for="item in menus">
             <a-menu-item v-if="!item.children || item.children.length <= 0"
                 :key="item.id">
                 <!-- 菜单需要统一风格 仅支持 iota 自定义菜单 -->
                 <!-- 对其他 icon 方式的支持，需要考虑统一方式 -->
-                <!-- <a-icon :type="item.icon || 'pie-chart'" /> -->
-                <i :class="`iota-icon iota-icon-${item.icon}`" />
-                <span>{{item.name}}</span>
+                <!-- <a-icon :type="'pie-chart'" /> -->
+                <router-link :to='item.linkTo'
+                    v-if="item.linkTo">
+                    <!-- 菜单需要统一风格 仅支持 iota 自定义菜单 -->
+                    <!-- 对其他 icon 方式的支持，需要考虑统一方式 -->
+                    <!-- <a-icon :type="item.icon || 'pie-chart'" /> -->
+                    <ii-icon :type='item.icon || "folder"' />
+                    <span class="ii-menu-item">{{ item.name }}</span>
+                </router-link>
+                <div v-else>
+                    <ii-icon :type='item.icon || "folder"' />
+                    <span>{{ item.name }}</span>
+                </div>
             </a-menu-item>
             <ii-sub-menu v-else
-                :menu-info="item"
+                :menus="item"
+                :collapsed='collapsed'
                 :key="item.id" />
         </template>
     </a-menu>
@@ -44,28 +55,30 @@ export default {
     },
 
     mounted() {
-        const path = this.$route.path
-        if (path != '') {
-            const state = this.$store.state.iota[this.containerId || 'container'][this.id || 'menu']
-            const { idMap, pathMap } = state.menus
-            let menu = pathMap[path]
-            if (menu) {
-                let keys = [menu.id]
-                let parent = idMap[menu.parentId]
-                while (parent && parent.id) { // 
-                    keys.push(parent.id)
-                    parent = idMap[parent.parentId]
-                }
-
-                this.openKeys = this.selectedKeys = keys
-                if (this.collapsed) {
-                    this.openKeys = []
-                }
-            }
-        }
         // 带变量的命名空间，暂时使用这种方式调用Action
         // 模块应该清楚自己所在的命名空间
-        // this.$store.dispatch(`iota/${this.containerId}/${this.id}/fetchMenus`)
+        this.$store.dispatch(`iota/${this.containerId}/${this.id}/fetchMenus`).then(() => {
+            // 获取到数据后再刷新
+            const path = this.$route.path
+            if (path != '') {
+                const state = this.$store.state.iota[this.containerId || 'container'][this.id || 'menu']
+                const { idMap, pathMap } = state.menus
+                let menu = pathMap[path]
+                if (menu) {
+                    let keys = [menu.id]
+                    let parent = idMap[menu.parentId]
+                    while (parent && parent.id) { // 
+                        keys.push(parent.id)
+                        parent = idMap[parent.parentId]
+                    }
+
+                    this.openKeys = this.selectedKeys = keys
+                    if (this.collapsed) {
+                        this.openKeys = []
+                    }
+                }
+            }
+        })
     },
 
     methods: {
@@ -100,11 +113,22 @@ export default {
 
     .ant-menu-item {
         margin: $ii-console-menu-item-margin;
-        font-size: 12px;
+        font-size: 14px;
+    }
+
+    .menu {
+        font-size: 16px;
+        font-weight: 500;
     }
 
     &-collapsed {
-        // width: 40px;
+        > .ant-menu-item .iota-icon, .ant-menu-submenu > .ant-menu-submenu-title .iota-icon {
+            + span {
+                display: inline-block;
+                max-width: 0;
+                opacity: 0;
+            }
+        }
     }
 }
 </style>>

@@ -1,18 +1,20 @@
 <template functional>
-    <a-sub-menu :key="props.menuInfo.id">
+    <a-sub-menu :key="props.menus.id"
+        class="ii-sub-menu">
         <span slot="title">
-            <i :class="`iota-icon iota-icon-${props.menuInfo.icon}`" /><span>{{ props.menuInfo.name }}</span>
+            <ii-icon :type='props.menus.icon || "folder"' />
+            <span class="ii-menu">{{ props.menus.name }}</span>
         </span>
-        <template v-for="item in props.menuInfo.children">
-            <a-menu-item v-if="!item.children || item.children.length<=0"
+        <template v-for="item in props.menus.children">
+            <a-menu-item v-if="(!item.children || item.children.length <= 0) && !collapsed"
                 :key="item.id">
                 <router-link :to='item.linkTo'
                     v-if="item.linkTo">
                     <!-- 菜单需要统一风格 仅支持 iota 自定义菜单 -->
                     <!-- 对其他 icon 方式的支持，需要考虑统一方式 -->
                     <!-- <a-icon :type="item.icon || 'pie-chart'" /> -->
-                    <i :class="`iota-icon iota-icon-${item.icon}`" />
-                    <span>{{ item.name }}</span>
+                    <ii-icon :type='item.icon || "folder"' />
+                    <span class="ii-menu-item">{{ item.name }}</span>
                 </router-link>
                 <div v-else>
                     <i :class="`iota-icon iota-icon-${item.icon}`" />
@@ -21,12 +23,40 @@
             </a-menu-item>
             <ii-sub-menu v-else
                 :key="item.id"
-                :menu-info="item" />
+                :collapsed='collapsed'
+                :menus="item" />
         </template>
     </a-sub-menu>
 </template>
 <script>
 export default {
-    props: ['menuInfo'],
+    props: ['menus', 'collapsed'],
 };
 </script>
+
+<style lang="stylus" scoped>
+.ii-sub-menu {
+    div {
+        span {
+            > .iota-icon {
+                font-size: 16px;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .ii-menu {
+        font-size: 15px;
+        font-weight: 500;
+    }
+}
+
+.ii-menu-item {
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+.hidden {
+    // display: none;
+}
+</style>

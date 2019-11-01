@@ -25,7 +25,9 @@ export default (opts) => {
                             layout: {
                                 console: {
                                     left: {
-                                        middleItems: [{ component: 'ii-menu', props: { id, containerId } }]
+                                        middle: {
+                                            items: [{ component: 'ii-menu', props: { id, containerId } }]
+                                        }
                                     }
                                 }
                             }
