@@ -44,10 +44,10 @@
                 {{t("signin")}}
             </a-button>
         </a-form-item>
-        <div v-if="user">
-            <a-divider>或</a-divider>
+        <div v-if="user.loggedIn">
+            <a-divider>{{$t('iota.global.authentication.or')}}</a-divider>
             <router-link :to='redirect'
-                class="quick-signin">继续使用 {{user.username}}</router-link>
+                class="quick-signin">{{$t('iota.global.authentication.keepUsing', {user : user.username})}}</router-link>
         </div>
     </a-form>
 </template>
@@ -72,7 +72,7 @@ export default {
             e.preventDefault()
             this.form.validateFields((err, user) => {
                 if (!err) {
-                    that.signin({ require: user, that })
+                    that.signin({ require: user, that, redirect: this.redirect })
                 }
             });
         },

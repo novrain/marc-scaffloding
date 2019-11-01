@@ -23,23 +23,37 @@ export default (opts) => {
             // type: 外部指定以下两种
             normal: {// 上下结构
                 head: {
-                    rightItems: [],
+                    right: {
+                        items: []
+                    },
                     menu: {
                         items: [],
                     },
-                    leftItems: []
+                    left: {
+                        items: []
+                    }
                 }
             },
             console: {// 控制台，左右（上下）
                 head: {
-                    leftItems: [{ component: 'ii-collapsed-control', props: { id: id } }],
-                    rightItems: []
+                    left: {
+                        items: [{ component: 'ii-collapsed-control', props: { id: id } }]
+                    },
+                    right: {
+                        items: []
+                    }
                 },
                 left: {
                     collapsed: false,
-                    topItems: [],
-                    middleItems: [],
-                    bottomItems: []
+                    top: {
+                        items: []
+                    },
+                    middle: {
+                        items: []
+                    },
+                    bottom: {
+                        items: []
+                    }
                 }
             }
         }

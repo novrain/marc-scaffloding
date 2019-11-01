@@ -1,12 +1,14 @@
 <template>
-    <div class="ii-layout-console ii-background-color">
+    <div class="ii-layout-console">
         <div class="left"
             :class="layout.left.collapsed ? 'left-collapsed' : ''">
             <div class="top">
-
+                <img v-if='!layout.left.top.hiddenDefault'
+                    class="default-logo"
+                    :src="layout.left.collapsed ? layout.left.top.defaultLogoCollapsed: layout.left.top.defaultLogo">
             </div>
             <div class="middle">
-                <component v-for="(item,i) in layout.left.middleItems"
+                <component v-for="(item,i) in layout.left.middle.items"
                     :key="i"
                     :is="item.component"
                     v-bind="item.props">
@@ -19,21 +21,21 @@
         <div class="main">
             <div class="header">
                 <div class="left">
-                    <component v-for="(item, i) in layout.head.leftItems"
+                    <component v-for="(item, i) in layout.head.left.items"
                         :key="i"
                         :is="item.component"
                         v-bind="item.props">
                     </component>
                 </div>
                 <div class="right">
-                    <component v-for="(item, i) in layout.head.rightItems"
+                    <component v-for="(item, i) in layout.head.right.items"
                         :key="i"
                         :is="item.component"
                         v-bind="item.props">
                     </component>
                 </div>
             </div>
-            <div class="content">
+            <div class="ii-background-color content">
                 <transition>
                     <router-view />
                 </transition>
@@ -83,6 +85,15 @@ export default {
             flex-direction: row;
             height: $ii-head-height;
             background-color: darken($ii-primary-color, 20%);
+            justify-content: center;
+            align-items: center;
+
+            .default-logo {
+                height: 36px;
+
+                &-collapsed {
+                }
+            }
         }
 
         .middle {
@@ -109,6 +120,7 @@ export default {
             flex-direction: row;
             min-height: $ii-head-height;
             background-color: $ii-primary-color;
+            justify-content: space-between;
 
             .left {
                 display: flex;

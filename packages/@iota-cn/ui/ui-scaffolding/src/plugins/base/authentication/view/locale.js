@@ -20,7 +20,11 @@ export default {
                     username: '用户名/邮箱/手机号',
                     password: '密码',
                     signinsuccess: '登录成功',
-                    signinerror: '用户名或密码错误'
+                    signinerror: '用户名或密码错误',
+                    profile: '个人中心',
+                    signout: '退出账号',
+                    or: '或',
+                    keepUsing: '继续使用，已登录用户：%{user}'
                 }
             }
         }

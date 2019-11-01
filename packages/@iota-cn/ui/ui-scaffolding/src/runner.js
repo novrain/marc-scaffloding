@@ -2,17 +2,16 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Router from 'vue-router'
 
-import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.less';
+import Antd from 'ant-design-vue'
+import 'ant-design-vue/dist/antd.less'
 
 import VCharts from 'v-charts'
 import VueI18n from 'vue-i18n'
 
 // iota-cn
 import Avatar from '@iota-cn/avatar'
-
-// inner 
-import Cookie from './framework/components/Cookie'
+// Add to Vue prototype
+import FrameComponents from './framework/components'
 
 Vue.use(Antd)
 Vue.use(VCharts)
@@ -20,7 +19,7 @@ Vue.use(VueI18n)
 Vue.use(Vuex)
 Vue.use(Router)
 Vue.use(Avatar)
-Vue.use(Cookie)
+Vue.use(FrameComponents)
 
 import AppLoader from './framework/AppLoader'
 import defaultApp from './App.vue'

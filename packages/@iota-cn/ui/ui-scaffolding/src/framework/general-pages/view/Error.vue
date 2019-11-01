@@ -6,7 +6,7 @@
             <p class="message">{{message}}</p>
             <p class="detail">{{detail}}</p>
             <a-button type="link"
-                :click="onBack">{{action}}</a-button>
+                @click="onBack">{{action}}</a-button>
             <!-- <router-link :to="link">{{action}}</router-link> -->
         </div>
     </div>
