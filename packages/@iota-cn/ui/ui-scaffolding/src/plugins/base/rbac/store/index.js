@@ -3,8 +3,10 @@ import actions from './actions'
 import Vue from 'vue'
 
 import Menu from '../view/Menu'
+import UserProfileControl from '../view/UserProfileControl'
 
-Vue.component('ii-menu', Menu)
+Vue.component('ii-rbac-menu', Menu)
+Vue.component('ii-user-profile-control', UserProfileControl)
 
 export default (opts) => {
     const { id, containerId } = opts
@@ -26,14 +28,19 @@ export default (opts) => {
                                 console: {
                                     left: {
                                         middle: {
-                                            items: [{ component: 'ii-menu', props: { id, containerId } }]
+                                            items: [{ component: 'ii-rbac-menu', props: { id, containerId } }]
+                                        }
+                                    },
+                                    head: {
+                                        right: {
+                                            items: [{ component: 'ii-user-profile-control' }]
                                         }
                                     }
                                 }
                             }
                         },
                         modules: {
-                            [id || 'menu']: {
+                            [id || 'rbac']: {
                                 namespaced: true,
                                 state,
                                 mutations,
