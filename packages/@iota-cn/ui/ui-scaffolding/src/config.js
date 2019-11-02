@@ -52,8 +52,8 @@ module.exports = {
             }
         },
         {
-            plugin: require('./plugins/base/menu'), opts: {
-                id: 'menu', // 实例id
+            plugin: require('./plugins/base/rbac'), opts: {
+                id: 'rbac', // 实例id
                 containerId: COMPLEX_CONTAINER_ID
             }
         },

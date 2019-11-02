@@ -1,5 +1,7 @@
 <template>
-    <router-view class="ii-main-page" />
+    <a-config-provider :autoInsertSpaceInButton="false">
+        <router-view class="ii-main-page" />
+    </a-config-provider>
 </template>
 
 <script>

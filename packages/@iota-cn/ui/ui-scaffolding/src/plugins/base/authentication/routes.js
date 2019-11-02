@@ -1,10 +1,10 @@
 import Signin from './view/Signin'
-import UserProfile from './view/UserProfile'
+// import UserProfile from './view/UserProfile'
 import { TrySigninInterceptor } from '../../../framework/mixins'
 
 export default (opts) => {
     const signin = opts.signin || {}
-    const containerId = opts.containerId
+    // const containerId = opts.containerId
     return {
         iota: {
             app: {
@@ -21,16 +21,16 @@ export default (opts) => {
                     }
                 }
             },
-            [containerId || 'container']: {
-                authentication: {
-                    profile: {
-                        path: '/console/account/profile',
-                        component: {
-                            mixins: [UserProfile]
-                        }
-                    }
-                }
-            }
+            // [containerId || 'container']: {
+            //     authentication: {
+            //         profile: {
+            //             path: '/console/account/profile',
+            //             component: {
+            //                 mixins: [UserProfile]
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
 }

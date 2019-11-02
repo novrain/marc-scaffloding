@@ -58,6 +58,18 @@ export default {
         // 带变量的命名空间，暂时使用这种方式调用Action
         // 模块应该清楚自己所在的命名空间
         this.$store.dispatch(`iota/${this.containerId}/${this.id}/fetchMenus`).then(() => {
+            this.updateMenuState()
+        })
+    },
+
+    watch: {
+        $route() {
+            this.updateMenuState()
+        }
+    },
+
+    methods: {
+        updateMenuState() {
             // 获取到数据后再刷新
             const path = this.$route.path
             if (path != '') {
@@ -78,10 +90,8 @@ export default {
                     }
                 }
             }
-        })
-    },
+        },
 
-    methods: {
         onSelect({ selectedKeys }) {
             this.selectedKeys = selectedKeys
         },

@@ -1,5 +1,5 @@
 import * as T from './mutation-types'
-import axios, { commonPost, noop, commonGet } from '../../../../axios'
+import { axios, commonPost, noop, commonGet } from '../../../../axios'
 import cookie, { createi18n, isCookieValid, isUserValid } from '../../../../framework/util'
 
 const $i = createi18n('iota.global.authentication.')
