@@ -47,7 +47,7 @@
         <div v-if="user.loggedIn">
             <a-divider>{{$t('iota.global.authentication.or')}}</a-divider>
             <router-link :to='redirect'
-                class="quick-signin">{{$t('iota.global.authentication.keepUsing', {user : user.username})}}</router-link>
+                class="quick-signin">{{t('keepUsing', {user : user.username})}}</router-link>
         </div>
     </a-form>
 </template>
@@ -77,8 +77,8 @@ export default {
             });
         },
 
-        t(message) {
-            return this.$t(`iota.global.authentication.${message}`)
+        t(message, params) {
+            return this.$t(`iota.global.authentication.${message}`, params)
         },
 
         ...mapActions(['signin'])

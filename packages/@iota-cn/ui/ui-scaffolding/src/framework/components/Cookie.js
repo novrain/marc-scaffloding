@@ -1,4 +1,4 @@
-import { cookie } from '../util'
+import cookie from '../util'
 
 const install = function (Vue) {
     Vue.prototype.$cookie = {

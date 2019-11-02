@@ -21,29 +21,50 @@ const onRes = (res, { success, error, doNotHint }) => {
     return res
 }
 
-const onErr = (err, { message, doNotHint }) => {
+const onErr = (err, { message, doNotHint, handlerErr }) => {
     // eslint-disable-next-line no-undef
     if (!doNotHint) {
         message.error(message || err.toString())
     }
-    //throw err
+    if (handlerErr) {
+        throw err
+    }
 }
 
 const noop = () => { }
 
-const commonGet = (url, { success, error, fatal, doNotHint }) => {
-    return instance.get(url).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint }))
+const commonGet = (url, { success, error, fatal, doNotHint, handlerErr }) => {
+    return instance.get(url).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint, handlerErr }))
 }
 
-const commonPost = (url, payload, { success, error, fatal, doNotHint }) => {
-    return instance.post(url, payload).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint }))
+const commonPost = (url, payload, { success, error, fatal, doNotHint, handlerErr }) => {
+    return instance.post(url, payload).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint, handlerErr }))
 }
 
-const commonDelete = (url, { success, error, fatal, doNotHint }) => {
-    return instance.delete(url).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint }))
+const commonPut = (url, payload, { success, error, fatal, doNotHint, handlerErr }) => {
+    return instance.put(url, payload).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint, handlerErr }))
 }
 
-export default instance
+const commonDelete = (url, { success, error, fatal, doNotHint, handlerErr }) => {
+    return instance.delete(url).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint, handlerErr }))
+}
+
+const install = (Vue) => {
+    Vue.prototype.$axios = instance
+    Object.assign(Vue.prototype.$axios, {
+        commonGet,
+        commonPut,
+        commonPost,
+        commonDelete,
+        noop,
+        onRes,
+        onErr,
+    })
+}
+
+export default {
+    install
+}
 
 export {
     commonGet,
@@ -52,5 +73,6 @@ export {
     noop,
     onRes,
     onErr,
-    init as initAxios
+    init as initAxios,
+    instance as axios
 }

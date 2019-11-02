@@ -26,7 +26,7 @@
             <div class="signout">
                 <a-button size='small'
                     @click="signout()"
-                    type="primary">{{$t('iota.global.authentication.signout')}}</a-button>
+                    type="primary">{{$t('iota.frame.plugins.rbac.signout')}}</a-button>
             </div>
         </div>
         <div class="ii-user-profile-control">
@@ -49,7 +49,7 @@ export default {
             open: false,
             menus: [
                 {
-                    name: this.$t('iota.global.authentication.profile'),
+                    name: this.$t('iota.frame.plugins.rbac.profile'),
                     linkTo: '/console/account/profile'
                 }
             ],

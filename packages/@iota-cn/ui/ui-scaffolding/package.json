@@ -9,7 +9,8 @@
     "dependencies": {
         "@iota-cn/avatar": "^0.1.1",
         "@iota-cn/icon": "^1.1.2",
-        "ant-design-vue": "^1.4.1",
+        "@iota-cn/util-validation": "^1.0.10",
+        "ant-design-vue": "^1.4.4",
         "axios": "^0.19.0",
         "core-js": "^3.3.2",
         "deepmerge": "^4.1.1",
