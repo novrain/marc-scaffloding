@@ -2,15 +2,34 @@ import axios from '../../axios'
 import Cookie from './Cookie'
 import Icon from './Icon'
 import CountDownButton from './CountDownButton'
+import messages from './locale'
+import TableLayout from './TableLayout'
+import Modal from './Modal'
+import MultiAdd from './MultiAdd'
+import NameValidatorItem from './formitems/NameValidatorItem'
+import DescValidatorItem from './formitems/DescValidatorItem'
+import SimpleEditor from './SimpleEditor'
 
 const components = [
     Icon,
-    CountDownButton
+    CountDownButton,
+    TableLayout,
+    Modal,
+    MultiAdd,
+    NameValidatorItem,
+    DescValidatorItem,
+    SimpleEditor
 ]
 
 export {
     Icon,
-    CountDownButton
+    CountDownButton,
+    TableLayout,
+    Modal,
+    MultiAdd,
+    NameValidatorItem,
+    DescValidatorItem,
+    SimpleEditor
 }
 
 const install = function (Vue) {
@@ -22,5 +41,6 @@ const install = function (Vue) {
 }
 
 export default {
-    install
+    install,
+    messages
 }

@@ -1,3 +1,4 @@
+import merge from 'deepmerge'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Router from 'vue-router'
@@ -32,7 +33,7 @@ export default ({ config, App }) => {
     const i18n = new VueI18n({
         locale: Vue.config.locale || 'zh-cn',
         fallbackLocale: 'zh-cn',
-        messages: messages || {}
+        messages: messages ? merge(messages, FrameComponents.messages) : FrameComponents.messages
     })
 
     new Vue({

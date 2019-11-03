@@ -51,3 +51,32 @@ export const isUserStatusValid = (userInStore) => {
 export const isUserLogged = (userInStore) => {
     return isCookieValid() && isUserValid() && isUserStatusValid(userInStore)
 }
+
+/**
+ *
+ * @param arr
+ * @param key string or array
+ * @returns {Array}
+ */
+export const uniqueArray = (arr, key) => {
+    var ret = [];
+    var len = arr.length;
+    var tmp = new Map();
+    for (var i = 0; i < len; i++) {
+        let v = arr[i];
+        if (key && typeof key === 'string') {
+            v = arr[i][key];
+        }
+        if (key && Array.isArray(key)) {
+            v = '';
+            key.forEach((k) => {
+                v += arr[i][k];
+            })
+        }
+        if (!tmp.get(v)) {
+            tmp.set(v, 1);
+            ret.push(arr[i]);
+        }
+    }
+    return ret;
+}

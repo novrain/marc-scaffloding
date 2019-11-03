@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../../../styles/imports';
+@import '../../../../../styles/imports';
 
 .ii-user-profile-control {
     display: flex;

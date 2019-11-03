@@ -1,5 +1,5 @@
 import * as T from './mutation-types'
-import { axios, commonPost, noop, commonGet } from '../../../../axios'
+import { axios, commonPost, noop, silentGet } from '../../../../axios'
 import cookie, { createi18n, isCookieValid, isUserValid } from '../../../../framework/util'
 
 const $i = createi18n('iota.global.authentication.')
@@ -32,9 +32,9 @@ export default {
         }
     },
     async refetchUser({ dispatch }) {
-        commonGet('/v1/api/accounts/profile', { doNotHint: true }).
+        silentGet('/v1/api/accounts/profile').
             then(res => {
-                dispatch('updateUser', res.data.user)
+                if (res) dispatch('updateUser', res.data.user)
             })
     },
     updateUser({ commit }, user) {
