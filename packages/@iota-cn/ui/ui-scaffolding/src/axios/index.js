@@ -21,33 +21,51 @@ const onRes = (res, { success, error, doNotHint }) => {
     return res
 }
 
-const onErr = (err, { message, doNotHint, handlerErr }) => {
+const onErr = (err, { message, doNotHint, handleErr }) => {
     // eslint-disable-next-line no-undef
     if (!doNotHint) {
         message.error(message || err.toString())
     }
-    if (handlerErr) {
+    if (handleErr) {
         throw err
     }
+    return undefined
 }
 
 const noop = () => { }
 
-const commonGet = (url, { success, error, fatal, doNotHint, handlerErr }) => {
-    return instance.get(url).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint, handlerErr }))
+const commonGet = (url, { success, error, fatal, doNotHint, handleErr }) => {
+    return instance.get(url).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint, handleErr }))
 }
 
-const commonPost = (url, payload, { success, error, fatal, doNotHint, handlerErr }) => {
-    return instance.post(url, payload).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint, handlerErr }))
+const silentGet = (url, handleErr) => {
+    return commonGet(url, { doNotHint: true, handleErr: handleErr })
 }
 
-const commonPut = (url, payload, { success, error, fatal, doNotHint, handlerErr }) => {
-    return instance.put(url, payload).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint, handlerErr }))
+const commonPost = (url, payload, { success, error, fatal, doNotHint, handleErr }) => {
+    return instance.post(url, payload).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint, handleErr }))
 }
 
-const commonDelete = (url, { success, error, fatal, doNotHint, handlerErr }) => {
-    return instance.delete(url).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint, handlerErr }))
+const silentPost = (url, payload, handleErr) => {
+    return commonPost(url, payload, { doNotHint: true, handleErr: handleErr })
 }
+
+const commonPut = (url, payload, { success, error, fatal, doNotHint, handleErr }) => {
+    return instance.put(url, payload).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint, handleErr }))
+}
+
+const silentPut = (url, payload, handleErr) => {
+    return commonPut(url, payload, { doNotHint: true, handleErr: handleErr })
+}
+
+const commonDelete = (url, { success, error, fatal, doNotHint, handleErr }) => {
+    return instance.delete(url).then((res) => onRes(res, { success, error, doNotHint }), (err) => onErr(err, { message: fatal || error, doNotHint, handleErr }))
+}
+
+const silentDelete = (url, handleErr) => {
+    return commonDelete(url, { doNotHint: true, handleErr: handleErr })
+}
+
 
 const install = (Vue) => {
     Vue.prototype.$axios = instance
@@ -56,6 +74,10 @@ const install = (Vue) => {
         commonPut,
         commonPost,
         commonDelete,
+        silentGet,
+        silentPost,
+        silentPut,
+        silentDelete,
         noop,
         onRes,
         onErr,
@@ -68,8 +90,13 @@ export default {
 
 export {
     commonGet,
+    commonPut,
     commonPost,
     commonDelete,
+    silentGet,
+    silentPost,
+    silentPut,
+    silentDelete,
     noop,
     onRes,
     onErr,

@@ -69,6 +69,7 @@ export default {
     flex-direction: row;
     height: 100%;
     width: 100%;
+    overflow: hidden;
 
     .left {
         display: flex;
@@ -112,8 +113,8 @@ export default {
     .main {
         display: flex;
         flex-direction: column;
-        height: 100%;
-        width: 100%;
+        flex: 1;
+        overflow: hidden;
 
         .header {
             display: flex;
@@ -143,6 +144,8 @@ export default {
             display: flex;
             flex: 1;
             flex-direction: row;
+            overflow: auto;
+            padding: 10px;
         }
     }
 }

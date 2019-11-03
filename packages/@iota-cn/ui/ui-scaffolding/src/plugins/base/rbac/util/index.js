@@ -33,5 +33,6 @@ const convertMenus = (lists) => {
 }
 
 export {
-    convertMenus
+    convertMenus,
+    convertMenus as createTree
 }

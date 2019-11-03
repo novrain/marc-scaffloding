@@ -291,7 +291,6 @@ export default {
     beforeCreate() {
         // this.);
     },
-
     data() {
         return {
             modelWidth: 480,
@@ -343,7 +342,7 @@ export default {
                         return
                     }
                     this.$axios.commonPut(`/v1/api/accounts/profile`, values, {
-                        handlerErr: true,
+                        handleErr: true,
                         success: this.t('updateSuccess')
                     }).then(() => {
                         this.$store.dispatch('iota/global/updateUser', values)
@@ -390,7 +389,7 @@ export default {
                         return
                     }
                     this.$axios.commonPut(`/v1/api/accounts/profile`, values, {
-                        handlerErr: true,
+                        handleErr: true,
                         success: this.t('updateSuccess')
                     }).then(() => {
                         this.$store.dispatch('iota/global/updateUser', values)
@@ -424,7 +423,7 @@ export default {
             this.changePasswordForm.validateFields((err, values) => {
                 if (!err) {
                     this.$axios.commonPost('/v1/api/accounts/password/change', values, {
-                        handlerErr: true,
+                        handleErr: true,
                         success: this.t('updateSuccess')
                     }).then(() => {
                         this.changePasswordVisible = false
@@ -519,8 +518,7 @@ export default {
                 return
             }
 
-            this.$axios.commonGet(`/v1/api/validations/mobiles/validate?mobile=${value}`,
-                { doNotHint: true, handlerErr: true })
+            this.$axios.silentGet(`/v1/api/validations/mobiles/validate?mobile=${value}`, true)
                 .then(() => {
                     callback()
                     this.isMobileValid = true
@@ -539,8 +537,7 @@ export default {
                 callback(this.t('emptyWhat', { what: this.t('captcha') }))
                 return
             }
-            this.$axios.commonGet(`/v1/api/validations/smses/validate?mobile=${mobile}&captcha=${value}`,
-                { doNotHint: true, handlerErr: true })
+            this.$axios.silentGet(`/v1/api/validations/smses/validate?mobile=${mobile}&captcha=${value}`, true)
                 .then(() => {
                     callback()
                 }).catch(() => {
@@ -562,12 +559,11 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../../../styles/imports';
+@import '../../../../../styles/imports';
 
 .ii-user-profile {
     display: flex;
     justify-content: center;
-    margin: 10px;
     flex: 1;
     align-items: flex-start;
 

@@ -14,6 +14,7 @@
                 <!-- 对其他 icon 方式的支持，需要考虑统一方式 -->
                 <!-- <a-icon :type="'pie-chart'" /> -->
                 <router-link :to='item.linkTo'
+                    class="menu"
                     v-if="item.linkTo">
                     <!-- 菜单需要统一风格 仅支持 iota 自定义菜单 -->
                     <!-- 对其他 icon 方式的支持，需要考虑统一方式 -->
@@ -116,7 +117,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../../../styles/iota/components/menu';
+@import '../../../../../styles/iota/components/menu';
 
 .ii-console-menu {
     width: 100%;

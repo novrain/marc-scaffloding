@@ -11,7 +11,7 @@
 
 <script>
 export default {
-    name: 'ii-count-down-button',
+    name: 'IiCountDownButton',
     props: {
         type: String,
         timeout: {
