@@ -13,11 +13,11 @@
     },
     "author": "iOTA",
     "license": "MIT",
-    "dependencies": {},
     "devDependencies": {
-        "babel-plugin-transform-class-properties": "^6.24.1",
-        "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-        "babel-register": "^6.26.0",
+        "@babel/cli": "^7.7.0",
+        "@babel/core": "^7.7.2",
+        "@babel/plugin-proposal-class-properties": "^7.7.0",
+        "@babel/preset-env": "^7.7.1",
         "chai": "^4.2.0",
         "mocha": "^6.2.2",
         "mochawesome": "^4.1.0"
