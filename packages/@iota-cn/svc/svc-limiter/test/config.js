@@ -90,7 +90,7 @@ export default {
     dc: {
         orm: {
             url: "postgres://postgres:ROOT@localhost:5433/iOTA_ut",
-            opts: { logging: true }
+            opts: {}
         },
         cache: {
             host: '127.0.0.1',

@@ -1,77 +1,107 @@
 'use strict';
 
-/* jshint -W030 */
-var chai = require('chai')
-  , sinon = require('sinon')
-  , expect = chai.expect
-  , Support = require(__dirname + '/support')
-  , Sequelize = require(__dirname + '/../../index')
-  , ConnectionManager = require(__dirname + '/../../lib/dialects/abstract/connection-manager')
-  , Promise = Sequelize.Promise;
+const chai = require('chai'),
+  sinon = require('sinon'),
+  expect = chai.expect,
+  Support = require('./support'),
+  ConnectionManager = require('../../lib/dialects/abstract/connection-manager');
 
-describe('connection manager', function () {
-  describe('$connect', function () {
-    beforeEach(function () {
-      this.sinon = sinon.sandbox.create();
+describe('connection manager', () => {
+  describe('_connect', () => {
+    beforeEach(function() {
       this.connection = {};
 
       this.dialect = {
         connectionManager: {
-          connect: this.sinon.stub().returns(Promise.resolve(this.connection))
+          connect: sinon.stub().resolves(this.connection)
         }
       };
 
       this.sequelize = Support.createSequelizeInstance();
     });
 
-    afterEach(function () {
-      this.sinon.restore();
-    });
+    it('should resolve connection on dialect connection manager', function() {
+      const connection = {};
+      this.dialect.connectionManager.connect.resolves(connection);
 
-    it('should resolve connection on dialect connection manager', function () {
-      var connection = {};
-      this.dialect.connectionManager.connect.returns(Promise.resolve(connection));
+      const connectionManager = new ConnectionManager(this.dialect, this.sequelize);
 
-      var connectionManager = new ConnectionManager(this.dialect, this.sequelize);
+      const config = {};
 
-      var config = {};
-
-      return expect(connectionManager.$connect(config)).to.eventually.equal(connection).then(function () {
+      return expect(connectionManager._connect(config)).to.eventually.equal(connection).then(() => {
         expect(this.dialect.connectionManager.connect).to.have.been.calledWith(config);
-      }.bind(this));
+      });
     });
 
-    it('should let beforeConnect hook modify config', function () {
-      var username = Math.random().toString()
-        , password = Math.random().toString();
+    it('should let beforeConnect hook modify config', function() {
+      const username = Math.random().toString(),
+        password = Math.random().toString();
 
-      this.sequelize.beforeConnect(function (config) {
+      this.sequelize.beforeConnect(config => {
         config.username = username;
         config.password = password;
         return config;
       });
 
-      var connectionManager = new ConnectionManager(this.dialect, this.sequelize);
+      const connectionManager = new ConnectionManager(this.dialect, this.sequelize);
 
-      return connectionManager.$connect({}).then(function () {
+      return connectionManager._connect({}).then(() => {
         expect(this.dialect.connectionManager.connect).to.have.been.calledWith({
-          username: username,
-          password: password
+          username,
+          password
         });
-      }.bind(this));
+      });
     });
 
     it('should call afterConnect', function() {
-      var spy = sinon.spy();
+      const spy = sinon.spy();
       this.sequelize.afterConnect(spy);
 
-      var connectionManager = new ConnectionManager(this.dialect, this.sequelize);
+      const connectionManager = new ConnectionManager(this.dialect, this.sequelize);
 
-      return connectionManager.$connect({}).then(function() {
+      return connectionManager._connect({}).then(() => {
         expect(spy.callCount).to.equal(1);
         expect(spy.firstCall.args[0]).to.equal(this.connection);
         expect(spy.firstCall.args[1]).to.eql({});
-      }.bind(this));
+      });
+    });
+  });
+
+  describe('_disconnect', () => {
+    beforeEach(function() {
+      this.connection = {};
+
+      this.dialect = {
+        connectionManager: {
+          disconnect: sinon.stub().resolves(this.connection)
+        }
+      };
+
+      this.sequelize = Support.createSequelizeInstance();
+    });
+
+    it('should call beforeDisconnect', function() {
+      const spy = sinon.spy();
+      this.sequelize.beforeDisconnect(spy);
+
+      const connectionManager = new ConnectionManager(this.dialect, this.sequelize);
+
+      return connectionManager._disconnect(this.connection).then(() => {
+        expect(spy.callCount).to.equal(1);
+        expect(spy.firstCall.args[0]).to.equal(this.connection);
+      });
+    });
+
+    it('should call afterDisconnect', function() {
+      const spy = sinon.spy();
+      this.sequelize.afterDisconnect(spy);
+
+      const connectionManager = new ConnectionManager(this.dialect, this.sequelize);
+
+      return connectionManager._disconnect(this.connection).then(() => {
+        expect(spy.callCount).to.equal(1);
+        expect(spy.firstCall.args[0]).to.equal(this.connection);
+      });
     });
   });
 });

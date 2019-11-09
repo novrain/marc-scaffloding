@@ -44,9 +44,12 @@ let checkUser = async function (ctx, isCreate = true) {
         user.password = user.password ? user.password + '' : user.password;
         user.mobile = user.mobile ? user.mobile + '' : user.mobile;
         user.email = user.email ? user.email + '' : user.email;
-        let or = [{
-            username: user.username
-        }];
+        let or = [];
+        if (user.username) {
+            or.push({
+                username: user.username
+            })
+        }
         if (user.email) {
             or.push({
                 email: user.email
@@ -82,6 +85,7 @@ let checkUser = async function (ctx, isCreate = true) {
                 id: user.id
             };
         }
+        console.log(JSON.stringify(queryConflict))
         let conflictUser = await models.User.findOne(queryConflict);
         if (conflictUser) {
             ctx.status = 409;
@@ -384,10 +388,10 @@ let changePassword = async function (ctx, next) {
                 await models.User.update({
                     password: info.new
                 }, {
-                        where: {
-                            id: id
-                        }
-                    });
+                    where: {
+                        id: id
+                    }
+                });
                 ctx.status = 204;
             } else {
                 ctx.status = 400;

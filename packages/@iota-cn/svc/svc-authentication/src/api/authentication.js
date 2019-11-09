@@ -88,7 +88,7 @@ function passwordAuth(info) {
         const models = ctx.iota.dc.models;
         if (!ctx.iota.authed) {
             if (info && info.username && info.psdEncrypt) {
-                let user = await models.User.find({
+                let user = await models.User.findOne({
                     where: {
                         username: info.username,
                         password: info.psdEncrypt
@@ -114,7 +114,7 @@ function emailAuth(info) {
         const models = ctx.iota.dc.models;
         if (!ctx.iota.authed) {
             if (info && info.email && info.psdEncrypt) {
-                let user = await models.User.find({
+                let user = await models.User.findOne({
                     where: {
                         email: info.email,
                         password: info.psdEncrypt
@@ -140,7 +140,7 @@ function mobileAuth(info) {
         const models = ctx.iota.dc.models;
         if (!ctx.iota.authed) {
             if (info && info.mobile && info.psdEncrypt) {
-                let user = await models.User.find({
+                let user = await models.User.findOne({
                     where: {
                         mobile: info.mobile,
                         password: info.psdEncrypt

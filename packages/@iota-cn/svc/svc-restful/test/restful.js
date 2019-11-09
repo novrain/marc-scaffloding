@@ -23,7 +23,7 @@ describe('iota restful test', function () {
              cache:{
 
              }*/,
-             models: [require(path.join(__dirname, 'stub/models')).default]
+            models: [require(path.join(__dirname, 'stub/models')).default]
         }
     };
     dcEntry(app, options.dc);
@@ -70,13 +70,13 @@ describe('iota restful test', function () {
     const request = client.agent(server);
 
     before(async function () {
-        await models.User.sync({force: true});
-        await models.User.create({name: 'xigua', password: '123456', type: 1});
-        await models.User.create({name: 'nangua', password: '123456', type: 1});
-        await models.Role.sync({force: true});
-        await models.Role.create({name: '企业', desc: '默认企业用户', createBy: '-1'});
-        await models.Role.create({name: '个人', desc: '默认个人用户', createBy: '-1'});
-        await models.UserRole.sync({force: true});
+        await models.User.sync({ force: true });
+        await models.User.create({ name: 'xigua', password: '123456', type: 1 });
+        await models.User.create({ name: 'nangua', password: '123456', type: 1 });
+        await models.Role.sync({ force: true });
+        await models.Role.create({ name: '企业', desc: '默认企业用户', createBy: '-1' });
+        await models.Role.create({ name: '个人', desc: '默认个人用户', createBy: '-1' });
+        await models.UserRole.sync({ force: true });
     });
 
     it('basic', function (done) {
@@ -101,7 +101,7 @@ describe('iota restful test', function () {
     it('post role', function (done) {
         request
             .post('/role')
-            .send({name: '随便创建'})
+            .send({ name: '随便创建' })
             .expect(201, done)
     });
 });

@@ -2,7 +2,6 @@
  * Created by rain on 2016/6/17.
  */
 import Sequelize from '@iota-fork/sequelize';
-import path from 'path';
 
 describe('Sequelize test', function () {
     let sequelize;
@@ -51,7 +50,7 @@ describe('Sequelize test', function () {
             }
         });
 
-        User.sync({force: true}).then(function () {
+        User.sync({ force: true }).then(function () {
             // Table created
             User.create({
                 username: 'John',

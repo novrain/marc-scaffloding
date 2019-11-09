@@ -21,7 +21,7 @@ Update.prototype.fetch = ReadController.prototype.fetch;
 
 Update.prototype.write = function (ctx, context) {
     var instance = context.instance;
-    context.attributes = _.extend(context.attributes, ctx.request.body);
+    context.attributes = _.defaults(context.attributes, ctx.request.body);
 
     this.endpoint.attributes.forEach(function (a) {
         if (ctx.params.hasOwnProperty(a))
@@ -57,10 +57,22 @@ Update.prototype.write = function (ctx, context) {
         .save()
         .then(function (instance) {
             if (reloadAfter) {
-                return instance.reload({include: self.include});
+                var reloadOptions = {};
+                if (Array.isArray(self.include) && self.include.length)
+                    reloadOptions.include = self.include;
+                if (!!self.resource.excludeAttributes)
+                    reloadOptions.attributes = { exclude: self.resource.excludeAttributes };
+                return instance.reload(reloadOptions);
             } else {
                 return instance;
             }
+        }).then(function (instance) {
+            if (!!self.resource.excludeAttributes) {
+                self.resource.excludeAttributes.forEach(function (attr) {
+                    delete instance.dataValues[attr];
+                });
+            }
+            return instance;
         })
         .then(function (instance) {
             if (self.resource.associationOptions.removeForeignKeys) {

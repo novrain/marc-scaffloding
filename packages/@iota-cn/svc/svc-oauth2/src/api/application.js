@@ -18,7 +18,7 @@ async function find(ctx, next) {
     }
     condition.where.userId = ctx.session.user.id;
     if (appName !== undefined) {
-        condition.where.name = { $ilike: `%${appName}%` }
+        condition.where.name = { $iLike: `%${appName}%` }
     }
     if (platform) {
         let platforms = platform.split(',');

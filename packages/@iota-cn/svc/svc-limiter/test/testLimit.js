@@ -420,7 +420,7 @@ describe('IOTA rate limit test', function () {
                     .expect(200)
                     .end((err, res) => {
                         if (err) {
-                            console.log(res.text);
+                            console.log(err, res.text);
                             return done(err)
                         };
                         console.log('剩余次数:', res.header['rate-limit-remaining']);

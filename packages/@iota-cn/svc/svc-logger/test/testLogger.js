@@ -16,7 +16,7 @@ import logger from '../src/logger';
 const should = chai.should();
 
 describe('logger test', function () {
-    it('logger init', function (done) {
+    it('logger init', function () {
         let options = {
             level: 'debug',
             filename: path.join(__dirname, 'log', 'test.txt'),
@@ -44,15 +44,15 @@ describe('logger test', function () {
         let app = {};
         let asyncMV = logger(app, options);
         let ctx = {};
-        asyncMV(ctx, function () {
+        return asyncMV(ctx, function () {
         }).then(function () {
             ctx.iota.logger.log("debug", "[TEST]", "a log msg.", function () {
                 let stat = fs.statSync(options.filename);
                 stat.isFile().should.be.true;
-                done();
+                // done();
             });
         }).catch(function (err) {
-            done(err);
+            throw err
         });
     });
 });

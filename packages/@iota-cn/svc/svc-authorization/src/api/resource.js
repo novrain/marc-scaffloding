@@ -108,8 +108,8 @@ let update = async function (ctx, next) {
                     key: rsRecord.id,
                     type: rsType.type
                 }, {
-                        where: { id: id, resourceGroupId: resourceGroupId }
-                    });
+                    where: { id: id, resourceGroupId: resourceGroupId }
+                });
                 ctx.status = 204;
                 ctx.body = {};
             } else {
@@ -213,7 +213,7 @@ let findResourceNotInGroup = async function (ctx, next) {
     };
     //trick 这是一个非常非常特殊的做法，不想使用多次查询
     const Model = require('@iota-fork/sequelize/lib/model')
-    Model.$validateIncludedElements.bind(models.Resource)(filterCondition);
+    Model._validateIncludedElements.bind(models.Resource)(filterCondition);
     let filterQuery = models.Resource.QueryGenerator.selectQuery('Resource', filterCondition, models.Resource).slice(0, -1);
     let condition = {
         where: {

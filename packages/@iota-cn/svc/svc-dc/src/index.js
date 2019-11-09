@@ -9,6 +9,44 @@ import { isPlainObject } from '@iota-cn/svc-util';
 
 import MMw from '@iota-cn/svc-mmw';
 
+const Op = Sequelize.Op;
+const operatorsAliases = {
+    $eq: Op.eq,
+    $ne: Op.ne,
+    $gte: Op.gte,
+    $gt: Op.gt,
+    $lte: Op.lte,
+    $lt: Op.lt,
+    $not: Op.not,
+    $in: Op.in,
+    $notIn: Op.notIn,
+    $is: Op.is,
+    $like: Op.like,
+    $notLike: Op.notLike,
+    $iLike: Op.iLike,
+    $notILike: Op.notILike,
+    $regexp: Op.regexp,
+    $notRegexp: Op.notRegexp,
+    $iRegexp: Op.iRegexp,
+    $notIRegexp: Op.notIRegexp,
+    $between: Op.between,
+    $notBetween: Op.notBetween,
+    $overlap: Op.overlap,
+    $contains: Op.contains,
+    $contained: Op.contained,
+    $adjacent: Op.adjacent,
+    $strictLeft: Op.strictLeft,
+    $strictRight: Op.strictRight,
+    $noExtendRight: Op.noExtendRight,
+    $noExtendLeft: Op.noExtendLeft,
+    $and: Op.and,
+    $or: Op.or,
+    $any: Op.any,
+    $all: Op.all,
+    $values: Op.values,
+    $col: Op.col
+};
+
 class Mqtt {
     static DEFAULT_BROKE = 'mqtt://127.0.0.1:1883';
     static DEFAULT_CM_NOTIFY_TOPIC = 'cm/notify';
@@ -44,7 +82,7 @@ class DataCenter {
         this.models = {};
         let ormOptions = options.orm;
         //@Todo add check and throw
-        this.orm = new Sequelize(ormOptions.url, ormOptions.opts);
+        this.orm = new Sequelize(ormOptions.url, Object.assign(ormOptions.opts, { dialect: 'postgres', operatorsAliases }));
         //change default function behave
         let oldTransaction = Sequelize.prototype.transaction;
         let oldCommit = Transaction.prototype.commit;
@@ -79,6 +117,7 @@ class DataCenter {
             }
         };
         this.ORM = Sequelize;
+        this.orm.Error = Sequelize.Error
         if (options.cache) {
             this.cache = new Cache(options.cache);
         }
@@ -105,7 +144,7 @@ let createDc = (app, options) => {
             let key = {};
             if (ins.hasPrimaryKeys) {
                 ins.Model.primaryKeyAttributes.map(function (k) {
-                // ins.constructor.primaryKeyAttributes.map(function (k) {
+                    // ins.constructor.primaryKeyAttributes.map(function (k) {
                     key[k] = ins[k];
                 })
             }
