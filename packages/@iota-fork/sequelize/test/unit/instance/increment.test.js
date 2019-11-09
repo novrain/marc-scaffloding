@@ -1,41 +1,40 @@
 'use strict';
 
-var chai = require('chai')
-  , expect = chai.expect
-  , Support   = require(__dirname + '/../support')
-  , current   = Support.sequelize
-  , Sequelize = Support.Sequelize
-  , sinon     = require('sinon');
+const chai = require('chai'),
+  expect = chai.expect,
+  Support   = require('../support'),
+  current   = Support.sequelize,
+  Sequelize = Support.Sequelize,
+  sinon     = require('sinon');
 
-describe(Support.getTestDialectTeaser('Instance'), function() {
-  describe('increment', function () {
-    describe('options tests', function() {
-      var stub
-        , Model = current.define('User', {
-          id: {
-            type:          Sequelize.BIGINT,
-            primaryKey:    true,
-            autoIncrement: true,
+describe(Support.getTestDialectTeaser('Instance'), () => {
+  describe('increment', () => {
+    describe('options tests', () => {
+      let stub, instance;
+      const Model = current.define('User', {
+        id: {
+          type: Sequelize.BIGINT,
+          primaryKey: true,
+          autoIncrement: true
+        }
+      });
+
+      before(() => {
+        stub = sinon.stub(current, 'query').resolves(
+          {
+            _previousDataValues: { id: 1 },
+            dataValues: { id: 3 }
           }
-        })
-        , instance;
-
-      before(function() {
-        stub = sinon.stub(current, 'query').returns(
-          Sequelize.Promise.resolve({
-            _previousDataValues: {id: 1},
-            dataValues: {id: 3}
-          })
         );
       });
 
-      after(function() {
+      after(() => {
         stub.restore();
       });
 
-      it('should allow increments even if options are not given', function () {
-        instance = Model.build({id: 1}, {isNewRecord: false});
-        expect(function () {
+      it('should allow increments even if options are not given', () => {
+        instance = Model.build({ id: 1 }, { isNewRecord: false });
+        expect(() => {
           instance.increment(['id']);
         }).to.not.throw();
       });

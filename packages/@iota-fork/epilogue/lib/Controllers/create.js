@@ -15,7 +15,7 @@ Create.prototype.method = 'post';
 Create.prototype.plurality = 'plural';
 
 Create.prototype.write = function (ctx, context) {
-    context.attributes = _.extend(context.attributes, ctx.request.body);
+    context.attributes = _.defaults(context.attributes, ctx.request.body);
     var self = this;
 
     // Check associated data
@@ -33,7 +33,9 @@ Create.prototype.write = function (ctx, context) {
     }
 
     return this.model
-        .create(context.attributes)
+        .create(context.attributes, {
+            include: this.include
+        })
         .then(function (instance) {
             if (self.resource) {
                 var endpoint = self.resource.endpoints.singular;
@@ -49,7 +51,7 @@ Create.prototype.write = function (ctx, context) {
                 if (Array.isArray(self.include) && self.include.length)
                     reloadOptions.include = self.include;
                 if (!!self.resource.excludeAttributes)
-                    reloadOptions.attributes = {exclude: self.resource.excludeAttributes};
+                    reloadOptions.attributes = { exclude: self.resource.excludeAttributes };
                 return instance.reload(reloadOptions);
             }
 

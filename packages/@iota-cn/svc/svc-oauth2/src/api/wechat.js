@@ -23,7 +23,7 @@ function signin(opts) {
      redirect page define.
      */
     let oauth2Opts = opts.oauth2;
-    let global = opts.global || {domain: 'http://localhost', prefix: ''};
+    let global = opts.global || { domain: 'http://localhost', prefix: '' };
     let tokenObj = undefined;
     let wxUser = undefined;
 
@@ -75,7 +75,7 @@ function signin(opts) {
             }
             //normal signin sequence.
             //trick
-            let plainUser = user.get({plain: true});
+            let plainUser = user.get({ plain: true });
             ctx.request.body = {
                 username: plainUser.username,
                 email: plainUser.email,
@@ -129,8 +129,8 @@ function signin(opts) {
     async function newWxUser(ctx, next) {
         let key = crypto.randomBytes(40).toString('hex');
         ctx.cookies.set('wxk', key);
-        ctx.cookies.set('wxa', wxUser.headimgurl, {httpOnly: false, maxAge: 600000, secure: false});
-        ctx.cookies.set('wxu', wxUser.nickname, {httpOnly: false, maxAge: 600000, secure: false});
+        ctx.cookies.set('wxa', wxUser.headimgurl, { httpOnly: false, maxAge: 600000, secure: false });
+        ctx.cookies.set('wxu', wxUser.nickname, { httpOnly: false, maxAge: 600000, secure: false });
         tokenObj.time = Date.now();
         wxUser.token = tokenObj;
         ctx.iota.dc.cache.extra(key, JSON.stringify(wxUser), 'PX', 600000);
@@ -184,9 +184,9 @@ async function binding(ctx, next) {
         let user = await ctx.iota.dc.models.User.findOne({
             where: {
                 $or: [
-                    {username: everything},
-                    {email: everything},
-                    {mobile: everything}
+                    { username: everything },
+                    { email: everything },
+                    { mobile: everything }
                 ],
                 password: ctx.iota.user.encrypt(reqBody.password)
             }
@@ -336,7 +336,7 @@ function bindingCurrentUser(opts) {
     let wxOpts = opts;
 
     let oauth2Opts = opts.oauth2;
-    let global = opts.global || {domain: 'http://localhost'};
+    let global = opts.global || { domain: 'http://localhost' };
     let tokenObj = undefined;
     let wxUser = undefined;
 
@@ -445,7 +445,7 @@ async function queryBindingStatus(ctx, next) {
     let user = ctx.session.user;
     if (!user) {
         ctx.status = 404;
-        ctx.body = {binding: undefined};
+        ctx.body = { binding: undefined };
         return;
     }
     let recUserId = await ctx.iota.dc.models.UserOAuth2.findOne({
@@ -455,9 +455,9 @@ async function queryBindingStatus(ctx, next) {
         }
     });
     if (recUserId) {
-        ctx.body = {binding: true};
+        ctx.body = { binding: true };
     } else {
-        ctx.body = {binding: false};
+        ctx.body = { binding: false };
     }
     ctx.status = 200;
 }

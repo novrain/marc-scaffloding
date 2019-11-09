@@ -4,9 +4,14 @@
 /*jslint node:true */
 /*jslint nomen:true */
 'use strict';
-import winston from 'winston';
+import winston, { format } from 'winston';
 import fs from 'fs-extra';
 import path from 'path';
+
+const { combine, timestamp, label, printf } = format;
+const iotaFormat = printf(({ level, message, timestamp }) => {
+    return `${timestamp} ${level}: ${message}`;
+});
 
 export default function (app, options) {
     options.level = options.level || 'error';
@@ -15,8 +20,12 @@ export default function (app, options) {
     let logger = {};
     try {
         fs.mkdirsSync(dir);
-        logger = new (winston.Logger)({
+        logger = winston.createLogger({
             level: options.level,
+            // format: combine(
+            //     timestamp(),
+            //     iotaFormat
+            // ),
             transports: [
                 new (winston.transports.Console)({
                     colorize: 'all',
@@ -27,8 +36,12 @@ export default function (app, options) {
             exitOnError: false
         });
     } catch (err) {
-        logger = new (winston.Logger)({
+        logger = winston.createLogger({
             level: options.level,
+            // format: combine(
+            //     timestamp(),
+            //     iotaFormat
+            // ),
             transports: [
                 new (winston.transports.Console)({
                     colorize: 'all',

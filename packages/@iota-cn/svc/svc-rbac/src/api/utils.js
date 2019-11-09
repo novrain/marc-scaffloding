@@ -9,7 +9,7 @@ import { Validator } from '@iota-cn/util-validation';
  */
 export const filterQuery = (model, modelName, condition) => {
     const Model = require('@iota-fork/sequelize/lib/model')
-    Model.$validateIncludedElements.bind(model)(condition);
+    Model._validateIncludedElements.bind(model)(condition);
     return model.QueryGenerator.selectQuery(modelName, condition, model).slice(0, -1);
 }
 
@@ -97,6 +97,7 @@ export const buildRoleFilterQuery = (dc, userId, through, throughKey) => {
                         attributes: [],
                         model: models.UserOrganization,
                         as: 'members',
+                        forceSequenceJoin: true,
                         where: {
                             userId: userId
                         }
@@ -117,6 +118,7 @@ export const buildRoleFilterQuery = (dc, userId, through, throughKey) => {
                 include: [
                     {
                         attributes: [],
+                        forceSequenceJoin: true,
                         model: models.UserPosition,
                         as: 'members',
                         where: {
@@ -307,7 +309,7 @@ export const isChildUser = async (dc, user, childId, childInfo, includeDeleted =
     if (includeDeleted) {
         condition.paranoid = false
     }
-    const child = await dc.models.User.find(condition);
+    const child = await dc.models.User.findOne(condition);
     if (child && child.subExt && child.subExt.parentId === user.id) {
         return true;
     } else if (child && child.subExt && child.subExt.parentId !== null && child.subExt.parentId !== undefined) {

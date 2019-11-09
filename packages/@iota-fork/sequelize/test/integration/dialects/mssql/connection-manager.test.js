@@ -1,42 +1,33 @@
 'use strict';
 
-/* jshint -W030 */
-var chai = require('chai')
-  , expect = chai.expect
-  , Support = require('../../support')
-  , dialect = Support.getTestDialect();
+const chai = require('chai');
+const expect = chai.expect;
+const Support = require('../../support');
+const Sequelize = Support.Sequelize;
+const dialect = Support.getTestDialect();
 
 if (dialect.match(/^mssql/)) {
-  describe('[MSSQL Specific] Query Queue', function () {
-    it('should work with handleDisconnects', function() {
-      var sequelize = Support.createSequelizeInstance({pool: {min: 1, max: 1, idle: 5000}})
-        , cm = sequelize.connectionManager
-        , conn;
+  describe('[MSSQL Specific] Connection Manager', () => {
+    describe('Errors', () => {
+      it('ECONNREFUSED', () => {
+        const sequelize = Support.createSequelizeInstance({ host: '127.0.0.1', port: 34237 });
+        return expect(sequelize.connectionManager.getConnection()).to.have.been.rejectedWith(Sequelize.ConnectionRefusedError);
+      });
 
-      return sequelize.sync()
-        .then(function() {
-          return cm.getConnection();
-        })
-        .then(function(connection) {
-          // Save current connection
-          conn = connection;
+      it('ENOTFOUND', () => {
+        const sequelize = Support.createSequelizeInstance({ host: 'http://wowow.example.com' });
+        return expect(sequelize.connectionManager.getConnection()).to.have.been.rejectedWith(Sequelize.HostNotFoundError);
+      });
 
-          // simulate a unexpected end
-          connection.unwrap().emit('error', {code: 'ECONNRESET'});
-        })
-        .then(function() {
-          return cm.releaseConnection(conn);
-        })
-        .then(function() {
-          // Get next available connection
-          return cm.getConnection();
-        })
-        .then(function(connection) {
-          expect(conn).to.not.be.equal(connection);
-          expect(cm.validate(conn)).to.not.be.ok;
+      it('EHOSTUNREACH', () => {
+        const sequelize = Support.createSequelizeInstance({ host: '255.255.255.255' });
+        return expect(sequelize.connectionManager.getConnection()).to.have.been.rejectedWith(Sequelize.HostNotReachableError);
+      });
 
-          return cm.releaseConnection(connection);
-        });
+      it('ER_ACCESS_DENIED_ERROR | ELOGIN', () => {
+        const sequelize = new Support.Sequelize('localhost', 'was', 'ddsd', Support.sequelize.options);
+        return expect(sequelize.connectionManager.getConnection()).to.have.been.rejectedWith(Sequelize.AccessDeniedError);
+      });
     });
   });
 }

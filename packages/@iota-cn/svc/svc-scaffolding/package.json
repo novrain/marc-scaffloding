@@ -6,34 +6,35 @@
     "scripts": {
         "compile": "babel -d dist/ src/",
         "prepublishOnly": "npm run compile",
-        "test": "istanbul cover -hook-run-in-content node_modules/mocha/bin/_mocha",
+        "test": "mocha --exit",
+        "testbreak": "mocha -b --exit",
+        "coverage": "nyc npm run test",
         "check": "eslint src -f html  > eslintResults.html||true"
     },
     "author": "iOTA",
     "license": "MIT",
     "dependencies": {
-        "@iota-fork/koa-ratelimit": "^4.0.0",
         "@iota-cn/svc-dc": "^1.0.0",
         "@iota-cn/svc-logger": "^1.0.0",
         "@iota-cn/svc-restful": "^1.0.0",
         "@iota-cn/svc-session": "^1.0.0",
-        "koa": "^2.3.0",
-        "koa-bodyparser": "^4.2.0",
+        "koa": "^2.11.0",
+        "koa-bodyparser": "^4.2.1",
         "koa-compress": "^3.0.0",
         "koa-convert": "^1.2.0",
         "koa-cors": "0.0.16",
-        "koa-csrf": "^3.0.6",
-        "koa-logger": "^3.0.1",
-        "koa-router": "^7.2.1",
-        "koa-static": "^3.0.0"
+        "koa-csrf": "^3.0.8",
+        "koa-logger": "^3.2.1",
+        "koa-router": "^7.4.0",
+        "koa-static": "^5.0.0"
     },
     "devDependencies": {
-        "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
-        "babel-register": "^6.24.1",
-        "chai": "^4.0.2",
-        "mocha": "^3.4.2",
-        "mochawesome": "^2.3.0",
-        "supertest": "^3.0.0"
+        "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+        "babel-register": "^6.26.0",
+        "chai": "^4.2.0",
+        "mocha": "^6.2.2",
+        "mochawesome": "^4.1.0",
+        "supertest": "^4.0.2"
     },
     "publishConfig": {
         "registry": "http://39.106.121.29:14873/"

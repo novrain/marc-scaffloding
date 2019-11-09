@@ -702,7 +702,7 @@ let findSubUserNotInGroup = async (ctx, next) => {
     };
     //trick 这是一个非常非常特殊的做法，不想使用多次查询
     const Model = require('@iota-fork/sequelize/lib/model')
-    Model.$validateIncludedElements.bind(models.UserGroupUser)(filterCondition);
+    Model._validateIncludedElements.bind(models.UserGroupUser)(filterCondition);
     let filterQuery = models.UserGroupUser.QueryGenerator.selectQuery('UserGroupUser', filterCondition, models.UserGroupUser).slice(0, -1);
     let condition = {
         where: { id: { $notIn: dc.orm.literal(`(${filterQuery})`) } },

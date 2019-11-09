@@ -1,4 +1,3 @@
-import Sequelize from '@iota-fork/sequelize';
 import rest from '@iota-fork/epilogue';
 
 /**

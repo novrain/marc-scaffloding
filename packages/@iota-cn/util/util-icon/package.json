@@ -12,11 +12,11 @@
     "license": "MIT",
     "devDependencies": {
         "async": "^3.1.0",
-        "autoprefixer": "^9.7.0",
+        "autoprefixer": "^9.7.1",
         "gulp": "^4.0.2",
         "gulp-consolidate": "^0.2.0",
         "gulp-iconfont": "^10.0.3",
-        "gulp-plumber": "^1.1.0",
+        "gulp-plumber": "^1.2.1",
         "gulp-postcss": "^8.0.0",
         "gulp-sass": "^4.0.2",
         "metapak": "3.1.6"

@@ -3,7 +3,6 @@
 var _ = require('lodash'),
     Endpoint = require('../Endpoint'),
     Promise = require('bluebird'),
-    co = require('co'),
     errors = require('../Errors');
 
 var Controller = function (args) {
@@ -25,7 +24,7 @@ Controller.prototype.initialize = function (options) {
         });
 
         _.forEach(this.model.associations, function (association) {
-            if (_.contains(includeModels, association.target))
+            if (_.includes(includeModels, association.target))
                 includeAttributes.push(association.identifier);
         });
         this.includeAttributes = includeAttributes;
@@ -74,9 +73,9 @@ Controller.prototype.route = function () {
     if (app.name === 'restify' && self.method === 'delete')
         self.method = 'del';
 
-    app[self.method](endpoint.string, co.wrap(function *(ctx, next) {
-        yield self._control(ctx);
-    }));
+    app[self.method](endpoint.string, function (ctx, next) {
+        return self._control(ctx);
+    });
 };
 
 Controller.prototype._control = function (ctx) {
@@ -88,6 +87,13 @@ Controller.prototype._control = function (ctx) {
             attributes: {},
             options: {}
         };
+    if (['PATCH', 'POST', 'PUT'].indexOf(ctx.method) !== -1) {
+        if (this.resource.readOnlyAttributes && this.resource.readOnlyAttributes.length) {
+            this.resource.readOnlyAttributes.filter(function (attr) {
+                delete ctx.body[attr];
+            });
+        }
+    }
 
     Controller.milestones.forEach(function (milestone) {
         if (!self[milestone])
@@ -170,9 +176,9 @@ Controller.prototype._control = function (ctx) {
 
     hookChain
         .catch(errors.RequestCompleted, _.noop)
-        .catch(self.model.sequelize.ValidationError, function (err) {
+        .catch(self.model.sequelize.Error, function (err) {
             var errorList = _.reduce(err.errors, function (result, error) {
-                result.push({field: error.path, message: error.message});
+                result.push({ field: error.path, message: error.message });
                 return result;
             }, []);
 

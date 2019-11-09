@@ -436,7 +436,7 @@ describe("iota authorization resource group test", function() {
     // })
 
     it('test sub query in where', async function() {
-        const Model = require('@iota-fork/sequelize/lib/model')
+        const Model = require('sequelize/lib/model')
         let rsCondition = {
             attributes: ['key'],
             where: {
@@ -448,7 +448,7 @@ describe("iota authorization resource group test", function() {
                 as: 'resourceGroup'
             }]
         };
-        Model.$validateIncludedElements.bind(models.Resource)(rsCondition);
+        Model._validateIncludedElements.bind(models.Resource)(rsCondition);
         const filterQuery = models.Resource.QueryGenerator.selectQuery('Resource', rsCondition, models.Resource).slice(0, -1);
         console.log(filterQuery);
         let condition = {

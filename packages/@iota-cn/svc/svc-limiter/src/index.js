@@ -1,4 +1,4 @@
-import ratelimit from '@iota-fork/koa-ratelimit';
+import ratelimit from 'koa-ratelimit';
 import Redis from 'ioredis';
 
 const FREQUENCY_LIMIT = 'Frequency';

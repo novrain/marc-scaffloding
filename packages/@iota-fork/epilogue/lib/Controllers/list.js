@@ -15,7 +15,15 @@ List.prototype.action = 'list';
 List.prototype.method = 'get';
 List.prototype.plurality = 'plural';
 
-List.prototype._safeishParse = function (value) {
+List.prototype._safeishParse = function (value, type, sequelize) {
+    if (sequelize) {
+        if (type instanceof sequelize.STRING || type instanceof sequelize.CHAR || type instanceof sequelize.TEXT) {
+            if (!isNaN(value)) {
+                return value;
+            }
+        } else if (type instanceof sequelize.INTEGER || type instanceof sequelize.BIGINT) {
+        }
+    }
     try {
         return JSON.parse(value);
     } catch (err) {
@@ -56,41 +64,45 @@ List.prototype.fetch = function (ctx, context) {
         options.include = include;
     }
 
-    var searchParam = this.resource.search.param;
-    if (_.has(ctx.query, searchParam)) {
-        var search = [];
-        var searchOperator = this.resource.search.operator || '$like';
-        var searchAttributes =
-            this.resource.search.attributes || Object.keys(model.rawAttributes);
-        searchAttributes.forEach(function (attr) {
-            if (stringOperators.test(searchOperator)) {
-                var attrType = model.rawAttributes[attr].type;
-                if (!(attrType instanceof Sequelize.STRING) && !(attrType instanceof Sequelize.TEXT)) {
-                    // NOTE: Sequelize has added basic validation on types, so we can't get
-                    //       away with blind comparisons anymore. The feature is up for
-                    //       debate so this may be changed in the future
-                    return;
+    var searchParams = this.resource.search.length ? this.resource.search : [this.resource.search];
+    searchParams.forEach(function (searchData) {
+        var searchParam = searchData.param;
+        if (_.has(ctx.query, searchParam)) {
+            var search = [];
+            var searchOperator = searchData.operator || '$like';
+            var searchAttributes =
+                searchData.attributes || Object.keys(model.rawAttributes);
+            searchAttributes.forEach(function (attr) {
+                if (stringOperators.test(searchOperator)) {
+                    var attrType = model.rawAttributes[attr].type;
+                    if (!(attrType instanceof Sequelize.STRING) &&
+                        !(attrType instanceof Sequelize.TEXT)) {
+                        // NOTE: Sequelize has added basic validation on types, so we can't get
+                        //       away with blind comparisons anymore. The feature is up for
+                        //       debate so this may be changed in the future
+                        return;
+                    }
                 }
-            }
 
-            var item = {};
-            var query = {};
-            var searchString;
-            if (!~searchOperator.toLowerCase().indexOf('like')) {
-                searchString = ctx.query[searchParam];
-            } else {
-                searchString = '%' + ctx.query[searchParam] + '%';
-            }
-            query[searchOperator] = searchString;
-            item[attr] = query;
-            search.push(item);
-        });
+                var item = {};
+                var query = {};
+                var searchString;
+                if (!~searchOperator.toLowerCase().indexOf('like')) {
+                    searchString = ctx.query[searchParam];
+                } else {
+                    searchString = '%' + ctx.query[searchParam] + '%';
+                }
+                query[searchOperator] = searchString;
+                item[attr] = query;
+                search.push(item);
+            });
 
-        if (Object.keys(criteria).length)
-            criteria = Sequelize.and(criteria, Sequelize.or.apply(null, search));
-        else
-            criteria = Sequelize.or.apply(null, search);
-    }
+            if (Object.keys(criteria).length)
+                criteria = Sequelize.and(criteria, Sequelize.or.apply(null, search));
+            else
+                criteria = Sequelize.or.apply(null, search);
+        }
+    });
 
     var sortParam = this.resource.sort.param;
     if (_.has(ctx.query, sortParam) || _.has(this.resource.sort, 'default')) {
@@ -120,7 +132,7 @@ List.prototype.fetch = function (ctx, context) {
 
     // all other query parameters are passed to search
     var extraSearchCriteria = _.reduce(ctx.query, function (result, value, key) {
-        if (_.has(model.rawAttributes, key)) result[key] = self._safeishParse(value);
+        if (_.has(model.rawAttributes, key)) result[key] = self._safeishParse(value, model.rawAttributes[key].type, Sequelize);
         return result;
     }, {});
 
@@ -130,6 +142,9 @@ List.prototype.fetch = function (ctx, context) {
     // do the actual lookup
     if (Object.keys(criteria).length)
         options.where = criteria;
+    if (ctx.query.scope) {
+        model = model.scope(ctx.query.scope);
+    }
 
     return model
         .findAndCountAll(options)

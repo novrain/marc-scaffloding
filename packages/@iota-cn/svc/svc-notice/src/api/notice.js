@@ -143,7 +143,7 @@ export default class Notice {
                         noticeId: id,
                         userId: ctx.session.user.id
                     }
-                    let un = await models.UserNotice.find({
+                    let un = await models.UserNotice.findOne({
                         where: data
                     });
                     if (!un) {

@@ -1,16 +1,16 @@
 import path from 'path';
 import os from 'os';
-import {entry as userEntry, models as userModels} from '../src';
+import { entry as userEntry, models as userModels } from '../src';
 
 export default {
     port: 4000,
     mws: [
-        {entry: userEntry, opts: {}},
+        { entry: userEntry, opts: {} },
     ],
     dc: {
         orm: {
             url: "postgres://postgres:ROOT@localhost:5433/iOTA_ut",
-            opts: {logging: true}
+            opts: {}
         },
         cache: {
             host: '127.0.0.1',
