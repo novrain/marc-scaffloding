@@ -44,13 +44,20 @@ let createNormalizer = function (key, showTotal = true, idKey = 'id') {
  * @param key
  * @returns {Function}
  */
-let createNormalizerAfter = function (key) {
+let createNormalizerAfter = function (key, idKey = 'id') {
     return (koaCtx, restfulCtx) => {
         //restful 返回的是数组，转为 { key: [] }, 没有total, 通常这种接口只是为静态配置数据提供，极少。
-        koaCtx.body = {
-            [key]: koaCtx.body
-        };
-        createNormalizer(key)(koaCtx);
+        let showTotal = true
+        if (koaCtx.body.data) {
+            koaCtx.body[key] = koaCtx.body.data
+            delete koaCtx.body.data
+        } else {
+            showTotal = false
+            koaCtx.body = {
+                [key]: koaCtx.body
+            };
+        }
+        createNormalizer(key, showTotal, idKey)(koaCtx);
         return restfulCtx.continue;
     };
 };

@@ -68,7 +68,7 @@ module.exports = function (Resource, resource, association) {
     });
 
     associatedResource.list.send.before(function (ctx, context) {
-        context.instance.forEach(function (instance) {
+        context.instance.data.forEach(function (instance) {
             if (instance.dataValues[associationPaired.as]) {
                 instance.dataValues[associationPaired.as].forEach(function (a) {
                     delete a.dataValues[associationPaired.combinedName];
