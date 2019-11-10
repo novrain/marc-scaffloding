@@ -250,7 +250,7 @@ export default {
                     title: '邮箱',
                     dataIndex: 'email',
                     key: 'email',
-                    width: '35%',
+                    width: '30% ',
                 },
                 {
                     title: '状态',
@@ -263,7 +263,7 @@ export default {
                         text: '已禁用',
                         value: 'false',
                     }],
-                    width: '10%',
+                    width: '15%',
                     onFilter: (value, record) => record.subExt.enable + '' == value,
                     customRender: (text, record) => {
                         return (<Status value={record.subExt.enable} text={record.subExt.enable ? '活跃' : '已禁用'} />)
@@ -342,49 +342,52 @@ export default {
                     <AMenu.Item key="disable" disabled={!hasSelected}> 禁用</AMenu.Item>
                 </AMenu>
             )
-            const controls = [
-                <AButton size='small' key="refresh" onClick={this.refetch}>
-                    <AIcon type="reload" /> 刷新
-                </AButton>,
-                <IiModal
-                    key='new'
-                    title="新建"
-                    content={(<UserEditor type="create" ref={'_add'} data={{}} user={user} />)}
-                    button={(<AButton size='small' icon={'plus'} key="new"> 创建用户</AButton>)}
-                    ok={this.onAdd}
-                    cancel={() => this.$refs._add.resetFields()}
-                    clearFloat={true}
-                />,
-                <ADropdown
-                    key='more'
-                    overlay={batchOperation}>
-                    <AButton size='small' onClick={e => e.stopPropagation()}>
-                        <AIcon type="appstore" /> 更多操作 <AIcon type="down" />
-                    </AButton>
-                </ADropdown>
-            ]
             const users = this.users
             return (
-                <IiTableLayout
-                    size='middle'
-                    headheight={68}
-                    total={this.total}
-                    pageSize={this.limit}
-                    currentPage={this.page}
-                    showSizeChanger={true}
-                    onShowSizeChange={this.onLimitChange}
-                    onPaginationChange={this.onPageChange}
-                    pageSizeOptions={pageSizeOptions}
-                    // showPagination='both'
-                    onRowClick={this.onRowClick}
-                    className={'roles__table'}
-                    selected={selectedRowKeys.length}
-                    showSizeChanger={false}
-                    controls={controls}
-                    rowSelection={rowSelection}
-                    columns={columns}
-                    rows={users}>
-                </IiTableLayout>
+                <a-card title="用户管理"
+                    bodyStyle={{ padding: "2px", flex: 1 }}
+                    style={{
+                        height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white',
+                        display: 'flex', flexDirection: 'column'                    }}>
+                    <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="refresh" onClick={this.refetch}>
+                        <AIcon type="reload" /> 刷新
+                    </AButton>
+                    <IiModal slot="extra"
+                        key='new'
+                        title="新建"
+                        content={(<UserEditor type="create" ref={'_add'} data={{}} user={user} />)}
+                        button={(<AButton size='small' icon={'plus'} key="new"> 创建用户</AButton>)}
+                        ok={this.onAdd}
+                        cancel={() => this.$refs._add.resetFields()}
+                        clearFloat={true}
+                    />
+                    <ADropdown slot="extra"
+                        key='more'
+                        overlay={batchOperation}>
+                        <AButton size='small' onClick={e => e.stopPropagation()}>
+                            <AIcon type="appstore" /> 更多操作 <AIcon type="down" />
+                        </AButton>
+                    </ADropdown>
+                    <IiTableLayout
+                        size='middle'
+                        headheight={68}
+                        total={this.total}
+                        pageSize={this.limit}
+                        currentPage={this.page}
+                        showSizeChanger={true}
+                        onShowSizeChange={this.onLimitChange}
+                        onPaginationChange={this.onPageChange}
+                        pageSizeOptions={pageSizeOptions}
+                        // showPagination='both'
+                        onRowClick={this.onRowClick}
+                        className={'table'}
+                        selected={selectedRowKeys.length}
+                        showSizeChanger={false}
+                        rowSelection={rowSelection}
+                        columns={columns}
+                        rows={users}>
+                    </IiTableLayout>
+                </a-card>
             )
         }
     },
@@ -408,6 +411,12 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.table {
+    :global(.ant-table-fixed-header .ant-table-scroll .ant-table-header) {
+        height: 59px;
+    }
+}
+
 .wrapper {
     &__row {
         height: 100% !important;
