@@ -17,21 +17,23 @@ describe('init auth tables', function () {
     before(async function () {
         await models.User.sync({ force: true });
         await models.SubUser.sync({ force: true });
-        await models.Menu.sync({ force: false });
-        await models.MenuPreDepends.sync({ force: false });
-        await models.Operation.sync({ force: false });
-        await models.OperationPreDepends.sync({ force: false });
-        await models.Role.sync({ force: false });
-        await models.RoleMenu.sync({ force: false });
-        await models.RoleOperation.sync({ force: false });
-        await models.Organization.sync({ force: false });
-        await models.OrganizationRole.sync({ force: false });
-        await models.Position.sync({ force: false });
-        await models.PositionRole.sync({ force: false });
-        await models.UserOrganization.sync({ force: false });
-        await models.UserPosition.sync({ force: false });
-        await models.UserRole.sync({ force: false });
+        await models.Menu.sync({ force: true });
+        await models.MenuPreDepends.sync({ force: true });
+        await models.Operation.sync({ force: true });
+        await models.OperationPreDepends.sync({ force: true });
+        await models.Role.sync({ force: true });
+        await models.RoleMenu.sync({ force: true });
+        await models.RoleOperation.sync({ force: true });
+        await models.Organization.sync({ force: true });
+        await models.OrganizationRole.sync({ force: true });
+        await models.Position.sync({ force: true });
+        await models.PositionRole.sync({ force: true });
+        await models.UserOrganization.sync({ force: true });
+        await models.UserPosition.sync({ force: true });
+        await models.UserRole.sync({ force: true });
         await models.User.create({ username: 'admin', password: '123456', isAdmin: true })
+        await models.Dictionary.sync({ force: true })
+        await models.DictionaryItem.sync({ force: true })
     });
 
     after(function () {

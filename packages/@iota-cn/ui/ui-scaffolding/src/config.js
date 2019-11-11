@@ -64,6 +64,12 @@ module.exports = {
                 },
                 containerId: COMPLEX_CONTAINER_ID
             }
+        },
+        {
+            plugin: require('./plugins/apps/dictionary'), opts: {
+                id: 'dictionary', // 实例id
+                containerId: COMPLEX_CONTAINER_ID
+            }
         }
     ]
 }

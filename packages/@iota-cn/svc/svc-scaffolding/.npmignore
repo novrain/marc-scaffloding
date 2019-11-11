@@ -8,5 +8,6 @@ mochawesome-reports/
 .eslintrc
 .npmignore
 babel-watch.cmd
+.nyc_output
 *.tgz
 evn4ci

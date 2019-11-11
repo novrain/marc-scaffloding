@@ -125,7 +125,7 @@ function scaffold(config) {
     config.mws.forEach(function (mv) {
         if (typeof mv.entry === 'function') {
             try {
-                let opts = mv.opts;
+                let opts = mv.opts || {};
                 // add global opts
                 opts.global = config.global;
                 let fn = mv.entry(app, router, opts);
