@@ -46,6 +46,9 @@ function createConfig(args) {
     const noticeModel = require('@iota-cn/svc-notice').models
     const messageClientEntry = require('@iota-cn/svc-message-client').entry
 
+    const dictionariesEntry = require('@iota-cn/svc-dictionaries').entry
+    const dictionariesModel = require('@iota-cn/svc-dictionaries').models
+
     const user = { entry: userEntry, opts: {} }
     const authentication = {
         entry: authenticationEntry,
@@ -104,6 +107,11 @@ function createConfig(args) {
         }
     }
 
+    const dictionaries = {
+        entry: dictionariesEntry,
+        opts: {}
+    }
+
     //entry
     config.mws.push(user)
     config.mws.push(authentication)
@@ -112,12 +120,14 @@ function createConfig(args) {
     config.mws.push(notice)
     config.mws.push(attachment)
     config.mws.push(messageClient)
+    config.mws.push(dictionaries)
 
     //models
     config.dc.models.push(userModel)
     config.dc.models.push(rbacModel)
     config.dc.models.push(oauth2Model)
     config.dc.models.push(noticeModel)
+    config.dc.models.push(dictionariesModel)
 
     return config
 }

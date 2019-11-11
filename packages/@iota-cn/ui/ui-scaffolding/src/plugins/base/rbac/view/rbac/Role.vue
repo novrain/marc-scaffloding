@@ -286,55 +286,59 @@ export default {
             const rowSelection = { selectedRowKeys, onChange: this.onSelectChange }
             const pageSizeOptions = ['20', '40', '60', '80']
             const hasSelected = selectedRowKeys.length > 0
-            const controls = [
-                <AButton size='small' key="refresh" onClick={this.refetch}>
-                    <AIcon type="reload" /> 刷新
-            </AButton>,
-                <IiModal
-                    key='new'
-                    title="新建"
-                    content={(<Form_IiSimpleEditor ref='_add' data={{}} />)}
-                    button={(<AButton size='small' icon={'plus'} key="new"> 创建角色</AButton>)}
-                    cancel={() => { this.$refs._add.resetFields() }}
-                    ok={this.onAdd}
-                    clearFloat={true}
-                />,
-                hasSelected ?
-                    <APopconfirm placement="top"
-                        key="bactchDelete"
-                        title={'是否确定删除选中的角色'}
-                        onConfirm={this.onBatchDelete}>
-                        <AButton size='small' >
-                            <AIcon type="delete" />删除
-                        </AButton>
-                    </APopconfirm>
-                    :
-                    <AButton size='small' disabled >
-                        <AIcon type="delete" />删除
-                    </AButton>
-            ]
+
             const roles = this.roles
             return (
-                <IiTableLayout
-                    size='middle'
-                    headheight={68}
-                    onRowClick={this.onRowClick}
-                    class={'users__table'}
-                    total={this.total}
-                    pageSize={this.limit}
-                    currentPage={this.page}
-                    showSizeChanger={true}
-                    onPaginationChange={this.onPageChange}
-                    onShowSizeChange={this.onLimitChange}
-                    pageSizeOptions={pageSizeOptions}
-                    // showPagination='none'
-                    selected={selectedRowKeys.length}
-                    showSizeChanger={false}
-                    controls={controls}
-                    rowSelection={rowSelection}
-                    columns={columns}
-                    rows={roles}>
-                </IiTableLayout>
+                <a-card title="角色管理"
+                    bodyStyle={{ padding: "2px", flex: 1 }}
+                    style={{
+                        height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white',
+                        display: 'flex', flexDirection: 'column'                    }}>
+                    <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="refresh" onClick={this.refetch}>
+                        <AIcon type="reload" /> 刷新
+                    </AButton>
+                    <IiModal slot='extra'
+                        key='new'
+                        title="新建"
+                        content={(<Form_IiSimpleEditor ref='_add' data={{}} />)}
+                        button={(<AButton size='small' icon={'plus'} key="new"> 创建角色</AButton>)}
+                        cancel={() => { this.$refs._add.resetFields() }}
+                        ok={this.onAdd}
+                        clearFloat={true}
+                    />
+                    {hasSelected ?
+                        <APopconfirm slot='extra' placement="top"
+                            key="bactchDelete"
+                            title={'是否确定删除选中的角色'}
+                            onConfirm={this.onBatchDelete}>
+                            <AButton size='small' >
+                                <AIcon type="delete" />删除
+                        </AButton>
+                        </APopconfirm>
+                        :
+                        <AButton slot='extra' size='small' disabled >
+                            <AIcon type="delete" />删除
+                    </AButton>}
+                    <IiTableLayout
+                        size='middle'
+                        headheight={68}
+                        onRowClick={this.onRowClick}
+                        class={'table'}
+                        total={this.total}
+                        pageSize={this.limit}
+                        currentPage={this.page}
+                        showSizeChanger={true}
+                        onPaginationChange={this.onPageChange}
+                        onShowSizeChange={this.onLimitChange}
+                        pageSizeOptions={pageSizeOptions}
+                        // showPagination='none'
+                        selected={selectedRowKeys.length}
+                        showSizeChanger={false}
+                        rowSelection={rowSelection}
+                        columns={columns}
+                        rows={roles}>
+                    </IiTableLayout>
+                </a-card>
             )
         }
     },
@@ -360,11 +364,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.users {
-    &__table {
-        :global(.ant-table-fixed-header .ant-table-scroll .ant-table-header) {
-            height: 59px;
-        }
+.table {
+    :global(.ant-table-fixed-header .ant-table-scroll .ant-table-header) {
+        height: 59px;
     }
 }
 

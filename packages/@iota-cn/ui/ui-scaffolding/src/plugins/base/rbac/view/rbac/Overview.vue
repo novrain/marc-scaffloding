@@ -26,14 +26,18 @@ export default {
             <div style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
                 <ARow gutter={16} type='flex' justify='center' style={{ height: '100%' }}>
                     <ACol span={12} style={{ height: '100%' }}>
-                        <div style={{ height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
+                        <a-card title={<div class='ii-head'><IiIcon type='menu' /><span>我的菜单</span></div>}
+                            bodyStyle={{ padding: "2px" }}
+                            style={{ height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
                             {this.menus.length > 0 ? <AuthTree tree={this.menus} /> : null}
-                        </div>
+                        </a-card>
                     </ACol>
                     <ACol span={12} style={{ height: '100%' }}>
-                        <div style={{ height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
+                        <a-card title="我的操作"
+                            bodyStyle={{ padding: "2px" }}
+                            style={{ height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
                             {this.operations.length > 0 ? <AuthTree tree={this.operations} /> : null}
-                        </div>
+                        </a-card>
                     </ACol>
                 </ARow>
             </div>
@@ -42,5 +46,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="stylus" scoped>
+@import '../../../../../styles/imports';
+
+.ii-head {
+    span {
+        color: $primary-color;
+        margin-left: 8px;
+    }
+}
 </style>

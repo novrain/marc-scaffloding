@@ -41,8 +41,9 @@ List.prototype.fetch = function (ctx, context) {
         includeAttributes = this.includeAttributes,
         Sequelize = this.resource.sequelize,
         defaultCount = 100,
-        count = +context.count || +ctx.query.count || defaultCount,
-        offset = +context.offset || +ctx.query.offset || 0;
+        count = +context.count || +ctx.query.limit || defaultCount,
+        // offset = +context.offset || +ctx.query.offset || 0;
+        offset = 0;
 
     // only look up attributes we care about
     options.attributes = options.attributes || this.resource.attributes;
@@ -163,8 +164,13 @@ List.prototype.fetch = function (ctx, context) {
                 });
             }
 
-            if (!!self.resource.pagination)
-                ctx.header['Content-Range'] = 'items ' + [[start, end].join('-'), result.count].join('/');
+            if (!!self.resource.pagination) {
+                // ctx.header['Content-Range'] = 'items ' + [[start, end].join('-'), result.count].join('/');
+                context.instance = {
+                    data: context.instance,
+                    count: result.count
+                }
+            }
 
             return context.continue;
         });

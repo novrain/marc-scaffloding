@@ -8,3 +8,4 @@ mochawesome-reports/
 .eslintrc
 .npmignore
 babel-watch.cmd
+.nyc_output

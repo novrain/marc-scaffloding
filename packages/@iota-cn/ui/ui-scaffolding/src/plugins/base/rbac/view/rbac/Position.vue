@@ -233,30 +233,40 @@ export default {
             <div style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
                 <ARow gutter={16} class={classNames('wrapper__row')}>
                     <ACol span={8} class={classNames('wrapper__row__col')}>
-                        {
-                            tree.length > 0 ? <AuthTree
-                                tree={tree}
-                                onSelect={this.onTreeSelect}
-                                onRightClick={this.treeNodeonRightClick}
-                            /> : null
-                        }
-                        {this.getNodeTreeRightClickMenu()}
-                        <AModal
-                            title="增加职位"
-                            key={'addNode'}
-                            visible={this.addNode}
-                            onOk={this.onAddOk}
-                            onCancel={this.onAddCancel}>
-                            <Form_IiSimpleEditor ref={'_addForm'} data={{}} disableDesc />
-                        </AModal>
-                        <AModal
-                            title="编辑职位"
-                            key={'propEditNode'}
-                            visible={this.propEditNode}
-                            onOk={this.onEditOk}
-                            onCancel={this.onEditCancel}>
-                            <Form_IiSimpleEditor ref={'_editForm'} data={{ name: this.selectedNode.props ? this.selectedNode.props.title : '' }} disableDesc />
-                        </AModal>
+                        <a-card title="职位管理"
+                            bodyStyle={{ padding: "2px" }}
+                            style={{ height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
+                            <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="refresh" onClick={this.refetch}>
+                                <AIcon type="reload" /> 刷新
+                            </AButton>
+                            <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="new" onClick={this.addChildNode}>
+                                <AIcon type="plus" /> 创建职位
+                            </AButton>
+                            {
+                                tree.length > 0 ? <AuthTree
+                                    tree={tree}
+                                    onSelect={this.onTreeSelect}
+                                    onRightClick={this.treeNodeonRightClick}
+                                /> : null
+                            }
+                            {this.getNodeTreeRightClickMenu()}
+                            <AModal
+                                title="增加职位"
+                                key={'addNode'}
+                                visible={this.addNode}
+                                onOk={this.onAddOk}
+                                onCancel={this.onAddCancel}>
+                                <Form_IiSimpleEditor ref={'_addForm'} data={{}} disableDesc />
+                            </AModal>
+                            <AModal
+                                title="编辑职位"
+                                key={'propEditNode'}
+                                visible={this.propEditNode}
+                                onOk={this.onEditOk}
+                                onCancel={this.onEditCancel}>
+                                <Form_IiSimpleEditor ref={'_editForm'} data={{ name: this.selectedNode.props ? this.selectedNode.props.title : '' }} disableDesc />
+                            </AModal>
+                        </a-card>
                     </ACol>
                     <ACol span={16} class={classNames('wrapper__row__col', 'wrapper__row__col_white')}>
                         <div class={classNames('wrapper__row__col__tabs', 'detailCard')}>
