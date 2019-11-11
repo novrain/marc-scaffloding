@@ -10,4 +10,12 @@ export default {
             }
         })
     },
+    async fetchOperations({ commit }) {
+        return silentGet('/v1/api/authorizations/operations').then((res) => {
+            if (res) {
+                commit(T.FETCH_OPERATIONS, res.data.operations)
+                return res
+            }
+        })
+    }
 }
