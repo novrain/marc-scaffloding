@@ -200,9 +200,9 @@ export default {
                                 <AMenu.Item key="delete">
                                     <IiModal
                                         title="删除"
-                                        content={(<span>是否删除字典条目:{record.name}</span>)}
+                                        content={(<span>是否删除字典:{record.name}</span>)}
                                         button={(<div style={{ padding: '2px 0px', fontiSize: '12px' }}><AIcon type="delete" /> 删除</div>)}
-                                        ok={this.onDeleteItem(record)}
+                                        ok={this.onDeleteDictionary(record)}
                                         clearFloat={true} />
                                 </AMenu.Item>
                             </AMenu>
