@@ -21,8 +21,9 @@ describe('dictionaries test >', function () {
         await models.Dictionary.sync({ force: true })
         await models.DictionaryItem.sync({ force: true })
         d1 = await models.Dictionary.create({ key: 'd_1', name: '字典1' })
-        await models.DictionaryItem.create({ key: 'd_1_1', name: '字典1-条目1', dictionaryId: d1.id })
-        await models.DictionaryItem.create({ key: 'd_1_2', name: '字典1-条目2', dictionaryId: d1.id })
+        await models.DictionaryItem.create({ key: 'd_1_1', name: '字典1-条目1', dictionaryId: d1.id, })
+        await models.DictionaryItem.create({ key: 'd_1_2', name: '字典1-条目2', dictionaryId: d1.id, index: 0 })
+        await models.DictionaryItem.create({ key: 'd_1_3', name: '字典1-条目3', dictionaryId: d1.id, })
     })
 
     it('basic', function (done) {
@@ -63,7 +64,7 @@ describe('dictionaries test >', function () {
                     return done(err)
                 }
                 assert.equal(res.body.id, d1.id)
-                assert.equal(res.body.items.length, 2)
+                assert.equal(res.body.items.length, 3)
                 done()
             })
     })

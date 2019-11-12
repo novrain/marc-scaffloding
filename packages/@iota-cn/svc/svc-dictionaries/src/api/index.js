@@ -30,6 +30,19 @@ export default function (app, router, opts) {
         // }],
         actions: ['read', 'update', 'delete']
     })
+    //sort items
+    dictionaryById.read.send.after((koaCtx, restfulCtx) => {
+        koaCtx.body.items.sort((l, r) => {
+            if (l.index === undefined || l.index === null) {
+                return 1
+            }
+            if (r.index === undefined || r.index === null) {
+                return -1
+            }
+            return l.index - r.index
+        })
+        return restfulCtx.continue
+    })
 
     router.post('/dictionaries/:dictionaryId/items', createMiddleware(Dictionary.createItem))
     router.put('/dictionaries/:dictionaryId/items/:id', createMiddleware(Dictionary.updateItem))
