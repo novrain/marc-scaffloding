@@ -89,12 +89,13 @@ export default {
             const menu = (
                 <div onMouseLeave={this.handleHoverOff}>
                     <AMenu
+                        class='rightMenu'
                         onClick={this.handleMenuClick}
                         style={tmpStyle}
                     //class={style.categs_tree_rightmenu}
                     >
                         {this.hasAuthOfAddNode(this.rightClickNodeTreeItem.id) ? <AMenu.Item key='addChildNode'><AIcon type='plus-circle-o' />{'增加子组织'}</AMenu.Item> : null}
-                        {this.hasRight(this.rightClickNodeTreeItem.id) ? <AMenu.Item key='propEditNode'><AIcon type='edit' />{'编辑'}</AMenu.Item> : null}
+                        {this.hasRight(this.rightClickNodeTreeItem.id) ? <AMenu.Item key='editNode'><AIcon type='edit' />{'编辑'}</AMenu.Item> : null}
                         {this.hasRight(this.rightClickNodeTreeItem.id) ? <AMenu.Item key='delConfirm'><AIcon type='minus-circle-o' />{'删除'}</AMenu.Item> : null}
                     </AMenu>
                 </div>
@@ -116,15 +117,14 @@ export default {
         },
 
         delConfirm() {
-            confirm({
+            const that = this
+            this.$confirm({
                 title: '确认删除此组织？',
-                content: `${this.state.selectedNode.props.title}`,
+                content: `${this.selectedNode.title}`,
                 onOk() {
-                    this.delNode()
+                    that.delNode()
                 },
-                onCancel() {
-
-                },
+                onCancel() { },
             })
         },
 
@@ -166,7 +166,7 @@ export default {
                 this.$refs._editForm.validateFieldsAndScroll((err, values) => {
                     if (!err) {
                         resolve(true)
-                        this.$axios.silentPost(`/v1/api/authorizations/organizations/${this.state.selectedKeys[0]}`, values, true)
+                        this.$axios.silentPut(`/v1/api/authorizations/organizations/${this.selectedKeys[0]}`, values, true)
                             .then(() => {
                                 this.$refs._editForm.resetFields()
                                 this.refetch()
@@ -260,11 +260,11 @@ export default {
                             </AModal>
                             <AModal
                                 title="编辑组织"
-                                key={'propEditNode'}
+                                key={'editNode'}
                                 visible={this.propEditNode}
                                 onOk={this.onEditOk}
                                 onCancel={this.onEditCancel}>
-                                <Form_IiSimpleEditor ref={'_editForm'} data={{ name: this.selectedNode.props ? this.selectedNode.props.title : '' }} disableDesc />
+                                <Form_IiSimpleEditor ref={'_editForm'} data={{ name: this.selectedNode ? this.selectedNode.title : '' }} disableDesc />
                             </AModal>
                         </a-card>
                     </ACol>
@@ -281,6 +281,12 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@import '../../../../../styles/imports';
+
+.rightMenu {
+    box-shadow: $ii-box-shadow;
+}
+
 .wrapper {
     &__row {
         height: 100% !important;
