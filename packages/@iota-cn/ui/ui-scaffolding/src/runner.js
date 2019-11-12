@@ -14,17 +14,9 @@ import Avatar from '@iota-cn/avatar'
 // Add to Vue prototype
 import FrameComponents from './framework/components'
 
-Vue.use(Antd)
-Vue.use(VCharts)
-Vue.use(VueI18n)
-Vue.use(Vuex)
-Vue.use(Router)
-Vue.use(Avatar)
-Vue.use(FrameComponents)
 
 // ncform 或者可以按需配置
 import vueNcform from '@ncform/ncform';
-
 import Element from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import ncformStdComps from '@ncform/ncform-theme-elementui';
@@ -33,6 +25,14 @@ Vue.use(Element);
 Vue.use(vueNcform, { extComponents: ncformStdComps });
 window.$http = Vue.prototype.$http = axios;
 // ncform -end
+
+Vue.use(Antd)
+Vue.use(VCharts)
+Vue.use(VueI18n)
+Vue.use(Vuex)
+Vue.use(Router)
+Vue.use(Avatar)
+Vue.use(FrameComponents)
 
 import AppLoader from './framework/AppLoader'
 import defaultApp from './App.vue'
