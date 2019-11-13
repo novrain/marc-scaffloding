@@ -49,6 +49,9 @@ function createConfig(args) {
     const dictionariesEntry = require('@iota-cn/svc-dictionaries').entry
     const dictionariesModel = require('@iota-cn/svc-dictionaries').models
 
+    const bpEnginesEntry = require('@iota-cn/svc-bp-engines').entry
+    const bpEnginesModel = require('@iota-cn/svc-bp-engines').models
+
     const user = { entry: userEntry, opts: {} }
     const authentication = {
         entry: authenticationEntry,
@@ -112,6 +115,11 @@ function createConfig(args) {
         opts: {}
     }
 
+    const bpEngines = {
+        entry: bpEnginesEntry,
+        opts: {}
+    }
+
     //entry
     config.mws.push(user)
     config.mws.push(authentication)
@@ -121,6 +129,7 @@ function createConfig(args) {
     config.mws.push(attachment)
     config.mws.push(messageClient)
     config.mws.push(dictionaries)
+    config.mws.push(bpEngines)
 
     //models
     config.dc.models.push(userModel)
@@ -128,6 +137,7 @@ function createConfig(args) {
     config.dc.models.push(oauth2Model)
     config.dc.models.push(noticeModel)
     config.dc.models.push(dictionariesModel)
+    config.dc.models.push(bpEnginesModel)
 
     return config
 }
