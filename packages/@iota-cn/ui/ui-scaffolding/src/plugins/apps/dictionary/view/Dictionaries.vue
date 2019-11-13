@@ -20,6 +20,8 @@
 //     </div>
 // </template>
 import { Menu as AMenu } from 'ant-design-vue'
+import { Validator } from '@iota-cn/util-validation'
+
 export default {
     data() {
         const dictionaySchema = {
@@ -27,6 +29,16 @@ export default {
             "properties": {
                 "key": {
                     "type": "string",
+                    rules: {
+                        required: {
+                            value: true,
+                            errMsg: '请输入字典Key'
+                        },
+                        iivalidator: {
+                            value: 'isCommonName',
+                            errMsg: Validator.commonNameHelp
+                        },
+                    },
                     "ui": {
                         "label": "字典Key",
                         "placeholder": "字典Key"
@@ -34,6 +46,16 @@ export default {
                 },
                 "name": {
                     "type": "string",
+                    rules: {
+                        required: {
+                            value: true,
+                            errMsg: '请输入字典名称'
+                        },
+                        iivalidator: {
+                            value: 'isCommonName',
+                            errMsg: Validator.commonNameHelp
+                        },
+                    },
                     "ui": {
                         "label": "字典名称",
                         "placeholder": "字典名称"
@@ -51,6 +73,16 @@ export default {
             "properties": {
                 "key": {
                     "type": "string",
+                    rules: {
+                        required: {
+                            value: true,
+                            errMsg: '请输入条目Key'
+                        },
+                        iivalidator: {
+                            value: 'isCommonName',
+                            errMsg: Validator.commonNameHelp
+                        },
+                    },
                     "ui": {
                         "label": "条目Key",
                         "placeholder": "条目Key"
@@ -58,9 +90,34 @@ export default {
                 },
                 "name": {
                     "type": "string",
+                    rules: {
+                        required: {
+                            value: true,
+                            errMsg: '请输入条目名称'
+                        },
+                        iivalidator: {
+                            value: 'isCommonName',
+                            errMsg: Validator.commonNameHelp
+                        },
+                    },
                     "ui": {
                         "label": "条目名称",
                         "placeholder": "条目名称"
+                    }
+                },
+                "index": {
+                    "type": "string",
+                    rules: {
+                        required: false,
+                        number: {
+                            value: true,
+                            minimum: 0,
+                            maximum: 100
+                        }
+                    },
+                    "ui": {
+                        "label": "条目序号",
+                        "placeholder": "条目序号"
                     }
                 }
             },
@@ -331,13 +388,19 @@ export default {
                     title: '条目Key',
                     dataIndex: 'key',
                     key: 'key',
-                    width: '40%',
+                    width: '25%',
                 },
                 {
                     title: '条目名称',
                     dataIndex: 'name',
                     key: 'name',
-                    width: '40% ',
+                    width: '30% ',
+                },
+                {
+                    title: '条目序号',
+                    dataIndex: 'index',
+                    key: 'index',
+                    width: '25% ',
                 },
                 {
                     title: '操作',

@@ -9,8 +9,8 @@ export default function (app, router, opts) {
         model: models.Dictionary,
         endpoints: ['/dictionaries'],
         search: [
-            { operator: '$eq', param: 'key', attributes: ['key'] },
-            { operator: '$eq', param: 'name', attributes: ['name'] },
+            { param: 'key', attributes: ['key'] },
+            { param: 'name', attributes: ['name'] },
             { operator: '$eq', param: 'belongTo', attributes: ['belongTo'] },
         ],
         actions: ['list', 'create']
@@ -29,6 +29,19 @@ export default function (app, router, opts) {
         //     attributes: ['id', 'key', 'name']
         // }],
         actions: ['read', 'update', 'delete']
+    })
+    //sort items
+    dictionaryById.read.send.after((koaCtx, restfulCtx) => {
+        koaCtx.body.items.sort((l, r) => {
+            if (l.index === undefined || l.index === null) {
+                return 1
+            }
+            if (r.index === undefined || r.index === null) {
+                return -1
+            }
+            return l.index - r.index
+        })
+        return restfulCtx.continue
     })
 
     router.post('/dictionaries/:dictionaryId/items', createMiddleware(Dictionary.createItem))

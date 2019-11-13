@@ -16,14 +16,15 @@ import FrameComponents from './framework/components'
 
 
 // ncform 或者可以按需配置
-import vueNcform from '@ncform/ncform';
-import Element from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-import ncformStdComps from '@ncform/ncform-theme-elementui';
-import axios from 'axios';
-Vue.use(Element);
-Vue.use(vueNcform, { extComponents: ncformStdComps });
-window.$http = Vue.prototype.$http = axios;
+import axios from 'axios'
+import vueNcform from '@ncform/ncform'
+import Element from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import ncformStdComps from '@ncform/ncform-theme-elementui'
+import rules from './framework/ncform-rules'
+Vue.use(Element) // Element部分全局变量会被antd覆盖掉
+Vue.use(vueNcform, { extComponents: ncformStdComps, extRules: rules, lang: 'zh-cn' })
+window.$http = Vue.prototype.$http = axios
 // ncform -end
 
 Vue.use(Antd)

@@ -17,6 +17,7 @@
         "@iota-cn/svc-authentication": "^1.0.0",
         "@iota-cn/svc-authorization": "^1.0.0",
         "@iota-cn/svc-dc": "^1.0.0",
+        "@iota-cn/svc-dictionaries": "^1.0.0",
         "@iota-cn/svc-message-client": "^1.0.0",
         "@iota-cn/svc-notice": "^1.0.0",
         "@iota-cn/svc-oauth2": "^1.0.0",

@@ -14,6 +14,10 @@ export default function (dc) {
             key: {
                 type: dc.ORM.STRING,
                 allowNull: false
+            },
+            index: {
+                type: dc.ORM.INTEGER,
+                allowNull: true
             }
         },
         {

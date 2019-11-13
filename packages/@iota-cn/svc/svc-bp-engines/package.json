@@ -1,0 +1,33 @@
+{
+    "name": "@iota-cn/svc-bp-engines",
+    "version": "1.0.0",
+    "description": "bp-engines",
+    "main": "./dist/index.js",
+    "scripts": {
+        "compile": "babel -d dist/ src/",
+        "prepublishOnly": "npm run compile",
+        "test": "mocha --exit",
+        "testbreak": "mocha -b --exit",
+        "coverage": "nyc npm run test",
+        "check": "eslint src -f html  > eslintResults.html||true"
+    },
+    "author": "wang.liang@theiota.cn",
+    "license": "MIT",
+    "dependencies": {
+        "@iota-cn/svc-authentication": "^1.0.0",
+        "@iota-cn/svc-restful": "^1.0.0"
+    },
+    "devDependencies": {
+        "@iota-cn/svc-scaffolding": "^1.0.0",
+        "@iota-cn/svc-user": "^1.0.0",
+        "@babel/plugin-transform-modules-commonjs": "^7.7.0",
+        "@babel/register": "^7.7.0",
+        "chai": "^4.2.0",
+        "mocha": "^6.2.2",
+        "mochawesome": "^4.1.0",
+        "supertest": "^4.0.2"
+    },
+    "publishConfig": {
+        "registry": "http://39.106.121.29:14873/"
+    }
+}
