@@ -294,21 +294,12 @@ export default {
                         const operation = (
                             <AMenu styles={{ display: 'inline-block' }} class='noPaddingMenu'>
                                 <AMenu.Item key="edit">
-                                    <IiModal
-                                        title="编辑"
-                                        content={(<UserEditor type="edit" ref={'edit' + record.id} data={{
-                                            username: record.username, email: record.email, isAdmin: record.isAdmin, enable: record.subExt.enable
-                                        }} user={user} />)}
-                                        button={(<div style={{ padding: '2px 0px', fontiSize: '12px' }}><AIcon type="edit" /> 编辑 </div>)}
-                                        ok={this.onEdit(record, index)}
-                                        cancel={() => this.$refs['edit' + record.id].resetFields()}
-                                        clearFloat={true} />
                                 </AMenu.Item>
                                 <AMenu.Item key="changePwd" >
                                     <IiModal
                                         title="修改密码"
                                         content={<UserEditor ref={'password' + record.id} type="changePwd" data={{}} user={user} />}
-                                        button={(<div style={{ padding: '2px 0px', fontiSize: '12px' }}><AIcon type="edit" /> 修改密码</div>)}
+                                        button={(<div style={{ padding: '2px 0px', fontiSize: '12px' }}>修改密码</div>)}
                                         ok={this.onChangePwd(record, index)}
                                         cancel={() => this.$refs['password' + record.id].resetFields()}
                                         clearFloat={true} />
@@ -317,18 +308,30 @@ export default {
                                     <IiModal
                                         title="删除"
                                         content={(<span>是否删除用户：{record.username}</span>)}
-                                        button={(<div style={{ padding: '2px 0px', fontiSize: '12px' }}><AIcon type="delete" /> 删除</div>)}
+                                        button={(<div style={{ padding: '2px 0px', fontiSize: '12px' }}>删除</div>)}
                                         ok={this.onDelete(record)}
                                         clearFloat={true} />
                                 </AMenu.Item>
                             </AMenu>
                         )
                         return (
-                            <ADropdown overlay={operation}>
-                                <AButton size='small' onClick={e => e.stopPropagation()}>
-                                    <AIcon type="appstore" /> 操作 <AIcon type="down" />
-                                </AButton>
-                            </ADropdown>
+                            <div class='operation'>
+                                <IiModal
+                                    title="编辑"
+                                    content={(<UserEditor type="edit" ref={'edit' + record.id} data={{
+                                        username: record.username, email: record.email, isAdmin: record.isAdmin, enable: record.subExt.enable
+                                    }} user={user} />)}
+                                    button={(<a>编辑</a>)}
+                                    ok={this.onEdit(record, index)}
+                                    cancel={() => this.$refs['edit' + record.id].resetFields()}
+                                    clearFloat={true} />
+                                <ADivider type="vertical" />
+                                <ADropdown overlay={operation}>
+                                    <a onClick={e => e.stopPropagation()}>
+                                        更多<AIcon type="down" />
+                                    </a>
+                                </ADropdown>
+                            </div>
                         )
                     },
                 }]
@@ -356,7 +359,7 @@ export default {
                         key='new'
                         title="新建"
                         content={(<UserEditor type="create" ref={'_add'} data={{}} user={user} />)}
-                        button={(<AButton size='small' icon={'plus'} key="new"> 创建用户</AButton>)}
+                        button={(<AButton size='small' icon={'plus'} key="new" style={{ marginRight: '8px' }}>创建用户</AButton>)}
                         ok={this.onAdd}
                         cancel={() => this.$refs._add.resetFields()}
                         clearFloat={true}
@@ -411,6 +414,18 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@import '../../../../../styles/imports';
+
+.operation {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+
+    a {
+        color: $primary-color;
+    }
+}
+
 .table {
     :global(.ant-table-fixed-header .ant-table-scroll .ant-table-header) {
         height: 59px;

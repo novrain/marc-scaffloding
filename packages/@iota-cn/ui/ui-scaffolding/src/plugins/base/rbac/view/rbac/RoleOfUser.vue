@@ -1,7 +1,6 @@
 
 <script>
 import { message } from 'ant-design-vue/es'
-import { Menu as AMenu } from 'ant-design-vue'
 import moment from 'moment'
 import uuid from 'uuid'
 
@@ -162,25 +161,16 @@ export default {
                 key: 'operation',
                 width: '15%',
                 customRender: (text, record) => {
-                    const operation = (
-                        <AMenu styles={{ display: 'inline-block' }} className='noPaddingAMenu'>
-                            <AMenu.Item key="delete">
-                                <IiModal
-                                    title="删除关联"
-                                    content={(<span>是否删除关联角色：{record.name}</span>)}
-                                    button={(<div style={{ padding: '2px 0px', fontiSize: '12px' }}><AIcon type="delete" /> 删除关联</div>)}
-                                    ok={this.onDelete(record)}
-                                    clearFloat={true}
-                                />
-                            </AMenu.Item>
-                        </AMenu>
-                    )
                     return (
-                        <ADropdown overlay={operation}>
-                            <AButton size='small' onClick={e => e.stopPropagation()}>
-                                <AIcon type="appstore" /> 操作 <AIcon type="down" />
-                            </AButton>
-                        </ADropdown>
+                        <div class='operation'>
+                            <IiModal
+                                title="删除关联"
+                                content={(<span>是否删除关联角色：{record.name}</span>)}
+                                button={(<a> 删除关联</a>)}
+                                ok={this.onDelete(record)}
+                                clearFloat={true}
+                            />
+                        </div>
                     )
                 },
             }]
@@ -235,7 +225,7 @@ export default {
                 width={1150}
                 title="添加关联角色"
                 content={(addRelated)}
-                button={(<AButton size='small' icon='plus' key="new">添加关联角色</AButton>)}
+                button={(<AButton size='small' icon='plus' key="new" style={{ marginRight: '8px' }} >添加关联角色</AButton>)}
                 ok={this.onAdd}
                 clearFloat={true}
                 cancel={this.onCancel}
@@ -280,5 +270,16 @@ export default {
 }
 </script>
 
-<style>
+<style lang="stylus" scoped>
+@import '../../../../../styles/imports';
+
+.operation {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+
+    a {
+        color: $primary-color;
+    }
+}
 </style>
