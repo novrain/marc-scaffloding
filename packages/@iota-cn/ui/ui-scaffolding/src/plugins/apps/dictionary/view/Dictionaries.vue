@@ -19,7 +19,6 @@
 //         </a-row>
 //     </div>
 // </template>
-import { Menu as AMenu } from 'ant-design-vue'
 import { Validator } from '@iota-cn/util-validation'
 
 export default {
@@ -249,27 +248,17 @@ export default {
                     dataIndex: 'operation',
                     width: '20%',
                     customRender: (text, record) => {
-                        const operation = (
-                            <AMenu styles={{ display: 'inline-block' }} class='noPaddingMenu'>
-                                <AMenu.Item key="edit">
-                                    <div style={{ padding: '2px 0px', fontiSize: '12px' }} onClick={this.onShowEdit(record)}><AIcon type="edit" /> 编辑 </div>
-                                </AMenu.Item>
-                                <AMenu.Item key="delete">
-                                    <IiModal
-                                        title="删除"
-                                        content={(<span>是否删除字典:{record.name}</span>)}
-                                        button={(<div style={{ padding: '2px 0px', fontiSize: '12px' }}><AIcon type="delete" /> 删除</div>)}
-                                        ok={this.onDeleteDictionary(record)}
-                                        clearFloat={true} />
-                                </AMenu.Item>
-                            </AMenu>
-                        )
                         return (
-                            <ADropdown overlay={operation}>
-                                <AButton size='small' onClick={e => e.stopPropagation()}>
-                                    <AIcon type="appstore" /> 操作 <AIcon type="down" />
-                                </AButton>
-                            </ADropdown>
+                            <div class='operation'>
+                                <a onClick={this.onShowEdit(record)}>编辑</a>
+                                <ADivider type="vertical" />
+                                <IiModal
+                                    title="删除"
+                                    content={(<span>是否删除字典:{record.name}</span>)}
+                                    button={(<a>删除</a>)}
+                                    ok={this.onDeleteDictionary(record)}
+                                    clearFloat={true} />
+                            </div>
                         )
                     },
                 }]
@@ -407,27 +396,17 @@ export default {
                     dataIndex: 'operation',
                     width: '20%',
                     customRender: (text, record) => {
-                        const operation = (
-                            <AMenu styles={{ display: 'inline-block' }} class='noPaddingMenu'>
-                                <AMenu.Item key="edit">
-                                    <div style={{ padding: '2px 0px', fontiSize: '12px' }} onClick={this.onShowItemEdit(record)}><AIcon type="edit" /> 编辑 </div>
-                                </AMenu.Item>
-                                <AMenu.Item key="delete">
-                                    <IiModal
-                                        title="删除条目"
-                                        content={(<span>是否删除字典条目:{record.name}</span>)}
-                                        button={(<div style={{ padding: '2px 0px', fontiSize: '12px' }}><AIcon type="delete" /> 删除</div>)}
-                                        ok={this.onDeleteItem(record)}
-                                        clearFloat={true} />
-                                </AMenu.Item>
-                            </AMenu>
-                        )
                         return (
-                            <ADropdown overlay={operation}>
-                                <AButton size='small' onClick={e => e.stopPropagation()}>
-                                    <AIcon type="appstore" /> 操作 <AIcon type="down" />
-                                </AButton>
-                            </ADropdown>
+                            <div class='operation'>
+                                <a onClick={this.onShowItemEdit(record)}>编辑</a>
+                                <ADivider type="vertical" />
+                                <IiModal
+                                    title="删除"
+                                    content={(<span>是否删除字典:{record.name}</span>)}
+                                    button={(<a>删除</a>)}
+                                    ok={this.onDeleteItem(record)}
+                                    clearFloat={true} />
+                            </div>
                         )
                     },
                 }]
@@ -496,6 +475,18 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+@import '../../../../styles/imports';
+
+.operation {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+
+    a {
+        color: $primary-color;
+    }
+}
+
 .ii-dictionary {
     height: 100%;
     width: 100%;

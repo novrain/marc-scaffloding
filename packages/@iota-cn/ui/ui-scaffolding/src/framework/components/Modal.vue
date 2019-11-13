@@ -76,6 +76,5 @@ export default {
 
 .button {
     display: inline-block;
-    margin-right: 10px;
 }
 </style>
