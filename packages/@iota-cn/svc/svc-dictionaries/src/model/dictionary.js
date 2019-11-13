@@ -9,11 +9,13 @@ export default function (dc) {
             },
             name: {
                 type: dc.ORM.STRING,
-                allowNull: false
+                allowNull: false,
+                unique: true
             },
             key: {
                 type: dc.ORM.STRING,
-                allowNull: false
+                allowNull: false,
+                unique: true
             },
             belongTo: {
                 type: dc.ORM.STRING,

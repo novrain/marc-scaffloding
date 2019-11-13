@@ -9,8 +9,8 @@ export default function (app, router, opts) {
         model: models.Dictionary,
         endpoints: ['/dictionaries'],
         search: [
-            { operator: '$eq', param: 'key', attributes: ['key'] },
-            { operator: '$eq', param: 'name', attributes: ['name'] },
+            { param: 'key', attributes: ['key'] },
+            { param: 'name', attributes: ['name'] },
             { operator: '$eq', param: 'belongTo', attributes: ['belongTo'] },
         ],
         actions: ['list', 'create']

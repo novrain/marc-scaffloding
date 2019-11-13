@@ -102,8 +102,8 @@ export const deleteItem = async (ctx, next) => {
             } else {
                 ctx.status = 404
                 ctx.body = {
-                    name: 'invalid device',
-                    message: `the device ${id} dose not exist.`
+                    name: 'invalid dictionary',
+                    message: `the dictionary ${id} dose not exist.`
                 }
             }
         } catch (e) {
