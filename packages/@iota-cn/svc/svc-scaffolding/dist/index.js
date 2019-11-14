@@ -31,6 +31,8 @@ var _svcLogger = _interopRequireDefault(require("@iota-cn/svc-logger"));
 
 var _svcSession = _interopRequireDefault(require("@iota-cn/svc-session"));
 
+var _svcUtil = require("@iota-cn/svc-util");
+
 var _http = _interopRequireDefault(require("http"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -147,11 +149,28 @@ function scaffold(config) {
 
   app.use((0, _svcSession.default)(config.session)); //@Todo add csrf protect. Require the client side login or ...
   //app.use(convert(csrf()));
+  // skip bodyParser
 
-  app.use((0, _koaBodyparser.default)({
+  config.bodyParser = config.bodyParser || {
     jsonLimit: '80mb',
     formLimit: '80mb'
-  })); //init dc and inject it into app(app.iota.dc) and runtime ctx(app.iota.dc)
+  };
+
+  if (Array.isArray(config.bodyParser.disable) && config.bodyParser.disable.length > 0) {
+    const excludesUrls = new _svcUtil.ExcludesUrls(config.bodyParser.disable, '');
+    app.use(async (ctx, next) => {
+      if (excludesUrls.isExcluded(ctx.path)) {
+        ctx.disableBodyParser = true;
+        console.log('-----');
+      } else {
+        ctx.disableBodyParser = false;
+      }
+
+      await next();
+    });
+  }
+
+  app.use((0, _koaBodyparser.default)(config.bodyParser)); //init dc and inject it into app(app.iota.dc) and runtime ctx(app.iota.dc)
   //@Todo DC use router?
 
   app.use((0, _svcDc.default)(app, config.dc)); //init restful base on dc model.
@@ -163,10 +182,18 @@ function scaffold(config) {
         let opts = mv.opts || {}; // add global opts
 
         opts.global = config.global;
-        let fn = mv.entry(app, router, opts);
+        let rs = mv.entry(app, router, opts);
 
-        if (fn) {
-          app.use(fn);
+        if (typeof rs === 'function') {
+          app.use(rs);
+        } else if (rs !== undefined) {
+          if (typeof rs.middlware === 'function') {
+            app.use(rs.middlware);
+          }
+
+          if (rs.subRouter) {
+            app.use(rs.subRouter.routes());
+          }
         }
       } catch (err) {
         //be sure that the logger middleware is injected.

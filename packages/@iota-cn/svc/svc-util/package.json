@@ -13,7 +13,9 @@
     },
     "author": "",
     "license": "MIT",
-    "dependencies": {},
+    "dependencies": {
+        "path-to-regexp": "^5.0.0"
+    },
     "devDependencies": {
         "@babel/plugin-transform-modules-commonjs": "^7.7.0",
         "@babel/register": "^7.7.0",

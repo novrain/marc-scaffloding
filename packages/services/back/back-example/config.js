@@ -129,6 +129,9 @@ function createConfig(args) {
     config.mws.push(attachment)
     config.mws.push(messageClient)
     config.mws.push(dictionaries)
+    config.bodyParser.disable = [
+        { p: /^\/fl\/process\/.*(?:\/)?$/, o: '*' }
+    ]
     config.mws.push(bpEngines)
 
     //models
