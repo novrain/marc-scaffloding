@@ -22,14 +22,11 @@ export default function (app, router, opts) {
 
     // proxy to flowabale
     const flowable = opts.flowable || {
-        prefix: '/fl/process',
+        routes: ['/fl/process/*', '/fl/content/*'],
         target: 'http://localhost:8888'
     }
 
-    const proxyServer = new HttpProxy()
-
-    const flowableRouter = new Router()
-    flowableRouter.all(`${flowable.prefix}/*`, async (ctx, next) => {
+    const handler = async (ctx, next) => {
         await new Promise((reject, resolve) => {
             const reqOpts = {
                 target: flowable.target
@@ -39,6 +36,12 @@ export default function (app, router, opts) {
                 resolve(); // resolve anyway
             });
         });
+    }
+    const proxyServer = new HttpProxy()
+
+    const flowableRouter = new Router()
+    flowable.routes.forEach(r => {
+        flowableRouter.all(r, handler)
     })
     return { subRouter: flowableRouter }
 }

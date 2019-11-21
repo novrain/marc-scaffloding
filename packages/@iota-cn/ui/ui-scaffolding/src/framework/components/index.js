@@ -9,6 +9,7 @@ import MultiAdd from './MultiAdd'
 import NameValidatorItem from './formitems/NameValidatorItem'
 import DescValidatorItem from './formitems/DescValidatorItem'
 import SimpleEditor from './SimpleEditor'
+import Empty from './Empty'
 
 const components = [
     Icon,
@@ -18,7 +19,8 @@ const components = [
     MultiAdd,
     NameValidatorItem,
     DescValidatorItem,
-    SimpleEditor
+    SimpleEditor,
+    Empty
 ]
 
 export {
@@ -29,7 +31,8 @@ export {
     MultiAdd,
     NameValidatorItem,
     DescValidatorItem,
-    SimpleEditor
+    SimpleEditor,
+    Empty
 }
 
 const install = function (Vue) {

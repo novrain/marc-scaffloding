@@ -348,6 +348,7 @@ export default {
             const users = this.users
             return (
                 <a-card title="用户管理"
+                    bordered={false}
                     bodyStyle={{ padding: "2px", flex: 1 }}
                     style={{
                         height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white',

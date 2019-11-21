@@ -1,9 +1,9 @@
 // 定义控制台的ID和路径（layout-container是支持多个complex部分的，需增加plugin定义）
-const COMPLEX_CONTAINER_ID = 'console'
-const COMPLEX_CONTAINER_PATH = 'console'
-const SIMPLE_CONTAINER_PATH = 'app' // vue-router 多层 / 时，优先使用了深层次的 路由，所以必须区分开
+export const COMPLEX_CONTAINER_ID = 'console'
+export const COMPLEX_CONTAINER_PATH = 'console'
+export const SIMPLE_CONTAINER_PATH = 'app' // vue-router 多层 / 时，优先使用了深层次的 路由，所以必须区分开
 
-module.exports = {
+export default {
     cookie: {
         prefix: 'ii-'
     },
@@ -36,10 +36,10 @@ module.exports = {
                         }
                     }
                 },
-                messageCenter: {
-                    port: '18884',
-                    nsp: 'iota'
-                }
+                // messageCenter: {
+                //     port: '18884',
+                //     nsp: 'iota'
+                // }
             }
         },
         {

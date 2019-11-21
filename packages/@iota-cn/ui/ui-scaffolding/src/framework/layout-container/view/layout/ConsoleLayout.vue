@@ -59,9 +59,11 @@ export default {
     },
 }
 </script>
-
 <style lang="stylus">
 @import '../../../../styles/base';
+</style>
+
+<style lang="stylus" scoped>
 @import '../../../../styles/imports';
 
 .ii-layout-console {

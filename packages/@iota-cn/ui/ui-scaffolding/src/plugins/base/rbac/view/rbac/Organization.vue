@@ -234,7 +234,8 @@ export default {
                 <ARow gutter={16} class={classNames('wrapper__row')}>
                     <ACol span={8} class={classNames('wrapper__row__col')}>
                         <a-card title="组织管理"
-                            bodyStyle={{ padding: "2px" }}
+                            bordered={false}
+                            bodyStyle={{ padding: '2px', overflow: 'scroll', height: '100%' }}
                             style={{ height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
                             <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="refresh" onClick={this.refetch}>
                                 <AIcon type="reload" /> 刷新

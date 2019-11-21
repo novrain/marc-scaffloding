@@ -117,7 +117,10 @@ function createConfig(args) {
 
     const bpEngines = {
         entry: bpEnginesEntry,
-        opts: {}
+        opts: {
+            routes: ['/fl/process/*', '/fl/content/*'],
+            target: 'http://localhost:8888'
+        }
     }
 
     //entry
@@ -130,7 +133,8 @@ function createConfig(args) {
     config.mws.push(messageClient)
     config.mws.push(dictionaries)
     config.bodyParser.disable = [
-        { p: /^\/fl\/process\/.*(?:\/)?$/, o: '*' }
+        { p: /^\/fl\/process\/.*(?:\/)?$/, o: '*' },
+        { p: /^\/fl\/content\/.*(?:\/)?$/, o: '*' },
     ]
     config.mws.push(bpEngines)
 

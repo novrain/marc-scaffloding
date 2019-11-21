@@ -66,6 +66,9 @@ const silentDelete = (url, handleErr) => {
     return commonDelete(url, { doNotHint: true, handleErr: handleErr })
 }
 
+const baseURL = () => {
+    return instance.defaults.baseURL
+}
 
 const install = (Vue) => {
     Vue.prototype.$axios = instance
@@ -81,6 +84,7 @@ const install = (Vue) => {
         noop,
         onRes,
         onErr,
+        baseURL
     })
 }
 
@@ -100,6 +104,7 @@ export {
     noop,
     onRes,
     onErr,
+    baseURL,
     init as initAxios,
     instance as axios
 }

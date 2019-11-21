@@ -35,7 +35,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 .ii-app {
     display: flex;
     flex-direction: column;
