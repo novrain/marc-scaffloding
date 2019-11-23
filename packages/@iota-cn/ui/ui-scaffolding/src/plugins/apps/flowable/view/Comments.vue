@@ -75,7 +75,7 @@ export default {
     },
     computed: {
         commentable() {
-            return true
+            return !this.flow.finished
         }
     }
 }
