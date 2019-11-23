@@ -5,6 +5,7 @@
             class="flowtabs">
             <a-tab-pane tab="正文"
                 class="tabpanel"
+                v-model="activeTab"
                 key="content">
                 <div class="detail"
                     ref='_detail'>
@@ -13,9 +14,15 @@
                         {{flow.name}}
                     </div>
                     <ncform :form-schema="formDef"
+                        formName='_submitForm'
                         v-if="formDef"
                         v-model="formData"
                         :is-dirty.sync="isFormDirty"></ncform>
+                    <div class="operations">
+                        <a-button type='primary'
+                            v-if="handleable"
+                            @click="handleSubmit">提交</a-button>
+                    </div>
                     <ii-comments :user='user'
                         :flow='flow' />
                 </div>
@@ -23,12 +30,14 @@
             <a-tab-pane tab="流程"
                 key="tasks">
                 <ii-tasks :user='user'
+                    :active='activeTab === "tasks"'
                     :flow='flow' />
             </a-tab-pane>
             <a-tab-pane tab="附件"
                 class="tabpanel"
                 key="attachements">
                 <ii-attachments :user='user'
+                    :active='activeTab === "attachements"'
                     :flow='flow' />
             </a-tab-pane>
         </a-tabs>
@@ -36,6 +45,7 @@
 </template>
 
 <script>
+import { message } from 'ant-design-vue/es'
 import Comments from './Comments'
 import Attachments from './Attachments'
 import Tasks from './Tasks'
@@ -46,7 +56,7 @@ export default {
         "ii-attachments": Attachments,
         "ii-tasks": Tasks
     },
-    props: ['flow', 'processDef', 'user'],
+    props: ['flow', 'processDef', 'user', 'onSubmit'],
     data() {
         return {
             formData: {},
@@ -54,14 +64,16 @@ export default {
             formDef: undefined,
             contents: {
                 items: []
-            }
+            },
+            activeTab: 'content'
         }
     },
     watch: {
         flow: {
             handler() {
                 this.refetch()
-            }
+            },
+            deep: true
         },
         processDef: {
             handler() {
@@ -83,6 +95,13 @@ export default {
                     })
             } else {
                 this.updateForm()
+            }
+            // 刷新flow的状态 通过Task去查询的
+            if (this.flow.suspended === undefined && !this.flow.finished) {
+                this.$axios.silentGet(`/fl/process/runtime/process-instances/${instanceId}`, true)
+                    .then((res) => {
+                        this.flow.suspended = res.data.suspended
+                    })
             }
         },
         // onChange({ paths, itemValue, formValue }) {
@@ -106,10 +125,11 @@ export default {
                 constants: {
                     initiatorId: variables.initiatorId,
                     initiatorName: variables.initiatorName,
-                    currentNode: this.flow.currentNode
+                    initiatorUser: variables.initiatorUser,
+                    currentTaskId: this.flow.task ? this.flow.task.taskDefinitionKey : undefined
                 }
             }
-            if (!this.flow.task || this.flow.task.assignee.id !== this.user.id) {
+            if (!this.handleable) {
                 this.disableForm(this.formDef)
             }
         },
@@ -125,6 +145,44 @@ export default {
                     item.ui.disabled = true
                 }
             })
+        },
+        // 这里存在一定的问题，提交后，该flow还在待处理列表里，需要手动刷新才能跳转
+        handleSubmit() {
+            if (this.flow.task) {
+                this.$ncformValidate('_submitForm').then(data => {
+                    if (data.result) {
+                        const variables = []
+                        Object.keys(this.formData).forEach(k => {
+                            variables.push({
+                                name: k,
+                                value: this.formData[k]
+                            })
+                        })
+                        this.$axios.silentPost(`/fl/process/runtime/tasks/${this.flow.task.id}`, {
+                            action: 'complete',
+                            variables: variables
+                        }, true)
+                            .then(() => {
+                                if (this.onSubmit) {
+                                    this.onSubmit({ flow: this.flow })
+                                }
+                                message.success('任务已提交')
+                            }).catch(() => {
+                                message.error('提交失败，请稍后再试')
+                            })
+                    }
+                })
+            }
+        }
+    },
+    computed: {
+        handleable() {
+            return !this.flow.finished
+                && !this.flow.suspended
+                && this.flow.task !== undefined
+                && !this.flow.task.finished
+                && !this.flow.task.suspended
+                && this.flow.task.assignee.id === this.user.id
         }
     }
 }
@@ -155,6 +213,11 @@ export default {
 
         .form {
         }
+
+        .operations {
+            text-align: right;
+            margin: 0 14px 14px 14px;
+        }
     }
 
     .flowtabs {
@@ -172,4 +235,4 @@ export default {
         }
     }
 }
-</style>>
+</style>

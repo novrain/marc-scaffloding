@@ -11,18 +11,18 @@ export default {
     methods: {
         async refetch() {
             if (this.processDef) {
-                let url = '/fl/process/query/tasks'
+                let url = '/fl/process/query/process-instances'
                 let query = {
                     processDefinitionId: this.processDef.flowableInstance,
                     includeProcessVariables: true,
                     includeIdentityLinks: true,
-                    sort: 'createTime',
+                    sort: 'startTime',
                     order: 'desc',
                     size: this.size,
                     start: (this.page - 1) * this.size
                 }
                 if (this.dataType === 'finished') {
-                    url = '/fl/process/query/historic-task-instances'
+                    url = '/fl/process/query/historic-process-instances'
                     query = {
                         processDefinitionId: this.processDef.flowableInstance,
                         includeProcessVariables: true,
@@ -37,16 +37,13 @@ export default {
                 // 这样的逻辑要放到封装的接口中去
                 if (!this.user.isAdmin) {// 非管理只能查看 有连接 关系的任务以及实例 
                     const involvedUser = U.idOfQueryUser(this.user)
+                    query.involvedUser = `${involvedUser}%`
                     try {
                         let involvedGroups = await this.fetchUserInvolvedGroups()
-                        involvedGroups = involvedGroups.map(g => {
-                            return `${g}%`
-                        })
-                        if (this.dataType === 'finished') {
-                            query.taskInvolvedUser = involvedUser
-                            query.taskInvolvedGroups = involvedGroups
-                        } else {
-                            query.involvedUser = involvedUser
+                        if (involvedGroups.length > 0) {
+                            involvedGroups = involvedGroups.map(g => {
+                                return `${g}%`
+                            })
                             query.involvedGroups = involvedGroups
                         }
                     }
@@ -57,28 +54,22 @@ export default {
                 }
                 this.$axios.silentPost(url, query, true)
                     .then((res) => {
-                        this.flows = res.data.data.map(task => {
+                        this.flows = res.data.data.map(flow => {
                             const formData = {}
-                            task.variables.forEach(v => {
+                            flow.variables.forEach(v => {
                                 formData[v.name] = v.value
                             })
-                            //@ Todo，由每个流程从参数里构造出来
-                            // const name = task.name || 'example'
-                            // const summary = task.summary || 'summary'
-                            // const desc = task.desc || 'desc'
                             const { name, summary, desc } = this.flowFuncs.infoOfFlow.call(this, formData)
-                            task.assignee = U.parseAssignee(task.assignee)
                             return {
-                                processInstanceId: task.processInstanceId,
-                                createTime: moment(task.createTime).format('YYYY-MM-DD HH:mm:ss'),
-                                dueDate: task.dueDate,
-                                suspended: task.suspended,
+                                processInstanceId: flow.id,
+                                createTime: moment(flow.createTime).format('YYYY-MM-DD HH:mm:ss'),
+                                dueDate: flow.dueDate,
+                                suspended: flow.suspended,
                                 name,
                                 summary,
                                 desc,
                                 formData,
-                                currentNode: task.name,
-                                task: task // 自身是task
+                                finished: this.dataType === 'finished'
                             }
                         })
                         this.total = res.data.total

@@ -61,7 +61,7 @@ export default {
                 child = <AuthCheckStrictlyTree target={user} checkStrictly key={user.id + 'o'}
                     sourceUrlKey='organizations' targetUrlKey='users' resultKey='organizations' />
             }
-            return (<ATabPane tab="组织" key="organization s">
+            return (<ATabPane tab="组织" key="organizations" class='tabpanel'>
                 {child}
             </ATabPane>)
         },
@@ -74,7 +74,7 @@ export default {
                 child = <AuthCheckStrictlyTree target={user} checkStrictly key={user.id + 'p'}
                     sourceUrlKey='positions' targetUrlKey='users' resultKey='positions' />
             }
-            return (<ATabPane tab="职位" key="positions">
+            return (<ATabPane tab="职位" key="positions" class='tabpanel'>
                 {child}
             </ATabPane>)
         },
@@ -86,17 +86,13 @@ export default {
                 const user = this.findUser(this.selectedRowKeys[0])
                 child = <RoleOfUser user={user} key={user.id + 'r'} />
             }
-            return (<ATabPane tab="角色" key="roles">
+            return (<ATabPane tab="角色" key="roles" class='tabpanel'>
                 {child}
             </ATabPane>)
         },
 
         renderRelated() {
-            return <ATabs type="card" style={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
+            return <ATabs type="card" class='ii-tabs'>
                 {this.renderRoles()}
                 {this.renderOrganizations()}
                 {this.renderPositions()}
@@ -350,9 +346,7 @@ export default {
                 <a-card title="用户管理"
                     bordered={false}
                     bodyStyle={{ padding: "2px", flex: 1 }}
-                    style={{
-                        height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white',
-                        display: 'flex', flexDirection: 'column'                    }}>
+                    class='ii-card'>
                     <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="refresh" onClick={this.refetch}>
                         <AIcon type="reload" /> 刷新
                     </AButton>
@@ -373,7 +367,7 @@ export default {
                         </AButton>
                     </ADropdown>
                     <IiTableLayout
-                        size='middle'
+                        size='small'
                         headheight={68}
                         total={this.total}
                         pageSize={this.limit}
@@ -403,9 +397,7 @@ export default {
                         {this.renderUser()}
                     </ACol>
                     <ACol span={12} class={classNames('wrapper__row__col', 'wrapper__row__col_white')}>
-                        <div class={classNames('wrapper__row__col__tabs', 'detailCard')}>
-                            {this.renderRelated()}
-                        </div>
+                        {this.renderRelated()}
                     </ACol>
                 </ARow>
             </div>
@@ -427,6 +419,35 @@ export default {
     }
 }
 
+.ii-card {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.ii-tabs {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+
+    /deep/ .ant-tabs-content {
+        padding-left: 0;
+        height: 100%;
+    }
+
+    .tabpanel {
+        height: 100%;
+    }
+
+    /deep/ .ant-tabs-bar {
+        margin: 0;
+    }
+}
+
 .table {
     :global(.ant-table-fixed-header .ant-table-scroll .ant-table-header) {
         height: 59px;
@@ -442,15 +463,6 @@ export default {
 
             &_white {
                 background-color: white;
-            }
-
-            &__tabs {
-                margin: 10px 0 10px 0;
-                background-color: white;
-
-                &__table {
-                    padding: 0;
-                }
             }
         }
     }

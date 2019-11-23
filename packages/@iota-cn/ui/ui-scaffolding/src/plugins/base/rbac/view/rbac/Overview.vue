@@ -29,7 +29,7 @@ export default {
                         <a-card title={<div class='ii-head'><IiIcon type='menu' /><span>我的菜单</span></div>}
                             bordered={false}
                             bodyStyle={{ padding: '2px', overflow: 'scroll', height: '100%' }}
-                            style={{ height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
+                            class='ii-card'>
                             {this.menus.length > 0 ? <AuthTree tree={this.menus} /> : null}
                         </a-card>
                     </ACol>
@@ -37,7 +37,7 @@ export default {
                         <a-card title="我的操作"
                             bordered={false}
                             bodyStyle={{ padding: '2px', overflow: 'scroll', height: '100%' }}
-                            style={{ height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
+                            class='ii-card'>
                             {this.operations.length > 0 ? <AuthTree tree={this.operations} /> : null}
                         </a-card>
                     </ACol>
@@ -56,5 +56,14 @@ export default {
         color: $primary-color;
         margin-left: 8px;
     }
+}
+
+.ii-card {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
 }
 </style>

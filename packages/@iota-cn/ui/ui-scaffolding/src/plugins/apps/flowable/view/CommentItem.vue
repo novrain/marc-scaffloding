@@ -56,7 +56,7 @@ import * as U from '../util'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 export default {
-    props: ['index', 'id', 'user', 'comment', 'onDelete', 'onCreate', 'onUpdate'],
+    props: ['index', 'id', 'user', 'comment', 'onDelete', 'onCreate', 'onUpdate', 'disabled'],
     data() {
         let editorable = false
         let innerComment = { message: '' }
@@ -80,7 +80,7 @@ export default {
             },
             innerComment: innerComment,  // 内部的保存 comment 的变量
             newComment: !this.comment, // 如果没有传递 comment ，就是新建状态
-            editorable: editorable, // 如果是当前用户的comment，就是可编辑的
+            editorable: editorable && !this.disabled, // 如果是当前用户的comment，就是可编辑的
             status: 'view' // 当是可编辑的时候，可以切换编辑状态 view / edit
         }
     },

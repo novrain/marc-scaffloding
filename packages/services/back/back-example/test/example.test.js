@@ -31,9 +31,11 @@ describe('init auth tables', function () {
         await models.UserOrganization.sync({ force: true });
         await models.UserPosition.sync({ force: true });
         await models.UserRole.sync({ force: true });
-        await models.User.create({ username: 'admin', password: '123456', isAdmin: true })
+        await models.User.create({ id: 'admin', username: 'admin', password: '123456', isAdmin: true })
         await models.Dictionary.sync({ force: true })
         await models.DictionaryItem.sync({ force: true })
+        await models.DictionaryItem.sync({ force: true })
+        await models.ProcessDef.sync({ fore: true })
     });
 
     after(function () {

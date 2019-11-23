@@ -72,6 +72,7 @@ export default {
                 pageSizeOptions={this.pageSizeOptions}
                 showTotal={total => this.$t('iota.frame.components.tablelayout.total', { total })} />
         ) : null;
+        const size = this.size || 'middle'
         return (
             <div class={classNames('layout', this.className)}>
                 {
@@ -108,7 +109,7 @@ export default {
                         onRowContextMenu={this.onEvent('rowContextMenu')}
                         bordered={this.bordered}
                         rowKey={this.rowKey || 'id'}
-                        size={this.size || 'default'}
+                        size={size}
                         pagination={false} />
                     {
                         showBottomPagination ? <div class={classNames('layout__controls', 'layout__controls__bottom')}>

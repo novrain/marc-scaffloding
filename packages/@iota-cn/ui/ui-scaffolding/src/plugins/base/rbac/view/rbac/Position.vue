@@ -211,15 +211,11 @@ export default {
                     }
                 }
             }
-            return <ATabs type="card" style={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
-                <ATabPane tab="角色" key="roles">
+            return <ATabs type="card" class='ii-tabs'>
+                <ATabPane tab="角色" key="roles" class='tabpanel'>
                     {role}
                 </ATabPane>
-                <ATabPane tab="用户" key="users">
+                <ATabPane tab="用户" key="users" class='tabpanel'>
                     {user}
                 </ATabPane>
             </ATabs>
@@ -238,7 +234,7 @@ export default {
                         <a-card title="职位管理"
                             bordered={false}
                             bodyStyle={{ padding: '2px', overflow: 'scroll', height: '100%' }}
-                            style={{ height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
+                            class='ii-card'>
                             <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="refresh" onClick={this.refetch}>
                                 <AIcon type="reload" /> 刷新
                             </AButton>
@@ -272,9 +268,7 @@ export default {
                         </a-card>
                     </ACol>
                     <ACol span={16} class={classNames('wrapper__row__col', 'wrapper__row__col_white')}>
-                        <div class={classNames('wrapper__row__col__tabs', 'detailCard')}>
-                            {this.renderRelated()}
-                        </div>
+                        {this.renderRelated()}
                     </ACol>
                 </ARow>
             </div>
@@ -290,6 +284,35 @@ export default {
     box-shadow: $ii-box-shadow;
 }
 
+.ii-card {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.ii-tabs {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+
+    /deep/ .ant-tabs-content {
+        padding-left: 0;
+        height: 100%;
+    }
+
+    .tabpanel {
+        height: 100%;
+    }
+
+    /deep/ .ant-tabs-bar {
+        margin: 0;
+    }
+}
+
 .wrapper {
     &__row {
         height: 100% !important;
@@ -299,15 +322,6 @@ export default {
 
             &_white {
                 background-color: white;
-            }
-
-            &__tabs {
-                margin: 10px 0 10px 0;
-                background-color: white;
-
-                &__table {
-                    padding: 0;
-                }
             }
         }
     }

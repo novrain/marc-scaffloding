@@ -245,3 +245,25 @@ export const unbindRoleAndPosition = async (ctx, next) => {
     const models = ctx.iota.dc.models;
     return Utils.unbindSourceFrom(ctx, models.Position, models.PositionRole, 'positionId', models.Role, 'roleId')
 }
+
+/**
+ * 查询用户自己所关联的角色
+ * @param {*} ctx 
+ * @param {*} next 
+ */
+export const findRolesAssignToSelf = async (ctx, next) => {
+    const user = ctx.session.user;
+    const models = ctx.iota.dc.models;
+    const orderBy = ctx.query.order_by || 'createdAt';
+    const orderDirection = ctx.query.order_direction || 'DESC';
+    let roles = await Utils.findAssignedByUser(user, models.Role, models.UserRole, 'userMembers')
+    let convertor = undefined;
+    if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
+        convertor = moment;
+    }
+    Utils.sort(roles, orderBy, orderDirection, convertor);
+    ctx.status = 200;
+    ctx.body = {
+        roles: roles
+    };
+}

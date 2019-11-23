@@ -12,7 +12,7 @@ export default {
                     processDefinitionId: this.processDef.flowableInstance,
                     assigneeLike: `${U.idOfQueryUser(this.user)}%`, // 查询的时候模糊
                     includeProcessVariables: true,
-                    includeIdentityLinks: true,
+                    // includeIdentityLinks: true,
                     sort: 'createTime',
                     order: 'desc',
                     size: this.size,
@@ -25,10 +25,6 @@ export default {
                             task.variables.forEach(v => {
                                 formData[v.name] = v.value
                             })
-                            //@ Todo，由每个流程从参数里构造出来
-                            // const name = task.name || 'example'
-                            // const summary = task.summary || 'summary'
-                            // const desc = task.desc || 'desc'
                             const { name, summary, desc } = this.flowFuncs.infoOfFlow.call(this, formData)
                             task.assignee = U.parseAssignee(task.assignee)
                             return {
@@ -40,8 +36,8 @@ export default {
                                 summary,
                                 desc,
                                 formData,
-                                currentNode: task.name,
-                                task: task // 自身是task
+                                task: task, // 自身是task
+                                finished: this.dataType === 'finished'
                             }
                         })
                         this.total = res.data.total

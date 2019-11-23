@@ -22,6 +22,7 @@ export default function (app, router, opts) {
 
     //Organizations
     router.get('/authorizations/organizations', createMiddleware(Organization.findOrg));
+    router.get('/authorizations/assigned_organizations', createMiddleware(Organization.findOrganizationsAssignToSelf));
     router.post('/authorizations/organizations', createMiddleware(Organization.createOrg));
     router.put('/authorizations/organizations/:id', createMiddleware(Organization.updateOrg));
     router.delete('/authorizations/organizations/:id?', createMiddleware(Organization.deleteOrg));
@@ -38,6 +39,7 @@ export default function (app, router, opts) {
 
     //Positions    
     router.get('/authorizations/positions', createMiddleware(Position.findPosition));
+    router.get('/authorizations/assigned_positions', createMiddleware(Position.findPositionsAssignToSelf));
     router.post('/authorizations/positions', createMiddleware(Position.createPosition));
     router.put('/authorizations/positions/:id', createMiddleware(Position.updatePosition));
     router.delete('/authorizations/positions/:id?', createMiddleware(Position.deletePosition));
@@ -54,6 +56,7 @@ export default function (app, router, opts) {
 
     //Roles
     router.get('/authorizations/roles', createMiddleware(Role.findRole));
+    router.get('/authorizations/assigned_roles', createMiddleware(Role.findRolesAssignToSelf));
     router.post('/authorizations/roles', createMiddleware(Role.createRole));
     router.put('/authorizations/roles/:id', createMiddleware(Role.updateRole));
     router.delete('/authorizations/roles/:id?', createMiddleware(Role.deleteRole));

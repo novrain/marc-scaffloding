@@ -147,3 +147,25 @@ export const removeUseFromPosition = async (ctx, next) => {
     const models = ctx.iota.dc.models;
     await Utils.unbindASourceToUsers(ctx, models.Position, 'positionId', models.UserPosition, 'positionId', true, 'position');
 }
+
+/**
+ * 查询用户自己所关联的职位
+ * @param {*} ctx 
+ * @param {*} next 
+ */
+export const findPositionsAssignToSelf = async (ctx, next) => {
+    const user = ctx.session.user;
+    const models = ctx.iota.dc.models;
+    const orderBy = ctx.query.order_by || 'createdAt';
+    const orderDirection = ctx.query.order_direction || 'DESC';
+    let positions = await Utils.findAssignedByUser(user, models.Position, models.UserPosition, 'members')
+    let convertor = undefined;
+    if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
+        convertor = moment;
+    }
+    Utils.sort(positions, orderBy, orderDirection, convertor);
+    ctx.status = 200;
+    ctx.body = {
+        positions: positions
+    };
+}

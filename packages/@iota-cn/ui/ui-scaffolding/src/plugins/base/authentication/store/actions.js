@@ -15,10 +15,11 @@ export default {
                 localStorage.setItem('ii:user', JSON.stringify(res.data))
             }
             res.data.loggedIn = true // 标记登录成功
-            dispatch('updateUser', res.data)
-            if (redirect) {
-                that.$router.push({ path: redirect })
-            }
+            dispatch('updateUser', res.data).then(() => {
+                if (redirect) {
+                    that.$router.push({ path: redirect })
+                }
+            })
         }, noop)
     },
     trySignin({ dispatch }) {
@@ -45,6 +46,7 @@ export default {
             // 清理 localStorage
             localStorage.removeItem('ii:user')
             cookie.iotaRemove('iota')
+            cookie.iotaRemove('iota.sig')
             commit(T.GLOBAL_AUTHENTICATION_SIGNOUT)
             // 更新、判断登录状态
             window.location.reload()

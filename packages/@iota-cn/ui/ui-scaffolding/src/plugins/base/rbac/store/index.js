@@ -8,6 +8,7 @@ import UserProfileControl from '../view/profile/UserProfileControl'
 Vue.component('ii-rbac-menu', Menu)
 Vue.component('ii-user-profile-control', UserProfileControl)
 
+
 export default (opts) => {
     const { id, containerId } = opts
     const state = {

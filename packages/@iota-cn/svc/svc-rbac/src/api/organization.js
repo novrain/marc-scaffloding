@@ -7,8 +7,11 @@ import * as Utils from './utils'
 import moment from 'moment'
 import { valBetween, uniqueArray } from '@iota-cn/svc-util'
 import { Validator } from '@iota-cn/util-validation';
+
+
 /**
  * 查询组织
+ * 自身关联以及自己、自用户创建的
  *
  * @param {*} ctx
  * @param {*} next
@@ -146,4 +149,26 @@ export const addUserToOrg = async (ctx, next) => {
 export const removeUseFromOrg = async (ctx, next) => {
     const models = ctx.iota.dc.models;
     await Utils.unbindASourceToUsers(ctx, models.Organization, 'organizationId', models.UserOrganization, 'organizationId', true, 'organization');
+}
+
+/**
+ * 查询用户自己所关联的组织
+ * @param {*} ctx 
+ * @param {*} next 
+ */
+export const findOrganizationsAssignToSelf = async (ctx, next) => {
+    const user = ctx.session.user;
+    const models = ctx.iota.dc.models;
+    const orderBy = ctx.query.order_by || 'createdAt';
+    const orderDirection = ctx.query.order_direction || 'DESC';
+    let organizations = await Utils.findAssignedByUser(user, models.Organization, models.UserOrganization, 'members')
+    let convertor = undefined;
+    if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
+        convertor = moment;
+    }
+    Utils.sort(organizations, orderBy, orderDirection, convertor);
+    ctx.status = 200;
+    ctx.body = {
+        organizations: organizations
+    };
 }

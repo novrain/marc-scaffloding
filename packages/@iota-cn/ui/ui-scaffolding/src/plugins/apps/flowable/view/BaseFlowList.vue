@@ -1,11 +1,17 @@
 <template>
     <div class="ii-flow-list">
-        <a-radio-group v-if="!history.disabled"
-            buttonStyle='solid'
-            v-model="dataType">
-            <a-radio-button value="running">未处理</a-radio-button>
-            <a-radio-button value="finished">已处理</a-radio-button>
-        </a-radio-group>
+        <div class="toolbar">
+            <a-radio-group v-if="!history.disabled"
+                buttonStyle='solid'
+                v-model="dataType">
+                <a-radio-button value="running">未处理</a-radio-button>
+                <a-radio-button value="finished">已处理</a-radio-button>
+            </a-radio-group>
+            <a-input-search placeholder="按名称搜索"
+                class="search"
+                @search="refetch"
+                enterButton />
+        </div>
         <div class="flows"
             v-if="flows.length <= 0">
             <ii-empty class="empty" />
@@ -17,6 +23,10 @@
                     <ii-flow-item :key='index'
                         @click="onSelectFlow"
                         :flow='flow'
+                        :user='user'
+                        :onCancel='onCancel'
+                        :onSuspend='onSuspend'
+                        :onActive='onActive'
                         :selected='selectedFlow ? selectedFlow.processInstanceId===flow.processInstanceId : false' />
                 </template>
             </div>
@@ -29,6 +39,7 @@
 </template>
 
 <script>
+import { message } from 'ant-design-vue/es'
 import * as U from '../util'
 import FlowItem from './FlowItem'
 
@@ -38,13 +49,13 @@ export default {
     },
     // flowFuncs queryFilter 需要整理合并
     // queryFilter 是给需要针对某些场景做的查询条件过滤，但只支持在varaible中过滤，参数在发起时就需要配合填入
-    props: ['processDef', 'user', 'selectedFlow', 'flowFuncs', 'queryFilter'],
+    props: ['processDef', 'user', 'selectedFlow', 'flowFuncs', 'queryFilter', 'active'],
     data() {
         return {
             flows: [],
             dataType: 'running',
             page: 1,
-            size: 20,
+            size: 100,
             total: 0,
             history: {
                 disabled: true,
@@ -69,6 +80,13 @@ export default {
                 this.flows = []
                 this.refetch()
             }
+        },
+        active: {
+            handler() {
+                if (this.active) {//变化前的状态
+                    this.refetch()
+                }
+            }
         }
     },
     methods: {
@@ -77,10 +95,11 @@ export default {
         },
 
         // 通用方法，与权限相关的应放置后端处理
+        // 相关方法是全局注入的
         async fetchUserInvolvedGroups() {
-            const organizations = await this.$fetchOrganizations()
-            const positions = await this.$fetchPositions()
-            const roles = await this.$fetchRoles()
+            const organizations = await this.$fetchAssignedOrganizations()
+            const positions = await this.$fetchAssignedPositions()
+            const roles = await this.$fetchAssignedRoles()
             let involvedGroups = organizations.map(organization => {
                 return U.idOfQueryOrganization(organization)
             })
@@ -91,6 +110,40 @@ export default {
                 return U.idOfQueryRole(role)
             }))
             return involvedGroups
+        },
+        // 针对流程的操作
+        onCancel({ flow }) {
+            return this.$axios.silentDelete(`/fl/process/runtime/process-instances/${flow.processInstanceId}`, true)
+                .then(() => {
+                    message.success('任务已取消')
+                    this.refetch()
+                }).catch(() => {
+                    message.success('任务取消失败，请稍后再试')
+                })
+        },
+        onSuspend({ flow }) {
+            return this.$axios.silentPut(`/fl/process/runtime/process-instances/${flow.processInstanceId}`, {
+                action: 'suspend'
+            }, true)
+                .then(() => {
+                    message.success('任务已挂起')
+                    flow.suspended = true
+                    // this.refetch()
+                }).catch(() => {
+                    message.success('任务挂起失败，请稍后再试')
+                })
+        },
+        onActive({ flow }) {
+            return this.$axios.silentPut(`/fl/process/runtime/process-instances/${flow.processInstanceId}`, {
+                action: 'activate'
+            }, true)
+                .then(() => {
+                    message.success('任务已激活')
+                    flow.suspended = false
+                    // this.refetch()
+                }).catch(() => {
+                    message.success('任务激活失败，请稍后再试')
+                })
         }
     }
 }
@@ -107,34 +160,42 @@ export default {
     align-items: center;
     padding: 10px 0;
 
-    /deep/ .ant-radio-group {
+    .toolbar {
+        display: flex;
         width: 100%;
-        text-align: center;
-        border-bottom: 1px solid $ii-gray-200;
         margin: 0 0 10px 0;
 
-        .ant-radio-button-wrapper, .ant-radio-button-wrapper-checked {
-            border: none;
-            box-shadow: none;
-
-            &:hover {
-                border: none;
-                box-shadow: none;
-            }
-
-            &:focus {
-                border: none;
-                box-shadow: none;
-            }
-
-            &:focus-within {
-                outline: none;
-            }
+        .search {
+            flex: 1;
         }
 
-        .ant-radio-button-wrapper-checked {
-            background-color: $ii-gray-100;
-            color: $primary-color;
+        /deep/ .ant-radio-group {
+            text-align: center;
+
+            // border-bottom: 1px solid $ii-gray-200;
+            .ant-radio-button-wrapper, .ant-radio-button-wrapper-checked {
+                border: none;
+                box-shadow: none;
+
+                &:hover {
+                    border: none;
+                    box-shadow: none;
+                }
+
+                &:focus {
+                    border: none;
+                    box-shadow: none;
+                }
+
+                &:focus-within {
+                    outline: none;
+                }
+            }
+
+            .ant-radio-button-wrapper-checked {
+                background-color: $ii-gray-100;
+                color: $primary-color;
+            }
         }
     }
 

@@ -4,7 +4,7 @@ import moment from 'moment'
 import * as U from '../util'
 
 export default {
-    props: ['user', 'flow'],
+    props: ['user', 'flow', 'active'],
     data() {
         return {
             running: {
@@ -18,8 +18,23 @@ export default {
     mounted() {
         this.refetch()
     },
+    watch: {
+        flow: {
+            handler() {
+                this.refetch()
+            },
+            deep: true
+        },
+        active: {
+            handler() {
+                this.refetch()
+            }
+        }
+    },
     methods: {
         refetch() {
+            this.running.items = []
+            this.finished.items = []
             this.$axios.silentPost(`/fl/process/query/historic-task-instances`, {
                 size: 2000,// 不支持分页，暂时认为没有这么多任务流程
                 processInstanceId: this.flow.processInstanceId,
@@ -31,7 +46,7 @@ export default {
                         d.startTime = moment(d.startTime).format('YYYY-MM-DD HH:mm:ss')
                         if (d.endTime) {
                             d.endTime = moment(d.endTime).format('YYYY-MM-DD HH:mm:ss')
-                            this.finished.push(d)
+                            this.finished.items.push(d)
                         } else {
                             if (d.dueDate) {
                                 d.dueDate = moment(d.dueDate).format('YYYY-MM-DD HH:mm:ss')
@@ -49,7 +64,7 @@ export default {
             )
         },
         renderRunning() {
-
+            const disabled = this.flow.finished || this.flow.suspended
             const columns = [
                 {
                     title: '流程节点',
@@ -84,15 +99,15 @@ export default {
                     dataIndex: 'operation',
                     width: '20%',
                     customRender: () => {
-                        return (
-                            <div class='operation'>
+                        return disabled ?
+                            null
+                            : <div class='operation' >
                                 <a>指派</a>
                                 <ADivider type="vertical" />
                                 <a>认领</a>
                                 <ADivider type="vertical" />
                                 <a>取消</a>
                             </div>
-                        )
                     }
                 }
             ]
@@ -100,7 +115,7 @@ export default {
                 <div class='running'>
                     <h6>待处理</h6>
                     <IiTableLayout
-                        size='middle'
+                        size='small'
                         headheight={68}
                         showSizeChanger={false}
                         className={'table'}
@@ -112,7 +127,6 @@ export default {
             )
         },
         renderFinished() {
-
             const columns = [
                 {
                     title: '流程节点',
@@ -147,7 +161,7 @@ export default {
                 <div class='finished'>
                     <h6>已完成</h6>
                     <IiTableLayout
-                        size='middle'
+                        size='small'
                         headheight={68}
                         showSizeChanger={false}
                         className={'table'}
@@ -194,6 +208,8 @@ export default {
 
     .running {
         height: 32%;
+        display: flex;
+        flex-direction: column;
 
         .operation {
             display: flex;
@@ -208,6 +224,8 @@ export default {
 
     .finished {
         height: 32%;
+        display: flex;
+        flex-direction: column;
     }
 }
 </style>

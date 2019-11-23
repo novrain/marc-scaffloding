@@ -1,12 +1,14 @@
 <template>
     <div class="ii-comments">
         <ii-comment-item :user='user'
+            v-if='commentable'
             :onCreate='onCreateComment' />
         <template v-for="(comment, index) in comments.items">
             <ii-comment-item :key="comment.id"
                 :comment='comment'
                 :index='index'
                 :user='user'
+                :disabled='!commentable'
                 :onDelete='onDeleteComment'
                 :onUpdate='onUpdateComment' />
         </template>
@@ -16,7 +18,7 @@
 <script>
 import CommentItem from './CommentItem'
 export default {
-    props: ['user', 'flow'],
+    props: ['user', 'flow', 'active'],
     components: {
         'ii-comment-item': CommentItem
     },
@@ -33,12 +35,18 @@ export default {
                 this.refetch()
             }
         },
+        activce: {
+            handler() {
+                this.refetch()
+            }
+        }
     },
     mounted() {
         this.refetch()
     },
     methods: {
         refetch() {
+            this.comments.items = []
             const instanceId = this.flow.processInstanceId
             this.$axios.silentGet(`/fl/process/history/historic-process-instances/${instanceId}/comments`, true)
                 .then((res) => {
@@ -63,6 +71,11 @@ export default {
                 .then(() => {
                     this.comments.items.splice(index, 1)
                 })
+        }
+    },
+    computed: {
+        commentable() {
+            return true
         }
     }
 }

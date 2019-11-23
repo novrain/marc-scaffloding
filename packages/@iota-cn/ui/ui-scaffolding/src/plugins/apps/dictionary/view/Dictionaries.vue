@@ -293,7 +293,7 @@ export default {
                         <ncform formName='_editDictForm' formSchema={this.dictionary.schema} vModel={this.dictionary.editValue} />
                     </AModal>
                     <IiTableLayout
-                        size='middle'
+                        size='small'
                         headheight={68}
                         total={this.dictionary.total}
                         pageSize={this.dictionary.limit}
@@ -434,7 +434,7 @@ export default {
                     </AModal>,
                     <IiTableLayout
                         key='table'
-                        size='middle'
+                        size='small'
                         headheight={68}
                         className={'table'}
                         columns={columns}

@@ -11,14 +11,14 @@ export default {
     methods: {
         refetch() {
             if (this.processDef) {
-                this.$axios.silentPost('/fl/process/query/historic-process-instances', {
+                let url = '/fl/process/query/process-instances'
+                let query = {
                     processDefinitionId: this.processDef.flowableInstance,
                     includeProcessVariables: true,
                     sort: 'startTime',
                     order: 'desc',
                     size: this.size,
                     start: (this.page - 1) * this.size,
-                    finished: this.dataType === 'finished' ? true : false,
                     variables: [
                         {
                             name: "initiatorId",
@@ -27,17 +27,34 @@ export default {
                             type: "string"
                         }
                     ]
-                }, true)
+                }
+                if (this.dataType === 'finished') {
+                    url = '/fl/process/query/historic-process-instances'
+                    query = {
+                        processDefinitionId: this.processDef.flowableInstance,
+                        includeProcessVariables: true,
+                        sort: 'startTime',
+                        order: 'desc',
+                        size: this.size,
+                        start: (this.page - 1) * this.size,
+                        finished: true,
+                        variables: [
+                            {
+                                name: "initiatorId",
+                                value: this.user.id,
+                                operation: "equals",
+                                type: "string"
+                            }
+                        ]
+                    }
+                }
+                this.$axios.silentPost(url, query, true)
                     .then((res) => {
                         this.flows = res.data.data.map(process => {
                             const formData = {}
                             process.variables.forEach(v => {
                                 formData[v.name] = v.value
                             })
-                            //@ Todo，由每个流程从参数里构造出来
-                            // const name = process.name || 'example'
-                            // const summary = process.summary || 'summary'
-                            // const desc = process.desc || 'desc'
                             const { name, summary, desc } = this.flowFuncs.infoOfFlow.call(this, formData)
                             return {
                                 processInstanceId: process.id,
@@ -46,7 +63,10 @@ export default {
                                 summary,
                                 desc,
                                 formData,
-                                // currentNode: process.name
+                                // 任务是否挂起，必须明确有值，否则认为无法处理
+                                suspended: process.suspended !== undefined ? process.suspended : undefined,
+                                endTime: process.endTime,
+                                finished: this.dataType === 'finished'
                             }
                         })
                         this.total = res.data.total

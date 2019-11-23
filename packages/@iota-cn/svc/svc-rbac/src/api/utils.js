@@ -385,6 +385,32 @@ export const checkRsByUser = async (user, dc, rss) => {
     }
     return true;
 }
+/**
+ * 查询用户所关联的
+ * 
+ * @param {*} user 
+ * @param {*} model 
+ * @param {*} through 
+ * @param {*} throughAs 
+ * @param {*} includeAttributes 
+ */
+export const findAssignedByUser = async (user, model, through, throughAs, includeAttributes = []) => {
+    let assignedCondition = {
+        include: [
+            {
+                model: through,
+                as: throughAs,
+                where: {
+                    userId: user.id
+                },
+                attributes: includeAttributes
+            }
+        ],
+        distinct: true
+    };
+    let assigned = await model.findAndCountAll(assignedCondition);
+    return assigned.rows
+}
 
 /**
  * 

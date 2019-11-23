@@ -42,19 +42,16 @@ export default {
     components: {
         'ii-sub-menu': SubMenu
     },
-
     props: {
         id: String, // 支持多实例
         containerId: String // 归属Container， 与ID 决定在store中的位置
     },
-
     data() {
         return {
             openKeys: [],
             selectedKeys: []
         }
     },
-
     mounted() {
         // 带变量的命名空间，暂时使用这种方式调用Action
         // 模块应该清楚自己所在的命名空间
@@ -63,13 +60,14 @@ export default {
             this.updateMenuState()
         })
     },
-
+    destroyed() {
+        this.$clearRBACInfo()
+    },
     watch: {
         $route() {
             this.updateMenuState()
         }
     },
-
     methods: {
         updateMenuState() {
             // 获取到数据后再刷新
@@ -93,22 +91,18 @@ export default {
                 }
             }
         },
-
         onSelect({ selectedKeys }) {
             this.selectedKeys = selectedKeys
         },
-
         onOpenChange(openKeys) {
             this.openKeys = openKeys
         }
     },
-
     computed: {
         collapsed() {
             const state = this.$store.state.iota[this.containerId || 'container']
             return state.layout.console.left.collapsed
         },
-
         menus() {
             const state = this.$store.state.iota[this.containerId || 'container'][this.id || 'menu']
             return state.menus.roots[0].children
