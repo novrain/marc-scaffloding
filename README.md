@@ -30,9 +30,10 @@ packages
     ui          // 客户端包，包含脚手架
     util        // 公共包
   @iota-fork    // 修改的第三方包
-  services
-    back        // 整合服务侧相关包输出的独立应用服务端
-    front       // 整合客户端相关包输出的独立应用客户端，与某应用服务端对应
+  applications  // 应用目录
+    services
+        back    // 整合服务侧相关包输出的独立应用服务端
+        front   // 整合客户端相关包输出的独立应用客户端，与某应用服务端对应
 
 ```
 
@@ -46,7 +47,7 @@ packages
 客户端
 ```
 目录(不需要切换)
-packages/services/front/front-example
+packages/applications/services/front/front-example
 
 lerna run --stream --scope @iota-cn/front-example serve
 ```
@@ -61,7 +62,7 @@ vue ui
 服务端
 ```
 目录(不需要切换)：
-packages/services/back/back-example
+packages/applications/services/back/back-example
 
 启动：
 lerna run compile
