@@ -8,6 +8,7 @@
         "packages/@iota-cn/util/*",
         "packages/@iota-cn/ui/*",
         "packages/@iota-cn/svc/*",
+        "packages/applications/@iota-app/svc/*",
         "packages/applications/services/back/*",
         "packages/applications/services/front/*"
     ],

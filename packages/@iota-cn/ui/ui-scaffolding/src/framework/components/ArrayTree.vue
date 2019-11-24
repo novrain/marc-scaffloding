@@ -1,6 +1,6 @@
 <script>
 export default {
-    name: 'IiAuthTree',
+    name: 'IiArrayTree',
     props: [
         'checkStrictly',
         'checkable',

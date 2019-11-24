@@ -1,5 +1,4 @@
 <script>
-import { AuthTree } from '../../components'
 import * as U from '../../util'
 
 export default {
@@ -30,7 +29,7 @@ export default {
                             bordered={false}
                             bodyStyle={{ padding: '2px', overflow: 'scroll', height: '100%' }}
                             class='ii-card'>
-                            {this.menus.length > 0 ? <AuthTree tree={this.menus} /> : null}
+                            {this.menus.length > 0 ? <IiArrayTree tree={this.menus} /> : null}
                         </a-card>
                     </ACol>
                     <ACol span={12} style={{ height: '100%' }}>
@@ -38,7 +37,7 @@ export default {
                             bordered={false}
                             bodyStyle={{ padding: '2px', overflow: 'scroll', height: '100%' }}
                             class='ii-card'>
-                            {this.operations.length > 0 ? <AuthTree tree={this.operations} /> : null}
+                            {this.operations.length > 0 ? <IiArrayTree tree={this.operations} /> : null}
                         </a-card>
                     </ACol>
                 </ARow>

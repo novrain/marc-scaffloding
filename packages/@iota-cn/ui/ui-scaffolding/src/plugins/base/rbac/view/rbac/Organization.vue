@@ -1,7 +1,6 @@
 <script>
 import classNames from 'classnames'
 import { Menu as AMenu } from 'ant-design-vue'
-import { AuthTree } from '../../components'
 import * as U from '../../util'
 
 import UserOfOrganization from './UserOfOrganization'
@@ -240,7 +239,7 @@ export default {
                                 <AIcon type="plus" /> 创建组织
                             </AButton>
                             {
-                                tree.length > 0 ? <AuthTree
+                                tree.length > 0 ? <IiArrayree
                                     tree={tree}
                                     onSelect={this.onTreeSelect}
                                     onRightClick={this.treeNodeonRightClick}

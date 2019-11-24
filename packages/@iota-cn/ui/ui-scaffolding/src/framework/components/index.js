@@ -10,6 +10,7 @@ import NameValidatorItem from './formitems/NameValidatorItem'
 import DescValidatorItem from './formitems/DescValidatorItem'
 import SimpleEditor from './SimpleEditor'
 import Empty from './Empty'
+import ArrayTree from './ArrayTree'
 
 const components = [
     Icon,
@@ -20,7 +21,8 @@ const components = [
     NameValidatorItem,
     DescValidatorItem,
     SimpleEditor,
-    Empty
+    Empty,
+    ArrayTree
 ]
 
 export {
@@ -32,7 +34,8 @@ export {
     NameValidatorItem,
     DescValidatorItem,
     SimpleEditor,
-    Empty
+    Empty,
+    ArrayTree
 }
 
 const install = function (Vue) {

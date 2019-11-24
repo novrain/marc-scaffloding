@@ -52,13 +52,13 @@ export default {
             this.selectedRows = selectedRows
         },
 
-        onRowClick(record, index) {
+        onRowClick(record) {
             let { selectedRowKeys, selectedRows } = this
-            if (selectedRowKeys.indexOf(index) === -1) {
-                selectedRowKeys.push(index)
+            if (selectedRowKeys.indexOf(record.id) === -1) {
+                selectedRowKeys.push(record.id)
                 selectedRows.push(record)
             } else {
-                selectedRowKeys = selectedRowKeys.filter(i => i !== index)
+                selectedRowKeys = selectedRowKeys.filter(i => i !== record.id)
                 selectedRows = selectedRows.filter(i => i.id !== record.id)
             }
             this.selectedRowKeys = selectedRowKeys

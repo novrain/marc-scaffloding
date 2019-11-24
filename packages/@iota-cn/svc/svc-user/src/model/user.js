@@ -36,7 +36,8 @@ export default function (dc) {
             username: {
                 type: dc.ORM.STRING,
                 allowNull: false,
-                validate: { checkName: checkName }
+                validate: { checkName: checkName },
+                unique: true
             },
             password: {
                 type: dc.ORM.STRING,
@@ -52,11 +53,13 @@ export default function (dc) {
             },
             email: {
                 type: dc.ORM.STRING,
-                validate: { checkEmail: checkEmail }
+                validate: { checkEmail: checkEmail },
+                unique: true
             },
             mobile: {
                 type: dc.ORM.STRING,
-                validate: { checkMobile: checkMobile }
+                validate: { checkMobile: checkMobile },
+                unique: true
             },
             actEmail: {
                 type: dc.ORM.BOOLEAN,
