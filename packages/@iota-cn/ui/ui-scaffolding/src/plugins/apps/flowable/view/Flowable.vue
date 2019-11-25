@@ -137,10 +137,14 @@ export default {
                             value: this.systemVariables[k]
                         })
                     })
-                    const process = {
+                    let process = {
                         processDefinitionId: this.processDef.flowableInstance,
                         returnVariables: true,
                         variables: variables
+                    }
+                    // 允许增加参数
+                    if (this.flowFuncs && this.flowFuncs.create) {
+                        process = this.flowFuncs.create({ processDef: this.processDef, process: process })
                     }
                     this.$axios.silentPost(`/fl/process/runtime/process-instances`, process, true)
                         .then(() => {

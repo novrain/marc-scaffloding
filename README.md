@@ -56,7 +56,7 @@ lerna run --stream --scope @iota-cn/front-example serve
 客户端也支持使用 vue-ui 方式管理
 npm i -g @vue/cli
 vue ui
-添加项目，@iota-cn/front-example所在目录，任务下执行serve启动项目即可。
+添加项目，@iota-app/front-example所在目录，任务下执行serve启动项目即可。
 ```
 
 服务端
@@ -66,7 +66,7 @@ packages/applications/services/back/back-example
 
 启动：
 lerna run compile
-lerna run --stream --scope @iota-cn/back-example serve
+lerna run --stream --scope @iota-app/back-example serve
 
 访问：
 http://localhost:8080/app/signin

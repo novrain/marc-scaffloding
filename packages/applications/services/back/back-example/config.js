@@ -52,6 +52,9 @@ function createConfig(args) {
     const bpEnginesEntry = require('@iota-cn/svc-bp-engines').entry
     const bpEnginesModel = require('@iota-cn/svc-bp-engines').models
 
+    const cppEntry = require('@iota-app/svc-communist-party-process').entry
+    const cppModel = require('@iota-app/svc-communist-party-process').models
+
     const user = { entry: userEntry, opts: {} }
     const authentication = {
         entry: authenticationEntry,
@@ -123,6 +126,11 @@ function createConfig(args) {
         }
     }
 
+    const cpp = {
+        entry: cppEntry,
+        opts: {}
+    }
+
     //entry
     config.mws.push(user)
     config.mws.push(authentication)
@@ -137,6 +145,7 @@ function createConfig(args) {
         { p: /^\/fl\/content\/.*(?:\/)?$/, o: '*' },
     ]
     config.mws.push(bpEngines)
+    config.mws.push(cpp)
 
     //models
     config.dc.models.push(userModel)
@@ -145,6 +154,7 @@ function createConfig(args) {
     config.dc.models.push(noticeModel)
     config.dc.models.push(dictionariesModel)
     config.dc.models.push(bpEnginesModel)
+    config.dc.models.push(cppModel)
 
     return config
 }

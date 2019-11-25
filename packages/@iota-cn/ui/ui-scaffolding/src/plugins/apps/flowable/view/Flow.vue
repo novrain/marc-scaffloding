@@ -203,7 +203,7 @@ export default {
         display: flex;
         flex-direction: column;
         padding: 10px;
-        border-right: 1px solid $primary-color;
+        // border-right: 1px solid $primary-color;
         overflow-y: auto;
 
         .title {

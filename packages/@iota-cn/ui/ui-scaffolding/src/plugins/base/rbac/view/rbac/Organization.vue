@@ -12,7 +12,7 @@ export default {
         return {
             organizations: [],
             selectedKeys: [],
-            selectedNode: {},
+            currentEditNode: {},
             rightClickNodeTreeItem: {},
             addNode: false,
             propEditNode: false
@@ -35,8 +35,17 @@ export default {
             this.$axios.silentGet(`/v1/api/authorizations/organizations`, true)
                 .then(res => {
                     this.organizations = res.data.organizations
-                    this.selectedKeys = []
-                    this.selectedNode = {}
+                    // 其实只有一个key
+                    let keys = []
+                    this.selectedKeys.forEach(k => {
+                        if (this.organizations.find(c => {
+                            return c.id === k
+                        })) {
+                            keys.push(k)
+                        }
+                    })
+                    this.selectedKeys = keys
+                    this.currentEditNode = {}
                 }).catch(() => { })
         },
 
@@ -73,8 +82,7 @@ export default {
                 id: e.node.eventKey,
                 categoryName: e.node.title
             }
-            this.selectedKeys = [e.node.eventKey]
-            this.selectedNode = e.node
+            this.currentEditNode = e.node
         },
 
         getNodeTreeRightClickMenu() {
@@ -86,7 +94,7 @@ export default {
                 backgroundColor: '#fffa2'
             }
             const menu = (
-                <div onMouseLeave={this.handleHoverOff}>
+                <div {...{ on: { mouseleave: this.handleHoverOff } }}>
                     <AMenu
                         class='rightMenu'
                         onClick={this.handleMenuClick}
@@ -119,7 +127,7 @@ export default {
             const that = this
             this.$confirm({
                 title: '确认删除此组织？',
-                content: `${this.selectedNode.title}`,
+                content: `${this.currentEditNode.title}`,
                 onOk() {
                     that.delNode()
                 },
@@ -128,7 +136,7 @@ export default {
         },
 
         delNode() {
-            return this.$axios.silentDelete(`/v1/api/authorizations/organizations/${this.selectedKeys[0]}`, true)
+            return this.$axios.silentDelete(`/v1/api/authorizations/organizations/${this.currentEditNode.eventKey}`, true)
                 .then(() => {
                     this.refetch()
                     return true
@@ -144,7 +152,7 @@ export default {
                 this.$refs._addForm.validateFieldsAndScroll((err, values) => {
                     if (!err) {
                         resolve(true)
-                        values.parentId = this.selectedKeys[0]
+                        values.parentId = this.currentEditNode.eventKey
                         this.$axios.silentPost(`/v1/api/authorizations/organizations`, values, true)
                             .then(() => {
                                 this.$refs._addForm.resetFields()
@@ -165,7 +173,7 @@ export default {
                 this.$refs._editForm.validateFieldsAndScroll((err, values) => {
                     if (!err) {
                         resolve(true)
-                        this.$axios.silentPut(`/v1/api/authorizations/organizations/${this.selectedKeys[0]}`, values, true)
+                        this.$axios.silentPut(`/v1/api/authorizations/organizations/${this.currentEditNode.eventKey}`, values, true)
                             .then(() => {
                                 this.$refs._editForm.resetFields()
                                 this.refetch()
@@ -189,7 +197,7 @@ export default {
 
         onTreeSelect(selectedKeys, e) {
             this.selectedKeys = selectedKeys
-            this.selectedNode = e.node
+            this.currentEditNode = e.node
         },
 
         renderRelated() {
@@ -239,13 +247,13 @@ export default {
                                 <AIcon type="plus" /> 创建组织
                             </AButton>
                             {
-                                tree.length > 0 ? <IiArrayree
+                                tree.length > 0 ? <IiArrayTree
                                     tree={tree}
                                     onSelect={this.onTreeSelect}
+                                    selectedKeys={this.selectedKeys}
                                     onRightClick={this.treeNodeonRightClick}
                                 /> : null
                             }
-                            {this.getNodeTreeRightClickMenu()}
                             <AModal
                                 title="增加组织"
                                 key={'addNode'}
@@ -260,13 +268,14 @@ export default {
                                 visible={this.propEditNode}
                                 onOk={this.onEditOk}
                                 onCancel={this.onEditCancel}>
-                                <Form_IiSimpleEditor ref={'_editForm'} data={{ name: this.selectedNode ? this.selectedNode.title : '' }} disableDesc />
+                                <Form_IiSimpleEditor ref={'_editForm'} data={{ name: this.currentEditNode ? this.currentEditNode.title : '' }} disableDesc />
                             </AModal>
                         </a-card>
                     </ACol>
                     <ACol span={16} class={classNames('wrapper__row__col', 'wrapper__row__col_white')}>
                         {this.renderRelated()}
                     </ACol>
+                    {this.getNodeTreeRightClickMenu()}
                 </ARow>
             </div>
         )

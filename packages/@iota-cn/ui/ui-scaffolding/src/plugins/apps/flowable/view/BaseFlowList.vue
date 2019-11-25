@@ -81,6 +81,15 @@ export default {
                 this.refetch()
             }
         },
+        flowFuncs: {
+            handler() {
+                this.page = 1
+                this.size = 20
+                this.total = 0
+                this.flows = []
+                this.refetch()
+            }
+        },
         active: {
             handler() {
                 if (this.active) {//变化前的状态

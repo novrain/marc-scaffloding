@@ -14,7 +14,6 @@ export default {
             allSelectedRows: []
         }
     },
-
     computed: {
         selectedRowKeys() {
             const totalSelected = this.allSelectedRows
@@ -35,19 +34,9 @@ export default {
             return selectedRowKeys
         }
     },
-
     mounted() {
         this.innerFetchData()
     },
-
-    watch: {
-        key: {
-            handler() {
-                console.log(this.key)
-            }
-        }
-    },
-
     methods: {
         onRemove(rm) {
             const allSelectedRows = this.allSelectedRows.filter((row) => {
@@ -128,7 +117,6 @@ export default {
             )
         }
     },
-
     render() {
         let rowsOfCurrentPage = this.rowsOfCurrentPage || []
         let dataSource = []

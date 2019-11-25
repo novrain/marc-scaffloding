@@ -80,3 +80,28 @@ export const uniqueArray = (arr, key) => {
     }
     return ret;
 }
+
+export const convertArrayToTree = (lists) => {
+    let [map, roots, nodeMap] = [{}, [], {}];
+
+    lists.map((item, i) => {
+        let node = item;
+        node.children = [];
+        map[node.id] = i;
+        nodeMap[node.id] = node;
+    });
+
+    for (let i = 0; i < lists.length; i += 1) {
+        let node = lists[i];
+        if (node.parentId !== null) {
+            lists[map[node.parentId]].children.push(node);
+        } else {
+            roots.push(node);
+        }
+    }
+
+    return {
+        roots,
+        idMap: nodeMap
+    }
+}

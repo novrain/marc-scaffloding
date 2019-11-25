@@ -8,7 +8,7 @@ export default {
     methods: {
         refetch() {
             if (this.processDef) {
-                this.$axios.silentPost('/fl/process/query/tasks', {
+                let query = {
                     processDefinitionId: this.processDef.flowableInstance,
                     assigneeLike: `${U.idOfQueryUser(this.user)}%`, // 查询的时候模糊
                     includeProcessVariables: true,
@@ -17,7 +17,15 @@ export default {
                     order: 'desc',
                     size: this.size,
                     start: (this.page - 1) * this.size
-                }, true)
+                }
+                if (this.flowFuncs.query) { // 允许扩展查询条件
+                    query = this.flowFuncs.query({
+                        query,
+                        dataType: this.dataType,
+                        processDef: this.processDef
+                    })
+                }
+                this.$axios.silentPost('/fl/process/query/tasks', query, true)
                     .then((res) => {
                         // 转为统一的Flow数据结构 
                         this.flows = res.data.data.map(task => {

@@ -52,6 +52,13 @@ export default {
                         return
                     }
                 }
+                if (this.flowFuncs.query) { // 允许扩展查询条件
+                    query = this.flowFuncs.query({
+                        query,
+                        dataType: this.dataType,
+                        processDef: this.processDef
+                    })
+                }
                 this.$axios.silentPost(url, query, true)
                     .then((res) => {
                         this.flows = res.data.data.map(flow => {

@@ -1,5 +1,5 @@
 {
-    "name": "@iota-cn/front-example",
+    "name": "@iota-app/front-example",
     "version": "0.1.0",
     "scripts": {
         "serve": "vue-cli-service serve",
@@ -19,6 +19,7 @@
         "@vue/cli-plugin-eslint": "^4.0.5",
         "@vue/cli-service": "^4.0.5",
         "babel-eslint": "^10.0.3",
+        "core-js": "^3.4.2",
         "eslint": "^6.6.0",
         "eslint-plugin-vue": "^6.0.0",
         "stylus": "^0.54.7",

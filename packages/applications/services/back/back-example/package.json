@@ -1,5 +1,5 @@
 {
-    "name": "@iota-cn/back-example",
+    "name": "@iota-app/back-example",
     "version": "1.0.0",
     "private": true,
     "description": "api test server",
@@ -13,6 +13,7 @@
     "author": "IOTA",
     "license": "MIT",
     "dependencies": {
+        "@iota-app/svc-communist-party-process": "^1.0.0",
         "@iota-cn/svc-attachment": "^1.0.0",
         "@iota-cn/svc-authentication": "^1.0.0",
         "@iota-cn/svc-authorization": "^1.0.0",
