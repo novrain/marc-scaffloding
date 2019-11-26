@@ -68,41 +68,41 @@ export default {
     watch: {
         processDef: {
             handler() {
-                this.flows = []
-                this.refetch()
+                this.callRefetch(true)
             }
         },
         dataType: {
             handler() {
-                this.page = 1
-                this.size = 20
-                this.total = 0
-                this.flows = []
-                this.refetch()
+                this.callRefetch(true)
             }
         },
         flowFuncs: {
             handler() {
-                this.page = 1
-                this.size = 20
-                this.total = 0
-                this.flows = []
-                this.refetch()
+                this.callRefetch(true)
             }
         },
         active: {
             handler() {
-                if (this.active) {//变化前的状态
-                    this.refetch()
-                }
+                this.callRefetch()
             }
         }
     },
     methods: {
+        callRefetch(reset) {
+            if (!this.active) {
+                return
+            }
+            if (reset) {
+                this.page = 1
+                this.size = 20
+                this.total = 0
+                this.flows = []
+            }
+            this.refetch()
+        },
         onSelectFlow(flow) {
             this.$emit('select', flow)
         },
-
         // 通用方法，与权限相关的应放置后端处理
         // 相关方法是全局注入的
         async fetchUserInvolvedGroups() {

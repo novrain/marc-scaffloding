@@ -73,3 +73,34 @@ export const idOfQueryOrganization = (organization) => {
 export const idOfQueryPosition = (position) => {
     return `p:${position.id}:`
 }
+
+export const isCandidate = ({ task, user, assignedOrganizations, assignedPositions, assignedRoles }) => {
+    if (user.isAdmin) {
+        return true
+    }
+    const candidateUsers = task.identityLinks.filter(link => {
+        return link.type === 'candidate' && link.user
+    })
+    const candidateGroups = task.identityLinks.filter(link => {
+        return link.type === 'candidate' && link.group
+    })
+    const uid = idOfQueryUser(user)
+    return (candidateUsers.length > 0 && candidateUsers.find(c => {
+        return c.user.indexOf(uid) === 0
+    })) || (candidateGroups.length > 0 && candidateGroups.find(c => {
+        return [...assignedOrganizations, ...assignedPositions, ...assignedRoles].find(a => {
+            return c.group.indexOf(idOfQueryOrganization(a)) === 0
+                || c.group.indexOf(idOfQueryPosition(a)) === 0
+                || c.group.indexOf(idOfQueryRole(a)) === 0
+        })
+    }))
+}
+
+export const isTaskClaimable = ({ task, user, assignedOrganizations, assignedPositions, assignedRoles }) => {
+    return !task.assignee && isCandidate({ task, user, assignedOrganizations, assignedPositions, assignedRoles })
+}
+
+// export const isTaskAssigneeable = ({ task, user }) => {
+export const isTaskAssigneeable = () => {
+    return true
+}

@@ -12,7 +12,7 @@ const createPermission = (opts) => {
         Vue.prototype.$fetchUsers = async function () {
             return RBAC.hasRight.users ||
                 this.$axios.silentGet('/v1/api/authorizations/users', true).then((res) => {
-                    RBAC.hasRight.users = res.data.uesrs
+                    RBAC.hasRight.users = res.data.users
                     return RBAC.hasRight.users
                 }).catch(() => {
                     return []

@@ -218,8 +218,8 @@ export default {
         let tree = this.tree.roots
         return (
             <a-row class="ii-row"
-                gutter={16}>
-                <a-col class="col"
+                gutter={0}>
+                <a-col class="col bordered"
                     span={4}>
                     <a-card title="任务分类"
                         bordered={false}
@@ -286,6 +286,10 @@ export default {
 
     .col {
         height: 100%;
+    }
+
+    .bordered {
+        border-right: 1px solid $primary-color;
     }
 
     .ii-card {

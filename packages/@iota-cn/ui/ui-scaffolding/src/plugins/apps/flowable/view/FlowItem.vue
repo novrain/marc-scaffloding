@@ -144,7 +144,10 @@ export default {
 
                 .title {
                     font-weight: 500;
-                    font-size: 18px;
+                    font-size: 19px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
                 }
 
                 .currentTask {
@@ -153,6 +156,9 @@ export default {
 
                     .node {
                         color: $ii-gray-800;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
                     }
                 }
             }
@@ -161,7 +167,9 @@ export default {
                 margin-bottom: 2px;
                 margin-left: 5px;
                 color: $ii-gray-500;
-                word-break: break-word;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
             }
         }
 
@@ -169,7 +177,9 @@ export default {
             margin-left: 5px;
             flex: 1;
             color: $ii-gray-500;
-            word-break: break-word;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
 
         .more {
