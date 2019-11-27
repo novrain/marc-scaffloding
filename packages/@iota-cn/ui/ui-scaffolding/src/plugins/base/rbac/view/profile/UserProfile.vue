@@ -183,49 +183,8 @@
             v-model="changePasswordVisible"
             @ok="onChangePasswordOk">
             <a-form :form="changePasswordForm">
-                <a-form-item :label="t('password')"
-                    :label-col="labelCol"
-                    :wrapper-col="wrapperCol">
-                    <a-input v-decorator="['password', {
-                            rules: [
-                                { required: true, message: t('emptyWhat', {what:t('password')}) },
-                                { validator: passwordValidator },
-                            ],
-                            initialValue: user.password,
-                            validateFirst: true
-                        }]"
-                        type='password'
-                        :placeholder="t('password')">
-                    </a-input>
-                </a-form-item>
-                <a-form-item :label="t('newPassword')"
-                    :label-col="labelCol"
-                    :wrapper-col="wrapperCol">
-                    <a-input v-decorator="['newPassword', {
-                            rules: [
-                                { required: true, message: t('emptyWhat', {what:t('newPassword')}) },
-                                { validator: newPasswordValidator },
-                            ],
-                            validateFirst: true
-                        }]"
-                        type='password'
-                        :placeholder="t('newPassword')">
-                    </a-input>
-                </a-form-item>
-                <a-form-item :label="t('repeatPassword')"
-                    :label-col="labelCol"
-                    :wrapper-col="wrapperCol">
-                    <a-input v-decorator="['repeatPassword', {
-                            rules: [
-                                { required: true, message: t('emptyWhat', {what:t('repeatPassword')}) },
-                                { validator: repeatPasswordValidator },
-                            ],
-                            validateFirst: true
-                        }]"
-                        type='password'
-                        :placeholder="t('repeatPassword')">
-                    </a-input>
-                </a-form-item>
+                <ii-reset-password-form :isChange='true'
+                    :form='changePasswordForm' />
             </a-form>
         </a-modal>
         <!-- 修改手机 -->
@@ -431,56 +390,6 @@ export default {
                     })
                 }
             })
-        },
-        // eslint-disable-next-line
-        passwordValidator(rule, value, callback) {
-            if (!Validator.isPassword(value)) {
-                callback(this.t('invalidPassword'))
-                return
-            }
-            const newPassword = this.changePasswordForm.getFieldValue('newPassword')
-            if (value === newPassword) {
-                let samePasswordError = { message: this.t('samePassword'), field: 'newPassword' };
-                this.changePasswordForm.setFields({ 'newPassword': { value: newPassword, errors: [samePasswordError] } })
-            } else {
-                this.changePasswordForm.setFields({ 'newPassword': { value: newPassword, errors: undefined } })
-            }
-            callback()
-        },
-        // eslint-disable-next-line
-        newPasswordValidator(rule, value, callback) {
-            if (!Validator.isPassword(value)) {
-                callback(this.t('invalidPassword'))
-                return
-            }
-            const password = this.changePasswordForm.getFieldValue('password')
-            if (value === password) {
-                callback(this.t('samePassword'))
-                return
-            }
-            const repeatPassword = this.changePasswordForm.getFieldValue('repeatPassword')
-            if (Validator.isPassword(repeatPassword)) {
-                if (value !== repeatPassword && Validator.isPassword(repeatPassword)) {
-                    let repeatPasswordError = { message: this.t('diffRepeatPassword'), field: 'repeatPassword' };
-                    this.changePasswordForm.setFields({ 'repeatPassword': { value: repeatPassword, errors: repeatPasswordError } })
-                } else {
-                    this.changePasswordForm.setFields({ 'repeatPassword': { value: repeatPassword, errors: undefined } })
-                }
-            }
-            callback()
-        },
-        // eslint-disable-next-line
-        repeatPasswordValidator(rule, value, callback) {
-            if (!Validator.isPassword(value)) {
-                callback(this.t('invalidPassword'))
-                return
-            }
-            const newPassword = this.changePasswordForm.getFieldValue('newPassword')
-            if (value !== newPassword) {
-                callback(this.t('diffRepeatPassword'))
-                return
-            }
-            callback()
         },
 
         // mobile

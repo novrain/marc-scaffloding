@@ -28,7 +28,8 @@ function createConfig(args) {
     config.cors.origin = true  // 最终合理配置
     config.global = { console: {} }
     config.global.prefix = '/v1/api'
-    config.global.console.domain = args.domainConsole || process.env.IOTA_DOMAIN || 'http://localhost:9070'
+    config.global.domain = args.domain || process.env.IOTA_DOMAIN || 'http://localhost:9091'
+    config.global.uiDomain = args.uiDomain || process.env.IOTA_UI_DOMAIN || 'http://localhost:9091'
     config.staticDirs = ['./static']
 
     const userEntry = require('@iota-cn/svc-user').entry
@@ -72,12 +73,12 @@ function createConfig(args) {
             ],
             remMaxAge: 30,
             redirect: {
-                activeEmailError: '/email/activation/error',
-                activeEmailSuccess: '/email/activation/success',
-                resetPwdInvalid: '/signin/reset/password/error',
-                resetPwd: '/signin/reset/password',
-                resetPwdError: '/signin/reset/password/error',
-                signinUrl: '/signin'
+                activeEmailError: `${config.global.uiDomain}/app/email/activation/error`,
+                activeEmailSuccess: `${config.global.uiDomain}/app/email/activation/success`,
+                resetPwdInvalid: `${config.global.uiDomain}/app/reset/password/error`,
+                resetPwd: `${config.global.uiDomain}/app/reset/password`,
+                resetPwdError: `${config.global.uiDomain}/app/reset/password/error`,
+                signinUrl: `${config.global.uiDomain}/app/signin`
                 //resetPwdSuccess: '/signin/reset/password/success'
             }
         }

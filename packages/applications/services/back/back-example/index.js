@@ -9,6 +9,8 @@ process.on('unhandledRejection', (reason, p) => {
 
 args.option('-h, --host [value]', 'server host')
     .option('-p, --port [value]', 'server port')
+    .option('-d, --domain [value]', 'api domain')
+    .option('-u, --ui-domain [value]', 'ui domain')
     .option('-m, --message-center [value]', 'iota message center')
     .option('-g, --postgres [value]', 'postgres connection url')
     .option('-r, --redis-host [value]', 'redis server host')

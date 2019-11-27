@@ -33,10 +33,7 @@ export default {
                         invalidUsername: '非法的用户名或已被占用',
                         invalidMobile: '非法的手机号或已被占用',
                         invalidEmail: '非法的邮箱或已被占用',
-                        invalidPassword: '无效的密码',
-                        invalidCaptcha: '无效的验证码',
-                        samePassword: '新旧密码相同',
-                        diffRepeatPassword: '两次输入密码不一致',
+
                         updateSuccess: '更新成功',
                         updateFail: '更新失败',
                         active: '发送激活邮件',

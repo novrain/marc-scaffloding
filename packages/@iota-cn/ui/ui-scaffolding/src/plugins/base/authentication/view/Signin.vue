@@ -1,6 +1,6 @@
 <template>
     <a-form :form="form"
-        class="ii-login-form"
+        class="ii-auth-form"
         @submit="handleSubmit">
         <span class="mark"></span>
         <h3>{{t('signin')}}</h3>
@@ -34,8 +34,8 @@
         ]">
                 {{t('remember')}}
             </a-checkbox>
-            <a class="forgot"
-                href="">
+            <a class="float-right"
+                href="/app/reset/send/email">
                 {{t('forgotPwd')}}
             </a>
             <a-button type="primary"
@@ -91,38 +91,8 @@ export default {
             return state.user
         }
     }
-};
+}
 </script>
 <style lang="stylus" scoped>
-@import '../../../../styles/imports';
-
-.ii-login-form {
-    width: 350px;
-    padding: 30px;
-    position: relative;
-    left: 450px;
-    background-color: white;
-
-    .mark {
-        position: absolute;
-        width: 19px;
-        height: 3px;
-        background-color: $ii-primary-color;
-        border-radius: 2px;
-    }
-
-    .forgot {
-        float: right;
-    }
-
-    .button {
-        width: 100%;
-    }
-
-    .quick-signin {
-        width: 100%;
-        text-align: center;
-        display: inline-block;
-    }
-}
+@import './style';
 </style>
