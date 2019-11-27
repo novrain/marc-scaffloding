@@ -1,6 +1,51 @@
 /**
  * Created by rain.
- */
+ */import { pathToRegexp } from 'path-to-regexp';
+
+class ExcludesUrls {
+    constructor(opts, prefix) {
+        this.allUrls = undefined;
+        this.reload(opts, prefix);
+    }
+
+    sanitizePath(path, prefix) {
+        if (!path) return '/';
+        if (prefix) {
+            path = prefix + path;
+        }
+        return '/' + path
+            .replace(/^\/+/i, '')//去掉开头的/
+            .replace(/\/+$/, '')//去掉结尾的/
+            .replace(/\/{2,}/, '/');//两个及以上的/变成一个/
+    }
+
+    reload(opts, prefix) {
+        //load all url
+        if (!this.allUrls) {
+            this.allUrls = opts;
+            let that = this;
+            this.allUrls.forEach(function (url, i, arr) {
+                if (typeof url === "string") {
+                    url = { p: url, o: '*' };
+                    arr[i] = url;
+                }
+                const keys = [];
+                let eachPath = url.p;
+                url.p = (!eachPath || eachPath === '(.*)' || (Object.prototype.toString.call(eachPath) == '[object RegExp]') ? eachPath : that.sanitizePath(eachPath, prefix));
+                url.pregexp = pathToRegexp(url.p, keys);
+
+            });
+        }
+    }
+
+    isExcluded(path, method) {
+        return this.allUrls.some(function (url) {
+            return !url.auth
+                && url.pregexp.test(path)
+                && (url.o === '*' || url.o.indexOf(method) !== -1);
+        });
+    }
+}
 
 /**
  *
@@ -104,5 +149,6 @@ export {
     uniqueArray,
     registerHook,
     valBetween,
-    isPlainObject
+    isPlainObject,
+    ExcludesUrls
 }

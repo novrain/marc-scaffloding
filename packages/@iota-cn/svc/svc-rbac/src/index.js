@@ -1,5 +1,5 @@
 import { registerHook } from '@iota-cn/svc-util'
-import pathToRegexp from 'path-to-regexp';
+import { pathToRegexp } from 'path-to-regexp';
 
 import { createMiddleware } from '@iota-cn/svc-util'
 

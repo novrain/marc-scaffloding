@@ -156,11 +156,11 @@ export default {
     methods: {
         // dictionary
         onPageChange(page) {
-            this.page = page
+            this.dictionary.page = page
             this.refetchDictionaries()
         },
         onLimitChange(current, pageSize) {
-            this.limit = pageSize
+            this.dictionary.limit = pageSize
             this.page = 1
             this.refetchDictionaries()
         },
@@ -176,7 +176,7 @@ export default {
             this.dictionary.editItem = dictionary
             this.refetchDictionaryItems()
         },
-        onDeleteDictionary(dictionary) {
+        onDeleteDictionary({ dictionary }) {
             return () => {
                 return this.$axios.silentDelete(`/v1/api/dictionaries/${dictionary.id}`, true)
                     .then(() => {
@@ -247,7 +247,7 @@ export default {
                     title: '操作',
                     dataIndex: 'operation',
                     width: '20%',
-                    customRender: (text, record) => {
+                    customRender: (text, record, index) => {
                         return (
                             <div class='operation'>
                                 <a onClick={this.onShowEdit(record)}>编辑</a>
@@ -256,7 +256,7 @@ export default {
                                     title="删除"
                                     content={(<span>是否删除字典:{record.name}</span>)}
                                     button={(<a>删除</a>)}
-                                    ok={this.onDeleteDictionary(record)}
+                                    ok={this.onDeleteDictionary({ record, index })}
                                     clearFloat={true} />
                             </div>
                         )
@@ -293,7 +293,7 @@ export default {
                         <ncform formName='_editDictForm' formSchema={this.dictionary.schema} vModel={this.dictionary.editValue} />
                     </AModal>
                     <IiTableLayout
-                        size='middle'
+                        size='small'
                         headheight={68}
                         total={this.dictionary.total}
                         pageSize={this.dictionary.limit}
@@ -305,9 +305,6 @@ export default {
                         onRowClick={this.onDictionaryClick}
                         className={'table'}
                         showPagination='both'
-                        // selected={selectedRowKeys.length}
-                        showSizeChanger={false}
-                        // rowSelection={rowSelection}
                         columns={columns}
                         rows={this.dictionary.items}>
                     </IiTableLayout>
@@ -402,7 +399,7 @@ export default {
                                 <ADivider type="vertical" />
                                 <IiModal
                                     title="删除"
-                                    content={(<span>是否删除字典:{record.name}</span>)}
+                                    content={(<span>是否删除字典条目:{record.name}</span>)}
                                     button={(<a>删除</a>)}
                                     ok={this.onDeleteItem(record)}
                                     clearFloat={true} />
@@ -437,7 +434,7 @@ export default {
                     </AModal>,
                     <IiTableLayout
                         key='table'
-                        size='middle'
+                        size='small'
                         headheight={68}
                         className={'table'}
                         columns={columns}

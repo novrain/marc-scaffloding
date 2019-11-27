@@ -60,7 +60,7 @@ export default {
                 child = <AuthCheckStrictlyTree target={role} checkStrictly disableUserAssigned
                     sourceUrlKey='organizations' targetUrlKey='roles' resultKey='organizations' />
             }
-            return (<ATabPane tab="组织" key="organization s">
+            return (<ATabPane tab="组织" key="organizations" class='tabpanel'>
                 {child}
             </ATabPane>)
         },
@@ -73,7 +73,7 @@ export default {
                 child = <AuthCheckStrictlyTree target={role} checkStrictly disableUserAssigned
                     sourceUrlKey='positions' targetUrlKey='roles' resultKey='positions' />
             }
-            return (<ATabPane tab="职位" key="positions">
+            return (<ATabPane tab="职位" key="positions" class='tabpanel'>
                 {child}
             </ATabPane>)
         },
@@ -85,7 +85,7 @@ export default {
                 // const role = this.findRole(this.selectedRowKeys[0])
                 child = <UserOfRole role={this.selectedRowKeys[0]} />
             }
-            return (<ATabPane tab="用户" key="users">
+            return (<ATabPane tab="用户" key="users" class='tabpanel'>
                 {child}
             </ATabPane>)
         },
@@ -96,7 +96,7 @@ export default {
             if (selectedRowKeys.length === 1) {
                 role = this.findRole(this.selectedRowKeys[0])
             }
-            return (<ATabPane tab="权限" key="menusandoperations">
+            return (<ATabPane tab="权限" key="menusandoperations" class='tabpanel'>
                 <ARow gutter={16} class={classNames('wrapper__row')}>
                     <ACol span={12} class={classNames('wrapper__row__col')}>
                         <AuthCheckStrictlyTree target={role} sourceUrlKey='menus' targetUrlKey='roles' resultKey='menus' />
@@ -109,11 +109,7 @@ export default {
         },
 
         renderRelated() {
-            return <ATabs type="card" style={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
+            return <ATabs type="card" class='ii-tabs'>
                 {this.renderMenusAndOperations()}
                 {this.renderOrganizations()}
                 {this.renderPositions()}
@@ -279,10 +275,9 @@ export default {
             const roles = this.roles
             return (
                 <a-card title="角色管理"
+                    bordered={false}
                     bodyStyle={{ padding: "2px", flex: 1 }}
-                    style={{
-                        height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white',
-                        display: 'flex', flexDirection: 'column'                    }}>
+                    class='ii-card'>
                     <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="refresh" onClick={this.refetch}>
                         <AIcon type="reload" /> 刷新
                     </AButton>
@@ -309,7 +304,7 @@ export default {
                             <AIcon type="delete" />删除
                     </AButton>}
                     <IiTableLayout
-                        size='middle'
+                        size='small'
                         headheight={68}
                         onRowClick={this.onRowClick}
                         class={'table'}
@@ -340,9 +335,7 @@ export default {
                         {this.renderRole()}
                     </ACol>
                     <ACol span={14} class={classNames('wrapper__row__col', 'wrapper__row__col_white')}>
-                        <div class={classNames('wrapper__row__col__tabs', 'detailCard')}>
-                            {this.renderRelated()}
-                        </div>
+                        {this.renderRelated()}
                     </ACol>
                 </ARow>
             </div>
@@ -365,6 +358,35 @@ export default {
     }
 }
 
+.ii-card {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.ii-tabs {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+
+    /deep/ .ant-tabs-content {
+        padding-left: 0;
+        height: 100%;
+    }
+
+    .tabpanel {
+        height: 100%;
+    }
+
+    /deep/ .ant-tabs-bar {
+        margin: 0;
+    }
+}
+
 .table {
     :global(.ant-table-fixed-header .ant-table-scroll .ant-table-header) {
         height: 59px;
@@ -380,15 +402,6 @@ export default {
 
             &_white {
                 background-color: white;
-            }
-
-            &__tabs {
-                margin: 10px 0 10px 0;
-                background-color: white;
-
-                &__table {
-                    padding: 0;
-                }
             }
         }
     }

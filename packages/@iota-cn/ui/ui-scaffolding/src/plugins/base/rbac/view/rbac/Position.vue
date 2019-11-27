@@ -1,7 +1,6 @@
 <script>
 import classNames from 'classnames'
 import { Menu as AMenu } from 'ant-design-vue'
-import { AuthTree } from '../../components'
 import * as U from '../../util'
 
 import UserOfPosition from './UserOfPosition'
@@ -13,7 +12,7 @@ export default {
         return {
             positions: [],
             selectedKeys: [],
-            selectedNode: {},
+            currentEditNode: {},
             rightClickNodeTreeItem: {},
             addNode: false,
             propEditNode: false
@@ -36,8 +35,17 @@ export default {
             this.$axios.silentGet(`/v1/api/authorizations/positions`, true)
                 .then(res => {
                     this.positions = res.data.positions
-                    this.selectedKeys = []
-                    this.selectedNode = {}
+                    // 其实只有一个key
+                    let keys = []
+                    this.selectedKeys.forEach(k => {
+                        if (this.positions.find(c => {
+                            return c.id === k
+                        })) {
+                            keys.push(k)
+                        }
+                    })
+                    this.selectedKeys = keys
+                    this.currentEditNode = {}
                 }).catch(() => { })
         },
 
@@ -74,8 +82,7 @@ export default {
                 id: e.node.eventKey,
                 categoryName: e.node.title
             }
-            this.selectedKeys = [e.node.eventKey]
-            this.selectedNode = e.node
+            this.currentEditNode = e.node
         },
 
         getNodeTreeRightClickMenu() {
@@ -87,7 +94,7 @@ export default {
                 backgroundColor: '#fffa2'
             }
             const menu = (
-                <div onMouseLeave={this.handleHoverOff}>
+                <div {...{ on: { mouseleave: this.handleHoverOff } }}>
                     <AMenu
                         class='rightMenu'
                         onClick={this.handleMenuClick}
@@ -120,7 +127,7 @@ export default {
             const that = this
             this.$confirm({
                 title: '确认删除此职位？',
-                content: `${this.selectedNode.title}`,
+                content: `${this.currentEditNode.title}`,
                 onOk() {
                     that.delNode()
                 },
@@ -131,7 +138,7 @@ export default {
         },
 
         delNode() {
-            return this.$axios.silentDelete(`/v1/api/authorizations/positions/${this.selectedKeys[0]}`, true)
+            return this.$axios.silentDelete(`/v1/api/authorizations/positions/${this.currentEditNode.eventKey}`, true)
                 .then(() => {
                     this.refetch()
                     return true
@@ -147,7 +154,7 @@ export default {
                 this.$refs._addForm.validateFieldsAndScroll((err, values) => {
                     if (!err) {
                         resolve(true)
-                        values.parentId = this.selectedKeys[0]
+                        values.parentId = this.currentEditNode.eventKey
                         this.$axios.silentPost(`/v1/api/authorizations/positions`, values, true)
                             .then(() => {
                                 this.$refs._addForm.resetFields()
@@ -168,7 +175,7 @@ export default {
                 this.$refs._editForm.validateFieldsAndScroll((err, values) => {
                     if (!err) {
                         resolve(true)
-                        this.$axios.silentPut(`/v1/api/authorizations/positions/${this.selectedKeys[0]}`, values, true)
+                        this.$axios.silentPut(`/v1/api/authorizations/positions/${this.currentEditNode.eventKey}`, values, true)
                             .then(() => {
                                 this.$refs._editForm.resetFields()
                                 this.refetch()
@@ -192,7 +199,7 @@ export default {
 
         onTreeSelect(selectedKeys, e) {
             this.selectedKeys = selectedKeys
-            this.selectedNode = e.node
+            this.currentEditNode = e.node
         },
 
         renderRelated() {
@@ -211,15 +218,11 @@ export default {
                     }
                 }
             }
-            return <ATabs type="card" style={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
-                <ATabPane tab="角色" key="roles">
+            return <ATabs type="card" class='ii-tabs'>
+                <ATabPane tab="角色" key="roles" class='tabpanel'>
                     {role}
                 </ATabPane>
-                <ATabPane tab="用户" key="users">
+                <ATabPane tab="用户" key="users" class='tabpanel'>
                     {user}
                 </ATabPane>
             </ATabs>
@@ -236,8 +239,9 @@ export default {
                 <ARow gutter={16} class={classNames('wrapper__row')}>
                     <ACol span={8} class={classNames('wrapper__row__col')}>
                         <a-card title="职位管理"
-                            bodyStyle={{ padding: "2px" }}
-                            style={{ height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
+                            bordered={false}
+                            bodyStyle={{ padding: '2px', overflow: 'scroll', height: '100%' }}
+                            class='ii-card'>
                             <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="refresh" onClick={this.refetch}>
                                 <AIcon type="reload" /> 刷新
                             </AButton>
@@ -245,13 +249,13 @@ export default {
                                 <AIcon type="plus" /> 创建职位
                             </AButton>
                             {
-                                tree.length > 0 ? <AuthTree
+                                tree.length > 0 ? <IiArrayTree
                                     tree={tree}
                                     onSelect={this.onTreeSelect}
+                                    selectedKeys={this.selectedKeys}
                                     onRightClick={this.treeNodeonRightClick}
                                 /> : null
                             }
-                            {this.getNodeTreeRightClickMenu()}
                             <AModal
                                 title="增加职位"
                                 key={'addNode'}
@@ -266,15 +270,14 @@ export default {
                                 visible={this.propEditNode}
                                 onOk={this.onEditOk}
                                 onCancel={this.onEditCancel}>
-                                <Form_IiSimpleEditor ref={'_editForm'} data={{ name: this.selectedNode ? this.selectedNode.title : '' }} disableDesc />
+                                <Form_IiSimpleEditor ref={'_editForm'} data={{ name: this.currentEditNode ? this.currentEditNode.title : '' }} disableDesc />
                             </AModal>
                         </a-card>
                     </ACol>
                     <ACol span={16} class={classNames('wrapper__row__col', 'wrapper__row__col_white')}>
-                        <div class={classNames('wrapper__row__col__tabs', 'detailCard')}>
-                            {this.renderRelated()}
-                        </div>
+                        {this.renderRelated()}
                     </ACol>
+                    {this.getNodeTreeRightClickMenu()}
                 </ARow>
             </div>
         )
@@ -289,6 +292,35 @@ export default {
     box-shadow: $ii-box-shadow;
 }
 
+.ii-card {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.ii-tabs {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+
+    /deep/ .ant-tabs-content {
+        padding-left: 0;
+        height: 100%;
+    }
+
+    .tabpanel {
+        height: 100%;
+    }
+
+    /deep/ .ant-tabs-bar {
+        margin: 0;
+    }
+}
+
 .wrapper {
     &__row {
         height: 100% !important;
@@ -298,15 +330,6 @@ export default {
 
             &_white {
                 background-color: white;
-            }
-
-            &__tabs {
-                margin: 10px 0 10px 0;
-                background-color: white;
-
-                &__table {
-                    padding: 0;
-                }
             }
         }
     }

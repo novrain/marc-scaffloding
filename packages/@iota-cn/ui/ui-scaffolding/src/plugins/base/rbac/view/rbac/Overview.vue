@@ -1,5 +1,4 @@
 <script>
-import { AuthTree } from '../../components'
 import * as U from '../../util'
 
 export default {
@@ -27,16 +26,18 @@ export default {
                 <ARow gutter={16} type='flex' justify='center' style={{ height: '100%' }}>
                     <ACol span={12} style={{ height: '100%' }}>
                         <a-card title={<div class='ii-head'><IiIcon type='menu' /><span>我的菜单</span></div>}
-                            bodyStyle={{ padding: "2px" }}
-                            style={{ height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
-                            {this.menus.length > 0 ? <AuthTree tree={this.menus} /> : null}
+                            bordered={false}
+                            bodyStyle={{ padding: '2px', overflow: 'scroll', height: '100%' }}
+                            class='ii-card'>
+                            {this.menus.length > 0 ? <IiArrayTree tree={this.menus} /> : null}
                         </a-card>
                     </ACol>
                     <ACol span={12} style={{ height: '100%' }}>
                         <a-card title="我的操作"
-                            bodyStyle={{ padding: "2px" }}
-                            style={{ height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
-                            {this.operations.length > 0 ? <AuthTree tree={this.operations} /> : null}
+                            bordered={false}
+                            bodyStyle={{ padding: '2px', overflow: 'scroll', height: '100%' }}
+                            class='ii-card'>
+                            {this.operations.length > 0 ? <IiArrayTree tree={this.operations} /> : null}
                         </a-card>
                     </ACol>
                 </ARow>
@@ -54,5 +55,14 @@ export default {
         color: $primary-color;
         margin-left: 8px;
     }
+}
+
+.ii-card {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
 }
 </style>

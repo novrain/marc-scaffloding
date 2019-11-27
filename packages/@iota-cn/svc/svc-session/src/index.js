@@ -39,7 +39,7 @@ export default function (opts = {}) {
 
 
         // clear old session if exists
-        if (id) {
+        if (id && old === '{}') {
             await opts.store.destroy(id);
             id = null;
         }

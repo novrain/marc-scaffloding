@@ -1,0 +1,261 @@
+<template>
+    <div class="ii-flowable">
+        <a-row :gutter='16'
+            class="row">
+            <a-col :span='10'
+                class="col">
+                <a-modal title="新建任务"
+                    :bodyStyle='{maxHeight:"80%", padding:"10px"}'
+                    :width='formWidth'
+                    :visible='showAdd'
+                    @ok='onAddItemOk'
+                    @cancel='onAddItemCancel'>
+                    <ncform formName='_addItemForm'
+                        v-if="formDef"
+                        :formSchema='formDef'
+                        v-model='processVariables' />
+                </a-modal>
+                <a-button size='small'
+                    :disabled='!formDef'
+                    class="new-flow"
+                    @click="onAddItem"
+                    icon='plus'>新建</a-button>
+                <a-tabs defaultActiveKey="assignee"
+                    v-model="activeTab"
+                    size="small"
+                    @change="onSwitchTabs"
+                    class="flowtabs">
+                    <a-tab-pane tab="待我处理"
+                        class="tabpanel"
+                        key="assignee">
+                        <assignee-flow-list :processDef="processDef"
+                            :user='user'
+                            :flowFuncs='flowFuncs'
+                            :selectedFlow='selectedFlowsOfTab.assignee'
+                            :active='activeTab === "assignee"'
+                            @select="onSelectFlow" />
+                    </a-tab-pane>
+                    <a-tab-pane tab="由我发起"
+                        key="startBySelf">
+                        <startby-flow-list :processDef="processDef"
+                            :user='user'
+                            :flowFuncs='flowFuncs'
+                            :selectedFlow='selectedFlowsOfTab.startBySelf'
+                            :active='activeTab === "startBySelf"'
+                            @select="onSelectFlow" />
+                    </a-tab-pane>
+                    <a-tab-pane tab="与我有关"
+                        key="involved">
+                        <involved-flow-list :processDef="processDef"
+                            :user='user'
+                            :flowFuncs='flowFuncs'
+                            :selectedFlow='selectedFlowsOfTab.involved'
+                            :active='activeTab === "involved"'
+                            @select="onSelectFlow" />
+                    </a-tab-pane>
+                </a-tabs>
+            </a-col>
+            <a-col :span='14'
+                class="col">
+                <div class="detail">
+                    <flow v-if="selectedFlow"
+                        :flow='selectedFlow'
+                        :user='user'
+                        :processDef='processDef'
+                        :onSubmit='onSubmit' />
+                    <ii-empty v-else />
+                </div>
+            </a-col>
+        </a-row>
+    </div>
+</template>
+
+<script>
+import { message } from 'ant-design-vue/es'
+import * as U from '../util'
+import StartBySelfFlowList from './StartBySelfFlowList'
+import TaskAssigneeFlowList from './TaskAssigneeFlowList'
+import TaskInvolvedFlowList from './TaskInvolvedFlowList'
+import Flow from './Flow'
+
+export default {
+    components: {
+        'assignee-flow-list': TaskAssigneeFlowList,
+        'startby-flow-list': StartBySelfFlowList,
+        'involved-flow-list': TaskInvolvedFlowList,
+        'flow': Flow
+    },
+    props: ['flowId', 'flowFuncs'],
+    data() {
+        const state = this.$store.state.iota.global.authentication
+        const systemVariables = {
+            initiatorId: state.user.id,
+            initiatorName: state.user.fullname || state.user.username,
+            initiatorUser: U.idOfUser(state.user)
+        }
+        return {
+            processDef: undefined,
+            selectedAssigneeFlow: undefined,
+            activeTab: 'assignee',
+            selectedFlowsOfTab: {},
+            // new process
+            showAdd: false,
+            systemVariables: systemVariables,
+            processVariables: {
+                ...systemVariables
+            }
+        }
+    },
+    mounted() {
+        this.$axios.silentGet(`/v1/api/processdefs/${this.flowId}`, true)
+            .then((res) => {
+                this.processDef = res.data
+            })
+    },
+    methods: {
+        onSelectFlow(flow) {
+            this.selectedFlowsOfTab = Object.assign({}, this.selectedFlowsOfTab, { [this.activeTab]: flow })
+        },
+        onSwitchTabs() {
+        },
+        onAddItem() {
+            this.showAdd = true
+        },
+        onAddItemOk() {
+            this.$ncformValidate('_addItemForm').then(data => {
+                if (data.result) {
+                    const variables = []
+                    Object.keys(this.processVariables).forEach(k => {
+                        variables.push({
+                            name: k,
+                            value: this.processVariables[k]
+                        })
+                    })
+                    Object.keys(this.systemVariables).forEach(k => {
+                        variables.push({
+                            name: k,
+                            value: this.systemVariables[k]
+                        })
+                    })
+                    let process = {
+                        processDefinitionId: this.processDef.flowableInstance,
+                        returnVariables: true,
+                        variables: variables
+                    }
+                    // 允许增加参数
+                    if (this.flowFuncs && this.flowFuncs.create) {
+                        process = this.flowFuncs.create({ processDef: this.processDef, process: process })
+                    }
+                    this.$axios.silentPost(`/fl/process/runtime/process-instances`, process, true)
+                        .then(() => {
+                            message.success('新建成功，请在 由我发起 中查看')
+                            this.showAdd = false
+                            this.processVariables = {
+                                ...this.systemVariables
+                            }
+                        }).catch(() => {
+                            message.error('新建失败，请稍后再试')
+                        })
+                }
+            })
+        },
+        onAddItemCancel() {
+            this.showAdd = false
+            this.processVariables = {
+                ...this.systemVariables
+            }
+        },
+        onSubmit({ flow }) {
+            let task = Object.assign({}, flow.task, { finished: true })
+            this.selectedFlowsOfTab[this.activeTab] = Object.assign({}, flow, {
+                // finished: true, //强制修改临时状态，防止误操作
+                task: task
+            })
+        }
+    },
+    computed: {
+        user() {
+            const state = this.$store.state.iota.global.authentication
+            return state.user
+        },
+        selectedFlow() {
+            return this.selectedFlowsOfTab[this.activeTab]
+        },
+        formDef() {
+            if (this.processDef) {
+                let def = JSON.parse(this.processDef.formDef)
+                def.globalConfig = {
+                    style: {
+                        formCls: 'ii-nc-form'
+                    },
+                    constants: {
+                        initiatorId: this.user.id,
+                        initiatorName: this.user.fullname || this.user.username,
+                        currentTaskId: 'start'
+                    }
+                }
+                return def
+            } else {
+                return undefined
+            }
+        },
+        formWidth() {
+            const formUi = this.processDef ? (this.processDef.formDef.ui || { width: 700 }) : { width: 700 }
+            return formUi.width || 700
+        }
+    }
+}
+</script>
+
+<style lang="stylus" scoped>
+.ii-flowable {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+
+    .row {
+        height: 100%;
+    }
+
+    .col {
+        height: 100%;
+
+        .new-flow {
+            position: absolute;
+            right: 18px;
+            z-index: 1;
+            top: 11px;
+        }
+
+        .flowtabs {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            padding: 10px;
+
+            .tabpanel {
+                height: 100%;
+            }
+
+            /deep/ .ant-tabs-bar {
+                margin: 0;
+            }
+        }
+    }
+
+    .detail {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        background-color: white;
+    }
+
+    /deep/ .ant-tabs-content {
+        padding-left: 0;
+        height: 100%;
+    }
+}
+</style>

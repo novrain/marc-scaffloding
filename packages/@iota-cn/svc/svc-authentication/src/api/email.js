@@ -201,13 +201,35 @@ function sendVerificationEmail(config, type) {
                 let uuid = uid.v4();
                 let exp = 86400000;//24小时->3600000*24
                 if (type == 'password') {
-                    emailContent = createFindPasswordEmail(info.email, uuid, username, gravatar
-                        , config.global.domain || 'http://localhost', config.global.prefix || '');
+                    if (typeof smtpConfig.createFindPasswordEmail === 'function') {
+                        emailContent = smtpConfig.createFindPasswordEmail({
+                            email: info.email,
+                            uuid: uuid,
+                            username: username,
+                            gravatar: gravatar,
+                            domain: config.global.domain || 'http://localhost',
+                            prefix: config.global.prefix || ''
+                        })
+                    } else {
+                        emailContent = createFindPasswordEmail(info.email, uuid, username, gravatar
+                            , config.global.domain || 'http://localhost', config.global.prefix || '', smtpConfig);
+                    }
                     await dc.extra(`findPassword=${uuid}`, info.email, 'PX', exp);
                 }
                 if (type == 'activation') {
-                    emailContent = createActivateEmail(info.email, uuid, username, gravatar,
-                        config.global.domain || 'http://localhost', config.global.prefix || '');
+                    if (typeof smtpConfig.createActivateEmail === 'function') {
+                        smtpConfig.createActivateEmail({
+                            email: info.email,
+                            uuid: uuid,
+                            username: username,
+                            gravatar: gravatar,
+                            domain: config.global.domain || 'http://localhost',
+                            prefix: config.global.prefix || ''
+                        })
+                    } else {
+                        emailContent = createActivateEmail(info.email, uuid, username, gravatar,
+                            config.global.domain || 'http://localhost', config.global.prefix || '', smtpConfig);
+                    }
                     await dc.extra(`activateEmail=${uuid}`, info.email, 'PX', exp);
                 }
                 if (emailContent) {
@@ -238,12 +260,12 @@ function sendVerificationEmail(config, type) {
     }
 }
 
-function createFindPasswordEmail(email, uuid, username, gravatar, domain, prefix) {
+function createFindPasswordEmail(email, uuid, username, gravatar, domain, prefix, smtpConfig) {
     return {
-        from: 'iOTA以太数据 <service@theiota.cn>', // sender address
+        from: smtpConfig.auth.user, // sender address
         to: email, // list of receivers
-        subject: 'iOTA-重置密码', // 主题
-        text: 'iOTA-重置密码', // 这个没什么用
+        subject: '重置密码', // 主题
+        text: '重置密码', // 这个没什么用
         html: `<!DOCTYPE html>
 <html>
 <head>
@@ -400,32 +422,17 @@ function createFindPasswordEmail(email, uuid, username, gravatar, domain, prefix
     </header>
     <main class="main">
         <h2 class="message">
-            您刚刚请求了重置 iOTA 的密码，请点击重置密码按钮修改登录密码：</h2>
+            您刚刚请求了重置密码，请点击重置密码按钮修改登录密码：</h2>
         <a class="btn"
            href="${domain}${prefix}/accounts/password/forget?id=${uuid}" target="_blank">重置密码</a>
         <p class="hint">
             如果按钮无法点击，请直接访问以下链接： <br/>
             <a href="${domain}${prefix}/accounts/password/forget?id=${uuid}" target="_blank">${domain}${prefix}/accounts/password/forget?id=${uuid}</a>
             <br/>（为保障账号安全性，该链接仅在 24 小时内有效。如果您并不想更换密码，无需进行任何操作。）</p>
-        <section class="advice">
-            <article class="advice-content">
-                <img class="logo"
-                     alt="iOTA"
-                     src="${domain}/dist/assets/img/logo.png"/>
-                <img class="company-name"
-                     alt="以太数据"
-                     src="${domain}/dist/assets/img/company-name.png"/>
-                <p class="slogan">包罗万物的开放IoT生态系统 </p>
-                <div class="split"></div>
-                <p class="slogan-sub">开放、合作、成长</p>
-            </article>
-        </section>
     </main>
     <footer>
         <p class="service">
-            邮件来自iOTA，无需回复。如果您在使用中有任何的疑问或者建议，
-            <br/>欢迎反馈意见至：
-            <a href="mailto:service@theiota.cn">service@theiota.cn</a>
+            邮件无需回复。
         </p>
     </footer>
 </article>
@@ -433,12 +440,12 @@ function createFindPasswordEmail(email, uuid, username, gravatar, domain, prefix
     }
 }
 
-function createActivateEmail(email, uuid, username, gravatar, domain, prefix) {
+function createActivateEmail(email, uuid, username, gravatar, domain, prefix, smtpConfig) {
     return {
-        from: 'iOTA以太数据 <service@theiota.cn>', // sender address
+        from: smtpConfig.auth.user, // sender address
         to: email, // list of receivers
-        subject: 'iOTA-验证邮箱', // 主题
-        text: 'iOTA-验证邮箱', // 这个没什么用
+        subject: '验证邮箱', // 主题
+        text: '验证邮箱', // 这个没什么用
         html: `<!DOCTYPE html>
 <html>
 <head>
@@ -594,31 +601,17 @@ function createActivateEmail(email, uuid, username, gravatar, domain, prefix) {
         <h1 class="user">${username}，您好！</h1>
     </header>
     <main class="main">
-        <h2 class="message">欢迎使用 iOTA，请验证邮箱。 </h2>
+        <h2 class="message">欢迎使用，请验证邮箱。 </h2>
         <a class="btn"
            href="${domain}${prefix}/accounts/email/active?id=${uuid}" target="_blank">验证邮箱</a>
         <p class="hint">
             如果按钮无法点击，请直接访问以下链接： <br/>
             <a href="${domain}${prefix}/accounts/email/active?id=${uuid}" target="_blank">${domain}${prefix}/accounts/email/active?id=${uuid}</a><br/>
             （为保障账号安全性，该链接仅在 24 小时内有效。）</p>
-        <section class="advice">
-            <article class="advice-content">
-                <img class="logo"
-                     alt="iOTA"
-                     src="${domain}/dist/assets/img/logo.png"/>
-                <img class="company-name"
-                     alt="以太数据"
-                     src="${domain}/dist/assets/img/company-name.png"/>
-                <p class="slogan">包罗万物的开放IoT生态系统 </p>
-                <div class="split"></div>
-                <p class="slogan-sub">开放、合作、成长</p>
-            </article>
-        </section>
     </main>
     <footer>
         <p class="service">
-            邮件来自iOTA，无需回复。如果您在使用中有任何的疑问或者建议， <br/>欢迎反馈意见至：
-            <a href="mailto:service@theiota.cn">service@theiota.cn</a>
+            邮件无需回复。
         </p>
     </footer>
 </article>

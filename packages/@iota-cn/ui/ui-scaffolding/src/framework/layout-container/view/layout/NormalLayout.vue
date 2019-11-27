@@ -26,7 +26,7 @@ export default {
 
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 .layout-normal {
     .header {
         background: #3860f4;

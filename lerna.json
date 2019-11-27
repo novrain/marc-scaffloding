@@ -3,8 +3,9 @@
         "packages/@iota-cn/util/*",
         "packages/@iota-cn/ui/*",
         "packages/@iota-cn/svc/*",
-        "packages/services/back/*",
-        "packages/services/front/*"
+        "packages/applications/@iota-app/svc/*",
+        "packages/applications/services/back/*",
+        "packages/applications/services/front/*"
     ],
     "version": "independent",
     "npmClient": "yarn",

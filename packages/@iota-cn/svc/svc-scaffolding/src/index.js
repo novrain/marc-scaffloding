@@ -15,6 +15,7 @@ import iotaDC from '@iota-cn/svc-dc';
 import iotaRestful from '@iota-cn/svc-restful';
 import iotaLogger from '@iota-cn/svc-logger';
 import iotaSession from '@iota-cn/svc-session';
+import { ExcludesUrls } from '@iota-cn/svc-util'
 import http from 'http';
 
 //the middleware out of all the others.
@@ -115,7 +116,21 @@ function scaffold(config) {
     app.use(iotaSession(config.session));
     //@Todo add csrf protect. Require the client side login or ...
     //app.use(convert(csrf()));
-    app.use(bodyParser({ jsonLimit: '80mb', formLimit: '80mb' }));
+
+    // skip bodyParser
+    config.bodyParser = config.bodyParser || { jsonLimit: '80mb', formLimit: '80mb' }
+    if (Array.isArray(config.bodyParser.disable) && config.bodyParser.disable.length > 0) {
+        const excludesUrls = new ExcludesUrls(config.bodyParser.disable, '')
+        app.use(async (ctx, next) => {
+            if (excludesUrls.isExcluded(ctx.path)) {
+                ctx.disableBodyParser = true
+            } else {
+                ctx.disableBodyParser = false
+            }
+            await next()
+        })
+    }
+    app.use(bodyParser(config.bodyParser));
     //init dc and inject it into app(app.iota.dc) and runtime ctx(app.iota.dc)
     //@Todo DC use router?
     app.use(iotaDC(app, config.dc));
@@ -128,9 +143,17 @@ function scaffold(config) {
                 let opts = mv.opts || {};
                 // add global opts
                 opts.global = config.global;
-                let fn = mv.entry(app, router, opts);
-                if (fn) {
-                    app.use(fn);
+                let rs = mv.entry(app, router, opts);
+                if (typeof rs === 'function') {
+                    app.use(rs);
+                }
+                else if (rs !== undefined) {
+                    if (typeof rs.middlware === 'function') {
+                        app.use(rs.middlware)
+                    }
+                    if (rs.subRouter) {
+                        app.use(rs.subRouter.routes())
+                    }
                 }
             } catch (err) {
                 //be sure that the logger middleware is injected.

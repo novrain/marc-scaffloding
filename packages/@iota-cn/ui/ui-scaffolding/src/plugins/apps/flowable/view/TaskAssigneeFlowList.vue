@@ -1,0 +1,63 @@
+<script>
+import moment from 'moment'
+import * as U from '../util'
+import BaseFlowList from './BaseFlowList'
+
+export default {
+    mixins: [BaseFlowList],
+    methods: {
+        refetch() {
+            if (this.processDef) {
+                let query = {
+                    processDefinitionId: this.processDef.flowableInstance,
+                    assigneeLike: `${U.idOfQueryUser(this.user)}%`, // 查询的时候模糊
+                    includeProcessVariables: true,
+                    // includeIdentityLinks: true,
+                    sort: 'createTime',
+                    order: 'desc',
+                    size: this.size,
+                    start: (this.page - 1) * this.size
+                }
+                if (this.flowFuncs.query) { // 允许扩展查询条件
+                    query = this.flowFuncs.query({
+                        query,
+                        dataType: this.dataType,
+                        processDef: this.processDef
+                    })
+                }
+                this.$axios.silentPost('/fl/process/query/tasks', query, true)
+                    .then((res) => {
+                        // 转为统一的Flow数据结构 
+                        this.flows = res.data.data.map(task => {
+                            const formData = {}
+                            task.variables.forEach(v => {
+                                formData[v.name] = v.value
+                            })
+                            const { name, summary, desc } = this.flowFuncs.infoOfFlow.call(this, formData)
+                            task.assignee = U.parseAssignee(task.assignee)
+                            return {
+                                processInstanceId: task.processInstanceId,
+                                createTime: moment(task.createTime).format('YYYY-MM-DD HH:mm:ss'),
+                                dueDate: task.dueDate,
+                                suspended: task.suspended,
+                                name,
+                                summary,
+                                desc,
+                                formData,
+                                task: task, // 自身是task
+                                finished: this.dataType === 'finished'
+                            }
+                        })
+                        this.total = res.data.total
+                        this.page = 0
+                        if (this.flows.length > 0) {
+                            this.$emit('select', this.flows[0])
+                        } else {
+                            this.$emit('select', undefined)
+                        }
+                    }).catch((err) => { console.log(err) })
+            }
+        }
+    }
+}
+</script>

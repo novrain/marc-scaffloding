@@ -1297,6 +1297,24 @@ describe('iota user test >', function () {
                     })
             });
 
+            it("u2 query role assigned to the login user ( not an administrator )", function (done) {
+                request.post('/signin')
+                    .send({ username: 'u2', password: '123456' })
+                    .expect(200, function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        request.get('/authorizations/assigned_roles')
+                            .expect(200, function (err, res) {
+                                if (err) {
+                                    return done(err);
+                                }
+                                assert.equal(res.body.roles.length, 0)
+                                done();
+                            })
+                    })
+            });
+
             it("u1 query organization not assign to user ( an administrator )", function (done) {
                 request.post('/signin')
                     .send({ username: 'u1', password: '123456' })
@@ -1333,6 +1351,24 @@ describe('iota user test >', function () {
                     })
             });
 
+            it("u2 query organization assigned to the login user", function (done) {
+                request.post('/signin')
+                    .send({ username: 'u2', password: '123456' })
+                    .expect(200, function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        request.get('/authorizations/assigned_organizations')
+                            .expect(200, function (err, res) {
+                                if (err) {
+                                    return done(err);
+                                }
+                                assert.equal(res.body.organizations.length, 1)
+                                done();
+                            })
+                    })
+            });
+
             it("u1 query position not assign to user ( an administrator )", function (done) {
                 request.post('/signin')
                     .send({ username: 'u1', password: '123456' })
@@ -1364,6 +1400,24 @@ describe('iota user test >', function () {
                                     return done(err);
                                 }
                                 assert.equal(res.body.positions.length, 3)
+                                done();
+                            })
+                    })
+            });
+
+            it("u2 query position assigned to the login user ( not an administrator )", function (done) {
+                request.post('/signin')
+                    .send({ username: 'u2', password: '123456' })
+                    .expect(200, function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+                        request.get('/authorizations/assigned_positions')
+                            .expect(200, function (err, res) {
+                                if (err) {
+                                    return done(err);
+                                }
+                                assert.equal(res.body.positions.length, 0)
                                 done();
                             })
                     })

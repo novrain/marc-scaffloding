@@ -31,6 +31,7 @@ const product = {
     cookie: {
         prefix: ''
     },
+    bodyParser: { jsonLimit: '80mb', formLimit: '80mb' },
     session: {
         key: 'iota',
         db: {
@@ -72,7 +73,8 @@ const development = {
     },
     cookie: product.cookie,
     session: product.session,
-    logger: product.logger
+    logger: product.logger,
+    bodyParser: product.bodyParser
 };
 development.logger.filename = path.join(__dirname, 'log', 'development.txt');
 

@@ -252,7 +252,7 @@ export default {
         const users = this.users
         return (
             <IiTableLayout
-                size='middle'
+                size='small'
                 headheight={68}
                 onPaginationChange={this.onPageChange}
                 total={this.total}

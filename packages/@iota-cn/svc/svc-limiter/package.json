@@ -14,7 +14,7 @@
     "author": "",
     "license": "MIT",
     "dependencies": {
-        "koa-ratelimit": "^4.2.0"
+        "koa-ratelimit": "^4.3.0"
     },
     "devDependencies": {
         "@iota-cn/svc-account": "^1.0.0",

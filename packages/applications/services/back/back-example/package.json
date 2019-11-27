@@ -1,0 +1,40 @@
+{
+    "name": "@iota-app/back-example",
+    "version": "1.0.0",
+    "private": true,
+    "description": "api test server",
+    "main": "index.js",
+    "scripts": {
+        "test": "mocha --exit",
+        "testbreak": "mocha -b --exit",
+        "coverage": "nyc npm run test",
+        "serve": "node index.js"
+    },
+    "author": "IOTA",
+    "license": "MIT",
+    "dependencies": {
+        "@iota-app/svc-communist-party-process": "^1.0.0",
+        "@iota-cn/svc-attachment": "^1.0.0",
+        "@iota-cn/svc-authentication": "^1.0.0",
+        "@iota-cn/svc-authorization": "^1.0.0",
+        "@iota-cn/svc-dc": "^1.0.0",
+        "@iota-cn/svc-dictionaries": "^1.0.0",
+        "@iota-cn/svc-message-client": "^1.0.0",
+        "@iota-cn/svc-notice": "^1.0.0",
+        "@iota-cn/svc-oauth2": "^1.0.0",
+        "@iota-cn/svc-rbac": "^1.0.0",
+        "@iota-cn/svc-scaffolding": "^1.0.0",
+        "@iota-cn/svc-user": "^1.0.0",
+        "@iota-cn/svc-util": "^1.0.0",
+        "@iota-cn/util-validation": "^1.0.10",
+        "commander": "^4.0.0"
+    },
+    "devDependencies": {
+        "@babel/plugin-transform-modules-commonjs": "^7.7.0",
+        "@babel/register": "^7.7.0",
+        "chai": "^4.2.0",
+        "mocha": "^6.2.2",
+        "mochawesome": "^4.1.0",
+        "supertest": "^4.0.2"
+    }
+}

@@ -10,6 +10,6 @@ export function models(dc) {
 }
 
 export function entry(app, router, opts) {
-    app.iota.logger.log('info', '[IOTA-dictionaries]', 'Inject dictionaries mw into router.');
-    api(app, router, opts);
+    app.iota.logger.log('info', '[IOTA-bp-engines]', 'Inject bpmn processs engines mw into router.');
+    return api(app, router, opts);
 }

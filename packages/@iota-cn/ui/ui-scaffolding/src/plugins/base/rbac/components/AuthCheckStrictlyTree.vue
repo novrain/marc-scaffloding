@@ -1,7 +1,6 @@
 <script>
 import * as TU from '../util'
 import * as U from '../../../../framework/util'
-import AuthTree from './AuthTree'
 
 export default {
     name: 'IiAuthCheckStrictlyTree',
@@ -125,7 +124,7 @@ export default {
                 halfChecked: []
             }
         }
-        return tree.length > 0 ? <AuthTree tree={tree} checkable={checkable} onCheck={this.onCheck} checkedKeys={checkedKeys} checkStrictly={checkStrictly} /> : null
+        return tree.length > 0 ? <IiArrayTree tree={tree} checkable={checkable} onCheck={this.onCheck} checkedKeys={checkedKeys} checkStrictly={checkStrictly} /> : null
     }
 }
 </script>

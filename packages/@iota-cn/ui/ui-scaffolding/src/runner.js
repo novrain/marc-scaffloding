@@ -14,7 +14,6 @@ import Avatar from '@iota-cn/avatar'
 // Add to Vue prototype
 import FrameComponents from './framework/components'
 
-
 // ncform 或者可以按需配置
 import axios from 'axios'
 import vueNcform from '@ncform/ncform'
@@ -26,6 +25,10 @@ Vue.use(Element) // Element部分全局变量会被antd覆盖掉
 Vue.use(vueNcform, { extComponents: ncformStdComps, extRules: rules, lang: 'zh-cn' })
 window.$http = Vue.prototype.$http = axios
 // ncform -end
+
+//CKEditor
+import CKEditor from '@ckeditor/ckeditor5-vue'
+Vue.use(CKEditor)
 
 Vue.use(Antd)
 Vue.use(VCharts)
@@ -40,7 +43,6 @@ import defaultApp from './App.vue'
 import defaultConfig from './config'
 
 export default ({ config, App }) => {
-
     const appLoader = new AppLoader(config || defaultConfig)
     const { store, routes, messages } = appLoader.load()
 

@@ -19,7 +19,7 @@
         "@iota-cn/svc-restful": "^1.0.0",
         "@iota-cn/util-validation": "^1.0.10",
         "moment": "^2.24.0",
-        "path-to-regexp": "^3.1.0"
+        "path-to-regexp": "^5.0.0"
     },
     "devDependencies": {
         "@iota-cn/svc-scaffolding": "^1.0.0",
