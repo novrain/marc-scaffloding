@@ -23,7 +23,7 @@ export default function (app, router, opts) {
     const dictionaryById = restful.resource({
         model: models.Dictionary,
         associations: true,
-        endpoints: ['/dictionaries/:id'],
+        endpoints: ['/dictionaries/:key'],
         // include: [{
         //     model: models.DictionaryItem, as: 'items',
         //     attributes: ['id', 'key', 'name']
