@@ -265,7 +265,7 @@ export default {
                                     title="删除"
                                     content={(<span>是否删除字典:{record.name}</span>)}
                                     button={(<a>删除</a>)}
-                                    ok={this.onDeleteDictionary({ record, index })}
+                                    ok={this.onDeleteDictionary({ dictionary: record, index })}
                                     clearFloat={true} />
                             </div>
                         )
@@ -275,6 +275,7 @@ export default {
             const pageSizeOptions = ['20', '40', '60', '80']
             return (
                 <a-card title="字典管理"
+                    bordered={false}
                     bodyStyle={{ padding: "2px", flex: 1 }}
                     style={{
                         height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white',
@@ -458,6 +459,7 @@ export default {
             }
             return (
                 <a-card title="字典条目"
+                    bordered={false}
                     bodyStyle={{ padding: "2px", flex: 1 }}
                     style={{
                         height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white',
