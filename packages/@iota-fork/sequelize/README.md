@@ -1,3 +1,13 @@
+# Fork from Sequelize
+
+- 修改内容
+  - 保留了老版本的 string 查询支持
+  - 修改了对嵌套include的连接方式，保持对原来代码的兼容
+
+以下为Sequelize的原README
+
+----------
+
 # Sequelize
 
 [![npm version](https://badgen.net/npm/v/sequelize)](https://www.npmjs.com/package/sequelize)
@@ -20,10 +30,16 @@ Sequelize follows [SEMVER](http://semver.org). Supports Node v6 and above to use
 New to Sequelize? Take a look at the [Tutorials and Guides](https://sequelize.org/master). You might also be interested in the [API Reference](https://sequelize.org/master/identifiers).
 
 ## Table of Contents
-- [Installation](#installation)
-- [Documentation](#documentation)
-- [Responsible disclosure](#responsible-disclosure)
-- [Resources](#resources)
+- [Fork from Sequelize](#fork-from-sequelize)
+- [Sequelize](#sequelize)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Documentation](#documentation)
+  - [Responsible disclosure](#responsible-disclosure)
+  - [Resources](#resources)
+    - [Tools](#tools)
+    - [Learning](#learning)
+    - [Translations](#translations)
 
 ## Installation
 
