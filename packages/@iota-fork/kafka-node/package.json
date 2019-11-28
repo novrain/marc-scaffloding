@@ -42,7 +42,7 @@
     "@types/node": "^10.5.2",
     "coveralls": "^2.11.12",
     "doctoc": "^1.2.0",
-    "eslint": "^3.17.1",
+    "eslint": "^6.7.1",
     "eslint-config-semistandard": "^11.0.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-dependencies": "^2.2.0",
