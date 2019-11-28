@@ -280,6 +280,9 @@ packages
     ui          // 客户端包，包含脚手架
     util        // 公共包
   @iota-fork    // 修改的第三方包
+    epilogue    // 修改支持 koa 
+    kafka-node  // 解决Windows的编译
+    sequelize   // 升级到v5，修改保留对v3的部分兼容
   applications  // 应用目录
     services
         back    // 整合服务侧相关包输出的独立应用服务端
