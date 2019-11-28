@@ -1,6 +1,6 @@
 ## 关于
 
-marc-scaffolding是一个轻量管理系统快速开发脚手架，前后端采用Javascript，容易上手；同时前后端都采用了模块化的组织方式（后端采用npm包划分模块，前端目前还使用合一方式，理论上一样可拆分），可通过简单的配置和启动器，将模块整合为一个多功能的管理系统，从而是的功能模块可以灵活组合，也可以灵活扩展和替换，这样可以解决多个项目共享和管理的问题。
+一个轻量管理系统快速开发脚手架，前后端采用Javascript，容易上手；同时前后端都采用了模块化的组织方式（后端采用npm包划分模块，前端目前还使用合一方式，理论上一样可拆分），可通过简单的配置和启动器，将模块整合为一个多功能的管理系统，从而是的功能模块可以灵活组合，也可以灵活扩展和替换，这样可以解决多个项目共享和管理的问题。
 
 工程采用monorepo管理方式，避免了拆分多个包的管理复杂性。
 
@@ -181,7 +181,7 @@ export const layoutContainerPlugin = {
         simple: { // 简单页面，用于包裹简单的登录、404等页面 
             logo: '/assets/imgs/logo.png',  // 放置在静态目录页面
             background: '/assets/imgs/bg.png',
-            copyright: '@2015-2017 以太数据 版权所有 苏ICP备:16022233号',
+            copyright: '@2015-2019',
             path: SIMPLE_CONTAINER_PATH
         },
         complex: {
@@ -264,14 +264,9 @@ npm i -g lerna
 
 ```
 
-其中，yarn 可以用用[`安装包`](https://yarnpkg.com/zh-Hans/docs/install)安装。
-
 #### 下载代码，初始化
 
 ```
-git clone git@build.chuanyang100.com:iota/projects-repo.git
-
-cd projects-repo
 lerna bootstrap
 ```
 
