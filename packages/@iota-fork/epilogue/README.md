@@ -1,3 +1,12 @@
+# Fork from Epilogue
+
+- 修改内容
+  - 修改为支持koa
+
+以下为Epilogue的原README
+
+----------
+
 [![Build Status](https://travis-ci.org/dchester/epilogue.svg?branch=master)](https://travis-ci.org/dchester/epilogue) [![Dependency Status](https://david-dm.org/dchester/epilogue.svg)](https://david-dm.org/dchester/epilogue)
 
 # Epilogue
@@ -64,13 +73,13 @@ database
 
 On the server we now have the following controllers and endpoints:
 
-Controller | Endpoint | Description
------------|----------|------------
-users.create | POST /users | Create a user
-users.list | GET /users  | Get a listing of users
-users.read | GET /users/:id | Get details about a user
-users.update | PUT /users/:id | Update a user
-users.delete | DELETE /users/:id | Delete a user
+| Controller   | Endpoint          | Description              |
+| ------------ | ----------------- | ------------------------ |
+| users.create | POST /users       | Create a user            |
+| users.list   | GET /users        | Get a listing of users   |
+| users.read   | GET /users/:id    | Get details about a user |
+| users.update | PUT /users/:id    | Update a user            |
+| users.delete | DELETE /users/:id | Delete a user            |
 
 ### Customize behavior
 

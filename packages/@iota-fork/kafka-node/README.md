@@ -1,3 +1,13 @@
+# Fork from Kafka-node
+
+- 修改内容
+  - 解决在Windows上无法安装的问题，去掉了对snappy的依赖
+
+以下为Kafka-node的原README
+
+----------
+
+
 Kafka-node
 ==========
 

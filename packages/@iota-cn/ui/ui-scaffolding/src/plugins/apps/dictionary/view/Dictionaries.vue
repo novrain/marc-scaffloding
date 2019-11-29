@@ -20,6 +20,7 @@
 //     </div>
 // </template>
 import { Validator } from '@iota-cn/util-validation'
+import { message } from 'ant-design-vue/es'
 
 export default {
     data() {
@@ -178,7 +179,7 @@ export default {
         },
         onDeleteDictionary({ dictionary }) {
             return () => {
-                return this.$axios.silentDelete(`/v1/api/dictionaries/${dictionary.id}`, true)
+                return this.$axios.silentDelete(`/v1/api/dictionaries/${dictionary.key}`, true)
                     .then(() => {
                         this.refetchDictionaries()
                         this.dictionary.editItem = undefined
@@ -197,12 +198,16 @@ export default {
                             this.dictionary.showAdd = false
                             this.refetchDictionaries()
                             this.dictionary.newItem = {}
-                        }).catch(() => { })
+                        }).catch(() => {
+                            // if (err.response && err.response.status === 409) { message.error('该条目Key已存在，请修改后再提交') }
+                            message.error('该字典Key已存在，请修改后再提交')
+                        })
                 }
             })
         },
         onAddDictCancel() {
             this.dictionary.showAdd = false
+            this.dictionary.editValue = {}
         },
         // add end
 
@@ -217,17 +222,21 @@ export default {
         onEditDictOk() {
             this.$ncformValidate('_editDictForm').then(data => {
                 if (data.result) {
-                    this.$axios.silentPut(`v1/api/dictionaries/${this.dictionary.editItem.id}`, this.dictionary.editValue, true)
+                    this.$axios.silentPut(`v1/api/dictionaries/${this.dictionary.editItem.key}`, this.dictionary.editValue, true)
                         .then(() => {
                             this.dictionary.showEdit = false
                             this.refetchDictionaries()
                             this.dictionary.editValue = {}
-                        }).catch(() => { })
+                        }).catch(() => {
+                            // if (err.response && err.response.status === 409) { message.error('该条目Key已存在，请修改后再提交') }
+                            message.error('该字典Key已存在，请修改后再提交')
+                        })
                 }
             })
         },
         onEditDictCancel() {
             this.dictionary.showEdit = false
+            this.dictionary.editValue = {}
         },
         renderDictionaries() {
             const columns = [
@@ -256,7 +265,7 @@ export default {
                                     title="删除"
                                     content={(<span>是否删除字典:{record.name}</span>)}
                                     button={(<a>删除</a>)}
-                                    ok={this.onDeleteDictionary({ record, index })}
+                                    ok={this.onDeleteDictionary({ dictionary: record, index })}
                                     clearFloat={true} />
                             </div>
                         )
@@ -266,6 +275,7 @@ export default {
             const pageSizeOptions = ['20', '40', '60', '80']
             return (
                 <a-card title="字典管理"
+                    bordered={false}
                     bodyStyle={{ padding: "2px", flex: 1 }}
                     style={{
                         height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white',
@@ -323,12 +333,15 @@ export default {
                             this.dictionaryItem.showAdd = false
                             this.refetchDictionaryItems()
                             this.dictionaryItem.newItem = {}
-                        }).catch(() => { })
+                        }).catch((err) => {
+                            if (err.response && err.response.status === 409) { message.error('该条目Key已存在，请修改后再提交') }
+                        })
                 }
             })
         },
         onAddItemCancel() {
             this.dictionaryItem.showAdd = false
+            this.dictionaryItem.editValue = {}
         },
         onShowItemEdit(item) {
             return () => {
@@ -346,7 +359,9 @@ export default {
                             this.dictionaryItem.showEdit = false
                             this.refetchDictionaryItems()
                             this.dictionaryItem.editValue = {}
-                        }).catch(() => { })
+                        }).catch((err) => {
+                            if (err.response && err.response.status === 409) { message.error('该条目Key已存在，请修改后再提交') }
+                        })
                 }
             })
         },
@@ -354,7 +369,7 @@ export default {
             this.dictionaryItem.showEdit = false
         },
         refetchDictionaryItems() {
-            this.$axios.silentGet(`/v1/api/dictionaries/${this.dictionary.editItem.id}`, true)
+            this.$axios.silentGet(`/v1/api/dictionaries/${this.dictionary.editItem.key}`, true)
                 .then((res) => {
                     this.dictionaryItem.items = res.data.items
                 }).catch(() => { })
@@ -444,6 +459,7 @@ export default {
             }
             return (
                 <a-card title="字典条目"
+                    bordered={false}
                     bodyStyle={{ padding: "2px", flex: 1 }}
                     style={{
                         height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white',
