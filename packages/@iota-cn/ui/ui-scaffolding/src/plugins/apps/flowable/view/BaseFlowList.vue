@@ -7,13 +7,13 @@ export default {
     components: {
         "ii-flow-item": FlowItem
     },
-    props: ['processDef', 'user', 'selectedFlow', 'flowHelper', 'active'],
+    props: ['processDef', 'user', 'selectedFlow', 'flowHelper', 'active', 'layout'],
     data() {
         return {
             flows: [],
             dataType: 'running',
             page: 1,
-            size: 100,
+            size: 80,
             total: 0,
             history: {
                 disabled: true,
@@ -53,7 +53,7 @@ export default {
             }
             if (reset) {
                 this.page = 1
-                this.size = 100
+                this.size = 80
                 this.total = 0
                 this.flows = []
             }
@@ -112,27 +112,30 @@ export default {
                 }).catch(() => {
                     message.success('任务激活失败，请稍后再试')
                 })
-        }
-    },
-    render() {
-        return (
-            <div class="ii-flow-list">
+        },
+        renderConrols() {
+            return [
+                this.history.disabled ?
+                    null
+                    : <a-radio-group key='dataType'
+                        buttonStyle='solid'
+                        v-model={this.dataType}>
+                        <a-radio-button value="running">未处理</a-radio-button>
+                        <a-radio-button value="finished">已处理</a-radio-button>
+                    </a-radio-group>
+                ,
+                <a-input-search key='search'
+                    placeholder={this.flowHelper.queryPlaceHolder}
+                    class="search"
+                    v-model={this.fuzzyQuery}
+                    onSearch={this.refetch}
+                    enterButton />
+            ]
+        },
+        renderList() {
+            return (<div class="ii-flow-list">
                 <div class="toolbar">
-                    {
-                        this.history.disabled ?
-                            null
-                            : <a-radio-group
-                                buttonStyle='solid'
-                                v-model={this.dataType}>
-                                <a-radio-button value="running">未处理</a-radio-button>
-                                <a-radio-button value="finished">已处理</a-radio-button>
-                            </a-radio-group>
-                    }
-                    <a-input-search placeholder={this.flowHelper.queryPlaceHolder}
-                        class="search"
-                        v-model={this.fuzzyQuery}
-                        onSearch={this.refetch}
-                        enterButton />
+                    {this.renderConrols()}
                 </div>
                 {
                     this.flows.length <= 0 ?
@@ -161,8 +164,126 @@ export default {
                                 showTotal={() => `共 ${this.total} 条`} />
                         </div>
                 }
-            </div>
-        )
+            </div>)
+        },
+        onPageChange(page) {
+            this.page = page
+            this.refetch()
+        },
+        onLimitChange(current, pageSize) {
+            this.limit = pageSize
+            this.page = 1
+            this.refetch()
+        },
+        renderTable() {
+            let columns = this.flowHelper.columns
+            if (typeof this.flowHelper.columns === 'function') {
+                columns = this.flowHelper.columns.call(this)
+            }
+            if (!columns) {
+                return this.renderList()
+            }
+            if (this.showNode) { // 扩展类提供
+                const taskNodeColumn = {
+                    title: '流程节点',
+                    dataIndex: 'task.name',
+                    key: 'task.name',
+                    width: '10%',
+                    customRender: (text, flow) => {
+                        if (flow.finished) {
+                            return ''
+                        } else if (flow.task) {
+                            return flow.task.name
+                        }
+                        return ''
+                    }
+                }
+                columns.push(taskNodeColumn)
+            }
+            // 操作
+            if (this.dataType === 'running') {
+                const operationColumn = {
+                    title: '操作',
+                    dataIndex: 'operation',
+                    width: '10%',
+                    customRender: (text, flow) => {
+                        const cancelable = U.cancelable({ user: this.user, flow })
+                        const suspendable = U.suspendable({ user: this.user, flow })
+                        const activeable = U.activeable({ user: this.user, flow })
+                        return flow.finished ?
+                            null
+                            : <div class='operations'>
+                                {
+                                    cancelable ?
+                                        <a-popconfirm
+                                            title="确认取消？"
+                                            okText="确认"
+                                            onConfirm={() => { this.onCancel({ flow }) }}
+                                            cancelText="取消">
+                                            <a>取消</a>
+                                        </a-popconfirm>
+                                        :
+                                        null
+                                }
+                                {cancelable ? <a-divider type="vertical" /> : null}
+                                {
+                                    suspendable ?
+                                        <a-popconfirm
+                                            title="确认挂起？"
+                                            okText="确认"
+                                            onConfirm={() => { this.onSuspend({ flow }) }}
+                                            cancelText="取消">
+                                            <a>挂起</a>
+                                        </a-popconfirm>
+                                        :
+                                        null
+                                }
+                                {suspendable ? <a-divider type="vertical" /> : null}
+                                {
+                                    activeable ?
+                                        <a-popconfirm
+                                            title="确认激活？"
+                                            okText="确认"
+                                            onConfirm={() => { this.onActive({ flow }) }}
+                                            cancelText="取消">
+                                            <a>激活</a>
+                                        </a-popconfirm>
+                                        :
+                                        null
+                                }
+                            </div>
+                    },
+                }
+                columns.push(operationColumn)
+            }
+            const pageSizeOptions = ['20', '40', '60', '80']
+            return (
+                <div class="ii-flow-list">
+                    <IiTableLayout
+                        rowSelection={{ type: 'radio', selectedRowKeys: [this.selectedFlow ? this.selectedFlow.id : undefined] }}
+                        size='small'
+                        controls={this.renderConrols()}
+                        headheight={68}
+                        total={this.total}
+                        pageSize={this.size}
+                        currentPage={this.page}
+                        showSizeChanger={true}
+                        onShowSizeChange={this.onLimitChange}
+                        onPaginationChange={this.onPageChange}
+                        pageSizeOptions={pageSizeOptions}
+                        onRowClick={this.onSelectFlow}
+                        showPagination={'top'}
+                        showSizeChanger={true}
+                        class={'table'}
+                        columns={columns}
+                        rows={this.flows}>
+                    </IiTableLayout>
+                </div>
+            )
+        }
+    },
+    render() {
+        return this.layout === 'list' ? this.renderList() : this.renderTable()
     }
 }
 </script>
@@ -176,44 +297,43 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 10px 0;
 
     .toolbar {
         display: flex;
         width: 100%;
-        margin: 0 0 10px 0;
+        margin: 10px 0px 10px 0;
 
         .search {
             flex: 1;
         }
+    }
 
-        /deep/ .ant-radio-group {
-            text-align: center;
+    /deep/ .ant-radio-group {
+        text-align: center;
 
-            // border-bottom: 1px solid $ii-gray-200;
-            .ant-radio-button-wrapper, .ant-radio-button-wrapper-checked {
+        // border-bottom: 1px solid $ii-gray-200;
+        .ant-radio-button-wrapper, .ant-radio-button-wrapper-checked {
+            border: none;
+            box-shadow: none;
+
+            &:hover {
                 border: none;
                 box-shadow: none;
-
-                &:hover {
-                    border: none;
-                    box-shadow: none;
-                }
-
-                &:focus {
-                    border: none;
-                    box-shadow: none;
-                }
-
-                &:focus-within {
-                    outline: none;
-                }
             }
 
-            .ant-radio-button-wrapper-checked {
-                background-color: $ii-gray-100;
-                color: $primary-color;
+            &:focus {
+                border: none;
+                box-shadow: none;
             }
+
+            &:focus-within {
+                outline: none;
+            }
+        }
+
+        .ant-radio-button-wrapper-checked {
+            background-color: $ii-gray-100;
+            color: $primary-color;
         }
     }
 
@@ -223,6 +343,7 @@ export default {
         width: 100%;
         flex-direction: column;
         align-items: center;
+        overflow-y: auto;
 
         .empty {
             flex: 1;
@@ -233,11 +354,22 @@ export default {
         }
 
         .list {
-            overflow-y: auto;
             width: 100%;
-            flex: 1;
 
             .flow-item {
+            }
+        }
+    }
+
+    .table {
+        /deep/ .ant-input-group-wrapper {
+            width: auto;
+        }
+
+        .operations {
+            a {
+                color: $primary-color;
+                cursor: pointer;
             }
         }
     }

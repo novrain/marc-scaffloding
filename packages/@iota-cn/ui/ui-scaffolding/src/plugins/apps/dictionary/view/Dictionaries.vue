@@ -250,7 +250,6 @@ export default {
                     title: '字典名称',
                     dataIndex: 'name',
                     key: 'name',
-                    width: '40% ',
                 },
                 {
                     title: '操作',
@@ -303,6 +302,7 @@ export default {
                         <ncform formName='_editDictForm' formSchema={this.dictionary.schema} vModel={this.dictionary.editValue} />
                     </AModal>
                     <IiTableLayout
+                        rowSelection={{ type: 'radio', selectedRowKeys: [this.dictionary.editItem ? this.dictionary.editItem.id : undefined] }}
                         size='small'
                         headheight={68}
                         total={this.dictionary.total}

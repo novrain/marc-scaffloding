@@ -40,5 +40,22 @@ export default {
             process.variables = (process.variables || []).concat(convertCategoriesToCreateVariables(categories))
         }
         return process
-    }
+    },
+    columns() {
+        const columns = [
+            {
+                title: '名称',
+                dataIndex: 'name',
+                key: 'name',
+            },
+            {
+                title: '描述',
+                dataIndex: 'desc',
+                key: 'desc',
+                width: '50%',
+            }
+        ]
+        return columns
+    },
+    layout: 'table'
 }

@@ -30,6 +30,12 @@ window.$http = Vue.prototype.$http = axios
 import CKEditor from '@ckeditor/ckeditor5-vue'
 Vue.use(CKEditor)
 
+//Split pane
+import { Splitpanes, Pane } from 'splitpanes'
+import 'splitpanes/dist/splitpanes.css'
+Vue.component('splitpanes', Splitpanes)
+Vue.component('splitpane', Pane)
+
 Vue.use(Antd)
 Vue.use(VCharts)
 Vue.use(VueI18n)

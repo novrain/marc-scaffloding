@@ -75,6 +75,7 @@ export default {
                             })
                             const { name, summary, desc } = this.flowHelper.simplified.call(this, { formData })
                             return {
+                                id: flow.id,
                                 processInstanceId: flow.id,
                                 createTime: moment(flow.createTime).format('YYYY-MM-DD HH:mm:ss'),
                                 dueDate: flow.dueDate,

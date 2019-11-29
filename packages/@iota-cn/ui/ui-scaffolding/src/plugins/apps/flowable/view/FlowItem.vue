@@ -61,6 +61,7 @@
 
 <script>
 import moment from 'moment'
+import * as U from '../util'
 
 export default {
     props: ['flow', 'selected', 'user', 'onCancel', 'onClaim', 'onDelegate', 'onResolve', 'onSuspend', 'onActive'],
@@ -92,7 +93,7 @@ export default {
     },
     computed: {
         cancelable() {
-            return (this.user.isAdmin || this.flow.formData.initiatorId === this.user.id) && !this.flow.endTime
+            return U.cancelable({ user: this.user, flow: this.flow })
         },
         claimable() {
             return false // 到任务侧去做认领，不在这里重复做；或者能提供通用方法出来
@@ -102,10 +103,10 @@ export default {
             return false
         },
         suspendable() {
-            return (this.user.isAdmin || this.flow.formData.initiatorId === this.user.id) && this.flow.suspended === false
+            return U.suspendable({ user: this.user, flow: this.flow })
         },
         activeable() {
-            return (this.user.isAdmin || this.flow.formData.initiatorId === this.user.id) && this.flow.suspended === true
+            return U.activeable({ user: this.user, flow: this.flow })
         }
     }
 }

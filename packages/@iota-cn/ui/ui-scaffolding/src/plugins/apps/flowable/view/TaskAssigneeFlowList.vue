@@ -5,6 +5,11 @@ import BaseFlowList from './BaseFlowList'
 
 export default {
     mixins: [BaseFlowList],
+    data() {
+        return {
+            showNode: true
+        }
+    },
     methods: {
         refetch() {
             if (this.processDef) {
@@ -43,6 +48,7 @@ export default {
                             const { name, summary, desc } = this.flowHelper.simplified.call(this, { formData })
                             task.assignee = U.parseAssignee(task.assignee)
                             return {
+                                id: task.id,
                                 processInstanceId: task.processInstanceId,
                                 createTime: moment(task.createTime).format('YYYY-MM-DD HH:mm:ss'),
                                 dueDate: task.dueDate,

@@ -297,7 +297,7 @@ packages
 目录(不需要切换)
 packages/applications/services/front/front-example
 
-lerna run --stream --scope @iota-cn/front-example serve
+lerna run --stream --scope @iota-app/front-example serve
 ```
 
 ```
