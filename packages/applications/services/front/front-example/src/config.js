@@ -12,7 +12,7 @@ const exampleProcessPlugin = {
                 key: 'example',
                 path: '/console/flowable/example',
                 flowId: 'example',
-                flowFuncs: require('./plugins/flowable/funcs/example').default
+                flowHelper: require('./plugins/flowable/funcs/example').default
             }
         ]
     }
@@ -23,7 +23,7 @@ const communistPartyProcessPlugin = {
         containerId: COMPLEX_CONTAINER_ID,
         flow: {
             flowId: 'example',
-            flowFuncs: require('./plugins/flowable/funcs/cppf').default
+            flowHelper: require('./plugins/flowable/funcs/cppf').default
         }
     }
 }

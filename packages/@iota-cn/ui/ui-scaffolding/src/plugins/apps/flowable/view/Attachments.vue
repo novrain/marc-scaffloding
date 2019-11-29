@@ -4,7 +4,7 @@ import moment from 'moment'
 import * as U from '../util'
 
 export default {
-    props: ['user', 'flow'],
+    props: ['user', 'flow', 'active'],
     components: {
     },
     data() {
@@ -23,6 +23,11 @@ export default {
                 this.refetch()
             }
         },
+        active: {
+            handler() {
+                this.refetch()
+            }
+        }
     },
     mounted() {
         this.refetch()
@@ -38,6 +43,9 @@ export default {
             this.refetch()
         },
         refetch() {
+            if (!this.active) {
+                return
+            }
             this.contents.items = []
             const instanceId = this.flow.processInstanceId
             const start = (this.page - 1) * this.limit

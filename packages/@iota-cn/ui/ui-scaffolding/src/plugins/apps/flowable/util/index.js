@@ -97,7 +97,10 @@ export const isCandidate = ({ task, user, assignedOrganizations, assignedPositio
 }
 
 export const isTaskClaimable = ({ task, user, assignedOrganizations, assignedPositions, assignedRoles }) => {
-    return !task.assignee && isCandidate({ task, user, assignedOrganizations, assignedPositions, assignedRoles })
+    if (task.assignee && task.assignee.id) {
+        return false
+    }
+    return isCandidate({ task, user, assignedOrganizations, assignedPositions, assignedRoles })
 }
 
 // export const isTaskAssigneeable = ({ task, user }) => {

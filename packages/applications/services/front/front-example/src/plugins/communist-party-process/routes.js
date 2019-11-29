@@ -12,7 +12,7 @@ export default (opts) => {
                         component: {
                             mixins: [CommunistPartyProcess]
                         },
-                        props: { flowId: flow.flowId, flowFuncs: flow.flowFuncs }
+                        props: { flowId: flow.flowId, flowHelper: flow.flowHelper }
                     }
                 }
             }

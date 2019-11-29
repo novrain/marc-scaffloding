@@ -80,6 +80,9 @@ export default {
             })
         },
         refetch() {
+            if (!this.active) {
+                return
+            }
             this.running.items = []
             this.finished.items = []
             this.$axios.silentPost(`/fl/process/query/historic-task-instances`, {
@@ -207,12 +210,14 @@ export default {
 
         // claim
         onClaim(task) {
+            let assignee = U.idOfUser(this.user)
             // 使用PUT强制认领，但是提前判断了是否可以认领
             this.$axios.silentPut(`/fl/process/runtime/tasks/${task.id}`, {
                 // action: 'claim', 
-                assignee: U.idOfUser(this.user)
+                assignee: assignee
             }, true).then(() => {
                 message.success('认领成功')
+                task.assignee = assignee
             }).catch(() => {
                 message.error('认领失败，请稍后再试')
             })

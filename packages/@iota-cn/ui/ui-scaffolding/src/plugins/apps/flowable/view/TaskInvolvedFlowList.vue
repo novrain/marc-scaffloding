@@ -52,12 +52,19 @@ export default {
                         return
                     }
                 }
-                if (this.flowFuncs.query) { // 允许扩展查询条件
-                    query = this.flowFuncs.query({
-                        query,
+                if (this.flowHelper.query) { // 允许扩展查询条件
+                    query = this.flowHelper.query({
+                        basic: query,
+                        conditions: {
+                            fuzzyQuery: this.fuzzyQuery
+                        },
                         dataType: this.dataType,
                         processDef: this.processDef
                     })
+                    if (query.variables) {
+                        query.processInstanceVariables = query.variables
+                        delete query.variables
+                    }
                 }
                 this.$axios.silentPost(url, query, true)
                     .then((res) => {
@@ -66,7 +73,7 @@ export default {
                             flow.variables.forEach(v => {
                                 formData[v.name] = v.value
                             })
-                            const { name, summary, desc } = this.flowFuncs.infoOfFlow.call(this, formData)
+                            const { name, summary, desc } = this.flowHelper.simplified.call(this, { formData })
                             return {
                                 processInstanceId: flow.id,
                                 createTime: moment(flow.createTime).format('YYYY-MM-DD HH:mm:ss'),
@@ -80,7 +87,6 @@ export default {
                             }
                         })
                         this.total = res.data.total
-                        this.page = 0
                         if (this.flows.length > 0) {
                             this.$emit('select', this.flows[0])
                         } else {
