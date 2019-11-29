@@ -5,9 +5,9 @@ import { convertArrayToTree } from '@iota-cn/ui-scaffolding/src/framework/util'
 const VIRTUAl_ROOT = 'virtual-root'
 
 export default {
-    props: ['flowId', 'flowFuncs'],
+    props: ['flowId', 'flowHelper'],
     data() {
-        const wrappderFlowFuncs = Object.assign({}, this.flowFuncs)
+        const wrappderFlowHelper = Object.assign({}, this.flowHelper)
         return {
             categories: [],
             selectedKeys: [],
@@ -15,7 +15,7 @@ export default {
             rightClickNodeTreeItem: {},
             addNode: false,
             propEditNode: false,
-            wrappderFlowFuncs: wrappderFlowFuncs
+            wrappderFlowHelper: wrappderFlowHelper
         }
     },
     mounted() {
@@ -164,7 +164,7 @@ export default {
     watch: {
         selectedKeys: {
             handler() {
-                if (this.flowFuncs && this.selectedKeys.length === 1) {
+                if (this.flowHelper && this.selectedKeys.length === 1) {
                     let categories = []
                     let key = this.selectedKeys[0]
                     if (key !== VIRTUAl_ROOT) {
@@ -179,21 +179,21 @@ export default {
                         }
                     }
                     //扩展query，传递自定义参数
-                    if (this.flowFuncs.query) {
-                        const oldQuery = this.flowFuncs.query
+                    if (this.flowHelper.query) {
+                        const oldQuery = this.flowHelper.query
                         let query = function (opts) {
                             opts.categories = categories
                             return oldQuery(opts)
                         }
-                        this.wrappderFlowFuncs = Object.assign({}, this.wrappderFlowFuncs, { query: query })
+                        this.wrappderFlowHelper = Object.assign({}, this.wrappderFlowHelper, { query: query })
                     }
-                    if (this.flowFuncs.create) {
-                        const oldCreate = this.flowFuncs.create
+                    if (this.flowHelper.create) {
+                        const oldCreate = this.flowHelper.create
                         let create = function (opts) {
                             opts.categories = categories
                             return oldCreate(opts)
                         }
-                        this.wrappderFlowFuncs = Object.assign({}, this.wrappderFlowFuncs, { create: create })
+                        this.wrappderFlowHelper = Object.assign({}, this.wrappderFlowHelper, { create: create })
                     }
                 }
             }
@@ -263,7 +263,7 @@ export default {
                 </a-col>
                 <a-col class="col"
                     span={20}>
-                    <ii-flowable flowId={this.flowId} flowFuncs={this.wrappderFlowFuncs} />
+                    <ii-flowable flowId={this.flowId} flowHelper={this.wrappderFlowHelper} />
                 </a-col>
                 {this.getNodeTreeRightClickMenu()}
             </a-row>

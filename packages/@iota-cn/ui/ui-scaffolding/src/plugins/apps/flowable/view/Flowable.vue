@@ -1,75 +1,3 @@
-<template>
-    <div class="ii-flowable">
-        <a-row :gutter='16'
-            class="row">
-            <a-col :span='10'
-                class="col">
-                <a-modal title="新建任务"
-                    :bodyStyle='{maxHeight:"80%", padding:"10px"}'
-                    :width='formWidth'
-                    :visible='showAdd'
-                    @ok='onAddItemOk'
-                    @cancel='onAddItemCancel'>
-                    <ncform formName='_addItemForm'
-                        v-if="formDef"
-                        :formSchema='formDef'
-                        v-model='processVariables' />
-                </a-modal>
-                <a-button size='small'
-                    :disabled='!formDef'
-                    class="new-flow"
-                    @click="onAddItem"
-                    icon='plus'>新建</a-button>
-                <a-tabs defaultActiveKey="assignee"
-                    v-model="activeTab"
-                    size="small"
-                    @change="onSwitchTabs"
-                    class="flowtabs">
-                    <a-tab-pane tab="待我处理"
-                        class="tabpanel"
-                        key="assignee">
-                        <assignee-flow-list :processDef="processDef"
-                            :user='user'
-                            :flowFuncs='flowFuncs'
-                            :selectedFlow='selectedFlowsOfTab.assignee'
-                            :active='activeTab === "assignee"'
-                            @select="onSelectFlow" />
-                    </a-tab-pane>
-                    <a-tab-pane tab="由我发起"
-                        key="startBySelf">
-                        <startby-flow-list :processDef="processDef"
-                            :user='user'
-                            :flowFuncs='flowFuncs'
-                            :selectedFlow='selectedFlowsOfTab.startBySelf'
-                            :active='activeTab === "startBySelf"'
-                            @select="onSelectFlow" />
-                    </a-tab-pane>
-                    <a-tab-pane tab="与我有关"
-                        key="involved">
-                        <involved-flow-list :processDef="processDef"
-                            :user='user'
-                            :flowFuncs='flowFuncs'
-                            :selectedFlow='selectedFlowsOfTab.involved'
-                            :active='activeTab === "involved"'
-                            @select="onSelectFlow" />
-                    </a-tab-pane>
-                </a-tabs>
-            </a-col>
-            <a-col :span='14'
-                class="col">
-                <div class="detail">
-                    <flow v-if="selectedFlow"
-                        :flow='selectedFlow'
-                        :user='user'
-                        :processDef='processDef'
-                        :onSubmit='onSubmit' />
-                    <ii-empty v-else />
-                </div>
-            </a-col>
-        </a-row>
-    </div>
-</template>
-
 <script>
 import { message } from 'ant-design-vue/es'
 import * as U from '../util'
@@ -85,7 +13,7 @@ export default {
         'involved-flow-list': TaskInvolvedFlowList,
         'flow': Flow
     },
-    props: ['flowId', 'flowFuncs'],
+    props: ['flowId', 'flowHelper'],
     data() {
         const state = this.$store.state.iota.global.authentication
         const systemVariables = {
@@ -93,6 +21,7 @@ export default {
             initiatorName: state.user.fullname || state.user.username,
             initiatorUser: U.idOfUser(state.user)
         }
+        const layout = this.flowHelper.layout || 'table'
         return {
             processDef: undefined,
             selectedAssigneeFlow: undefined,
@@ -103,7 +32,8 @@ export default {
             systemVariables: systemVariables,
             processVariables: {
                 ...systemVariables
-            }
+            },
+            layout
         }
     },
     mounted() {
@@ -143,8 +73,8 @@ export default {
                         variables: variables
                     }
                     // 允许增加参数
-                    if (this.flowFuncs && this.flowFuncs.create) {
-                        process = this.flowFuncs.create({ processDef: this.processDef, process: process })
+                    if (this.flowHelper && this.flowHelper.create) {
+                        process = this.flowHelper.create({ processDef: this.processDef, process: process })
                     }
                     this.$axios.silentPost(`/fl/process/runtime/process-instances`, process, true)
                         .then(() => {
@@ -203,6 +133,85 @@ export default {
             const formUi = this.processDef ? (this.processDef.formDef.ui || { width: 700 }) : { width: 700 }
             return formUi.width || 700
         }
+    },
+    render() {
+        return (
+            <div class="ii-flowable">
+                <a-row gutter={16}
+                    class="row">
+                    <a-col span={10}
+                        class="col">
+                        <a-modal title="新建任务"
+                            bodyStyle={{ maxHeight: "80%", padding: "10px" }}
+                            width={this.formWidth}
+                            visible={this.showAdd}
+                            onOk={this.onAddItemOk}
+                            onCancel={this.onAddItemCancel}>
+                            {
+                                this.formDef ?
+                                    <ncform formName='_addItemForm'
+                                        formSchema={this.formDef}
+                                        v-model={this.processVariables} />
+                                    : null
+                            }
+                        </a-modal>
+                        <a-button size='small'
+                            disabled={!this.formDef}
+                            class="new-flow"
+                            onClick={this.onAddItem}
+                            icon='plus'>新建</a-button>
+                        <a-tabs defaultActiveKey="assignee"
+                            v-model={this.activeTab}
+                            size="small"
+                            class="flowtabs">
+                            <a-tab-pane tab="待我处理"
+                                class="tabpanel"
+                                key="assignee">
+                                <assignee-flow-list processDef={this.processDef}
+                                    user={this.user}
+                                    flowHelper={this.flowHelper}
+                                    selectedFlow={this.selectedFlowsOfTab.assignee}
+                                    active={this.activeTab === "assignee"}
+                                    onSelect={this.onSelectFlow} />
+                            </a-tab-pane>
+                            <a-tab-pane tab="由我发起"
+                                key="startBySelf">
+                                <startby-flow-list processDef={this.processDef}
+                                    user={this.user}
+                                    flowHelper={this.flowHelper}
+                                    selectedFlow={this.selectedFlowsOfTab.assignee}
+                                    active={this.activeTab === "startBySelf"}
+                                    onSelect={this.onSelectFlow} />
+                            </a-tab-pane>
+                            <a-tab-pane tab="与我有关"
+                                key="involved">
+                                <involved-flow-list processDef={this.processDef}
+                                    user={this.user}
+                                    flowHelper={this.flowHelper}
+                                    selectedFlow={this.selectedFlowsOfTab.assignee}
+                                    active={this.activeTab === "involved"}
+                                    onSelect={this.onSelectFlow} />
+                            </a-tab-pane>
+                        </a-tabs>
+                    </a-col>
+                    <a-col span={14}
+                        class="col">
+                        <div class="detail">
+                            {
+                                this.selectedFlow ?
+                                    <flow
+                                        flow={this.selectedFlow}
+                                        user={this.user}
+                                        processDef={this.processDef}
+                                        onSubmit={this.onSubmit} />
+                                    :
+                                    <ii-empty />
+                            }
+                        </div>
+                    </a-col>
+                </a-row>
+            </div>
+        )
     }
 }
 </script>

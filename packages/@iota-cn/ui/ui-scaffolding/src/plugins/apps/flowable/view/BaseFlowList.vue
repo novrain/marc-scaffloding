@@ -1,43 +1,3 @@
-<template>
-    <div class="ii-flow-list">
-        <div class="toolbar">
-            <a-radio-group v-if="!history.disabled"
-                buttonStyle='solid'
-                v-model="dataType">
-                <a-radio-button value="running">未处理</a-radio-button>
-                <a-radio-button value="finished">已处理</a-radio-button>
-            </a-radio-group>
-            <a-input-search placeholder="按名称搜索"
-                class="search"
-                @search="refetch"
-                enterButton />
-        </div>
-        <div class="flows"
-            v-if="flows.length <= 0">
-            <ii-empty class="empty" />
-        </div>
-        <div class="flows"
-            v-else>
-            <div class="list">
-                <template v-for="(flow, index) in flows">
-                    <ii-flow-item :key='index'
-                        @click="onSelectFlow"
-                        :flow='flow'
-                        :user='user'
-                        :onCancel='onCancel'
-                        :onSuspend='onSuspend'
-                        :onActive='onActive'
-                        :selected='selectedFlow ? selectedFlow.processInstanceId===flow.processInstanceId : false' />
-                </template>
-            </div>
-            <a-pagination size="small"
-                class="pagination"
-                :total="total"
-                :showTotal="total => `共 ${total} 条`" />
-        </div>
-    </div>
-</template>
-
 <script>
 import { message } from 'ant-design-vue/es'
 import * as U from '../util'
@@ -47,9 +7,7 @@ export default {
     components: {
         "ii-flow-item": FlowItem
     },
-    // flowFuncs queryFilter 需要整理合并
-    // queryFilter 是给需要针对某些场景做的查询条件过滤，但只支持在varaible中过滤，参数在发起时就需要配合填入
-    props: ['processDef', 'user', 'selectedFlow', 'flowFuncs', 'queryFilter', 'active'],
+    props: ['processDef', 'user', 'selectedFlow', 'flowHelper', 'active'],
     data() {
         return {
             flows: [],
@@ -59,7 +17,8 @@ export default {
             total: 0,
             history: {
                 disabled: true,
-            }
+            },
+            fuzzyQuery: undefined
         }
     },
     mounted() {
@@ -76,7 +35,7 @@ export default {
                 this.callRefetch(true)
             }
         },
-        flowFuncs: {
+        flowHelper: {
             handler() {
                 this.callRefetch(true)
             }
@@ -94,7 +53,7 @@ export default {
             }
             if (reset) {
                 this.page = 1
-                this.size = 20
+                this.size = 100
                 this.total = 0
                 this.flows = []
             }
@@ -154,6 +113,56 @@ export default {
                     message.success('任务激活失败，请稍后再试')
                 })
         }
+    },
+    render() {
+        return (
+            <div class="ii-flow-list">
+                <div class="toolbar">
+                    {
+                        this.history.disabled ?
+                            null
+                            : <a-radio-group
+                                buttonStyle='solid'
+                                v-model={this.dataType}>
+                                <a-radio-button value="running">未处理</a-radio-button>
+                                <a-radio-button value="finished">已处理</a-radio-button>
+                            </a-radio-group>
+                    }
+                    <a-input-search placeholder={this.flowHelper.queryPlaceHolder}
+                        class="search"
+                        v-model={this.fuzzyQuery}
+                        onSearch={this.refetch}
+                        enterButton />
+                </div>
+                {
+                    this.flows.length <= 0 ?
+                        <div class="flows">
+                            <ii-empty class="empty" />
+                        </div>
+                        :
+                        <div class="flows">
+                            <div class="list">
+                                {this.flows.map((flow) => {
+                                    return <ii-flow-item key='index'
+                                        onClick={this.onSelectFlow}
+                                        flow={flow}
+                                        user={this.user}
+                                        onCancel={this.onCancel}
+                                        onSuspend={this.onSuspend}
+                                        onActive={this.onActive}
+                                        selected={this.selectedFlow ? this.selectedFlow.processInstanceId === flow.processInstanceId : false}
+                                    />
+                                })}
+                            </div>
+                            <a-pagination size="small"
+                                class="pagination"
+                                total={this.total}
+                                v-model={this.page}
+                                showTotal={() => `共 ${this.total} 条`} />
+                        </div>
+                }
+            </div>
+        )
     }
 }
 </script>

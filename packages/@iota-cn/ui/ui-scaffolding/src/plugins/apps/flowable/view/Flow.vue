@@ -2,10 +2,10 @@
     <a-row class="ii-flow">
         <a-tabs defaultActiveKey="content"
             size="small"
+            v-model="activeTab"
             class="flowtabs">
             <a-tab-pane tab="正文"
                 class="tabpanel"
-                v-model="activeTab"
                 key="content">
                 <div class="detail"
                     ref='_detail'>
@@ -49,6 +49,7 @@ import { message } from 'ant-design-vue/es'
 import Comments from './Comments'
 import Attachments from './Attachments'
 import Tasks from './Tasks'
+import * as U from '../util'
 
 export default {
     components: {
@@ -79,6 +80,11 @@ export default {
             handler() {
                 this.updateForm()
             }
+        },
+        activeTab: {
+            handler() {
+                this.refetch()
+            }
         }
     },
     mounted() {
@@ -86,6 +92,9 @@ export default {
     },
     methods: {
         refetch() {
+            if (this.activeTab !== 'content') {
+                return
+            }
             const instanceId = this.flow.processInstanceId
             // 如果没有定义，则查询一下，通过watch来触发刷新form
             if (!this.processDef) {
@@ -157,6 +166,11 @@ export default {
                                 name: k,
                                 value: this.formData[k]
                             })
+                        })
+                        // 暂存一个当前任务的被指派人/执行人，供可能的其他节点使用
+                        variables.push({
+                            name: `${this.flow.task.taskDefinitionKey}.user`,
+                            value: `${U.idOfUser(this.user)}`
                         })
                         this.$axios.silentPost(`/fl/process/runtime/tasks/${this.flow.task.id}`, {
                             action: 'complete',

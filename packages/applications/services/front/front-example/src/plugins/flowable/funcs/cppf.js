@@ -18,7 +18,7 @@ const convertCategoriesToCreateVariables = function (categories) {
 }
 
 export default {
-    infoOfFlow() {
+    simplified() {
         return {
             name: '从变量中获取的名字',
             desc: '从变量中获取的描述',
@@ -27,11 +27,11 @@ export default {
     },
     //查询条件扩展
     query(opts) {
-        const { query, categories } = opts
+        const { basic, categories } = opts
         if (Array.isArray(categories) && categories.length > 0) {
-            query.variables = (query.variables || []).concat(convertCategoriesToQueryVariables(categories))
+            basic.variables = (basic.variables || []).concat(convertCategoriesToQueryVariables(categories))
         }
-        return query
+        return basic
     },
     //创建扩展
     create(opts) {

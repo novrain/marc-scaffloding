@@ -10,7 +10,7 @@ export default (opts) => {
                 // mixins: [Flowable, ...(f.mixins || [])]
                 mixins: [Flowable]  // 目前混入在第一层没有意义
             },
-            props: { flowId: f.flowId, flowFuncs: f.flowFuncs }
+            props: { flowId: f.flowId, flowHelper: f.flowHelper }
         }
     })
     return {
