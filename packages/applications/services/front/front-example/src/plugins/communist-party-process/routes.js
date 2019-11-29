@@ -6,16 +6,14 @@ export default (opts) => {
     return {
         iota: {
             [containerId || 'container']: {
-                dictionary: { // dictionary
-                    overview: {
-                        path: '/console/applications/communist_party_process',
-                        component: {
-                            mixins: [CommunistPartyProcess]
-                        },
-                        props: { flowId: flow.flowId, flowHelper: flow.flowHelper }
-                    }
+                'communist_party_process': {
+                    path: '/console/applications/communist_party_process',
+                    component: {
+                        mixins: [CommunistPartyProcess]
+                    },
+                    props: { flowId: flow.flowId, flowFuncs: flow.flowFuncs }
                 }
             }
         }
     }
-}
+}

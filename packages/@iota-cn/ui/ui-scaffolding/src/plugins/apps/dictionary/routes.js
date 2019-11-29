@@ -6,11 +6,9 @@ export default (opts) => {
         iota: {
             [containerId || 'container']: {
                 dictionary: { // dictionary
-                    overview: {
-                        path: '/console/system/dictionaries',
-                        component: {
-                            mixins: [Dictionaries]
-                        }
+                    path: '/console/system/dictionaries',
+                    component: {
+                        mixins: [Dictionaries]
                     }
                 }
             }

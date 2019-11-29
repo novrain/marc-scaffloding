@@ -16,10 +16,8 @@ export default (opts) => {
     return {
         iota: {
             [containerId || 'container']: {
-                dictionary: { // dictionary
-                    flowable: {
-                        ...routes
-                    }
+                flowable: {
+                    ...routes
                 }
             }
         }
