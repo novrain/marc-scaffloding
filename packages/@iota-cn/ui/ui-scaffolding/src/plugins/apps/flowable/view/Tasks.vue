@@ -478,9 +478,14 @@ export default {
     render() {
         return (
             <div class='ii-task'>
-                {this.renderBpmn()}
-                {this.renderRunning()}
-                {this.renderFinished()}
+                <splitpanes horizontal class="default-theme">
+                    <splitpane min-size="20" max-size="60">
+                        {this.renderRunning()}
+                    </splitpane>
+                    <splitpane style={{ flex: 1 }}>
+                        {this.renderFinished()}
+                    </splitpane>
+                </splitpanes>
                 {this.renderAssigneeEditor()}
                 {this.renderCandidateUsersEditor()}
                 {this.renderCandidateGroupsEditor()}
@@ -504,16 +509,18 @@ export default {
     }
 
     .bpmn {
-        height: 36%;
+        height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
+        background-color: white;
     }
 
     .running {
-        height: 32%;
+        height: 100%;
         display: flex;
         flex-direction: column;
+        background-color: white;
 
         .operation {
             display: flex;
@@ -527,9 +534,10 @@ export default {
     }
 
     .finished {
-        height: 32%;
+        height: 100%;
         display: flex;
         flex-direction: column;
+        background-color: white;
     }
 }
 </style>

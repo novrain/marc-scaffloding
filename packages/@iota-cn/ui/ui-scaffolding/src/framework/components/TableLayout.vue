@@ -94,7 +94,7 @@ export default {
                         </div> :
                         null
                 }
-                <div class={'layout__table'} ref='_tableContainer'>
+                <div class={'layout__table'} ref='_tableContainer' onResize={this.onResize}>
                     <ATable rowSelection={this.rowSelection}
                         columns={this.columns}
                         scroll={{ y: this.tabScroll.y - space }}
@@ -104,7 +104,15 @@ export default {
                         // onRow={this.onRow}
                         title={typeof this.title === 'function' ? this.title : (this.title ? () => this.title : undefined)}
                         rowClassName={this.rowClassName}
-                        onRowClick={this.onEvent('rowClick')}
+                        customRow={(row, index) => {
+                            return {
+                                on: {
+                                    click: () => {
+                                        this.onEvent('rowClick')(row, index)
+                                    }
+                                }
+                            }
+                        }}
                         onRowDoubleClick={this.onEvent('rowDoubleClick')}
                         onRowContextMenu={this.onEvent('rowContextMenu')}
                         bordered={this.bordered}
@@ -131,11 +139,14 @@ export default {
     display: flex;
     flex-direction: column;
     height: 100%;
+    width: 100%;
 
     &__controls {
         margin-top: 0;
         margin-bottom: 10px;
         height: 30px;
+        display: flex;
+        justify-content: flex-start;
 
         &__item {
             margin-left: 0px;
@@ -144,7 +155,8 @@ export default {
 
         &__pagination {
             display: inline-block;
-            float: right;
+            position: absolute;
+            right: 12px;
         }
 
         &__bottom {

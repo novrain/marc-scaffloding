@@ -107,3 +107,21 @@ export const isTaskClaimable = ({ task, user, assignedOrganizations, assignedPos
 export const isTaskAssigneeable = () => {
     return true
 }
+
+export const cancelable = ({ user, flow }) => {
+    return (user.isAdmin || flow.formData.initiatorId === user.id) && !flow.endTime
+}
+export const claimable = () => {
+    return false // 到任务侧去做认领，不在这里重复做；或者能提供通用方法出来
+}
+export const resolveable = () => {
+    // 暂不支持
+    return false
+}
+export const suspendable = ({ user, flow }) => {
+    return (user.isAdmin || flow.formData.initiatorId === user.id) && flow.suspended === false
+}
+
+export const activeable = ({ user, flow }) => {
+    return (user.isAdmin || flow.formData.initiatorId === user.id) && flow.suspended === true
+}

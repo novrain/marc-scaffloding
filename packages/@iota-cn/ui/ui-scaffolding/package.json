@@ -27,6 +27,7 @@
         "less-loader": "^5.0.0",
         "moment": "^2.24.0",
         "socket.io-client": "^2.3.0",
+        "splitpanes": "^2.1.1",
         "v-charts": "^1.19.0",
         "vue": "^2.6.10",
         "vue-i18n": "^8.15.0",
