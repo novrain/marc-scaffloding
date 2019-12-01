@@ -11,7 +11,7 @@ export default {
     methods: {
         refetch() {
             if (this.processDef) {
-                let url = '/fl/process/query/process-instances'
+                let url = '/fl/iota/query/process-instances'
                 let query = {
                     processDefinitionId: this.processDef.flowableInstance,
                     includeProcessVariables: true,
@@ -29,7 +29,7 @@ export default {
                     ]
                 }
                 if (this.dataType === 'finished') {
-                    url = '/fl/process/query/historic-process-instances'
+                    url = '/fl/iota/query/historic-process-instances'
                     query = {
                         processDefinitionId: this.processDef.flowableInstance,
                         includeProcessVariables: true,

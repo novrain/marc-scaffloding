@@ -22,21 +22,20 @@ export default {
     query({ basic, conditions }) {
         if (conditions) {
             if (conditions.fuzzyQuery) {
-                basic.orActive = true
-                basic.variables = basic.variables || []
-                basic.variables.push({
+                basic.orVariables = basic.orVariables || []
+                basic.orVariables.push({
                     name: "projectNumber",
                     value: `%${conditions.fuzzyQuery}%`,
                     operation: "like",
                     type: "string"
                 })
-                basic.variables.push({
+                basic.orVariables.push({
                     name: "projectName",
                     value: `%${conditions.fuzzyQuery}%`,
                     operation: "like",
                     type: "string"
                 })
-                basic.variables.push({
+                basic.orVariables.push({
                     name: "projectDescribe",
                     value: `%${conditions.fuzzyQuery}%`,
                     operation: "like",

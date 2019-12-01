@@ -11,7 +11,7 @@ export default {
     methods: {
         async refetch() {
             if (this.processDef) {
-                let url = '/fl/process/query/process-instances'
+                let url = '/fl/iota/query/process-instances'
                 let query = {
                     processDefinitionId: this.processDef.flowableInstance,
                     includeProcessVariables: true,
@@ -22,7 +22,7 @@ export default {
                     start: (this.page - 1) * this.size
                 }
                 if (this.dataType === 'finished') {
-                    url = '/fl/process/query/historic-process-instances'
+                    url = '/fl/iota/query/historic-process-instances'
                     query = {
                         processDefinitionId: this.processDef.flowableInstance,
                         includeProcessVariables: true,
@@ -61,10 +61,6 @@ export default {
                         dataType: this.dataType,
                         processDef: this.processDef
                     })
-                    if (query.variables) {
-                        query.processInstanceVariables = query.variables
-                        delete query.variables
-                    }
                 }
                 this.$axios.silentPost(url, query, true)
                     .then((res) => {
