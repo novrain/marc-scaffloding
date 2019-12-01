@@ -1,117 +1,119 @@
 <template>
-    <div class="ii-user-profile">
-        <a-card hoverable
-            class="basic"
-            style="width: 300px">
-            <avatar-viewer :img='user.gravatar||"/assets/imgs/defaultAvatar.png"'
-                :width='100'
-                :height='100'
-                :radius='50'
-                className='avatar-viewer'
-                slot="cover" />
-            <a-row type='flex'
-                class="item">
-                <a-col :span="8">{{t('account')}}</a-col>
-                <a-col :span="12">{{user.username}}
-                    <a-tag v-if='user.isAdmin'
-                        color="#f50">{{t('administrator')}}</a-tag>
-                </a-col>
-                <a-col :span="4">
-                    <a-button icon="edit"
-                        @click="onChangeUsername"
-                        type='link'>
-                    </a-button>
-                </a-col>
-            </a-row>
-            <a-row type='flex'
-                class="item">
-                <a-col :span="8">{{t('position')}}</a-col>
-                <a-col :span="16">{{'--'}}</a-col>
-            </a-row>
-            <a-row type='flex'
-                class="item">
-                <a-col :span="8">{{t('organization')}}</a-col>
-                <a-col :span="16">{{'--'}}</a-col>
-            </a-row>
-        </a-card>
-        <div class="operation">
-            <a-row type='flex'
-                class="item">
-                <a-col :span="2">
-                    <ii-icon type='lock' />
-                </a-col>
-                <a-col :span="18">
-                    <a-row class="title">
-                        {{t('password')}}
-                    </a-row>
-                    <a-row class="hint">
-                        {{t('pwdHint')}}
-                    </a-row>
-                </a-col>
-                <a-col :span="4">
-                    <a-row type='flex'
-                        justify='end'>
-                        <a-button type='link'
-                            @click="onChangePassword"
-                            size='small'>{{t('change')}}</a-button>
-                    </a-row>
-                </a-col>
-            </a-row>
-
-            <a-row type='flex'
-                class="item">
-                <a-col :span="2">
-                    <a-icon type='mobile' />
-                </a-col>
-                <a-col :span="18">
-                    <a-row class="title">
-                        {{t('bindMobile')}}
-                    </a-row>
-                    <a-row class="hint">
-                        {{t('bindMobileHint', { mobile : user.mobile || '' })}}
-                    </a-row>
-                </a-col>
-                <a-col :span="4">
-                    <a-row type='flex'
-                        justify='end'>
-                        <a-button type='link'
-                            @click="onChangeMobile"
-                            size='small'>{{user.mobile ? t('change') : t('bind')}}</a-button>
-                    </a-row>
-                </a-col>
-            </a-row>
-
-            <a-row type='flex'
-                class="item">
-                <a-col :span="2">
-                    <a-icon type='mail' />
-                </a-col>
-                <a-col :span="18">
-                    <a-row class="title">
-                        {{t('bindEmail')}}
-                    </a-row>
-                    <a-row class="hint">
-                        {{t('bindEmailHint', { email : user.email||'' })}}
-                    </a-row>
-                </a-col>
-                <a-col :span="4">
-                    <a-row type='flex'
-                        justify='end'>
-                        <ii-count-down-button type='link'
-                            @click="onActiveEmail"
-                            :text="t('active')"
-                            size='small'
-                            :countingTextPost="t('retry')"
-                            v-if="!user.actEmail && user.email" />
-                        <a-button type='link'
-                            v-else
-                            @click="onChangeEmail"
-                            size='small'>{{user.email ? t('change'): t('bind')}}</a-button>
-                    </a-row>
-                </a-col>
-            </a-row>
-
-            <!-- <a-row type='flex'
+    <a-tabs class="ii-user-profile">
+        <a-tab-pane class="basic"
+            key="basic"
+            size='small'
+            tab='基本信息'
+            :bordered='false'>
+            <a-card class="info"
+                style="width: 300px"
+                :bordered='false'>
+                <avatar-viewer :img='user.gravatar||"/assets/imgs/defaultAvatar.png"'
+                    :width='100'
+                    :height='100'
+                    :radius='50'
+                    className='avatar-viewer'
+                    slot="cover" />
+                <a-row type='flex'
+                    class="item">
+                    <a-col :span="8">{{t('account')}}</a-col>
+                    <a-col :span="12">{{user.username}}
+                        <a-tag v-if='user.isAdmin'
+                            color="#f50">{{t('administrator')}}</a-tag>
+                    </a-col>
+                    <a-col :span="4">
+                        <a-button icon="edit"
+                            @click="onChangeUsername"
+                            type='link'>
+                        </a-button>
+                    </a-col>
+                </a-row>
+                <a-row type='flex'
+                    class="item">
+                    <a-col :span="8">{{t('position')}}</a-col>
+                    <a-col :span="16">{{'--'}}</a-col>
+                </a-row>
+                <a-row type='flex'
+                    class="item">
+                    <a-col :span="8">{{t('organization')}}</a-col>
+                    <a-col :span="16">{{'--'}}</a-col>
+                </a-row>
+            </a-card>
+            <div class="operation">
+                <a-row type='flex'
+                    class="item">
+                    <a-col :span="2">
+                        <ii-icon type='lock' />
+                    </a-col>
+                    <a-col :span="18">
+                        <a-row class="title">
+                            {{t('password')}}
+                        </a-row>
+                        <a-row class="hint">
+                            {{t('pwdHint')}}
+                        </a-row>
+                    </a-col>
+                    <a-col :span="4">
+                        <a-row type='flex'
+                            justify='end'>
+                            <a-button type='link'
+                                @click="onChangePassword"
+                                size='small'>{{t('change')}}</a-button>
+                        </a-row>
+                    </a-col>
+                </a-row>
+                <a-row type='flex'
+                    class="item">
+                    <a-col :span="2">
+                        <a-icon type='mobile' />
+                    </a-col>
+                    <a-col :span="18">
+                        <a-row class="title">
+                            {{t('bindMobile')}}
+                        </a-row>
+                        <a-row class="hint">
+                            {{t('bindMobileHint', { mobile : user.mobile || '' })}}
+                        </a-row>
+                    </a-col>
+                    <a-col :span="4">
+                        <a-row type='flex'
+                            justify='end'>
+                            <a-button type='link'
+                                @click="onChangeMobile"
+                                size='small'>{{user.mobile ? t('change') : t('bind')}}</a-button>
+                        </a-row>
+                    </a-col>
+                </a-row>
+                <a-row type='flex'
+                    class="item">
+                    <a-col :span="2">
+                        <a-icon type='mail' />
+                    </a-col>
+                    <a-col :span="18">
+                        <a-row class="title">
+                            {{t('bindEmail')}}
+                        </a-row>
+                        <a-row class="hint">
+                            {{t('bindEmailHint', { email : user.email||'' })}}
+                        </a-row>
+                    </a-col>
+                    <a-col :span="4">
+                        <a-row type='flex'
+                            justify='end'>
+                            <ii-count-down-button type='link'
+                                @click="onActiveEmail"
+                                :text="t('active')"
+                                size='small'
+                                :countingTextPost="t('retry')"
+                                v-if="!user.actEmail && user.email" />
+                            <a-button type='link'
+                                v-else
+                                @click="onChangeEmail"
+                                size='small'>{{user.email ? t('change'): t('bind')}}</a-button>
+                        </a-row>
+                    </a-col>
+                </a-row>
+                <!-- <a-row type='flex'
                 class="item">
                 <a-col :span="2">
                     <ii-icon type='wechat' />
@@ -132,17 +134,17 @@
                     </a-row>
                 </a-col>
             </a-row> -->
-        </div>
-        <!-- 修改用户名 -->
-        <a-modal :title="t('changeWhat', {what:t('account')})"
-            :width='modelWidth'
-            v-model="changeUsernameVisible"
-            @ok="onChangeUsernameOk">
-            <a-form :form="changeUsernameForm">
-                <a-form-item :label="t('account')"
-                    :label-col="labelCol"
-                    :wrapper-col="wrapperCol">
-                    <a-input v-decorator="['username', {
+            </div>
+            <!-- 修改用户名 -->
+            <a-modal :title="t('changeWhat', {what:t('account')})"
+                :width='modelWidth'
+                v-model="changeUsernameVisible"
+                @ok="onChangeUsernameOk">
+                <a-form :form="changeUsernameForm">
+                    <a-form-item :label="t('account')"
+                        :label-col="labelCol"
+                        :wrapper-col="wrapperCol">
+                        <a-input v-decorator="['username', {
                             rules: [
                                 { required: true, message:  t('emptyWhat', {what:t('account')})  },
                                 { validator: usernameValidator },
@@ -150,21 +152,21 @@
                             initialValue: user.username,
                             validateFirst: true
                         }]"
-                        :placeholder="t('account')">
-                    </a-input>
-                </a-form-item>
-            </a-form>
-        </a-modal>
-        <!-- 修改邮箱 -->
-        <a-modal :title="t('changeWhat', {what:t('email')})"
-            :width='modelWidth'
-            v-model="changeEmailVisible"
-            @ok="onChangeEmailOk">
-            <a-form :form="changeEmailForm">
-                <a-form-item :label="t('email')"
-                    :label-col="labelCol"
-                    :wrapper-col="wrapperCol">
-                    <a-input v-decorator="['email', {
+                            :placeholder="t('account')">
+                        </a-input>
+                    </a-form-item>
+                </a-form>
+            </a-modal>
+            <!-- 修改邮箱 -->
+            <a-modal :title="t('changeWhat', {what:t('email')})"
+                :width='modelWidth'
+                v-model="changeEmailVisible"
+                @ok="onChangeEmailOk">
+                <a-form :form="changeEmailForm">
+                    <a-form-item :label="t('email')"
+                        :label-col="labelCol"
+                        :wrapper-col="wrapperCol">
+                        <a-input v-decorator="['email', {
                             rules: [
                                 { required: true, message: t('emptyWhat', {what:t('email')}) },
                                 { validator: emailValidator },
@@ -172,31 +174,31 @@
                             initialValue: user.email,
                             validateFirst: true
                         }]"
-                        :placeholder="t('email')">
-                    </a-input>
-                </a-form-item>
-            </a-form>
-        </a-modal>
-        <!-- 修改密码 -->
-        <a-modal :title="t('changeWhat', {what:t('password')})"
-            :width='modelWidth'
-            v-model="changePasswordVisible"
-            @ok="onChangePasswordOk">
-            <a-form :form="changePasswordForm">
-                <ii-reset-password-form :isChange='true'
-                    :form='changePasswordForm' />
-            </a-form>
-        </a-modal>
-        <!-- 修改手机 -->
-        <a-modal :title="t('changeWhat', {what:t('mobile')})"
-            :width='modelWidth'
-            v-model="changeMobileVisible"
-            @ok="onChangeMobileOk">
-            <a-form :form="changeMobileForm">
-                <a-form-item :label="t('mobile')"
-                    :label-col="labelCol"
-                    :wrapper-col="wrapperCol">
-                    <a-input v-decorator="['mobile', {
+                            :placeholder="t('email')">
+                        </a-input>
+                    </a-form-item>
+                </a-form>
+            </a-modal>
+            <!-- 修改密码 -->
+            <a-modal :title="t('changeWhat', {what:t('password')})"
+                :width='modelWidth'
+                v-model="changePasswordVisible"
+                @ok="onChangePasswordOk">
+                <a-form :form="changePasswordForm">
+                    <ii-reset-password-form :isChange='true'
+                        :form='changePasswordForm' />
+                </a-form>
+            </a-modal>
+            <!-- 修改手机 -->
+            <a-modal :title="t('changeWhat', {what:t('mobile')})"
+                :width='modelWidth'
+                v-model="changeMobileVisible"
+                @ok="onChangeMobileOk">
+                <a-form :form="changeMobileForm">
+                    <a-form-item :label="t('mobile')"
+                        :label-col="labelCol"
+                        :wrapper-col="wrapperCol">
+                        <a-input v-decorator="['mobile', {
                             rules: [
                                 { required: true, message: t('emptyWhat', {what:t('mobile')}) },
                                 { validator: mobileValidator },
@@ -204,51 +206,70 @@
                             initialValue: user.mobile,
                             validateFirst: true
                         }]"
-                        :placeholder="t('mobile')">
-                    </a-input>
-                </a-form-item>
-                <a-form-item :label="t('captcha')"
-                    :label-col="labelCol"
-                    :wrapper-col="wrapperCol">
-                    <a-row type='flex'
-                        align='middle'>
-                        <a-col :span="16">
-                            <a-input v-decorator="['captcha', {
+                            :placeholder="t('mobile')">
+                        </a-input>
+                    </a-form-item>
+                    <a-form-item :label="t('captcha')"
+                        :label-col="labelCol"
+                        :wrapper-col="wrapperCol">
+                        <a-row type='flex'
+                            align='middle'>
+                            <a-col :span="16">
+                                <a-input v-decorator="['captcha', {
                             rules: [
                                 { validator: captchaValidator },
                             ],
                             validateFirst: true
                         }]"
-                                type='mobile'
-                                :placeholder="t('captcha')">
-                            </a-input>
-                        </a-col>
-                        <a-col :span="8">
-                            <a-row type='flex'
-                                justify='end'
-                                align='middle'>
-                                <ii-count-down-button type='link'
-                                    @click="onGetCaptcha"
-                                    :text="t('captcha')"
-                                    size='small'
-                                    :disabled='!isMobileValid'
-                                    :countingTextPost="t('retry')"
-                                    v-if="!user.actEmail && user.email" />
-                            </a-row>
-                        </a-col>
-                    </a-row>
-                </a-form-item>
+                                    type='mobile'
+                                    :placeholder="t('captcha')">
+                                </a-input>
+                            </a-col>
+                            <a-col :span="8">
+                                <a-row type='flex'
+                                    justify='end'
+                                    align='middle'>
+                                    <ii-count-down-button type='link'
+                                        @click="onGetCaptcha"
+                                        :text="t('captcha')"
+                                        size='small'
+                                        :disabled='!isMobileValid'
+                                        :countingTextPost="t('retry')"
+                                        v-if="!user.actEmail && user.email" />
+                                </a-row>
+                            </a-col>
+                        </a-row>
+                    </a-form-item>
+                </a-form>
+            </a-modal>
+        </a-tab-pane>
+        <a-tab-pane class="extention"
+            key="extention"
+            size='small'
+            tab='详细信息'
+            :bordered='false'>
+            <a-form :form="userExtentionForm">
+                <ii-user-extends-form :form='userExtentionForm'
+                    :extention='userExtention'
+                    class='user_extends'>
+                    <a-form-item :wrapper-col="{span:16, offset: 7}"
+                        slot="item">
+                        <a-button type='primary'
+                            @click="onSaveUserExtention">保存</a-button>
+                    </a-form-item>
+                </ii-user-extends-form>
             </a-form>
-        </a-modal>
-    </div>
+        </a-tab-pane>
+    </a-tabs>
 </template>
 
 <script>
+import moment from 'moment'
 import { Validator } from '@iota-cn/util-validation'
 
 export default {
     beforeCreate() {
-        // this.);
+        this.userExtentionForm = this.$form.createForm(this, { name: 'user_extends' });
     },
     data() {
         return {
@@ -274,9 +295,18 @@ export default {
             }),
             //
             isMobileValid: false,
+            //
+            userExtention: {}
         }
     },
-
+    mounted() {
+        this.$axios.silentGet('/v1/api/accounts/profile_extention', true)
+            .then((res) => {
+                this.userExtention = res.data
+                this.userExtention.birthday = moment(this.userExtention.birthday)
+            })
+            .catch(() => { })
+    },
     computed: {
         user() {
             const state = this.$store.state.iota.global.authentication
@@ -406,7 +436,7 @@ export default {
                     }
                     this.$axios.commonPut(`/v1/api/accounts/profile?captcha=${values.captcha}`, { mobile: values.mobile }, {
                         success: this.t('updateSuccess'),
-                        error: this.t('updateSuccess')
+                        error: this.t('updateError')
                     }).then(() => {
                         this.$store.dispatch('iota/global/updateUser', { mobile: values.mobile })
                         this.changeMobileVisible = false
@@ -462,6 +492,19 @@ export default {
                 success: this.t('successGetCaptcha'),
                 error: this.t('failGetCaptcha')
             })
+        },
+        onSaveUserExtention() {
+            this.userExtentionForm.validateFields((err, values) => {
+                if (!err) {
+                    values.userId = this.user.id
+                    this.$axios.commonPut(`/v1/api/accounts/profile_extention`, values, {
+                        success: this.t('updateSuccess'),
+                        error: this.t('updateError')
+                    }).then(() => {
+                    }).catch(() => {
+                    })
+                }
+            })
         }
     }
 }
@@ -471,72 +514,96 @@ export default {
 @import '../../../../../styles/imports';
 
 .ii-user-profile {
+    width: 100%;
+    height: 100%;
+    background-color: white;
     display: flex;
-    justify-content: center;
-    flex: 1;
-    align-items: flex-start;
+    flex-direction: column;
+
+    /deep/ .ant-tabs-content {
+        height: 100%;
+    }
 
     .basic {
-        .ant-card-cover {
-            .avatar-viewer {
-                width: 100px;
-                margin: 20px auto;
+        width: 100%;
+        padding: 5px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
 
-                img {
-                    border: 1px solid $md-blue-grey-300;
+        .info {
+            .ant-card-cover {
+                .avatar-viewer {
+                    width: 100px;
+                    margin: 20px auto;
+
+                    img {
+                        border: 1px solid $md-blue-grey-300;
+                    }
+                }
+            }
+
+            .ant-card-body {
+                padding: 10px 24px;
+            }
+
+            .name-mail {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .item {
+                height: 40px;
+                border-bottom: 1px solid $md-blue-grey-300;
+                align-items: center;
+
+                &:last-child {
+                    border: none;
                 }
             }
         }
 
-        .ant-card-body {
-            padding: 10px 24px;
-        }
+        .operation {
+            background-color: white;
+            padding: 24px;
+            margin-left: 10px;
+            min-width: 700px;
 
-        .name-mail {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+            .item {
+                height: 80px;
+                border-bottom: 1px solid $md-blue-grey-300;
+                align-items: center;
 
-        .item {
-            height: 40px;
-            border-bottom: 1px solid $md-blue-grey-300;
-            align-items: center;
+                .anticon, .iota-icon {
+                    font-size: 20px;
+                    color: $primary-color;
+                }
 
-            &:last-child {
-                border: none;
+                .title {
+                    font-weight: 500;
+                }
+
+                .hint {
+                    font-size: 12px;
+                    color: $md-blue-grey-300;
+                }
+
+                &:last-child {
+                    border: none;
+                }
             }
         }
     }
 
-    .operation {
-        background-color: white;
-        padding: 24px;
-        margin-left: 10px;
-        min-width: 700px;
+    .extention {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
 
-        .item {
-            height: 80px;
-            border-bottom: 1px solid $md-blue-grey-300;
-            align-items: center;
-
-            .anticon, .iota-icon {
-                font-size: 20px;
-                color: $primary-color;
-            }
-
-            .title {
-                font-weight: 500;
-            }
-
-            .hint {
-                font-size: 12px;
-                color: $md-blue-grey-300;
-            }
-
-            &:last-child {
-                border: none;
-            }
+        .user_extends {
+            width: 30%;
+            margin: 0 auto;
         }
     }
 }

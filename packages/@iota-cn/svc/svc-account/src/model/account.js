@@ -1,9 +1,8 @@
 export default function (dc) {
     let Account = dc.orm.define('Account', {
-        id: {
+        userId: {
             type: dc.ORM.STRING,
             primaryKey: true,
-            defaultValue: dc.ORM.UUIDV4,
             allowNull: false
         },
         balance: {
@@ -11,8 +10,8 @@ export default function (dc) {
             allowNull: true
         }
     }, {
-            tableName: 'Account'
-        });
+        tableName: 'Account'
+    });
     dc.models.Account = Account;
     let User = dc.models.User;
     Account.belongsTo(User, { as: 'user', foreignKey: 'userId', onDelete: 'cascade', hooks: true });

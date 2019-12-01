@@ -1,10 +1,12 @@
 import user, { encrypt } from './user'
-import subuser from './subuser'
+import sub_user from './sub_user'
+import user_extention from './user_extention'
 
 export {
     //model
     user,
-    subuser,
+    sub_user,
     //function
-    encrypt
+    encrypt,
+    user_extention
 }

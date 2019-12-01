@@ -3,10 +3,9 @@
  */
 export default function (dc) {
     let AccountServicePackage = dc.orm.define('AccountServicePackage', {
-        id: {
+        accountId: {
             type: dc.ORM.STRING,
             primaryKey: true,
-            defaultValue: dc.ORM.UUIDV4,
             allowNull: false
         },
         name: {
@@ -32,8 +31,8 @@ export default function (dc) {
             type: dc.ORM.DATE,
         }
     }, {
-            tableName: 'AccountServicePackage'
-        });
+        tableName: 'AccountServicePackage'
+    });
 
     let Account = dc.models.Account;
     let ServicePackage = dc.models.ServicePackage;

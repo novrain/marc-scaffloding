@@ -7,3 +7,13 @@ export const createEmptyUser = () => {
         actEmail: 0,
     }
 }
+
+let educationOptions = undefined
+
+export const setEducationOptions = (options) => {
+    educationOptions = options
+}
+
+export {
+    educationOptions
+}

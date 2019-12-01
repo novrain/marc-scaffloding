@@ -345,6 +345,14 @@ let updateCurrent = async (ctx, next) => {
     }
 }
 
+let currentExtention = async function (ctx, next) {
+    await ctx.iota.user.findUserExtention(ctx, next)
+}
+
+let updateOrCreateCurrentExtention = async function (ctx, next) {
+    await ctx.iota.user.updateOrCreateUserExtention(ctx, next)
+}
+
 export default {
     verifyVCode,
     verifyCaptchaSMS,
@@ -353,5 +361,7 @@ export default {
     signUp,
     changePassword,
     current,
-    updateCurrent
+    updateCurrent,
+    currentExtention,
+    updateOrCreateCurrentExtention
 }
