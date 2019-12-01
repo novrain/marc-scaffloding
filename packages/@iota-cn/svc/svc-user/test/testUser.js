@@ -2,7 +2,7 @@
  * Created by rain on 2017/2/14.
  */
 import client from 'supertest';
-import chai, {assert, expect} from 'chai';
+import chai, { assert, expect } from 'chai';
 
 import scaffold from '@iota-cn/svc-scaffolding';
 import Mmw from '@iota-cn/svc-mmw';
@@ -21,8 +21,9 @@ describe('iota user test >', function () {
     const models = app.iota.dc.models;
 
     before(async function () {
-        await models.User.sync({force: true});
-        await models.SubUser.sync({force: true});
+        await models.User.sync({ force: true });
+        await models.SubUser.sync({ force: true });
+        await models.UserExtention.sync({ force: true });
         await models.User.create({
             username: 'xigua',
             password: '123456',
@@ -40,42 +41,42 @@ describe('iota user test >', function () {
     it('verify usable username', async function () {
         return request
             .get('/validations/usernames/validate')
-            .query({username: 'kadven'})
+            .query({ username: 'kadven' })
             .expect(204)
     });
 
     it('verify unusable username', async function () {
         return request
             .get('/validations/usernames/validate')
-            .query({username: 'xigua'})
+            .query({ username: 'xigua' })
             .expect(400)
     });
 
     it('verify usable mobile', async function () {
         return request
             .get('/validations/mobiles/validate')
-            .query({mobile: 17120155703})
+            .query({ mobile: 17120155703 })
             .expect(204)
     });
 
     it('verify unusable mobile', async function () {
         return request
             .get('/validations/mobiles/validate')
-            .query({mobile: 18130380275})
+            .query({ mobile: 18130380275 })
             .expect(400)
     });
 
     it('verify usable email', async function () {
         return request
             .get('/validations/emails/validate')
-            .query({email: 'xyz@123.com',})
+            .query({ email: 'xyz@123.com', })
             .expect(204)
     });
 
     it('verify unusable email', async function () {
         return request
             .get('/validations/emails/validate')
-            .query({email: '1@2.com',})
+            .query({ email: '1@2.com', })
             .expect(400)
     });
 
@@ -150,7 +151,7 @@ describe('iota user test >', function () {
         ctx.request.body.username = 'abcdefghi';
         ctx.request.body.mobile = '18168071446';
         ctx.request.body.type = UserTypes.Sub;
-        ctx.params = {parentId: parentId};
+        ctx.params = { parentId: parentId };
         ctx.iota.user.hooks.afterCreate.use(async function (ctx, next) {
             let parentId = ctx.params.parentId;
             let user = ctx.body;
@@ -163,7 +164,7 @@ describe('iota user test >', function () {
                     active: true,
                     individual: false,
                     userId: user.id
-                }, {transaction: ctx.iota.session.transaction});
+                }, { transaction: ctx.iota.session.transaction });
                 if (subUser) {
                     ctx.body.subExt = subUser;
                 }
@@ -174,12 +175,12 @@ describe('iota user test >', function () {
         assert.equal(ctx.status, 200);
         assert.equal(testValue, 2);
         let user = await models.User.findOne({
-            where: {id: ctx.body.id},
+            where: { id: ctx.body.id },
             include: [
                 {
                     model: models.SubUser,
                     as: "subExt",
-                    where: {parentId: parentId, userId: ctx.body.id}
+                    where: { parentId: parentId, userId: ctx.body.id }
                 }
             ]
         });
@@ -250,7 +251,7 @@ describe('iota user test >', function () {
         ctx.request.body = {
             id: ctx.request.body.id,
             username: ctx.request.body.username,
-            subExt: {enable: true, dependent: false}
+            subExt: { enable: true, dependent: false }
         };
         ctx.iota.user.hooks.afterUpdate.use(async function (ctx, next) {
             await next();
@@ -261,7 +262,7 @@ describe('iota user test >', function () {
         assert.equal(testValue, 2);
         //update with 空信息
         delete ctx.iota.session;
-        ctx.request.body = {id: ctx.request.body};
+        ctx.request.body = { id: ctx.request.body };
         await User.update(ctx);
         assert.equal(ctx.status, 400);
     });

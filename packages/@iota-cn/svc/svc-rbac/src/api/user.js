@@ -492,3 +492,35 @@ export const findOperationOfUser = async (ctx, next) => {
         }
     }
 }
+
+export const findUserExtention = async function (ctx, next) {
+    const dc = ctx.iota.dc;
+    const id = ctx.params.id;
+    let isValid = await Utils.isChildrenUsers(dc, ctx.session.user, [id])
+    if (isValid) {
+        ctx.params.userId = id;
+        await ctx.iota.user.findUserExtention(ctx, next)
+    } else {
+        ctx.status = 403;
+        ctx.body = {
+            name: 'forbidden',
+            message: `not a user of current user`
+        }
+    }
+}
+
+export const updateUserExtention = async function (ctx, next) {
+    const dc = ctx.iota.dc;
+    const id = ctx.params.id;
+    let isValid = await Utils.isChildrenUsers(dc, ctx.session.user, [id])
+    if (isValid) {
+        ctx.params.userId = id;
+        await ctx.iota.user.updateOrCreateUserExtention(ctx, next)
+    } else {
+        ctx.status = 403;
+        ctx.body = {
+            name: 'forbidden',
+            message: `not a user of current user`
+        }
+    }
+}

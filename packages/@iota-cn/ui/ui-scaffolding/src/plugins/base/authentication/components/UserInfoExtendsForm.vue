@@ -7,7 +7,8 @@
                             rules: [
                                 { validator: fullNameValidator },
                             ],
-                            validateFirst: true
+                            validateFirst: true,
+                            initialValue: extention.fullname
                         }]"
                 :placeholder="t('fullname')">
                 <a-icon slot="prefix"
@@ -19,20 +20,21 @@
         <a-form-item :label="t('sex')"
             :label-col="labelCol"
             :wrapper-col="wrapperCol">
-            <a-radio-group name="sex">
-                <a-radio :value="male">男</a-radio>
-                <a-radio :value="female">女</a-radio>
+            <a-radio-group v-decorator="['sex', {initialValue: extention.sex}]">
+                <a-radio value="male">男</a-radio>
+                <a-radio value="female">女</a-radio>
             </a-radio-group>
         </a-form-item>
         <a-form-item :label="t('birthday')"
             :label-col="labelCol"
             :wrapper-col="wrapperCol">
-            <a-date-picker v-decorator="['date-picker', {}]" />
+            <a-date-picker v-decorator="['birthday', {initialValue: extention.birthday}]" />
         </a-form-item>
         <a-form-item :label="t('education')"
             :label-col="labelCol"
             :wrapper-col="wrapperCol">
-            <a-select>
+            <a-select v-decorator="['education', {initialValue: extention.education}]"
+                :options='eduOptions'>
             </a-select>
         </a-form-item>
         <a-form-item :label="t('telephone')"
@@ -42,7 +44,8 @@
                             rules: [
                                 { validator: telephoneValidator },
                             ],
-                            validateFirst: true
+                            validateFirst: true,
+                            initialValue: extention.telephone
                         }]"
                 :placeholder="t('telephone')">
                 <a-icon slot="prefix"
@@ -51,18 +54,35 @@
                     style="color: rgba(0,0,0,.25)" />
             </a-input>
         </a-form-item>
+        <slot name="item" />
+    </div>
 </template>
 
 <script>
+import * as U from '../util'
+
 export default {
-    props: ['form', 'isSimple', 'user'],
+    props: ['form', 'isSimple', 'extention'],
     data() {
         return {
             labelCol: { span: 7 },
-            wrapperCol: { span: 16 }
+            wrapperCol: { span: 16 },
+            //
+            eduOptions: []
         }
     },
     mounted() {
+        if (U.educationOptions) {
+            this.eduOptions = U.educationOptions
+        } else {
+            this.$axios.silentGet('/v1/api/dictionaries/frame_education')
+                .then((res) => {
+                    this.eduOptions = res.data.items.map(i => {
+                        return { label: i.name, value: i.key }
+                    })
+                    U.setEducationOptions(this.eduOptions)
+                })
+        }
         // 查询字典
         // 查询用户扩展信息
     },

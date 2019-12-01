@@ -1,11 +1,15 @@
 <script>
 import merge from 'deepmerge'
+import moment from 'moment'
 import classNames from 'classnames'
 import { AuthCheckStrictlyTree, Status, UserEditor } from '../../components'
 import RoleOfUser from './RoleOfUser'
 import { Menu as AMenu } from 'ant-design-vue'
 
 export default {
+    beforeCreate() {
+        this.userExtentionForm = this.$form.createForm(this, { name: 'user_extends' });
+    },
     data() {
         return {
             users: [],
@@ -13,7 +17,9 @@ export default {
             selectedRows: [],
             limit: 20,
             page: 1,
-            total: 0
+            total: 0,
+            currentUserExtention: {},
+            currentUserId: undefined
         }
     },
     mounted() {
@@ -91,11 +97,48 @@ export default {
             </ATabPane>)
         },
 
+        onSaveUserExtention() {
+            this.userExtentionForm.validateFields((err, values) => {
+                if (!err) {
+                    values.userId = this.currentUserId
+                    this.$axios.commonPut(`/v1/api/authorizations/users/${this.currentUserId}/extention`, values, {
+                        success: '更新成功',
+                        error: '更新失败'
+                    }).then(() => {
+                    }).catch(() => {
+                    })
+                }
+            })
+        },
+
+        renderUserExtention() {
+            const { selectedRowKeys } = this
+            let child = null
+            if (selectedRowKeys.length === 1) {
+                child = <div class='user_extends'>
+                    <AForm form={this.userExtentionForm}>
+                        <ii-user-extends-form form={this.userExtentionForm}
+                            extention={this.currentUserExtention}>
+                            <a-form-item wrapper-col={{ span: 16, offset: 7 }}
+                                slot="item">
+                                <a-button type='primary'
+                                    onClick={this.onSaveUserExtention}>保存</a-button>
+                            </a-form-item>
+                        </ii-user-extends-form>
+                    </AForm>
+                </div>
+            }
+            return (<ATabPane tab="详细信息" key="extention" class='tabpanel'>
+                {child}
+            </ATabPane>)
+        },
+
         renderRelated() {
             return <ATabs type="card" class='ii-tabs'>
                 {this.renderRoles()}
                 {this.renderOrganizations()}
                 {this.renderPositions()}
+                {this.renderUserExtention()}
             </ATabs>
         },
 
@@ -115,6 +158,17 @@ export default {
             }
             this.selectedRowKeys = selectedRowKeys
             this.selectedRows = selectedRows
+            if (selectedRowKeys.length === 1) {
+                let userId = selectedRowKeys[0]
+                if (userId !== this.currentUserId) {
+                    this.currentUserId = userId
+                    this.$axios.silentGet(`/v1/api/authorizations/users/${userId}/extention`)
+                        .then((res) => {
+                            this.currentUserExtention = res.data
+                            this.currentUserExtention.birthday = moment(this.currentUserExtention.birthday)
+                        })
+                }
+            }
         },
 
         rowClassName(record) {
@@ -466,5 +520,11 @@ export default {
             }
         }
     }
+}
+
+.user_extends {
+    margin: 10px;
+    height: 100%;
+    overflow-y: auto;
 }
 </style>

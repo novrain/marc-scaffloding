@@ -349,7 +349,6 @@ export default class Recharge {
                 if (isLocalTransaction && t) {
                     await t.rollback();
                 }
-                console.log(e, e.stack);
                 ctx.status = 500;
                 ctx.body = {
                     name: 'create error',
@@ -427,7 +426,6 @@ export default class Recharge {
                         resolve(valid);
                     }
                     catch (err) {
-                        console.log(err, err.stack)
                         if (isLocalTransaction && t) {
                             await t.rollback();
                         }

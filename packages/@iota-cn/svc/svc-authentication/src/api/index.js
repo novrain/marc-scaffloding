@@ -5,7 +5,7 @@ import Message from './message';
 import Email from './email';
 import { createMiddleware } from '@iota-cn/svc-util';
 
-export default function(app, router, opts) {
+export default function (app, router, opts) {
     router.use(authenticator(opts));
     router.get('/validations/codes/validate', Authentication.verifyVCode);
     router.get('/validations/smses/validate', Authentication.verifyCaptchaSMS);
@@ -29,6 +29,9 @@ export default function(app, router, opts) {
     //@TODO 是否合适(路由/放置模块等)
     router.get('/accounts/profile', createMiddleware(Authentication.current));
     router.put('/accounts/profile', createMiddleware(Authentication.updateCurrent));
+    //Extention
+    router.get('/accounts/profile_extention', createMiddleware(Authentication.currentExtention));
+    router.put('/accounts/profile_extention', createMiddleware(Authentication.updateOrCreateCurrentExtention));
 }
 
 

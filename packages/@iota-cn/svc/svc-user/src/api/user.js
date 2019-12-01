@@ -170,6 +170,9 @@ let create = async function (ctx, next) {
             message: 'an unexpected condition was encountered in the server and no more specific message is suitable.'
         };
         ctx.iota.logger.error(`path: ${ctx.path}, body: ${JSON.stringify(user)}, error: ${e}`);
+        if (!isLocalTransaction) {
+            throw e
+        }
     }
 };
 
@@ -240,6 +243,9 @@ let update = async function (ctx, next) {
             message: 'an unexpected condition was encountered in the server and no more specific message is suitable.'
         };
         ctx.iota.logger.error(`path: ${ctx.path}, body: ${JSON.stringify(user)}, error: ${e}`);
+        if (!isLocalTransaction) {
+            throw e
+        }
     }
 };
 
@@ -413,6 +419,54 @@ let changePassword = async function (ctx, next) {
     }
 };
 
+let updateOrCreateUserExtention = async function (ctx, next) {
+    const models = ctx.iota.dc.models
+    let userId = ctx.params.userId
+        || ((ctx.request.body && ctx.request.body.id) ? ctx.request.body.id : undefined)
+        || ctx.session.user.id
+    // 支持带事务
+    let t = ctx.iota.session ? ctx.iota.session.transaction : undefined;
+    if (!userId) {
+        ctx.status = 400
+        ctx.body = {
+            name: 'invalid request',
+            message: 'no valid userid.'
+        }
+    }
+    let user = await models.User.findOne({ where: { id: userId }, transaction: t })
+    if (user) {
+        ctx.request.body.userId = userId
+        await models.UserExtention.upsert(ctx.request.body, { transaction: t })
+        ctx.status = 204
+    } else {
+        ctx.status = 404
+        ctx.body = {
+            name: 'user not found',
+            message: 'no valid user.'
+        }
+    }
+}
+
+let findUserExtention = async function (ctx, next) {
+    const models = ctx.iota.dc.models
+    let userId = ctx.params.userId
+        || ((ctx.request.body && ctx.request.body.id) ? ctx.request.body.id : undefined)
+        || ctx.session.user.id
+    if (!userId) {
+        ctx.status = 200
+        ctx.body = {}
+    } else {
+        let extention = await models.UserExtention.findOne({ where: { userId: userId } })
+        if (extention) {
+            ctx.status = 200
+            ctx.body = extention
+        } else {
+            ctx.status = 200
+            ctx.body = {}
+        }
+    }
+}
+
 export default {
     create,
     update,
@@ -420,5 +474,7 @@ export default {
     existEmail,
     existMobile,
     existUsername,
-    checkUser
+    checkUser,
+    updateOrCreateUserExtention,
+    findUserExtention
 }

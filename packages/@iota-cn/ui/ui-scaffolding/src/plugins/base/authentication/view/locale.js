@@ -57,7 +57,14 @@ export default {
                     emailActivateSuccessExplain: '已成功为您激活邮箱',
 
                     emailActivateError: '邮箱激活失败',
-                    emailActivateErrorExplain: '无法为您激活邮箱，存在错误或异常，请稍后再尝试。'
+                    emailActivateErrorExplain: '无法为您激活邮箱，存在错误或异常，请稍后再尝试。',
+
+                    //
+                    fullname: '姓名',
+                    sex: '性别',
+                    birthday: '出生日期',
+                    education: '学历',
+                    telephone: '电话'
                 }
             }
         }

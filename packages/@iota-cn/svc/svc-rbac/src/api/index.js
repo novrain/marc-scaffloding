@@ -93,6 +93,10 @@ export default function (app, router, opts) {
     router.delete('/authorizations/users/:id', createMiddleware(User.deleteUser));
     router.post('/authorizations/users/enable/:id?', createMiddleware(User.enable));
     router.post('/authorizations/users/disable/:id?', createMiddleware(User.disable));
+    //Extention
+    router.get('/authorizations/users/:id/extention', createMiddleware(User.findUserExtention));
+    router.put('/authorizations/users/:id/extention', createMiddleware(User.updateUserExtention));
+
 
     router.get('/authorizations/users/:userId/roles', createMiddleware(User.findRoleAssignToUser))
     router.get('/authorizations/users/:userId/not_assigned/roles', createMiddleware(User.findRoleNotAssignToUser))

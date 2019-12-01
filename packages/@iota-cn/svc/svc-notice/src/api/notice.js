@@ -168,6 +168,9 @@ export default class Notice {
                     message: 'An unexpected condition was encountered in the server and no more specific message is suitable.'
                 };
                 ctx.iota.logger.error(`path: ${ctx.path}, error: ${e}`);
+                if (!isLocalTransaction) {
+                    throw e
+                }
             }
         } else {
             ctx.status = 400;

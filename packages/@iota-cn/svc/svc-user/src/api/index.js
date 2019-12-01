@@ -10,9 +10,13 @@ export default function (app, router, opts) {
 let create = User.create;
 let update = User.update;
 let changePassword = User.changePassword;
+let findUserExtention = User.findUserExtention;
+let updateOrCreateUserExtention = User.updateOrCreateUserExtention
 
 export {
     create,
     update,
-    changePassword
+    changePassword,
+    findUserExtention,
+    updateOrCreateUserExtention
 }
