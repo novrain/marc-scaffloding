@@ -36,8 +36,12 @@ export default {
                         query.processInstanceVariables = query.variables
                         delete query.variables
                     }
+                    if (query.orVariables) {
+                        query.orProcessInstanceVariables = query.orVariables
+                        delete query.orVariables
+                    }
                 }
-                this.$axios.silentPost('/fl/process/query/tasks', query, true)
+                this.$axios.silentPost('/fl/iota/query/tasks', query, true)
                     .then((res) => {
                         // 转为统一的Flow数据结构 
                         this.flows = res.data.data.map(task => {

@@ -83,14 +83,14 @@ export default {
             if (!this.active) {
                 return
             }
-            this.running.items = []
-            this.finished.items = []
             this.$axios.silentPost(`/fl/process/query/historic-task-instances`, {
                 size: 2000,// 不支持分页，暂时认为没有这么多任务流程
                 processInstanceId: this.flow.processInstanceId,
                 includeIdentityLinks: true
             }, true)
                 .then((res) => {
+                    this.running.items = []
+                    this.finished.items = []
                     res.data.data.forEach(d => {
                         d.assignee = U.parseAssignee(d.assignee)
                         d.startTime = moment(d.startTime).format('YYYY-MM-DD HH:mm:ss')
@@ -104,7 +104,10 @@ export default {
                             this.running.items.push(d)
                         }
                     })
-                }).catch(() => { })
+                }).catch(() => {
+                    this.running.items = []
+                    this.finished.items = []
+                })
         },
         // Assignee 
         onAssignee(task) {

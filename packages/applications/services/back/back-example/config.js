@@ -122,8 +122,10 @@ function createConfig(args) {
     const bpEngines = {
         entry: bpEnginesEntry,
         opts: {
-            routes: ['/fl/process/*', '/fl/content/*'],
-            target: 'http://localhost:8888'
+            flowable: {
+                routes: ['/fl/process/*', '/fl/content/*', '/fl/iota/*'],
+                target: 'http://localhost:8888'
+            }
         }
     }
 
@@ -144,6 +146,7 @@ function createConfig(args) {
     config.bodyParser.disable = [
         { p: /^\/fl\/process\/.*(?:\/)?$/, o: '*' },
         { p: /^\/fl\/content\/.*(?:\/)?$/, o: '*' },
+        { p: /^\/fl\/iota\/.*(?:\/)?$/, o: '*' },
     ]
     config.mws.push(bpEngines)
     config.mws.push(cpp)
