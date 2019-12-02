@@ -2,7 +2,7 @@
 import classNames from 'classnames'
 
 const TABLE_HEAD_HEIGHT = 56;
-const TABLE_CONTROL_HEIGHT = 40;
+// const TABLE_CONTROL_HEIGHT = 40;
 export default {
     name: 'IiTableLayout',
     // 待限制类型
@@ -29,7 +29,7 @@ export default {
         }
     },
     mounted() {
-        window.addEventListener('resize', this.onResize)
+        // window.addEventListener('resize', this.onResize)
         if (this.$refs._tableContainer) {
             this.tabScroll = { y: this.$refs._tableContainer.clientHeight }
         }
@@ -42,12 +42,12 @@ export default {
         }
     },
     destroyed() {
-        window.removeEventListener('resize', this.onResize)
+        // window.removeEventListener('resize', this.onResize)
     },
     methods: {
         onResize() {
             this.change = true;
-            this.tabScroll = { y: this.$refs._tableContainer.clientHeight }
+            this.tabScroll = { y: this.$refs._tableContainer.clientHeight + 20 }
         },
         onEvent(event) {
             let that = this
@@ -60,7 +60,7 @@ export default {
         const showBottomPagination = this.showPagination === 'bottom' || this.showPagination === 'both';
         const showTopPagination = this.showPagination === 'top' || this.showPagination === 'both';
         let headHeight = this.headheight || TABLE_HEAD_HEIGHT;
-        const space = showBottomPagination ? TABLE_CONTROL_HEIGHT + headHeight : headHeight;
+        const space = headHeight;
         const pagination = showBottomPagination || showTopPagination ? (
             <APagination onChange={this.onEvent('paginationChange')}
                 defaultCurrent={this.currentPage}
@@ -94,7 +94,8 @@ export default {
                         </div> :
                         null
                 }
-                <div class={'layout__table'} ref='_tableContainer' onResize={this.onResize}>
+                <div class={'layout__table'} ref='_tableContainer'>
+                    <resize-observer onNotify={this.onResize} />
                     <ATable rowSelection={this.rowSelection}
                         columns={this.columns}
                         scroll={{ y: this.tabScroll.y - space }}
@@ -177,7 +178,7 @@ export default {
     }
 
     &__table {
-        margin-bottom: 10px;
+        // margin-bottom: 10px;
         flex: 1;
         overflow: hidden;
     }

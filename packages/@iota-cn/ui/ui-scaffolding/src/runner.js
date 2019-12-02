@@ -36,6 +36,11 @@ import 'splitpanes/dist/splitpanes.css'
 Vue.component('splitpanes', Splitpanes)
 Vue.component('splitpane', Pane)
 
+//Vue-resize
+import 'vue-resize/dist/vue-resize.css'
+import VueResize from 'vue-resize'
+Vue.use(VueResize)
+
 Vue.use(Antd)
 Vue.use(VCharts)
 Vue.use(VueI18n)
