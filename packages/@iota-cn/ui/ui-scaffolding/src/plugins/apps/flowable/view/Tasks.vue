@@ -33,7 +33,10 @@ export default {
             showCandidateUsers: false,
             // 更新candidateGroups
             candidateGroupsSearch: undefined,
-            showCandidateGroups: false
+            showCandidateGroups: false,
+            // 更新dueDate
+            showDueDate: false,
+            dueDate: moment().add(1, 'd').endOf('day')
         }
     },
     mounted() {
@@ -225,6 +228,30 @@ export default {
                 message.error('认领失败，请稍后再试')
             })
         },
+
+        // dueDate 
+        onDueDate(task) {
+            this.currentTask = task
+            this.showDueDate = true
+        },
+        onDueDateOk() {
+            if (!this.dueDate) {
+                return
+            }
+            this.$axios.silentPut(`/fl/process/runtime/tasks/${this.currentTask.id}`, {
+                dueDate: this.dueDate
+            }, true).then(() => {
+                message.success('设置成功')
+                this.currentTask.dueDate = this.dueDate.format('YYYY-MM-DD HH:mm:ss')
+                this.showDueDate = false
+                this.dueDate = moment().add(1, 'd').endOf('day')
+            }).catch(() => {
+                message.error('设置失败，请稍后再试')
+            })
+        },
+        onDueDateCancel() {
+            this.showDueDate = false
+        },
         renderBpmn() {
             return (
                 <div class='bpmn'>
@@ -239,7 +266,6 @@ export default {
                     title: '流程节点',
                     dataIndex: 'name',
                     key: 'name',
-                    width: '20%',
                 },
                 {
                     title: '处理人',
@@ -259,8 +285,8 @@ export default {
                 },
                 {
                     title: '截至时间',
-                    dataIndex: 'endTime',
-                    key: 'endTime',
+                    dataIndex: 'dueDate',
+                    key: 'dueDate',
                     width: '20% '
                 },
                 {
@@ -281,13 +307,15 @@ export default {
                         return disabled ?
                             null
                             : <div class='operation' >
-                                {assigneeable ? <a onClick={() => this.onAssignee(record)}>指派</a> : null}
+                                {assigneeable ? <a onClick={() => this.onAssignee(record)}>{record.assignee && record.assignee.id ? '重新指派' : '指派'}</a> : null}
                                 {claimable ? <ADivider type="vertical" /> : null}
                                 {claimable ? <a onClick={() => this.onClaim(record)}>认领</a> : null}
                                 {editCandidateUsers ? <ADivider type="vertical" /> : null}
                                 {editCandidateUsers ? <a onClick={() => this.onCandidateUsers(record)}>候选人</a> : null}
                                 {editCandidateGroups ? <ADivider type="vertical" /> : null}
                                 {editCandidateGroups ? <a onClick={() => this.onCandidateGroups(record)}>候选组</a> : null}
+                                <ADivider type="vertical" />
+                                <a onClick={() => this.onDueDate(record)}>{record.dueDate ? '更新到期时间' : '设置到期时间'}</a>
                             </div>
                     }
                 }
@@ -313,13 +341,12 @@ export default {
                     title: '流程节点',
                     dataIndex: 'name',
                     key: 'name',
-                    width: '30%',
                 },
                 {
                     title: '处理人',
                     dataIndex: 'assignee',
                     key: 'assignee',
-                    width: '30% ',
+                    width: '20% ',
                     customRender: (text, record) => {
                         let user = record.assignee || {}
                         return user.fullname || user.username || record.createdBy
@@ -476,6 +503,23 @@ export default {
                 </a-modal>
             )
         },
+        renderDueDateEditor() {
+            return (
+                <a-modal title="到期时间"
+                    bodyStyle={{ maxHeight: "80%", padding: "10px" }}
+                    visible={this.showDueDate}
+                    onOk={this.onDueDateOk}
+                    onCancel={this.onDueDateCancel}>
+                    <div class='duedate-select' style={{ textAlign: 'center' }}>
+                        <span style={{ marginRight: '10px' }}> 时间: </span>
+                        <a-date-picker vModel={this.dueDate}
+                            showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                            showToday={false}
+                            style={{ width: '200px' }} />
+                    </div>
+                </a-modal>
+            )
+        },
     },
 
     render() {
@@ -492,6 +536,7 @@ export default {
                 {this.renderAssigneeEditor()}
                 {this.renderCandidateUsersEditor()}
                 {this.renderCandidateGroupsEditor()}
+                {this.renderDueDateEditor()}
             </div >
         )
     }
