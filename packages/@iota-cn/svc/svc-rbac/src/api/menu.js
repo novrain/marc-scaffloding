@@ -7,7 +7,7 @@ export const findMenuOfCurrentUser = async (ctx, next) => {
     const userId = ctx.session.user.id;
     const dc = ctx.iota.dc;
     const models = ctx.iota.dc.models;
-    const orderBy = ctx.query.order_by || 'createdAt';
+    const orderBy = ctx.query.order_by || 'id';
     const orderDirection = ctx.query.order_direction || 'ASC';
     if (user.isAdmin) {
         let menus = await models.Menu.findAll({
