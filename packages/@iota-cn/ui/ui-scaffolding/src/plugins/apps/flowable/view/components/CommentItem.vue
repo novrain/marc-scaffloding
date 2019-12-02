@@ -52,7 +52,7 @@
 
 <script>
 import moment from 'moment'
-import * as U from '../util'
+import * as U from '../../util'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 export default {
@@ -126,7 +126,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../../../styles/imports';
+@import '../../../../../styles/imports';
 
 .ii-comment {
     padding-bottom: 20px;

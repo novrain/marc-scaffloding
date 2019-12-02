@@ -1,16 +1,16 @@
 <script>
 import { message } from 'ant-design-vue/es'
-import * as U from '../util'
-import StartBySelfFlowList from './StartBySelfFlowList'
-import TaskAssigneeFlowList from './TaskAssigneeFlowList'
-import TaskInvolvedFlowList from './TaskInvolvedFlowList'
-import Flow from './Flow'
+import * as U from '../../util'
+import StartBySelfExplorer from './StartBySelfExplorer'
+import TaskAssigneeExplorer from './TaskAssigneeExplorer'
+import TaskInvolvedExplorer from './TaskInvolvedExplorer'
+import Flow from '../components/Flow'
 
 export default {
     components: {
-        'assignee-flow-list': TaskAssigneeFlowList,
-        'startby-flow-list': StartBySelfFlowList,
-        'involved-flow-list': TaskInvolvedFlowList,
+        'assignee-explorer': TaskAssigneeExplorer,
+        'startby-explorer': StartBySelfExplorer,
+        'involved-explorer': TaskInvolvedExplorer,
         'flow': Flow
     },
     props: ['flowId', 'flowHelper'],
@@ -167,7 +167,7 @@ export default {
                         <a-tab-pane tab="待我处理"
                             class="tabpanel"
                             key="assignee">
-                            <assignee-flow-list processDef={this.processDef}
+                            <assignee-explorer processDef={this.processDef}
                                 layout={this.layout}
                                 user={this.user}
                                 flowHelper={this.flowHelper}
@@ -177,7 +177,7 @@ export default {
                         </a-tab-pane>
                         <a-tab-pane tab="由我发起"
                             key="startBySelf">
-                            <startby-flow-list processDef={this.processDef}
+                            <startby-explorer processDef={this.processDef}
                                 layout={this.layout}
                                 user={this.user}
                                 flowHelper={this.flowHelper}
@@ -187,7 +187,7 @@ export default {
                         </a-tab-pane>
                         <a-tab-pane tab="与我有关"
                             key="involved">
-                            <involved-flow-list processDef={this.processDef}
+                            <involved-explorer processDef={this.processDef}
                                 layout={this.layout}
                                 user={this.user}
                                 flowHelper={this.flowHelper}
@@ -249,7 +249,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../../../styles/imports';
+@import '../../../../../styles/imports';
 
 .ii-flowable {
     height: 100%;

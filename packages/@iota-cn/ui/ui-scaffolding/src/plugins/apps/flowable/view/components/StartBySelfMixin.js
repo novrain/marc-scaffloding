@@ -1,10 +1,6 @@
-<script>
 import moment from 'moment'
-// import * as U from '../util'
-import BaseFlowList from './BaseFlowList'
 
 export default {
-    mixins: [BaseFlowList],
     mounted() {
         this.history.disabled = false
     },
@@ -91,4 +87,3 @@ export default {
         }
     }
 }
-</script>

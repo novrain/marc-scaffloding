@@ -82,7 +82,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../../../styles/imports';
+@import '../../../../../styles/imports';
 
 .ii-comments {
     border-top: 1px solid $ii-gray-300;

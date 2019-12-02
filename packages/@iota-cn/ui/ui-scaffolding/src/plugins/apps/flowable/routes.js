@@ -1,4 +1,4 @@
-import Flowable from "./view/Flowable";
+import Flowable from "./view/console/Flowable";
 
 export default (opts) => {
     const containerId = opts.containerId
