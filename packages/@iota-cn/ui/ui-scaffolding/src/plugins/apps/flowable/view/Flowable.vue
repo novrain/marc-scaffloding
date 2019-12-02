@@ -234,10 +234,10 @@ export default {
                         </a-row>
                         :
                         <splitpanes horizontal class="default-theme">
-                            <splitpane min-size="20" max-size="60">
+                            <splitpane size='35' min-size="20" max-size="60">
                                 {this.renderFlows()}
                             </splitpane>
-                            <splitpane style={{ flex: 1 }}>
+                            <splitpane size='65' style={{ flex: 1 }}>
                                 {this.renderSigleFlow()}
                             </splitpane>
                         </splitpanes>
