@@ -37,9 +37,13 @@ export default {
         }
     },
     mounted() {
-        this.$axios.silentGet(`/v1/api/processdefs/${this.flowId}`, true)
+        this.$axios.silentGet(`/v1/api/processdefs/${this.flowId}`)
             .then((res) => {
                 this.processDef = res.data
+                this.$axios.silentGet(`/fl/process/repository/process-definitions/${this.processDef.flowableInstance}/resourcedata`)
+                    .then(res => {
+                        this.processDef.bpmnDef = res.data
+                    })
             })
     },
     computed: {

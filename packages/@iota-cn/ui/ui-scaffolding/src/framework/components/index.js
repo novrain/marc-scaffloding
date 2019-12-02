@@ -11,6 +11,7 @@ import DescValidatorItem from './formitems/DescValidatorItem'
 import SimpleEditor from './SimpleEditor'
 import Empty from './Empty'
 import ArrayTree from './ArrayTree'
+import BpmnViewer from './BpmnViewer'
 
 const components = [
     Icon,
@@ -22,7 +23,8 @@ const components = [
     DescValidatorItem,
     SimpleEditor,
     Empty,
-    ArrayTree
+    ArrayTree,
+    BpmnViewer
 ]
 
 export {
@@ -35,7 +37,8 @@ export {
     DescValidatorItem,
     SimpleEditor,
     Empty,
-    ArrayTree
+    ArrayTree,
+    BpmnViewer
 }
 
 const install = function (Vue) {

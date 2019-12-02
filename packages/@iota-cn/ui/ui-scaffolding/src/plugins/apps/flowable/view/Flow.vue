@@ -31,12 +31,14 @@
                 key="tasks">
                 <ii-tasks :user='user'
                     :active='activeTab === "tasks"'
-                    :flow='flow' />
+                    :flow='flow'
+                    :processDef='processDef' />
             </a-tab-pane>
             <a-tab-pane tab="附件"
                 class="tabpanel"
                 key="attachements">
-                <ii-attachments :user='user'
+                <ii-attachments :user='
+                    user'
                     :active='activeTab === "attachements"'
                     :flow='flow' />
             </a-tab-pane>
