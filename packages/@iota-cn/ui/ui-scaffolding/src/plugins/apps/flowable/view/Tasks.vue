@@ -5,7 +5,7 @@ import moment from 'moment'
 import * as U from '../util'
 
 export default {
-    props: ['user', 'flow', 'active'],
+    props: ['user', 'flow', 'active', 'processDef'],
     data() {
         return {
             running: {
@@ -36,7 +36,7 @@ export default {
             showCandidateGroups: false,
             // 更新dueDate
             showDueDate: false,
-            dueDate: moment().add(1, 'd').endOf('day')
+            dueDate: moment().add(1, 'd').endOf('day'),
         }
     },
     mounted() {
@@ -103,6 +103,9 @@ export default {
                         } else {
                             if (d.dueDate) {
                                 d.dueDate = moment(d.dueDate).format('YYYY-MM-DD HH:mm:ss')
+                            }
+                            if (this.$refs._bpmn) {
+                                this.$refs._bpmn.colorNode(d.taskDefinitionKey)
                             }
                             this.running.items.push(d)
                         }
@@ -255,7 +258,12 @@ export default {
         renderBpmn() {
             return (
                 <div class='bpmn'>
-                    <ii-empty />
+                    {
+                        this.processDef.bpmnDef ?
+                            <ii-bpmn defineXML={this.processDef.bpmnDef} ref='_bpmn' />
+                            :
+                            <ii-empty />
+                    }
                 </div>
             )
         },
@@ -525,12 +533,19 @@ export default {
     render() {
         return (
             <div class='ii-task'>
-                <splitpanes horizontal class="default-theme">
-                    <splitpane min-size="20" max-size="60">
-                        {this.renderRunning()}
+                <splitpanes class="default-theme">
+                    <splitpane size='30' min-size="20" max-size="40">
+                        {this.renderBpmn()}
                     </splitpane>
-                    <splitpane style={{ flex: 1 }}>
-                        {this.renderFinished()}
+                    <splitpane style={{ flex: 1 }} size='70'>
+                        <splitpanes horizontal class="default-theme">
+                            <splitpane min-size="20" max-size="60">
+                                {this.renderRunning()}
+                            </splitpane>
+                            <splitpane style={{ flex: 1 }}>
+                                {this.renderFinished()}
+                            </splitpane>
+                        </splitpanes>
                     </splitpane>
                 </splitpanes>
                 {this.renderAssigneeEditor()}
@@ -550,6 +565,7 @@ export default {
     height: 100%;
     display: flex;
     flex-direction: column;
+    padding-top: 10px;
 
     h6 {
         margin: 0 10px;
@@ -558,10 +574,9 @@ export default {
 
     .bpmn {
         height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        width: 100%;
         background-color: white;
+        position: relative;
     }
 
     .running {
