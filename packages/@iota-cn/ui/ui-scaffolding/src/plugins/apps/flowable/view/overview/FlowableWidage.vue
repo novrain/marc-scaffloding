@@ -40,7 +40,7 @@ export default {
         const name = this.processDef ? this.processDef.name : ''
         return (
             <a-card title={name} size='small' class='ii-flow-widage'
-                bodyStyle={{ padding: "1px", flex: 1 }}>
+                bodyStyle={{ padding: "10px", flex: 1 }}>
                 <a slot='extra' href={this.redirect}>前往处理</a>
                 {
                     this.processDef ? <assignee-explorer processDef={this.processDef}
@@ -62,16 +62,17 @@ export default {
 @import '../../../../../styles/imports';
 
 .ii-flow-widage {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
     a {
         color: $primary-color;
     }
 
     /deep/ .table {
         padding: 0;
-
-        * {
-            border: none;
-        }
     }
 }
 </style>

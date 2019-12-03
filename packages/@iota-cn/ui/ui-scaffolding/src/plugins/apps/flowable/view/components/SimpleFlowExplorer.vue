@@ -193,9 +193,9 @@ export default {
             // }
             //columns.push(operationColumn)
             return (
-                <div class="ii-flow-list">
+                <div class="ii-flow-simple">
                     <IiTableLayout
-                        rowSelection={{ type: 'radio', selectedRowKeys: [this.selectedFlow ? this.selectedFlow.id : undefined] }}
+                        // rowSelection={{ type: 'radio', selectedRowKeys: [this.selectedFlow ? this.selectedFlow.id : undefined] }}
                         size='small'
                         headheight={68}
                         onRowClick={this.onSelectFlow}
@@ -218,22 +218,11 @@ export default {
 @import '../../../../../styles/imports';
 
 .ii-flow-simple {
-    .flows {
-        display: flex;
-        height: 100%;
-        width: 100%;
-        flex-direction: column;
-        align-items: center;
-        overflow-y: auto;
-
-        .empty {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-    }
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     .table {
         /deep/ .ant-input-group-wrapper {

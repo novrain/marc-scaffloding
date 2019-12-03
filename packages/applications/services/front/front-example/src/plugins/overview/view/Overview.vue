@@ -20,7 +20,9 @@ export default {
                 {
                     this.widages.map(w => {
                         const component = w.component
-                        return <component {...{ props: w.props }} />
+                        return <div class='widage'>
+                            <component {...{ props: w.props }} />
+                        </div>
                     })
                 }
             </div>
@@ -40,7 +42,7 @@ export default {
     flex-wrap: wrap;
     justify-content: space-between;
 
-    /deep/ .ii-flow-widage {
+    .widage {
         width: calc(50% - 10px);
         height: 300px;
         display: inline-block;
