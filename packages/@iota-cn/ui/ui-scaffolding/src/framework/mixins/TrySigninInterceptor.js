@@ -1,8 +1,4 @@
 export default {
-    props: {
-        redirectTo: String
-    },
-
     data() {
         return {}
     },

@@ -3,7 +3,7 @@ export default {
         iota: {
             app: {
                 plugins: {
-                    cpp: {
+                    overview: {
                     }
                 }
             }
@@ -13,7 +13,7 @@ export default {
         iota: {
             app: {
                 plugins: {
-                    cpp: {
+                    overview: {
 
                     }
                 }

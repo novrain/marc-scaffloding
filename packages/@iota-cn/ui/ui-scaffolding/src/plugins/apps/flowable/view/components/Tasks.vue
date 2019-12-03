@@ -2,7 +2,7 @@
 <script>
 import { message } from 'ant-design-vue/es'
 import moment from 'moment'
-import * as U from '../util'
+import * as U from '../../util'
 
 export default {
     props: ['user', 'flow', 'active', 'processDef'],
@@ -559,7 +559,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../../../styles/imports';
+@import '../../../../../styles/imports';
 
 .ii-task {
     height: 100%;

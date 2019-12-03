@@ -14,7 +14,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import './styles/imports';
+@import './styles/base';
 
 html, body, #app {
     height: 100%;

@@ -61,7 +61,7 @@
 
 <script>
 import moment from 'moment'
-import * as U from '../util'
+import * as U from '../../util'
 
 export default {
     props: ['flow', 'selected', 'user', 'onCancel', 'onClaim', 'onDelegate', 'onResolve', 'onSuspend', 'onActive'],
@@ -113,7 +113,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../../../styles/imports';
+@import '../../../../../styles/imports';
 
 .ii-flow-item {
     display: flex;

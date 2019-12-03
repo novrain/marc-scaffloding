@@ -51,7 +51,7 @@ import { message } from 'ant-design-vue/es'
 import Comments from './Comments'
 import Attachments from './Attachments'
 import Tasks from './Tasks'
-import * as U from '../util'
+import * as U from '../../util'
 
 export default {
     components: {
@@ -205,7 +205,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../../../styles/imports';
+@import '../../../../../styles/imports';
 
 .ii-flow {
     height: 100%;

@@ -1,11 +1,11 @@
 import store from './store'
+import messages from './view/locale'
 import routes from './routes'
-import merge from 'deepmerge'
 
 const entry = (opts) => {
-    store.modules.iota.state = merge(store.modules.iota.state, opts)
     return {
-        store,
+        store: store(opts),
+        messages,
         routes: routes(opts)
     }
 }

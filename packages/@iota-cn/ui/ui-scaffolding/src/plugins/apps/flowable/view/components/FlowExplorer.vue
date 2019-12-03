@@ -1,11 +1,11 @@
 <script>
 import { message } from 'ant-design-vue/es'
-import * as U from '../util'
-import FlowItem from './FlowItem'
+import * as U from '../../util'
+import ListItem from './ExplorerListItem'
 
 export default {
     components: {
-        "ii-flow-item": FlowItem
+        "ii-list-item": ListItem
     },
     props: ['processDef', 'user', 'selectedFlow', 'flowHelper', 'active', 'layout'],
     data() {
@@ -146,7 +146,7 @@ export default {
                         <div class="flows">
                             <div class="list">
                                 {this.flows.map((flow) => {
-                                    return <ii-flow-item key='index'
+                                    return <ii-list-item key='index'
                                         onClick={this.onSelectFlow}
                                         flow={flow}
                                         user={this.user}
@@ -289,7 +289,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../../../styles/imports';
+@import '../../../../../styles/imports';
 
 .ii-flow-list {
     height: 100%;

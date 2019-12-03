@@ -1,10 +1,7 @@
-<script>
 import moment from 'moment'
-import * as U from '../util'
-import BaseFlowList from './BaseFlowList'
+import * as U from '../../util'
 
 export default {
-    mixins: [BaseFlowList],
     data() {
         return {
             showNode: true
@@ -76,4 +73,3 @@ export default {
         }
     }
 }
-</script>
