@@ -101,5 +101,27 @@ export default {
         ]
         return columns
     },
+    columnsForWidage() {
+        let columns = [
+            {
+                title: '名称',
+                dataIndex: 'formData.projectName',
+                key: 'formData.projectName',
+            },
+            {
+                title: '编号',
+                dataIndex: 'formData.projectNumber',
+                key: 'formData.projectNumber',
+                width: '20%',
+            },
+            {
+                title: '进度',
+                dataIndex: 'formData.process',
+                key: 'formData.process',
+                width: '20%',
+            }
+        ]
+        return columns
+    },
     layout: 'table'
 }

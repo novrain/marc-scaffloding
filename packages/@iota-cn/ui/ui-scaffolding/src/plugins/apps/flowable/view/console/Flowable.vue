@@ -24,7 +24,6 @@ export default {
         const layout = this.flowHelper.layout || 'table'
         return {
             processDef: undefined,
-            selectedAssigneeFlow: undefined,
             activeTab: 'assignee',
             selectedFlowsOfTab: {},
             // new process

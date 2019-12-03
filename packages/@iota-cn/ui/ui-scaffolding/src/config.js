@@ -20,7 +20,7 @@ export const layoutContainerPlugin = {
             type: 'console',
             id: COMPLEX_CONTAINER_ID,
             path: COMPLEX_CONTAINER_PATH,
-            redirectTo: '/app/signin',
+            authFailRedirect: '/app/signin',
             // 覆盖内部配置
             layout: {
                 console: {
