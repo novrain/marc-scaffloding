@@ -33,6 +33,7 @@ export default {
                         invalidUsername: '非法的用户名或已被占用',
                         invalidMobile: '非法的手机号或已被占用',
                         invalidEmail: '非法的邮箱或已被占用',
+                        invalidCaptcha: '无效的验证码',
 
                         updateSuccess: '更新成功',
                         updateFail: '更新失败',
