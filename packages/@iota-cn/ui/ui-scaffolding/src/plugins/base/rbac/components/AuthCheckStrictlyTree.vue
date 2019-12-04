@@ -4,7 +4,7 @@ import * as U from '../../../../framework/util'
 
 export default {
     name: 'IiAuthCheckStrictlyTree',
-    props: ['target', 'sourceUrlKey', 'targetUrlKey', 'resultKey', 'disableUserAssigned'],
+    props: ['target', 'sourceUrlKey', 'targetUrlKey', 'resultKey', 'disableUserAssigned', 'checkStrictly'],
     data() {
         return {
             assignedNodes: [],
