@@ -234,8 +234,7 @@
                                         :text="t('captcha')"
                                         size='small'
                                         :disabled='!isMobileValid'
-                                        :countingTextPost="t('retry')"
-                                        v-if="!user.actEmail && user.email" />
+                                        :countingTextPost="t('retry')" />
                                 </a-row>
                             </a-col>
                         </a-row>
