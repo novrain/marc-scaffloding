@@ -19,7 +19,8 @@ export default {
             page: 1,
             total: 0,
             currentUserExtention: {},
-            currentUserId: undefined
+            currentUserId: undefined,
+            multiSelect: false
         }
     },
     mounted() {
@@ -147,14 +148,26 @@ export default {
             this.selectedRows = selectedRows
         },
 
+        onMultiSelectChange(e) {
+            if (!e.target.checked && this.selectedRowKeys.length > 1) {
+                this.selectedRowKeys = [this.selectedRowKeys[0]]
+                this.selectedRows = [this.selectedRows[0]]
+            }
+        },
+
         onRowClick(record) {
             let { selectedRowKeys, selectedRows } = this
-            if (selectedRowKeys.indexOf(record.id) === -1) {
-                selectedRowKeys.push(record.id)
-                selectedRows.push(record)
+            if (!this.multiSelect) {
+                selectedRowKeys = [record.id]
+                selectedRows = [record]
             } else {
-                selectedRowKeys = selectedRowKeys.filter(i => i !== record.id)
-                selectedRows = selectedRows.filter(i => i.id !== record.id)
+                if (selectedRowKeys.indexOf(record.id) === -1) {
+                    selectedRowKeys.push(record.id)
+                    selectedRows.push(record)
+                } else {
+                    selectedRowKeys = selectedRowKeys.filter(i => i !== record.id)
+                    selectedRows = selectedRows.filter(i => i.id !== record.id)
+                }
             }
             this.selectedRowKeys = selectedRowKeys
             this.selectedRows = selectedRows
@@ -294,7 +307,6 @@ export default {
                     title: '用户名',
                     dataIndex: 'username',
                     key: 'username',
-                    width: '20%',
                 },
                 {
                     title: '邮箱',
@@ -386,7 +398,7 @@ export default {
                     },
                 }]
             const { selectedRowKeys } = this
-            const rowSelection = { selectedRowKeys, onChange: this.onSelectChange }
+            const rowSelection = { type: this.multiSelect ? 'checkbox' : 'radio', selectedRowKeys, onChange: this.onSelectChange }
             const pageSizeOptions = ['20', '40', '60', '80']
             const hasSelected = selectedRowKeys.length > 0
             const batchOperation = (
@@ -401,6 +413,7 @@ export default {
                     bordered={false}
                     bodyStyle={{ padding: "2px", flex: 1 }}
                     class='ii-card'>
+                    <a-checkbox vModel={this.multiSelect} slot='extra' onChange={this.onMultiSelectChange}>多选</a-checkbox>
                     <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="refresh" onClick={this.refetch}>
                         <AIcon type="reload" /> 刷新
                     </AButton>
