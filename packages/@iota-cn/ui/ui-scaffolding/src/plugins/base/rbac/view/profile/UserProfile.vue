@@ -31,12 +31,24 @@
                 <a-row type='flex'
                     class="item">
                     <a-col :span="8">{{t('position')}}</a-col>
-                    <a-col :span="16">{{'--'}}</a-col>
+                    <a-col v-if='user.isAdmin'
+                        :span="16">{{'--'}} </a-col>
+                    <a-col v-else
+                        :span="16">
+                        <li v-for="position in positions"
+                            :key="position"> {{position.name}} </li>
+                    </a-col>
                 </a-row>
                 <a-row type='flex'
                     class="item">
                     <a-col :span="8">{{t('organization')}}</a-col>
-                    <a-col :span="16">{{'--'}}</a-col>
+                    <a-col v-if='user.isAdmin'
+                        :span="16">{{'--'}} </a-col>
+                    <a-col v-else
+                        :span="16">
+                        <li v-for="organization in organizations"
+                            :key="organization"> {{organization.name}} </li>
+                    </a-col>
                 </a-row>
             </a-card>
             <div class="operation">
@@ -275,7 +287,8 @@ export default {
             modelWidth: 480,
             labelCol: { span: 7 },
             wrapperCol: { span: 16 },
-
+            organizations: [],
+            positions: [],
             changeUsernameVisible: false,
             changeUsernameForm: this.$form.createForm(this, {
                 name: 'changeUsername',
@@ -299,6 +312,7 @@ export default {
         }
     },
     mounted() {
+        this.refetchUserInfo()
         this.$axios.silentGet('/v1/api/accounts/profile_extention', true)
             .then((res) => {
                 this.userExtention = res.data
@@ -503,6 +517,14 @@ export default {
                     }).catch(() => {
                     })
                 }
+            })
+        },
+        refetchUserInfo() {
+            this.$fetchAssignedOrganizations().then((assignedOrganizations) => {
+                this.organizations = assignedOrganizations
+            })
+            this.$fetchAssignedPositions().then((assignedPositions) => {
+                this.positions = assignedPositions
             })
         }
     }
