@@ -28,7 +28,7 @@ export const findOrg = async (ctx, next) => {
     if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
         convertor = moment;
     }
-    Utils.sort(organizations, orderBy, orderDirection, convertor);
+    Utils.sort({ rows: organizations, orderBy, orderDirection, convertor });
     ctx.status = 200;
     ctx.body = {
         organizations: organizations
@@ -166,7 +166,7 @@ export const findOrganizationsAssignToSelf = async (ctx, next) => {
     if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
         convertor = moment;
     }
-    Utils.sort(organizations, orderBy, orderDirection, convertor);
+    Utils.sort({ rows: organizations, orderBy, orderDirection, convertor });
     ctx.status = 200;
     ctx.body = {
         organizations: organizations

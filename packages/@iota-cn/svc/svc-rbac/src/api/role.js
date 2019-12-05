@@ -24,7 +24,7 @@ export const findRole = async (ctx, next) => {
     if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
         convertor = moment;
     }
-    Utils.sort(roles, orderBy, orderDirection, convertor);
+    Utils.sort({ rows: roles, orderBy, orderDirection, convertor });
     ctx.status = 200;
     ctx.body = {
         roles: roles
@@ -261,7 +261,7 @@ export const findRolesAssignToSelf = async (ctx, next) => {
     if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
         convertor = moment;
     }
-    Utils.sort(roles, orderBy, orderDirection, convertor);
+    Utils.sort({ rows: roles, orderBy, orderDirection, convertor });
     ctx.status = 200;
     ctx.body = {
         roles: roles

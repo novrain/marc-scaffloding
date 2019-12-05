@@ -102,7 +102,7 @@ export default {
                         <AuthCheckStrictlyTree target={role} sourceUrlKey='menus' targetUrlKey='roles' resultKey='menus' />
                     </ACol>
                     <ACol span={12} class={classNames('wrapper__row__col')}>
-                        <AuthCheckStrictlyTree role={role} sourceUrlKey='operations' targetUrlKey='roles' resultKey='operations' />
+                        <AuthCheckStrictlyTree target={role} sourceUrlKey='operations' targetUrlKey='roles' resultKey='operations' />
                     </ACol>
                 </ARow>
             </ATabPane>)

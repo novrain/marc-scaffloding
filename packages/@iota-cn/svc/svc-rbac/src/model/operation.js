@@ -20,7 +20,7 @@ export default function (dc) {
                 defaultValue: 'GET'
             },
             verify: {
-                type: dc.ORM.STRING,
+                type: dc.ORM.BOOLEAN,
                 defaultValue: true
             },
             desc: {

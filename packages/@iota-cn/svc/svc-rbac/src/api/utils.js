@@ -29,7 +29,7 @@ export const buildAdminFilterUserQuery = async (dc, user, asFilter = false, incl
                 where: {
                     parentId: { $not: null }
                 },
-                attributes: asFilter ? [] : ['id', 'enable']
+                attributes: asFilter ? [] : ['userId', 'enable']
             }
         ]
     };
@@ -186,7 +186,7 @@ export const findAllChildrenOfUsersIncludeSoftDeleted = async (parents, models, 
             {
                 model: models.SubUser,
                 as: 'subExt',
-                attributes: ['id', 'enable', 'dependent', 'parentId'],
+                attributes: ['userId', 'enable', 'dependent', 'parentId'],
                 where: { parentId: { $in: ids } }
             }
         ],
@@ -213,38 +213,59 @@ export const findChildrenOfAUser = async (parent, models) => {
     })
 }
 
+const defaultComparator = function (left, right, direction) {
+    if (direction === 'ASC') {
+        if (left < right) {
+            return -1;
+        }
+        if (left > right) {
+            return 1;
+        }
+        return 0;
+    } else {
+        if (left < right) {
+            return 1;
+        }
+        if (left > right) {
+            return -1;
+        }
+        return 0;
+    }
+}
+
+export const hierarchicalIdComparator = (left, right, direction) => {
+    let leftSplit = left.split('.')
+    let rightSplit = right.split('.')
+    let i = 0
+    let len = Math.min(leftSplit.length, rightSplit.length)
+    while (i < len) {
+        if (leftSplit[i] === rightSplit[i] && i < len - 1) {
+            i++
+        } else {
+            return defaultComparator(leftSplit[i] * 1, rightSplit[i] * 1, direction)
+        }
+    }
+}
+
 /**
  * 
  * @param {*} rows 
- * @param {*} field 
- * @param {*} direction 
+ * @param {*} orderBy 
+ * @param {*} orderDirection 
  * @param {*} convertor 
  */
-export const sort = (rows, field, direction, convertor) => {
+export const sort = ({ rows, orderBy, orderDirection, convertor, comparator }) => {
     rows.sort((a, b) => {
-        let left = a[field];
-        let right = b[field];
-        if (typeof convertor === 'function') {
+        let left = a[orderBy];
+        let right = b[orderBy];
+        if (typeof comparator === 'function') {
+            return comparator(left, right, orderDirection)
+        }
+        else if (typeof convertor === 'function') {
             left = convertor(left)
             right = convertor(right)
         }
-        if (direction === 'ASC') {
-            if (left < right) {
-                return -1;
-            }
-            if (left > right) {
-                return 1;
-            }
-            return 0;
-        } else {
-            if (left < right) {
-                return 1;
-            }
-            if (left > right) {
-                return -1;
-            }
-            return 0;
-        }
+        return defaultComparator(left, right, orderDirection)
     });
 }
 
@@ -529,7 +550,7 @@ export const findUserIn = async (ctx, through, target, targetAs, targetKey, allo
         include: {
             model: models.SubUser,
             as: 'subExt',
-            attributes: ['id', 'enable']
+            attributes: ['userId', 'enable']
         },
         where: {
             $and: [
@@ -644,7 +665,7 @@ export const findUserNotIn = async (ctx, through, target, targetAs, targetKey, a
         include: {
             model: models.SubUser,
             as: 'subExt',
-            attributes: ['id', 'enable']
+            attributes: ['userId', 'enable']
         },
         distinct: true,
         limit: limit,
@@ -1718,5 +1739,5 @@ export const unbindASourceToUsers = async (ctx, source, sourceKey, through, thro
     }
 }
 
-export const userAttributesWhenInclude = [['id', 'userId'], 'username', 'email', 'mobile', 'gravatar', 'actEmail', 'type', 'isAdmin', 'deletedAt'];
+export const userAttributesWhenInclude = [['userId'], 'username', 'email', 'mobile', 'gravatar', 'actEmail', 'type', 'isAdmin', 'deletedAt'];
 export const userAttributes = ['id', 'username', 'email', 'mobile', 'gravatar', 'actEmail', 'type', 'isAdmin', 'deletedAt'];
