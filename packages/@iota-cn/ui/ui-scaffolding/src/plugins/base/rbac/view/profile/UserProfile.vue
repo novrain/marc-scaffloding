@@ -36,7 +36,7 @@
                     <a-col v-else
                         :span="16">
                         <li v-for="position in positions"
-                            :key="position"> {{position.name}} </li>
+                            :key="position.id"> {{position.name}} </li>
                     </a-col>
                 </a-row>
                 <a-row type='flex'
@@ -47,7 +47,7 @@
                     <a-col v-else
                         :span="16">
                         <li v-for="organization in organizations"
-                            :key="organization"> {{organization.name}} </li>
+                            :key="organization.id"> {{organization.name}} </li>
                     </a-col>
                 </a-row>
             </a-card>
