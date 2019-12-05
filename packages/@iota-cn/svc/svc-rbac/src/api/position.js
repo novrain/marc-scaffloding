@@ -25,7 +25,7 @@ export const findPosition = async (ctx, next) => {
     if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
         convertor = moment;
     }
-    Utils.sort(positions, orderBy, orderDirection, convertor);
+    Utils.sort({ rows: positions, orderBy, orderDirection, convertor });
     ctx.status = 200;
     ctx.body = {
         positions: positions
@@ -163,7 +163,7 @@ export const findPositionsAssignToSelf = async (ctx, next) => {
     if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
         convertor = moment;
     }
-    Utils.sort(positions, orderBy, orderDirection, convertor);
+    Utils.sort({ rows: positions, orderBy, orderDirection, convertor });
     ctx.status = 200;
     ctx.body = {
         positions: positions

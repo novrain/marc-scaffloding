@@ -8,7 +8,7 @@
             <a-card class="info"
                 style="width: 300px"
                 :bordered='false'>
-                <avatar-viewer :img='user.gravatar||"/assets/imgs/defaultAvatar.png"'
+                <avatar-viewer :img='$user.gravatar||"/assets/imgs/defaultAvatar.png"'
                     :width='100'
                     :height='100'
                     :radius='50'
@@ -17,8 +17,8 @@
                 <a-row type='flex'
                     class="item">
                     <a-col :span="8">{{t('account')}}</a-col>
-                    <a-col :span="12">{{user.username}}
-                        <a-tag v-if='user.isAdmin'
+                    <a-col :span="12">{{$user.username}}
+                        <a-tag v-if='$user.isAdmin'
                             color="#f50">{{t('administrator')}}</a-tag>
                     </a-col>
                     <a-col :span="4">
@@ -31,7 +31,7 @@
                 <a-row type='flex'
                     class="item">
                     <a-col :span="8">{{t('position')}}</a-col>
-                    <a-col v-if='user.isAdmin'
+                    <a-col v-if='$user.isAdmin'
                         :span="16">{{'--'}} </a-col>
                     <a-col v-else
                         :span="16">
@@ -42,7 +42,7 @@
                 <a-row type='flex'
                     class="item">
                     <a-col :span="8">{{t('organization')}}</a-col>
-                    <a-col v-if='user.isAdmin'
+                    <a-col v-if='$user.isAdmin'
                         :span="16">{{'--'}} </a-col>
                     <a-col v-else
                         :span="16">
@@ -84,7 +84,7 @@
                             {{t('bindMobile')}}
                         </a-row>
                         <a-row class="hint">
-                            {{t('bindMobileHint', { mobile : user.mobile || '' })}}
+                            {{t('bindMobileHint', { mobile : $user.mobile || '' })}}
                         </a-row>
                     </a-col>
                     <a-col :span="4">
@@ -92,7 +92,7 @@
                             justify='end'>
                             <a-button type='link'
                                 @click="onChangeMobile"
-                                size='small'>{{user.mobile ? t('change') : t('bind')}}</a-button>
+                                size='small'>{{$user.mobile ? t('change') : t('bind')}}</a-button>
                         </a-row>
                     </a-col>
                 </a-row>
@@ -106,7 +106,7 @@
                             {{t('bindEmail')}}
                         </a-row>
                         <a-row class="hint">
-                            {{t('bindEmailHint', { email : user.email||'' })}}
+                            {{t('bindEmailHint', { email : $user.email||'' })}}
                         </a-row>
                     </a-col>
                     <a-col :span="4">
@@ -117,11 +117,11 @@
                                 :text="t('active')"
                                 size='small'
                                 :countingTextPost="t('retry')"
-                                v-if="!user.actEmail && user.email" />
+                                v-if="!$user.actEmail && $user.email" />
                             <a-button type='link'
                                 v-else
                                 @click="onChangeEmail"
-                                size='small'>{{user.email ? t('change'): t('bind')}}</a-button>
+                                size='small'>{{$user.email ? t('change'): t('bind')}}</a-button>
                         </a-row>
                     </a-col>
                 </a-row>
@@ -161,7 +161,7 @@
                                 { required: true, message:  t('emptyWhat', {what:t('account')})  },
                                 { validator: usernameValidator },
                             ],
-                            initialValue: user.username,
+                            initialValue: $user.username,
                             validateFirst: true
                         }]"
                             :placeholder="t('account')">
@@ -183,7 +183,7 @@
                                 { required: true, message: t('emptyWhat', {what:t('email')}) },
                                 { validator: emailValidator },
                             ],
-                            initialValue: user.email,
+                            initialValue: $user.email,
                             validateFirst: true
                         }]"
                             :placeholder="t('email')">
@@ -215,7 +215,7 @@
                                 { required: true, message: t('emptyWhat', {what:t('mobile')}) },
                                 { validator: mobileValidator },
                             ],
-                            initialValue: user.mobile,
+                            initialValue: $user.mobile,
                             validateFirst: true
                         }]"
                             :placeholder="t('mobile')">
@@ -321,10 +321,6 @@ export default {
             .catch(() => { })
     },
     computed: {
-        user() {
-            const state = this.$store.state.iota.global.authentication
-            return state.user
-        }
     },
 
     methods: {
@@ -339,7 +335,7 @@ export default {
         onChangeUsernameOk() {
             this.changeUsernameForm.validateFields((err, values) => {
                 if (!err) {
-                    if (values.username === this.user.username) {
+                    if (values.username === this.$user.username) {
                         this.changeUsernameVisible = false
                         return
                     }
@@ -356,7 +352,7 @@ export default {
         },
         // eslint-disable-next-line
         usernameValidator(rule, value, callback) {
-            if (value === this.user.username) {
+            if (value === this.$user.username) {
                 callback()
             }
             if (!Validator.isUserName(value)) {
@@ -376,7 +372,7 @@ export default {
         },
         onActiveEmail() {
             this.$axios.commonPost(`/v1/api/accounts/email/active`,
-                { email: this.user.email },
+                { email: this.$user.email },
                 {
                     success: this.t('successSendActiveEmail'),
                     error: this.t('failSendActiveEmail')
@@ -386,7 +382,7 @@ export default {
         onChangeEmailOk() {
             this.changeEmailForm.validateFields((err, values) => {
                 if (!err) {
-                    if (values.email === this.user.email) {
+                    if (values.email === this.$user.email) {
                         this.changeEmailVisible = false
                         return
                     }
@@ -403,7 +399,7 @@ export default {
         },
         // eslint-disable-next-line
         emailValidator(rule, value, callback) {
-            if (value === this.user.email) {
+            if (value === this.$user.email) {
                 callback()
             }
             if (!Validator.isEmail(value)) {
@@ -443,7 +439,7 @@ export default {
         onChangeMobileOk() {
             this.changeMobileForm.validateFields((err, values) => {
                 if (!err) {
-                    if (values.mobile === this.user.mobile) {
+                    if (values.mobile === this.$user.mobile) {
                         this.changeMobileVisible = false
                         return
                     }
@@ -465,7 +461,7 @@ export default {
                 callback(this.t('invalidMobile'))
                 return
             }
-            if (value === this.user.mobile) {
+            if (value === this.$user.mobile) {
                 callback()
                 return
             }
@@ -481,7 +477,7 @@ export default {
         // eslint-disable-next-line
         captchaValidator(rule, value, callback) {
             const mobile = this.changeMobileForm.getFieldValue('mobile')
-            if (mobile === this.user.mobile) {
+            if (mobile === this.$user.mobile) {
                 callback()
                 return
             }
@@ -509,7 +505,7 @@ export default {
         onSaveUserExtention() {
             this.userExtentionForm.validateFields((err, values) => {
                 if (!err) {
-                    values.userId = this.user.id
+                    values.userId = this.$user.id
                     this.$axios.commonPut(`/v1/api/accounts/profile_extention`, values, {
                         success: this.t('updateSuccess'),
                         error: this.t('updateError')

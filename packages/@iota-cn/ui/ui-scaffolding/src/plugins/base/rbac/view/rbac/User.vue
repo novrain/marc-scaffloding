@@ -19,17 +19,14 @@ export default {
             page: 1,
             total: 0,
             currentUserExtention: {},
-            currentUserId: undefined
+            currentUserId: undefined,
+            multiSelect: false
         }
     },
     mounted() {
         this.refetch()
     },
     computed: {
-        user() {
-            const state = this.$store.state.iota.global.authentication
-            return state.user
-        }
     },
     methods: {
         onPageChange(page) {
@@ -147,14 +144,26 @@ export default {
             this.selectedRows = selectedRows
         },
 
+        onMultiSelectChange(e) {
+            if (!e.target.checked && this.selectedRowKeys.length > 1) {
+                this.selectedRowKeys = [this.selectedRowKeys[0]]
+                this.selectedRows = [this.selectedRows[0]]
+            }
+        },
+
         onRowClick(record) {
             let { selectedRowKeys, selectedRows } = this
-            if (selectedRowKeys.indexOf(record.id) === -1) {
-                selectedRowKeys.push(record.id)
-                selectedRows.push(record)
+            if (!this.multiSelect) {
+                selectedRowKeys = [record.id]
+                selectedRows = [record]
             } else {
-                selectedRowKeys = selectedRowKeys.filter(i => i !== record.id)
-                selectedRows = selectedRows.filter(i => i.id !== record.id)
+                if (selectedRowKeys.indexOf(record.id) === -1) {
+                    selectedRowKeys.push(record.id)
+                    selectedRows.push(record)
+                } else {
+                    selectedRowKeys = selectedRowKeys.filter(i => i !== record.id)
+                    selectedRows = selectedRows.filter(i => i.id !== record.id)
+                }
             }
             this.selectedRowKeys = selectedRowKeys
             this.selectedRows = selectedRows
@@ -288,13 +297,12 @@ export default {
         },
 
         renderUser() {
-            let { user } = this
+            let { $user } = this
             const columns = [
                 {
                     title: '用户名',
                     dataIndex: 'username',
                     key: 'username',
-                    width: '20%',
                 },
                 {
                     title: '邮箱',
@@ -348,7 +356,7 @@ export default {
                                 <AMenu.Item key="changePwd" >
                                     <IiModal
                                         title="修改密码"
-                                        content={<UserEditor ref={'password' + record.id} type="changePwd" data={{}} user={user} />}
+                                        content={<UserEditor ref={'password' + record.id} type="changePwd" data={{}} user={$user} />}
                                         button={(<div style={{ padding: '2px 0px', fontiSize: '12px' }}>修改密码</div>)}
                                         ok={this.onChangePwd(record, index)}
                                         cancel={() => this.$refs['password' + record.id].resetFields()}
@@ -370,7 +378,7 @@ export default {
                                     title="编辑"
                                     content={(<UserEditor type="edit" ref={'edit' + record.id} data={{
                                         username: record.username, email: record.email, isAdmin: record.isAdmin, enable: record.subExt.enable
-                                    }} user={user} />)}
+                                    }} user={$user} />)}
                                     button={(<a>编辑</a>)}
                                     ok={this.onEdit(record, index)}
                                     cancel={() => this.$refs['edit' + record.id].resetFields()}
@@ -386,7 +394,7 @@ export default {
                     },
                 }]
             const { selectedRowKeys } = this
-            const rowSelection = { selectedRowKeys, onChange: this.onSelectChange }
+            const rowSelection = { type: this.multiSelect ? 'checkbox' : 'radio', selectedRowKeys, onChange: this.onSelectChange }
             const pageSizeOptions = ['20', '40', '60', '80']
             const hasSelected = selectedRowKeys.length > 0
             const batchOperation = (
@@ -401,13 +409,14 @@ export default {
                     bordered={false}
                     bodyStyle={{ padding: "2px", flex: 1 }}
                     class='ii-card'>
+                    <a-checkbox vModel={this.multiSelect} slot='extra' onChange={this.onMultiSelectChange}>多选</a-checkbox>
                     <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="refresh" onClick={this.refetch}>
                         <AIcon type="reload" /> 刷新
                     </AButton>
                     <IiModal slot="extra"
                         key='new'
                         title="新建"
-                        content={(<UserEditor type="create" ref={'_add'} data={{}} user={user} />)}
+                        content={(<UserEditor type="create" ref={'_add'} data={{}} user={$user} />)}
                         button={(<AButton size='small' icon={'plus'} key="new" style={{ marginRight: '8px' }}>创建用户</AButton>)}
                         ok={this.onAdd}
                         cancel={() => this.$refs._add.resetFields()}

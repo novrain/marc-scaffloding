@@ -15,6 +15,7 @@ export default {
     },
     props: ['flowId', 'flowHelper'],
     data() {
+        // 这里无法使用全局的计算属性
         const state = this.$store.state.iota.global.authentication
         const systemVariables = {
             initiatorId: state.user.id,
@@ -36,20 +37,16 @@ export default {
         }
     },
     mounted() {
-        this.$axios.silentGet(`/v1/api/processdefs/${this.flowId}`)
+        this.$axios.silentGet(`/v1/api/processdefs/${this.flowId}`, true)
             .then((res) => {
                 this.processDef = res.data
                 this.$axios.silentGet(`/fl/process/repository/process-definitions/${this.processDef.flowableInstance}/resourcedata`)
                     .then(res => {
                         this.processDef.bpmnDef = res.data
-                    })
-            })
+                    }).catch(() => { })
+            }).catch(() => { })
     },
     computed: {
-        user() {
-            const state = this.$store.state.iota.global.authentication
-            return state.user
-        },
         selectedFlow() {
             return this.selectedFlowsOfTab[this.activeTab]
         },
@@ -61,8 +58,8 @@ export default {
                         formCls: 'ii-nc-form'
                     },
                     constants: {
-                        initiatorId: this.user.id,
-                        initiatorName: this.user.fullname || this.user.username,
+                        initiatorId: this.$user.id,
+                        initiatorName: this.$user.fullname || this.$user.username,
                         currentTaskId: 'start'
                     }
                 }
@@ -168,7 +165,7 @@ export default {
                             key="assignee">
                             <assignee-explorer processDef={this.processDef}
                                 layout={this.layout}
-                                user={this.user}
+                                user={this.$user}
                                 flowHelper={this.flowHelper}
                                 selectedFlow={this.selectedFlowsOfTab.assignee}
                                 active={this.activeTab === "assignee"}
@@ -178,7 +175,7 @@ export default {
                             key="startBySelf">
                             <startby-explorer processDef={this.processDef}
                                 layout={this.layout}
-                                user={this.user}
+                                user={this.$user}
                                 flowHelper={this.flowHelper}
                                 selectedFlow={this.selectedFlowsOfTab.startBySelf}
                                 active={this.activeTab === "startBySelf"}
@@ -188,7 +185,7 @@ export default {
                             key="involved">
                             <involved-explorer processDef={this.processDef}
                                 layout={this.layout}
-                                user={this.user}
+                                user={this.$user}
                                 flowHelper={this.flowHelper}
                                 selectedFlow={this.selectedFlowsOfTab.involved}
                                 active={this.activeTab === "involved"}
@@ -205,7 +202,7 @@ export default {
                         this.selectedFlow ?
                             <flow
                                 flow={this.selectedFlow}
-                                user={this.user}
+                                user={this.$user}
                                 processDef={this.processDef}
                                 onSubmit={this.onSubmit} />
                             :

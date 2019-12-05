@@ -9,15 +9,24 @@ export const findMenuOfCurrentUser = async (ctx, next) => {
     const models = ctx.iota.dc.models;
     const orderBy = ctx.query.order_by || 'id';
     const orderDirection = ctx.query.order_direction || 'ASC';
+    let convertor = undefined;
+    let comparator = undefined
+    if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
+        convertor = moment;
+    }
+    if (orderBy === 'id') {
+        comparator = Utils.hierarchicalIdComparator
+    }
     if (user.isAdmin) {
         let menus = await models.Menu.findAll({
             raw: true,
-            order: [[orderBy, orderDirection]]
+            // order: [[orderBy, orderDirection]]
         });
         menus = menus.map(m => {
             m.hasRight = true;
             return m;
         })
+        Utils.sort({ rows: menus, orderBy, orderDirection, convertor, comparator });
         ctx.status = 200;
         ctx.body = {
             menus: menus
@@ -35,11 +44,7 @@ export const findMenuOfCurrentUser = async (ctx, next) => {
     })
     //parents
     menus = await Utils.fillAllParents(menus, models.Menu);
-    let convertor = undefined;
-    if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
-        convertor = moment;
-    }
-    Utils.sort(menus, orderBy, orderDirection, convertor);
+    Utils.sort({ rows: menus, orderBy, orderDirection, convertor, comparator });
     ctx.status = 200;
     ctx.body = {
         menus: menus

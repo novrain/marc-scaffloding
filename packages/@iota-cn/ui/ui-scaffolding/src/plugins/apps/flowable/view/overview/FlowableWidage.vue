@@ -26,10 +26,6 @@ export default {
             })
     },
     computed: {
-        user() {
-            const state = this.$store.state.iota.global.authentication
-            return state.user
-        },
     },
     methods: {
         onSelectFlow() {
@@ -41,10 +37,12 @@ export default {
         return (
             <a-card title={name} size='small' class='ii-flow-widage'
                 bodyStyle={{ padding: "10px", flex: 1 }}>
-                <a slot='extra' href={this.redirect}>前往处理</a>
+                <a slot='extra' onClick={() => {
+                    this.$router.push({ path: this.redirect })
+                }}>前往处理</a>
                 {
                     this.processDef ? <assignee-explorer processDef={this.processDef}
-                        user={this.user}
+                        user={this.$user}
                         flowHelper={this.flowHelper}
                         selectedFlow={this.selectedFlowsOfTab.assignee}
                         active={this.activeTab === "assignee"}

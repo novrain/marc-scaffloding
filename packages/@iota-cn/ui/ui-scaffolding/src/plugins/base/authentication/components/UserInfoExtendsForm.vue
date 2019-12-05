@@ -75,13 +75,13 @@ export default {
         if (U.educationOptions) {
             this.eduOptions = U.educationOptions
         } else {
-            this.$axios.silentGet('/v1/api/dictionaries/frame_education')
+            this.$axios.silentGet('/v1/api/dictionaries/frame_education', true)
                 .then((res) => {
                     this.eduOptions = res.data.items.map(i => {
                         return { label: i.name, value: i.key }
                     })
                     U.setEducationOptions(this.eduOptions)
-                })
+                }).catch(() => { })
         }
         // 查询字典
         // 查询用户扩展信息

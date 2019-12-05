@@ -9,6 +9,15 @@ import UserInfoExtendsForm from './components/UserInfoExtendsForm'
 Vue.component('ii-reset-password-form', ResetPasswordForm)
 Vue.component('ii-user-extends-form', UserInfoExtendsForm)
 
+Vue.mixin({
+    computed: {
+        $user() {
+            const state = this.$store.state.iota.global.authentication
+            return state.user
+        }
+    }
+})
+
 const entry = (opts) => {
     return {
         store: store(opts),

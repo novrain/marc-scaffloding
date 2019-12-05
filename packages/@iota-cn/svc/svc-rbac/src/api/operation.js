@@ -7,17 +7,26 @@ export const findOperationOfCurrentUser = async (ctx, next) => {
     const userId = ctx.session.user.id;
     const dc = ctx.iota.dc;
     const models = ctx.iota.dc.models;
-    const orderBy = ctx.query.order_by || 'createdAt';
+    const orderBy = ctx.query.order_by || 'id';
     const orderDirection = ctx.query.order_direction || 'ASC';
+    let convertor = undefined;
+    let comparator = undefined
+    if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
+        convertor = moment;
+    }
+    if (orderBy === 'id') {
+        comparator = Utils.hierarchicalIdComparator
+    }
     if (user.isAdmin) {
         let operations = await models.Operation.findAll({
             raw: true,
-            order: [[orderBy, orderDirection]]
+            // order: [[orderBy, orderDirection]]
         });
         operations = operations.map(m => {
             m.hasRight = true;
             return m;
         })
+        Utils.sort({ rows: operations, orderBy, orderDirection, convertor, comparator });
         ctx.status = 200;
         ctx.body = {
             operations: operations
@@ -35,12 +44,7 @@ export const findOperationOfCurrentUser = async (ctx, next) => {
     })
     //parents
     operations = await Utils.fillAllParents(operations, models.Operation);
-
-    let convertor = undefined;
-    if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
-        convertor = moment;
-    }
-    Utils.sort(operations, orderBy, orderDirection, convertor);
+    Utils.sort({ rows: operations, orderBy, orderDirection, convertor, comparator });
     ctx.status = 200;
     ctx.body = {
         operations: operations
