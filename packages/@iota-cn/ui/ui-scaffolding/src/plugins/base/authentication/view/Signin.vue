@@ -35,7 +35,7 @@
                 {{t('remember')}}
             </a-checkbox>
             <a class="float-right"
-                href="/app/reset/send/email">
+                @click='()=>{$router.push({path:"/app/reset/send/email"})}'>
                 {{t('forgotPwd')}}
             </a>
             <a-button type="primary"
@@ -44,10 +44,10 @@
                 {{t("signin")}}
             </a-button>
         </a-form-item>
-        <div v-if="user.loggedIn">
+        <div v-if="$user.loggedIn">
             <a-divider>{{$t('iota.global.authentication.or')}}</a-divider>
             <router-link :to='redirect'
-                class="quick-signin">{{t('keepUsing', {user : user.username})}}</router-link>
+                class="quick-signin">{{t('keepUsing', {user : $user.username})}}</router-link>
         </div>
     </a-form>
 </template>
@@ -82,14 +82,6 @@ export default {
         },
 
         ...mapActions(['signin'])
-    },
-
-    computed: {
-        user() {
-            // 这个模块需要从上层规定
-            const state = this.$store.state.iota.global.authentication
-            return state.user
-        }
     }
 }
 </script>

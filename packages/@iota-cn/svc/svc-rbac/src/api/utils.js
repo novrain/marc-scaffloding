@@ -242,6 +242,9 @@ export const hierarchicalIdComparator = (left, right, direction) => {
         if (leftSplit[i] === rightSplit[i] && i < len - 1) {
             i++
         } else {
+            if (leftSplit.length !== rightSplit.length) {
+                return rightSplit.length - leftSplit.length
+            }
             return defaultComparator(leftSplit[i] * 1, rightSplit[i] * 1, direction)
         }
     }

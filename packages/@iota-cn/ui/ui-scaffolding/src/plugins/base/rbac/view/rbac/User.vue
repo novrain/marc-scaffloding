@@ -27,10 +27,6 @@ export default {
         this.refetch()
     },
     computed: {
-        user() {
-            const state = this.$store.state.iota.global.authentication
-            return state.user
-        }
     },
     methods: {
         onPageChange(page) {
@@ -301,7 +297,7 @@ export default {
         },
 
         renderUser() {
-            let { user } = this
+            let { $user } = this
             const columns = [
                 {
                     title: '用户名',
@@ -360,7 +356,7 @@ export default {
                                 <AMenu.Item key="changePwd" >
                                     <IiModal
                                         title="修改密码"
-                                        content={<UserEditor ref={'password' + record.id} type="changePwd" data={{}} user={user} />}
+                                        content={<UserEditor ref={'password' + record.id} type="changePwd" data={{}} user={$user} />}
                                         button={(<div style={{ padding: '2px 0px', fontiSize: '12px' }}>修改密码</div>)}
                                         ok={this.onChangePwd(record, index)}
                                         cancel={() => this.$refs['password' + record.id].resetFields()}
@@ -382,7 +378,7 @@ export default {
                                     title="编辑"
                                     content={(<UserEditor type="edit" ref={'edit' + record.id} data={{
                                         username: record.username, email: record.email, isAdmin: record.isAdmin, enable: record.subExt.enable
-                                    }} user={user} />)}
+                                    }} user={$user} />)}
                                     button={(<a>编辑</a>)}
                                     ok={this.onEdit(record, index)}
                                     cancel={() => this.$refs['edit' + record.id].resetFields()}
@@ -420,7 +416,7 @@ export default {
                     <IiModal slot="extra"
                         key='new'
                         title="新建"
-                        content={(<UserEditor type="create" ref={'_add'} data={{}} user={user} />)}
+                        content={(<UserEditor type="create" ref={'_add'} data={{}} user={$user} />)}
                         button={(<AButton size='small' icon={'plus'} key="new" style={{ marginRight: '8px' }}>创建用户</AButton>)}
                         ok={this.onAdd}
                         cancel={() => this.$refs._add.resetFields()}

@@ -73,7 +73,9 @@ const createPermission = (opts) => {
                     return []
                 })
         }
-
+        /**
+         * 判断是否拥有操作权限
+         */
         Vue.prototype.$p = function (operations) {
             const state = this.$store.state.iota[containerId || 'container'][id || 'rbac']
             const haveOps = state.operations || []
@@ -89,6 +91,26 @@ const createPermission = (opts) => {
             })
             return !noRight
         }
+
+        /**
+         * 判断是否拥有菜单
+         */
+        Vue.prototype.$m = function (menus) {
+            const state = this.$store.state.iota[containerId || 'container'][id || 'rbac']
+            const haveMenus = state.menus || []
+            let neededMenus = menus
+            if (!Array.isArray(neededMenus)) {
+                neededMenus = [neededMenus]
+            }
+            // find op not in operations
+            let noRight = neededMenus.find(mp => {
+                return !haveMenus.find(mh => {
+                    return mh.key === mp
+                })
+            })
+            return !noRight
+        }
+
         Vue.prototype.$clearRBACInfo = function () {
             reset()
         }

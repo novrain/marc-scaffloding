@@ -20,7 +20,7 @@
         </a-form-item>
         <a-form-item>
             <a class="float-right"
-                href="/app/signin">
+                @click='()=>{$router.push({path:"/app/signin"})}'>
                 {{t('rememberPwd')}}
             </a>
             <a-button type="primary"

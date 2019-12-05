@@ -79,6 +79,7 @@ ALTER TABLE IF EXISTS ONLY public."UserPosition" DROP CONSTRAINT IF EXISTS "User
 ALTER TABLE IF EXISTS ONLY public."UserPosition" DROP CONSTRAINT IF EXISTS "UserPosition_positionId_fkey";
 ALTER TABLE IF EXISTS ONLY public."UserOrganization" DROP CONSTRAINT IF EXISTS "UserOrganization_userId_fkey";
 ALTER TABLE IF EXISTS ONLY public."UserOrganization" DROP CONSTRAINT IF EXISTS "UserOrganization_organizationId_fkey";
+ALTER TABLE IF EXISTS ONLY public."UserExtention" DROP CONSTRAINT IF EXISTS "UserExtention_userId_fkey";
 ALTER TABLE IF EXISTS ONLY public."SubUser" DROP CONSTRAINT IF EXISTS "SubUser_userId_fkey";
 ALTER TABLE IF EXISTS ONLY public."SubUser" DROP CONSTRAINT IF EXISTS "SubUser_parentId_fkey";
 ALTER TABLE IF EXISTS ONLY public."RoleOperation" DROP CONSTRAINT IF EXISTS "RoleOperation_roleId_fkey";
@@ -2636,34 +2637,40 @@ INSERT INTO "CommunistPartyProcessCategory" (id, name, "desc", index, "belongTo"
 -- Data for Name: Dictionary; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO "Dictionary" (id, name, key, "belongTo", "createdAt", "updatedAt") VALUES ('c563fee9-dc87-44c9-8778-0345b915615b', '学历', 'frame_education', NULL, '2019-12-05 18:34:09.809+08', '2019-12-05 18:34:09.809+08');
 
 
 --
 -- Data for Name: DictionaryItem; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "dictionaryId") VALUES ('a3c13fe5-ee4e-4c5f-9037-5269bf309058', '大专', 'junior_college', 1, '2019-12-05 18:34:28.602+08', '2019-12-05 18:34:28.602+08', 'c563fee9-dc87-44c9-8778-0345b915615b');
+INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "dictionaryId") VALUES ('28f983f3-83e6-41e4-a3d6-ab9389ca3cf0', '本科', 'bachelor', 2, '2019-12-05 18:34:39.984+08', '2019-12-05 18:34:39.984+08', 'c563fee9-dc87-44c9-8778-0345b915615b');
+INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "dictionaryId") VALUES ('e555ed62-9618-44c4-9a46-b833c77a6ae3', '硕士', 'master', 3, '2019-12-05 18:34:52.701+08', '2019-12-05 18:34:52.701+08', 'c563fee9-dc87-44c9-8778-0345b915615b');
+INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "dictionaryId") VALUES ('3a0d4431-e469-487f-8409-67f8ba2fc89e', '博士', 'doctor', 4, '2019-12-05 18:35:05.981+08', '2019-12-05 18:35:05.981+08', 'c563fee9-dc87-44c9-8778-0345b915615b');
+INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "dictionaryId") VALUES ('2f463a7c-92da-4298-b840-cc2b4d5dbb62', '其他', 'others', 5, '2019-12-05 18:35:17.343+08', '2019-12-05 18:35:17.343+08', 'c563fee9-dc87-44c9-8778-0345b915615b');
 
 
 --
 -- Data for Name: Menu; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('0', '管理控制台', 'iota.console', NULL, NULL, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', NULL);
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1', '总览', 'iota.console.overview', '/console', 'overview', '', '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6', '权限管理', 'iota.console.authorizations', NULL, 'authorization', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.1', '菜单与操作', 'iota.console.authorizations.current', '/console/authorizations/overview', 'menu', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.2', '角色', 'iota.console.authorizations.roles', '/console/authorizations/roles', 'role', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.3', '组织', 'iota.console.authorizations.organizations', '/console/authorizations/organizations', 'organization', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.4', '职位', 'iota.console.authorizations.positions', '/console/authorizations/positions', 'user-position', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.5', '用户', 'iota.console.authorizations.users', '/console/authorizations/users', 'subuser', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8', '系统管理', 'iota.console.system', NULL, 'system', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1', '字典管理', 'iota.console.system.dictionaries', '/console/system/dictionaries', 'dictionary', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '8');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('9', '账号管理', 'iota.console.account', NULL, 'account-sec', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('9.1', '账号安全', 'iota.console.account.profile', '/console/account/profile', 'profile', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '9');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5', '党建管理', 'iota.console.cpp', '', 'antv-hdd', NULL, '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4', '项目管理', 'iota.console.flowable', NULL, 'antv-layout', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:26:41+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1', 'Example', 'iota.console.cpp.yeartasks', '/console/applications/communist_party_process', 'antv-schedule', NULL, '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '5');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4.1', '年度工程项目', 'iota.console.flowable.example', '/console/applications/project_of_year', 'antv-audit', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:27:31+08', '4');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('0', '管理控制台', '/console', NULL, NULL, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', NULL);
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1', '总览', '/console/overview', '/console/overview', 'overview', '', '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '0');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.1', '菜单与操作', '/console/authorizations/overview', '/console/authorizations/overview', 'menu', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6', '权限管理', '/console/authorizations', NULL, 'authorization', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.2', '角色', '/console/authorizations/roles', '/console/authorizations/roles', 'role', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.3', '组织', '/console/authorizations/organizations', '/console/authorizations/organizations', 'organization', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.4', '职位', '/console/authorizations/positions', '/console/authorizations/positions', 'user-position', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.5', '用户', '/console/authorizations/users', '/console/authorizations/users', 'subuser', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1', '字典管理', '/console/system/dictionaries', '/console/system/dictionaries', 'dictionary', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '8');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8', '系统管理', '/console/system', NULL, 'system', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('9.1', '账号安全', '/console/account/profile', '/console/account/profile', 'profile', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '9');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('9', '账号管理', '/console/account', NULL, 'account-sec', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5', '党建管理', '/console.cpp', '', 'antv-hdd', NULL, '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '0');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1', 'Example', '/console/applications/communist_party_process', '/console/applications/communist_party_process', 'antv-schedule', NULL, '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '5');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4', '项目管理', '/console/applications/project', '', 'antv-layout', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:26:41+08', '0');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4.1', '年度工程项目', '/console/applications/project_of_year', '/console/applications/project_of_year', 'antv-audit', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:27:31+08', '4');
 
 
 --
@@ -3202,10 +3209,6 @@ INSERT INTO "User" (id, username, password, type, email, mobile, "actEmail", gra
 -- Data for Name: UserExtention; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "UserExtention" (fullname, sex, education, birthday, telephone, "createdAt", "updatedAt", "userId") VALUES ('党某', 'male', 'junior_college', '2019-12-26 19:16:30.186+08', '123456', '2019-12-01 19:36:11.782+08', '2019-12-01 20:29:24.657+08', 'admin');
-INSERT INTO "UserExtention" (fullname, sex, education, birthday, telephone, "createdAt", "updatedAt", "userId") VALUES ('管某某', 'male', 'others', '2019-12-01 21:43:32.039+08', '111', '2019-12-01 21:46:11.453+08', '2019-12-01 21:46:11.453+08', 'manager');
-INSERT INTO "UserExtention" (fullname, sex, education, birthday, telephone, "createdAt", "updatedAt", "userId") VALUES ('颜磊', 'male', NULL, '2019-12-03 19:59:15.214+08', NULL, '2019-12-03 19:59:32.133+08', '2019-12-03 19:59:32.133+08', 'user_yanlei');
-INSERT INTO "UserExtention" (fullname, sex, education, birthday, telephone, "createdAt", "updatedAt", "userId") VALUES (NULL, NULL, NULL, '2019-12-05 10:13:39.74+08', NULL, '2019-12-05 10:16:17.886+08', '2019-12-05 10:16:17.886+08', 'leader');
 
 
 --
@@ -5757,6 +5760,14 @@ ALTER TABLE ONLY "SubUser"
 
 ALTER TABLE ONLY "SubUser"
     ADD CONSTRAINT "SubUser_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: UserExtention UserExtention_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "UserExtention"
+    ADD CONSTRAINT "UserExtention_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
