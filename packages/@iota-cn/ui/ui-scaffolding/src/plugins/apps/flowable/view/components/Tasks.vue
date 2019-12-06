@@ -149,32 +149,36 @@ export default {
         },
         onCandidateUserChecked(e, user, link) {
             if (e.target.checked) {
-                this.$axios.silentPost(`/fl/process/runtime/tasks/${this.currentTask.id}/identitylinks`, {
-                    type: 'candidate',
-                    user: U.idOfUser(user)
-                }, true)
-                    .then((res) => {
-                        this.currentTask.identityLinks.push(res.data)
-                    }).catch(() => {
-                        message.error('操作失败，请稍后再试')
-                    })
-            } else {
-                let filter = () => {
-                    this.currentTask.identityLinks = this.currentTask.identityLinks.filter(l => {
-                        // return link.id !== l.id
-                        return link.user !== l.user
-                    })
-                }
-                this.$axios.silentDelete(`/fl/process/runtime/tasks/${this.currentTask.id}/identitylinks/users/${link.user}/${link.type}`, true)
-                    .then(() => {
-                        filter()
-                    }).catch((res) => {
-                        if (res.status === 404) {
-                            filter()
-                        } else {
+                if (this.$p('/fl/process/runtime/tasks/:taskId/identitylinks/users:POST')) {
+                    this.$axios.silentPost(`/fl/process/runtime/tasks/${this.currentTask.id}/identitylinks`, {
+                        type: 'candidate',
+                        user: U.idOfUser(user)
+                    }, true)
+                        .then((res) => {
+                            this.currentTask.identityLinks.push(res.data)
+                        }).catch(() => {
                             message.error('操作失败，请稍后再试')
-                        }
-                    })
+                        })
+                }
+            } else {
+                if (this.$p('/fl/process/runtime/tasks/:taskId/identitylinks/users/:user/:type:DELETE')) {
+                    let filter = () => {
+                        this.currentTask.identityLinks = this.currentTask.identityLinks.filter(l => {
+                            // return link.id !== l.id
+                            return link.user !== l.user
+                        })
+                    }
+                    this.$axios.silentDelete(`/fl/process/runtime/tasks/${this.currentTask.id}/identitylinks/users/${link.user}/${link.type}`, true)
+                        .then(() => {
+                            filter()
+                        }).catch((res) => {
+                            if (res.status === 404) {
+                                filter()
+                            } else {
+                                message.error('操作失败，请稍后再试')
+                            }
+                        })
+                }
             }
         },
 
@@ -188,32 +192,36 @@ export default {
         },
         onCandidateGroupChecked(e, groupId, link) {
             if (e.target.checked) {
-                this.$axios.silentPost(`/fl/process/runtime/tasks/${this.currentTask.id}/identitylinks`, {
-                    type: 'candidate',
-                    group: groupId
-                }, true)
-                    .then((res) => {
-                        this.currentTask.identityLinks.push(res.data)
-                    }).catch(() => {
-                        message.error('操作失败，请稍后再试')
-                    })
-            } else {
-                let filter = () => {
-                    this.currentTask.identityLinks = this.currentTask.identityLinks.filter(l => {
-                        // return link.id !== l.id
-                        return link.group !== l.group
-                    })
-                }
-                this.$axios.silentDelete(`/fl/process/runtime/tasks/${this.currentTask.id}/identitylinks/groups/${link.group}/${link.type}`, true)
-                    .then(() => {
-                        filter()
-                    }).catch((res) => {
-                        if (res.status === 404) {
-                            filter()
-                        } else {
+                if (this.$p('/fl/process/runtime/tasks/:taskId/identitylinks/groups:POST')) {
+                    this.$axios.silentPost(`/fl/process/runtime/tasks/${this.currentTask.id}/identitylinks`, {
+                        type: 'candidate',
+                        group: groupId
+                    }, true)
+                        .then((res) => {
+                            this.currentTask.identityLinks.push(res.data)
+                        }).catch(() => {
                             message.error('操作失败，请稍后再试')
-                        }
-                    })
+                        })
+                }
+            } else {
+                if (this.$p('/fl/process/runtime/tasks/:taskId/identitylinks/groups/:group/:type:DELETE')) {
+                    let filter = () => {
+                        this.currentTask.identityLinks = this.currentTask.identityLinks.filter(l => {
+                            // return link.id !== l.id
+                            return link.group !== l.group
+                        })
+                    }
+                    this.$axios.silentDelete(`/fl/process/runtime/tasks/${this.currentTask.id}/identitylinks/groups/${link.group}/${link.type}`, true)
+                        .then(() => {
+                            filter()
+                        }).catch((res) => {
+                            if (res.status === 404) {
+                                filter()
+                            } else {
+                                message.error('操作失败，请稍后再试')
+                            }
+                        })
+                }
             }
         },
 
@@ -302,16 +310,20 @@ export default {
                     dataIndex: 'operation',
                     width: '28%',
                     customRender: (text, record) => {
-                        let claimable = U.isTaskClaimable({
-                            task: record,
-                            user: this.user,
-                            assignedOrganizations: this.assignedOrganizations,
-                            assignedPositions: this.assignedPositions,
-                            assignedRoles: this.assignedRoles
-                        })
-                        let assigneeable = U.isTaskAssigneeable({ task: record, user: this.user })
-                        let editCandidateUsers = true
-                        let editCandidateGroups = true
+                        let claimable = this.$p('/fl/process/runtime/tasks/:id/claim:PUT')
+                            && U.isTaskClaimable({
+                                task: record,
+                                user: this.user,
+                                assignedOrganizations: this.assignedOrganizations,
+                                assignedPositions: this.assignedPositions,
+                                assignedRoles: this.assignedRoles
+                            })
+                        let assigneeable = this.$p('/fl/process/runtime/tasks/:id/assignee:PUT')
+                            && U.isTaskAssigneeable({ task: record, user: this.user })
+                        let editCandidateUsers = this.$p('/fl/process/runtime/tasks/:taskId/identitylinks/users:POST')
+                            || this.$p('/fl/process/runtime/tasks/:taskId/identitylinks/users/:user/:type:DELETE')
+                        let editCandidateGroups = this.$p('/fl/process/runtime/tasks/:taskId/identitylinks/groups:POST')
+                            || this.$p('/fl/process/runtime/tasks/:taskId/identitylinks/groups/:group/:type:DELETE')
                         return disabled ?
                             null
                             : <div class='operation' >
@@ -534,19 +546,27 @@ export default {
         return (
             <div class='ii-task'>
                 <splitpanes class="default-theme">
-                    <splitpane size='30' min-size="20" max-size="40">
-                        {this.renderBpmn()}
-                    </splitpane>
-                    <splitpane style={{ flex: 1 }} size='70'>
-                        <splitpanes horizontal class="default-theme">
-                            <splitpane min-size="20" max-size="60">
-                                {this.renderRunning()}
+                    {
+                        this.$p('/fl/process/repository/process-definitions/:flowableInstance/resourcedata:GET') ?
+                            <splitpane size='30' min-size="20" max-size="40">
+                                {this.renderBpmn()}
                             </splitpane>
-                            <splitpane style={{ flex: 1 }}>
-                                {this.renderFinished()}
+                            : null
+                    }
+                    {
+                        this.$p('/fl/process/query/historic-task-instances:POST') ?
+                            <splitpane style={{ flex: 1 }} size='70'>
+                                <splitpanes horizontal class="default-theme">
+                                    <splitpane min-size="20" max-size="60">
+                                        {this.renderRunning()}
+                                    </splitpane>
+                                    <splitpane style={{ flex: 1 }}>
+                                        {this.renderFinished()}
+                                    </splitpane>
+                                </splitpanes>
                             </splitpane>
-                        </splitpanes>
-                    </splitpane>
+                            : null
+                    }
                 </splitpanes>
                 {this.renderAssigneeEditor()}
                 {this.renderCandidateUsersEditor()}

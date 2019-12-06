@@ -151,11 +151,15 @@ export default {
                                 null
                         }
                     </a-modal>
-                    <a-button size='small'
-                        disabled={!this.formDef}
-                        class="new-flow"
-                        onClick={this.onAddItem}
-                        icon='plus'>新建</a-button>
+                    {
+                        this.$p('/fl/process/runtime/process-instances:POST') ?
+                            <a-button size='small'
+                                disabled={!this.formDef}
+                                class="new-flow"
+                                onClick={this.onAddItem}
+                                icon='plus'>新建</a-button>
+                            : null
+                    }
                     <a-tabs defaultActiveKey="assignee"
                         v-model={this.activeTab}
                         size="small"

@@ -28,7 +28,8 @@ const convertMenus = (lists) => {
     return {
         roots,
         idMap: nodeMap,
-        pathMap
+        pathMap,
+        lists
     }
 }
 

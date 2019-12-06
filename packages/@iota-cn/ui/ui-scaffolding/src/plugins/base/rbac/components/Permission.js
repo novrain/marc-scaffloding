@@ -97,7 +97,7 @@ const createPermission = (opts) => {
          */
         Vue.prototype.$m = function (menus) {
             const state = this.$store.state.iota[containerId || 'container'][id || 'rbac']
-            const haveMenus = state.menus || []
+            const haveMenus = state.menus.lists || []
             let neededMenus = menus
             if (!Array.isArray(neededMenus)) {
                 neededMenus = [neededMenus]

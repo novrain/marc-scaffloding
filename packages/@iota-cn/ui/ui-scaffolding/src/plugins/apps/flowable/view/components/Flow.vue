@@ -24,6 +24,7 @@
                             @click="handleSubmit">提交</a-button>
                     </div>
                     <ii-comments :user='user'
+                        v-if='$p("/fl/process/history/historic-process-instances/:instanceId/comments:GET")'
                         :flow='flow' />
                 </div>
             </a-tab-pane>
@@ -35,6 +36,7 @@
                     :processDef='processDef' />
             </a-tab-pane>
             <a-tab-pane tab="附件"
+                v-if='$p("/fl/content/content-service/content-items:GET")'
                 class="tabpanel"
                 key="attachements">
                 <ii-attachments :user='
@@ -199,6 +201,7 @@ export default {
                 && !this.flow.task.finished
                 && !this.flow.task.suspended
                 && this.flow.task.assignee.id === this.user.id
+                && this.$p('/fl/process/runtime/tasks/:id:POST')
         }
     }
 }

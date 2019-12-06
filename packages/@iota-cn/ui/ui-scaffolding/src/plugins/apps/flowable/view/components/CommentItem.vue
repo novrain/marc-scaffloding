@@ -10,8 +10,10 @@
                 <div class="top-toolbar"
                     v-if="status === 'view' && editorable">
                     <a-button type='link'
+                        v-if='$p("/fl/process/history/historic-process-instances/:instanceId/comments/:id:PUT")'
                         @click="handleChangeToEdit">编辑</a-button>
                     <a-popconfirm title="确认删除？"
+                        v-if='$p("/fl/process/history/historic-process-instances/:instanceId/comments/:id:DELETE")'
                         okText="确认"
                         @confirm='handleDelete'
                         cancelText="取消">

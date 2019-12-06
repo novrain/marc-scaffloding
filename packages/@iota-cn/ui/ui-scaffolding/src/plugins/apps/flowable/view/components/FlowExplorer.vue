@@ -207,9 +207,12 @@ export default {
                     dataIndex: 'operation',
                     width: '10%',
                     customRender: (text, flow) => {
-                        const cancelable = U.cancelable({ user: this.user, flow })
-                        const suspendable = U.suspendable({ user: this.user, flow })
-                        const activeable = U.activeable({ user: this.user, flow })
+                        const cancelable = this.$p('/fl/process/runtime/process-instances/:processInstanceId:DELETE')
+                            && U.cancelable({ user: this.user, flow })
+                        const suspendable = this.$p('/fl/process/runtime/process-instances/:processInstanceId/suspend:PUT')
+                            && U.suspendable({ user: this.user, flow })
+                        const activeable = this.$p('/fl/process/runtime/process-instances/:processInstanceId/activate:PUT')
+                            && U.activeable({ user: this.user, flow })
                         return flow.finished ?
                             null
                             : <div class='operations'>

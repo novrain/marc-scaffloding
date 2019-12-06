@@ -128,10 +128,15 @@ export default {
                     // <a href={`${record.link}`} target='_blank' onClick={(e) => e.stopPropagation()}>预览</a>
                     return (
                         <div class='operation'>
-                            <a href={`${record.link}?op=download`} target='_blank' download={record.name} onClick={(e) => e.stopPropagation()}>下载</a>
+                            {
+                                this.$p('/fl/content/content-service/content-items/:attachmentId/data:GET') ?
+                                    <a href={`${record.link}?op=download`} target='_blank' download={record.name} onClick={(e) => e.stopPropagation()}>下载</a>
+                                    : null
+                            }
                             <ADivider type="vertical" />
                             {
-                                record.user.id === this.user.id && !disabled
+                                this.$p('/fl/content/content-service/content-items/:id:DELETE')
+                                    && record.user.id === this.user.id && !disabled
                                     ? <IiModal
                                         title="删除"
                                         content={(<span>是否删除附件:{record.name}</span>)}
@@ -147,20 +152,21 @@ export default {
         const pageSizeOptions = ['20', '40', '60', '80']
         return (
             <div class="ii-attachments">
-                {disabled ?
-                    null
-                    :
-                    <a-upload-dragger name="file"
-                        class="upload"
-                        multiple={false}
-                        onChange={this.onUpload}
-                        action={this.uploadAction}
-                        data={this.uploadParams}
-                        showUploadList={false}>
-                        <a-icon class="icon"
-                            type="inbox" />
-                        <span class="text">拖拽文件或点击选择文件</span>
-                    </a-upload-dragger>
+                {
+                    disabled || !this.$p('/fl/content/content-service/content-items:POST') ?
+                        null
+                        :
+                        <a-upload-dragger name="file"
+                            class="upload"
+                            multiple={false}
+                            onChange={this.onUpload}
+                            action={this.uploadAction}
+                            data={this.uploadParams}
+                            showUploadList={false}>
+                            <a-icon class="icon"
+                                type="inbox" />
+                            <span class="text">拖拽文件或点击选择文件</span>
+                        </a-upload-dragger>
                 }
                 <IiTableLayout
                     size='small'

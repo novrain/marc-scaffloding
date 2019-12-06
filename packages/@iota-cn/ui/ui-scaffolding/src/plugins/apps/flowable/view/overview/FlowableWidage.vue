@@ -34,7 +34,8 @@ export default {
     },
     render() {
         const name = this.processDef ? this.processDef.name : ''
-        return (
+        // 没有这个模块的访问权限，就不显示
+        return this.$m(this.redirect) ? (
             <a-card title={name} size='small' class='ii-flow-widage'
                 bodyStyle={{ padding: "10px", flex: 1 }}>
                 <a slot='extra' onClick={() => {
@@ -50,8 +51,8 @@ export default {
                         :
                         null
                 }
-            </a-card>
-        )
+            </a-card>)
+            : null
     }
 }
 </script>
