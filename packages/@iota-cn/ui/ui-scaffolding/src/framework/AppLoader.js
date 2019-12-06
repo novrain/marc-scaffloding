@@ -69,8 +69,9 @@ class AppLoader {
         }
     }
 
-    constructor(config) {
+    constructor(config, Vue) {
         this.config = config
+        this.Vue = Vue
         // 初始化 cookie 包，设置前缀
         config.cookie = config.cookie ? config.cookie : {}
         initCookie(config.cookie.prefix)
@@ -87,7 +88,9 @@ class AppLoader {
         let messages = {}
         if (Array.isArray(this.config.plugins)) {
             this.config.plugins.forEach(p => {
-                let { store: pluginStore, routes: pluginRoutes, messages: pluginMessages } = typeof p.plugin.entry === 'function' ? p.plugin.entry(p.opts) : p.plugin
+                let { store: pluginStore, routes: pluginRoutes, messages: pluginMessages } = typeof p.plugin.entry === 'function'
+                    ? p.plugin.entry(p.opts, this.Vue)
+                    : p.plugin
                 if (pluginStore) store = merge(store, pluginStore)
                 if (pluginRoutes) routes = merge(routes, pluginRoutes)
                 messages = merge(messages, pluginMessages || {})

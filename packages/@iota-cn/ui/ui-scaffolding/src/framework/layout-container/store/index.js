@@ -2,12 +2,6 @@ import merge from 'deepmerge'
 import mutations from './mutations'
 import getters from './getters'
 
-import Vue from 'vue'
-
-import CollapsedControl from '../view/layout/CollapsedControl'
-
-Vue.component('ii-collapsed-control', CollapsedControl)
-
 export default (opts) => {
     const { id } = opts.complex
     const state = {

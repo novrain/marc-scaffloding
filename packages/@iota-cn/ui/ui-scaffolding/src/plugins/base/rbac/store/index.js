@@ -1,13 +1,5 @@
 import mutations from './mutations'
 import actions from './actions'
-import Vue from 'vue'
-
-import Menu from '../view/menu/Menu'
-import UserProfileControl from '../view/profile/UserProfileControl'
-
-Vue.component('ii-rbac-menu', Menu)
-Vue.component('ii-user-profile-control', UserProfileControl)
-
 
 export default (opts) => {
     const { id, containerId } = opts
