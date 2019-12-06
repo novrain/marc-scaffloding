@@ -166,13 +166,16 @@ export default {
                 customRender: (text, record) => {
                     return (
                         <div class='operation'>
-                            <IiModal
-                                title="删除关联"
-                                content={(<span>是否删除关联用户：{record.username}</span>)}
-                                button={(<a> 删除关联</a>)}
-                                ok={this.onDelete(record)}
-                                clearFloat={true}
-                            />
+                            {
+                                this.$p('/authorizations/roles/:roleId/users/:id?:DELETE') ?
+                                    <IiModal
+                                        title="删除关联"
+                                        content={(<span>是否删除关联用户：{record.username}</span>)}
+                                        button={(<a> 删除关联</a>)}
+                                        ok={this.onDelete(record)}
+                                        clearFloat={true} />
+                                    : null
+                            }
                         </div>
                     )
                 },
@@ -223,31 +226,37 @@ export default {
                 }} />
         )
         const controls = [
-            <AButton size='small' key="refresh" onClick={this.refetch}>
-                <AIcon type="reload" /> 刷新
-            </AButton>,
-            <IiModal
-                key={this.modalKey}
-                width={1150}
-                title="添加关联用户"
-                content={(addRelated)}
-                button={(<AButton size='small' icon={'plus'} key="new" style={{ marginRight: '8px' }} >添加关联用户</AButton>)}
-                ok={this.onAdd}
-                cancel={this.onCancel}
-                clearFloat={true}
-            />,
-            hasSelected ?
-                <APopconfirm placement="top" key="bactchDelete"
-                    title={'是否确定删除选中的关联用户'}
-                    onConfirm={this.onBatchDelete}>
-                    <AButton size='small'>
+            this.$p('/authorizations/roles/:roleId/users:GET') ?
+                <AButton size='small' key="refresh" onClick={this.refetch}>
+                    <AIcon type="reload" /> 刷新
+                </AButton>
+                : null,
+            this.$p('/authorizations/roles/:roleId/users:POST') ?
+                <IiModal
+                    key={this.modalKey}
+                    width={1150}
+                    title="添加关联用户"
+                    content={(addRelated)}
+                    button={(<AButton size='small' icon={'plus'} key="new" style={{ marginRight: '8px' }} >添加关联用户</AButton>)}
+                    ok={this.onAdd}
+                    cancel={this.onCancel}
+                    clearFloat={true} />
+                : null,
+            this.$p('/authorizations/roles/:roleId/users/:id?:DELETE') ?
+                (hasSelected ?
+                    <APopconfirm placement="top" key="bactchDelete"
+                        title={'是否确定删除选中的关联用户'}
+                        onConfirm={this.onBatchDelete}>
+                        <AButton size='small'>
+                            <AIcon type="delete" />删除关联
+                        </AButton>
+                    </APopconfirm>
+                    :
+                    <AButton size='small' disabled>
                         <AIcon type="delete" />删除关联
-                </AButton>
-                </APopconfirm>
-                :
-                <AButton size='small' disabled>
-                    <AIcon type="delete" />删除关联
-                </AButton>
+                    </AButton>
+                )
+                : null
         ]
         const users = this.users
         return (

@@ -4,7 +4,7 @@ import * as U from '../../../../framework/util'
 
 export default {
     name: 'IiAuthCheckStrictlyTree',
-    props: ['target', 'sourceUrlKey', 'targetUrlKey', 'resultKey', 'disableUserAssigned', 'checkStrictly'],
+    props: ['target', 'sourceUrlKey', 'targetUrlKey', 'resultKey', 'disableUserAssigned', 'checkStrictly', 'dispost', 'disdelete'],
     data() {
         return {
             assignedNodes: [],
@@ -63,17 +63,21 @@ export default {
                     }
                 }
                 if (e.checked) {
-                    this.$axios.silentPost(`/v1/api/authorizations/${targetUrlKey}/${targetId}/${sourceUrlKey}`, {
-                        ids: ids
-                    }, true)
-                        .then(() => {
-                            this.checkedKeys = checked
-                        }).catch(() => { })
+                    if (!this.dispost) {
+                        this.$axios.silentPost(`/v1/api/authorizations/${targetUrlKey}/${targetId}/${sourceUrlKey}`, {
+                            ids: ids
+                        }, true)
+                            .then(() => {
+                                this.checkedKeys = checked
+                            }).catch(() => { })
+                    }
                 } else {
-                    this.$axios.silentDelete(`/v1/api/authorizations/${targetUrlKey}/${targetId}/${sourceUrlKey}?ids=${ids.join(',')}`, true)
-                        .then(() => {
-                            this.checkedKeys = checked
-                        }).catch(() => { })
+                    if (!this.disdelete) {
+                        this.$axios.silentDelete(`/v1/api/authorizations/${targetUrlKey}/${targetId}/${sourceUrlKey}?ids=${ids.join(',')}`, true)
+                            .then(() => {
+                                this.checkedKeys = checked
+                            }).catch(() => { })
+                    }
                 }
             } else {
                 this.checkedKeys = checked
@@ -117,14 +121,17 @@ export default {
 
     render() {
         let { tree, checkedKeys, checkStrictly, target } = this
-        const checkable = !!target
+        const disabled = this.dispost && this.disdelete
+        const checkable = !!target && !disabled
         if (checkStrictly) {
             checkedKeys = {
                 checked: checkedKeys,
                 halfChecked: []
             }
         }
-        return tree.length > 0 ? <IiArrayTree tree={tree} checkable={checkable} onCheck={this.onCheck} checkedKeys={checkedKeys} checkStrictly={checkStrictly} /> : null
+        return tree.length > 0 ?
+            <IiArrayTree tree={tree} checkable={checkable} disabled={disabled} onCheck={this.onCheck} checkedKeys={checkedKeys} checkStrictly={checkStrictly} />
+            : null
     }
 }
 </script>

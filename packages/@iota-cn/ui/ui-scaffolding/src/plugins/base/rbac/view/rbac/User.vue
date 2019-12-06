@@ -351,8 +351,6 @@ export default {
                     customRender: (text, record, index) => {
                         const operation = (
                             <AMenu styles={{ display: 'inline-block' }} class='noPaddingMenu'>
-                                <AMenu.Item key="edit">
-                                </AMenu.Item>
                                 <AMenu.Item key="changePwd" >
                                     <IiModal
                                         title="修改密码"

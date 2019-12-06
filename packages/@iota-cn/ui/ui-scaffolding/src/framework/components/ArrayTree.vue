@@ -9,7 +9,8 @@ export default {
         // 'onSelect',
         // 'onRightClick',
         'selectedKeys',
-        'tree'
+        'tree',
+        'disabled'
     ],
     methods: {
         renderTree(tree) {
@@ -41,12 +42,12 @@ export default {
                     showLine
                     checkStrictly={this.checkStrictly}
                     checkable={this.checkable}
+                    disabled={this.disabled}
                     checkedKeys={this.checkedKeys}
                     selectedKeys={this.selectedKeys}
                     onCheck={this.onEvent('check')}
                     onSelect={this.onEvent('select')}
-                    onRightClick={this.onEvent('rightClick')}
-                >
+                    onRightClick={this.onEvent('rightClick')}>
                     {this.renderTree(this.tree)}
                 </ATree>
             </div>

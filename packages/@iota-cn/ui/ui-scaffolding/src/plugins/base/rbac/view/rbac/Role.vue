@@ -58,7 +58,11 @@ export default {
             let child = null
             if (selectedRowKeys.length === 1) {
                 const role = this.findRole(this.selectedRowKeys[0])
-                child = <AuthCheckStrictlyTree target={role} checkStrictly disableUserAssigned
+                child = <AuthCheckStrictlyTree
+                    target={this.$p('/authorizations/roles/:roleId/organizations:GET') ? role : undefined}
+                    checkStrictly disableUserAssigned
+                    dispost={!this.$p('/authorizations/roles/:roleId/organizations:POST')}
+                    disdelete={!this.$p('/authorizations/roles/:roleId/organizations/:id?:DELETE')}
                     sourceUrlKey='organizations' targetUrlKey='roles' resultKey='organizations' />
             }
             return (<ATabPane tab="组织" key="organizations" class='tabpanel'>
@@ -71,7 +75,11 @@ export default {
             let child = null
             if (selectedRowKeys.length === 1) {
                 const role = this.findRole(this.selectedRowKeys[0])
-                child = <AuthCheckStrictlyTree target={role} checkStrictly disableUserAssigned
+                child = <AuthCheckStrictlyTree
+                    target={this.$p('/authorizations/roles/:roleId/positions:GET') ? role : undefined}
+                    checkStrictly disableUserAssigned
+                    dispost={!this.$p('/authorizations/roles/:roleId/positions:POST')}
+                    disdelete={!this.$p('/authorizations/roles/:roleId/positions/:id?:DELETE')}
                     sourceUrlKey='positions' targetUrlKey='roles' resultKey='positions' />
             }
             return (<ATabPane tab="职位" key="positions" class='tabpanel'>
@@ -100,10 +108,18 @@ export default {
             return (<ATabPane tab="权限" key="menusandoperations" class='tabpanel'>
                 <ARow gutter={16} class={classNames('wrapper__row')}>
                     <ACol span={12} class={classNames('wrapper__row__col')}>
-                        <AuthCheckStrictlyTree target={role} sourceUrlKey='menus' targetUrlKey='roles' resultKey='menus' />
+                        <AuthCheckStrictlyTree
+                            target={this.$p('/authorizations/roles/:roleId/menus:GET') ? role : undefined}
+                            dispost={!this.$p('/authorizations/roles/:roleId/menus:POST')}
+                            disdelete={!this.$p('/authorizations/roles/:roleId/menus/:id?:DELETE')}
+                            sourceUrlKey='menus' targetUrlKey='roles' resultKey='menus' />
                     </ACol>
                     <ACol span={12} class={classNames('wrapper__row__col')}>
-                        <AuthCheckStrictlyTree target={role} sourceUrlKey='operations' targetUrlKey='roles' resultKey='operations' />
+                        <AuthCheckStrictlyTree
+                            target={this.$p('/authorizations/roles/:roleId/operations:GET') ? role : undefined}
+                            dispost={!this.$p('/authorizations/roles/:roleId/operations:POST')}
+                            disdelete={!this.$p('/authorizations/roles/:roleId/operations/:id?:DELETE')}
+                            sourceUrlKey='operations' targetUrlKey='roles' resultKey='operations' />
                     </ACol>
                 </ARow>
             </ATabPane>)
@@ -260,21 +276,28 @@ export default {
                     customRender: (text, record, index) => {
                         return (
                             <div class='operation'>
-                                <IiModal
-                                    title="编辑"
-                                    content={(<Form_IiSimpleEditor ref={'_editor'} data={{ name: record.name, desc: record.desc }} />)}
-                                    button={(<a>编辑</a>)}
-                                    cancle={() => { this.$refs._editor.resetFields() }}
-                                    ok={this.onEdit(record, index)}
-                                    clearFloat={true}
-                                />
+                                {
+                                    this.$p('/authorizations/roles/:id:PUT') ?
+                                        <IiModal
+                                            title="编辑"
+                                            content={(<Form_IiSimpleEditor ref={'_editor'} data={{ name: record.name, desc: record.desc }} />)}
+                                            button={(<a>编辑</a>)}
+                                            cancle={() => { this.$refs._editor.resetFields() }}
+                                            ok={this.onEdit(record, index)}
+                                            clearFloat={true} />
+                                        : null
+                                }
                                 <ADivider type="vertical" />
-                                <IiModal
-                                    title="删除"
-                                    content={(<span>是否删除角色：{record.name}</span>)}
-                                    button={(<a>删除</a>)}
-                                    ok={this.onDelete(record)}
-                                    clearFloat={true} />
+                                {
+                                    this.$p('/authorizations/roles/:id?:DELETE') ?
+                                        <IiModal
+                                            title="删除"
+                                            content={(<span>是否删除角色：{record.name}</span>)}
+                                            button={(<a>删除</a>)}
+                                            ok={this.onDelete(record)}
+                                            clearFloat={true} />
+                                        : null
+                                }
                             </div>
                         )
                     },
@@ -290,31 +313,44 @@ export default {
                     bodyStyle={{ padding: "2px", flex: 1 }}
                     class='ii-card'>
                     <a-checkbox v-model={this.multiSelect} slot='extra' onChange={this.onMultiSelectChange}>多选</a-checkbox>
-                    <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="refresh" onClick={this.refetch}>
-                        <AIcon type="reload" /> 刷新
-                    </AButton>
-                    <IiModal slot='extra'
-                        key='new'
-                        title="新建"
-                        content={(<Form_IiSimpleEditor ref='_add' data={{}} />)}
-                        button={(<AButton size='small' icon={'plus'} key="new" style={{ marginRight: '8px' }}> 创建角色</AButton>)}
-                        cancel={() => { this.$refs._add.resetFields() }}
-                        ok={this.onAdd}
-                        clearFloat={true}
-                    />
-                    {hasSelected ?
-                        <APopconfirm slot='extra' placement="top"
-                            key="bactchDelete"
-                            title={'是否确定删除选中的角色'}
-                            onConfirm={this.onBatchDelete}>
-                            <AButton size='small' >
+                    {
+                        this.$p('/authorizations/roles:GET') ?
+                            <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="refresh" onClick={this.refetch}>
+                                <AIcon type="reload" /> 刷新
+                            </AButton>
+                            :
+                            null
+                    }
+                    {
+                        this.$p('/authorizations/roles:POST') ?
+                            <IiModal slot='extra'
+                                key='new'
+                                title="新建"
+                                content={(<Form_IiSimpleEditor ref='_add' data={{}} />)}
+                                button={(<AButton size='small' icon={'plus'} key="new" style={{ marginRight: '8px' }}> 创建角色</AButton>)}
+                                cancel={() => { this.$refs._add.resetFields() }}
+                                ok={this.onAdd}
+                                clearFloat={true}
+                            />
+                            :
+                            null
+                    }
+                    {
+                        this.$p('/authorizations/roles/:id?:DELETE') ? (hasSelected ?
+                            <APopconfirm slot='extra' placement="top"
+                                key="bactchDelete"
+                                title={'是否确定删除选中的角色'}
+                                onConfirm={this.onBatchDelete}>
+                                <AButton size='small' >
+                                    <AIcon type="delete" />删除
+                                </AButton>
+                            </APopconfirm>
+                            :
+                            <AButton slot='extra' size='small' disabled >
                                 <AIcon type="delete" />删除
-                        </AButton>
-                        </APopconfirm>
-                        :
-                        <AButton slot='extra' size='small' disabled >
-                            <AIcon type="delete" />删除
-                    </AButton>}
+                            </AButton>)
+                            : null
+                    }
                     <IiTableLayout
                         size='small'
                         headheight={68}
