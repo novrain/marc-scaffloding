@@ -101,9 +101,21 @@ export default {
                         style={tmpStyle}
                     //class={style.categs_tree_rightmenu}
                     >
-                        {this.hasAuthOfAddNode(this.rightClickNodeTreeItem.id) ? <AMenu.Item key='addChildNode'><AIcon type='plus-circle-o' />{'增加子组织'}</AMenu.Item> : null}
-                        {this.hasRight(this.rightClickNodeTreeItem.id) ? <AMenu.Item key='editNode'><AIcon type='edit' />{'编辑'}</AMenu.Item> : null}
-                        {this.hasRight(this.rightClickNodeTreeItem.id) ? <AMenu.Item key='delConfirm'><AIcon type='minus-circle-o' />{'删除'}</AMenu.Item> : null}
+                        {
+                            this.$p('/authorizations/organizations:POST') && this.hasAuthOfAddNode(this.rightClickNodeTreeItem.id) ?
+                                <AMenu.Item key='addChildNode'><AIcon type='plus-circle-o' />{'增加子组织'}</AMenu.Item>
+                                : null
+                        }
+                        {
+                            this.$p('/authorizations/organizations/:id:PUT') && this.hasRight(this.rightClickNodeTreeItem.id) ?
+                                <AMenu.Item key='editNode'><AIcon type='edit' />{'编辑'}</AMenu.Item>
+                                : null
+                        }
+                        {
+                            this.$p('/authorizations/organizations/:id:DELETE') && this.hasRight(this.rightClickNodeTreeItem.id) ?
+                                <AMenu.Item key='delConfirm'><AIcon type='minus-circle-o' />{'删除'}</AMenu.Item>
+                                : null
+                        }
                     </AMenu>
                 </div>
             )
@@ -240,12 +252,20 @@ export default {
                             bordered={false}
                             bodyStyle={{ padding: '2px', overflow: 'scroll', height: '100%' }}
                             class='ii-card'>
-                            <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="refresh" onClick={this.refetch}>
-                                <AIcon type="reload" /> 刷新
-                            </AButton>
-                            <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="new" onClick={this.addChildNode}>
-                                <AIcon type="plus" /> 创建组织
-                            </AButton>
+                            {
+                                this.$p('/authorizations/organizations:GET') ?
+                                    <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="refresh" onClick={this.refetch}>
+                                        <AIcon type="reload" /> 刷新
+                                    </AButton>
+                                    : null
+                            }
+                            {
+                                this.$p('/authorizations/organizations:POST') ?
+                                    <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="new" onClick={this.addChildNode}>
+                                        <AIcon type="plus" /> 创建组织
+                                    </AButton>
+                                    : null
+                            }
                             {
                                 tree.length > 0 ? <IiArrayTree
                                     tree={tree}
