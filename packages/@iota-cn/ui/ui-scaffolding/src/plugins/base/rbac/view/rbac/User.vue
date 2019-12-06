@@ -61,7 +61,11 @@ export default {
             let child = null
             if (selectedRowKeys.length === 1) {
                 const user = this.findUser(this.selectedRowKeys[0])
-                child = <AuthCheckStrictlyTree target={user} checkStrictly key={user.id + 'o'}
+                child = <AuthCheckStrictlyTree
+                    target={this.$p('/authorizations/users/:userId/organizations:GET') ? user : undefined}
+                    checkStrictly key={user.id + 'o'}
+                    dispost={!this.$p('/authorizations/users/:userId/organizations:POST')}
+                    disdelete={!this.$p('/authorizations/users/:userId/organizations/:id?:DELETE')}
                     sourceUrlKey='organizations' targetUrlKey='users' resultKey='organizations' />
             }
             return (<ATabPane tab="组织" key="organizations" class='tabpanel'>
@@ -74,7 +78,11 @@ export default {
             let child = null
             if (selectedRowKeys.length === 1) {
                 const user = this.findUser(this.selectedRowKeys[0])
-                child = <AuthCheckStrictlyTree target={user} checkStrictly key={user.id + 'p'}
+                child = <AuthCheckStrictlyTree
+                    target={this.$p('/authorizations/users/:userId/positions:GET') ? user : undefined}
+                    checkStrictly key={user.id + 'p'}
+                    dispost={!this.$p('/authorizations/users/:userId/positions:POST')}
+                    disdelete={!this.$p('/authorizations/users/:userId/positions/:id?:DELETE')}
                     sourceUrlKey='positions' targetUrlKey='users' resultKey='positions' />
             }
             return (<ATabPane tab="职位" key="positions" class='tabpanel'>
@@ -111,16 +119,20 @@ export default {
         renderUserExtention() {
             const { selectedRowKeys } = this
             let child = null
-            if (selectedRowKeys.length === 1) {
+            if (this.$p('/authorizations/users/:userId/extention:GET') && selectedRowKeys.length === 1) {
                 child = <div class='user_extends'>
                     <AForm form={this.userExtentionForm}>
                         <ii-user-extends-form form={this.userExtentionForm}
                             extention={this.currentUserExtention}>
-                            <a-form-item wrapper-col={{ span: 16, offset: 7 }}
-                                slot="item">
-                                <a-button type='primary'
-                                    onClick={this.onSaveUserExtention}>保存</a-button>
-                            </a-form-item>
+                            {
+                                this.$p('/authorizations/users/:userId/extention:PUT') ?
+                                    <a-form-item wrapper-col={{ span: 16, offset: 7 }}
+                                        slot="item">
+                                        <a-button type='primary'
+                                            onClick={this.onSaveUserExtention}>保存</a-button>
+                                    </a-form-item>
+                                    : null
+                            }
                         </ii-user-extends-form>
                     </AForm>
                 </div>
@@ -351,36 +363,48 @@ export default {
                     customRender: (text, record, index) => {
                         const operation = (
                             <AMenu styles={{ display: 'inline-block' }} class='noPaddingMenu'>
-                                <AMenu.Item key="changePwd" >
-                                    <IiModal
-                                        title="修改密码"
-                                        content={<UserEditor ref={'password' + record.id} type="changePwd" data={{}} user={$user} />}
-                                        button={(<div style={{ padding: '2px 0px', fontiSize: '12px' }}>修改密码</div>)}
-                                        ok={this.onChangePwd(record, index)}
-                                        cancel={() => this.$refs['password' + record.id].resetFields()}
-                                        clearFloat={true} />
-                                </AMenu.Item>
-                                <AMenu.Item key="delete">
-                                    <IiModal
-                                        title="删除"
-                                        content={(<span>是否删除用户：{record.username}</span>)}
-                                        button={(<div style={{ padding: '2px 0px', fontiSize: '12px' }}>删除</div>)}
-                                        ok={this.onDelete(record)}
-                                        clearFloat={true} />
-                                </AMenu.Item>
+                                {
+                                    this.$p('/authorizations/users/:id:PUT') ?
+                                        <AMenu.Item key="changePwd" >
+                                            <IiModal
+                                                title="修改密码"
+                                                content={<UserEditor ref={'password' + record.id} type="changePwd" data={{}} user={$user} />}
+                                                button={(<div style={{ padding: '2px 0px', fontiSize: '12px' }}>修改密码</div>)}
+                                                ok={this.onChangePwd(record, index)}
+                                                cancel={() => this.$refs['password' + record.id].resetFields()}
+                                                clearFloat={true} />
+                                        </AMenu.Item>
+                                        : null
+                                }
+                                {
+                                    this.$p('/authorizations/users/:id:DELETE') ?
+                                        <AMenu.Item key="delete">
+                                            <IiModal
+                                                title="删除"
+                                                content={(<span>是否删除用户：{record.username}</span>)}
+                                                button={(<div style={{ padding: '2px 0px', fontiSize: '12px' }}>删除</div>)}
+                                                ok={this.onDelete(record)}
+                                                clearFloat={true} />
+                                        </AMenu.Item>
+                                        : null
+                                }
                             </AMenu>
                         )
                         return (
                             <div class='operation'>
-                                <IiModal
-                                    title="编辑"
-                                    content={(<UserEditor type="edit" ref={'edit' + record.id} data={{
-                                        username: record.username, email: record.email, isAdmin: record.isAdmin, enable: record.subExt.enable
-                                    }} user={$user} />)}
-                                    button={(<a>编辑</a>)}
-                                    ok={this.onEdit(record, index)}
-                                    cancel={() => this.$refs['edit' + record.id].resetFields()}
-                                    clearFloat={true} />
+                                {
+                                    this.$p('/authorizations/users/:id:PUT') ?
+                                        <IiModal
+                                            title="编辑"
+                                            content={(<UserEditor type="edit" ref={'edit' + record.id} data={{
+                                                username: record.username, email: record.email, isAdmin: record.isAdmin, enable: record.subExt.enable
+                                            }} user={$user} />)}
+                                            button={(<a>编辑</a>)}
+                                            ok={this.onEdit(record, index)}
+                                            cancel={() => this.$refs['edit' + record.id].resetFields()}
+                                            clearFloat={true} />
+                                        : null
+                                }
                                 <ADivider type="vertical" />
                                 <ADropdown overlay={operation}>
                                     <a onClick={e => e.stopPropagation()}>
@@ -397,8 +421,16 @@ export default {
             const hasSelected = selectedRowKeys.length > 0
             const batchOperation = (
                 <AMenu styles={{ display: 'inline-block', margin: 20, padding: 5 }} onClick={this.batchOperate}>
-                    <AMenu.Item key="enable" disabled={!hasSelected}> 激活</AMenu.Item>
-                    <AMenu.Item key="disable" disabled={!hasSelected}> 禁用</AMenu.Item>
+                    {
+                        this.$p('/authorizations/users/enable/:id?:POST') ?
+                            <AMenu.Item key="enable" disabled={!hasSelected}> 激活</AMenu.Item>
+                            : null
+                    }
+                    {
+                        this.$p('/authorizations/users/disable/:id?:POST') ?
+                            <AMenu.Item key="disable" disabled={!hasSelected}> 禁用</AMenu.Item>
+                            : null
+                    }
                 </AMenu>
             )
             const users = this.users
@@ -408,18 +440,25 @@ export default {
                     bodyStyle={{ padding: "2px", flex: 1 }}
                     class='ii-card'>
                     <a-checkbox vModel={this.multiSelect} slot='extra' onChange={this.onMultiSelectChange}>多选</a-checkbox>
-                    <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="refresh" onClick={this.refetch}>
-                        <AIcon type="reload" /> 刷新
-                    </AButton>
-                    <IiModal slot="extra"
-                        key='new'
-                        title="新建"
-                        content={(<UserEditor type="create" ref={'_add'} data={{}} user={$user} />)}
-                        button={(<AButton size='small' icon={'plus'} key="new" style={{ marginRight: '8px' }}>创建用户</AButton>)}
-                        ok={this.onAdd}
-                        cancel={() => this.$refs._add.resetFields()}
-                        clearFloat={true}
-                    />
+                    {
+                        this.$p('/authorizations/users:GET') ?
+                            <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="refresh" onClick={this.refetch}>
+                                <AIcon type="reload" /> 刷新
+                            </AButton>
+                            : null
+                    }
+                    {
+                        this.$p('/authorizations/users:POST') ?
+                            <IiModal slot="extra"
+                                key='new'
+                                title="新建"
+                                content={(<UserEditor type="create" ref={'_add'} data={{}} user={$user} />)}
+                                button={(<AButton size='small' icon={'plus'} key="new" style={{ marginRight: '8px' }}>创建用户</AButton>)}
+                                ok={this.onAdd}
+                                cancel={() => this.$refs._add.resetFields()}
+                                clearFloat={true} />
+                            : null
+                    }
                     <ADropdown slot="extra"
                         key='more'
                         overlay={batchOperation}>
