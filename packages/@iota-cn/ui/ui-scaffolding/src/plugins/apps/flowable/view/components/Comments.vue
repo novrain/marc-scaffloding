@@ -1,7 +1,7 @@
 <template>
     <div class="ii-comments">
         <ii-comment-item :user='user'
-            v-if='commentable'
+            v-if='commentable && $p("/fl/process/history/historic-process-instances/:instanceId/comments:POST")'
             :onCreate='onCreateComment' />
         <template v-for="(comment, index) in comments.items">
             <ii-comment-item :key="comment.id"

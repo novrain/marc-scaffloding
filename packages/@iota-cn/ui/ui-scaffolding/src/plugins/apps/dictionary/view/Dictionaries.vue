@@ -258,14 +258,22 @@ export default {
                     customRender: (text, record, index) => {
                         return (
                             <div class='operation'>
-                                <a onClick={this.onShowEdit(record)}>编辑</a>
+                                {
+                                    this.$p('/dictionaries/:id:PUT') ?
+                                        <a onClick={this.onShowEdit(record)}>编辑</a>
+                                        : null
+                                }
                                 <ADivider type="vertical" />
-                                <IiModal
-                                    title="删除"
-                                    content={(<span>是否删除字典:{record.name}</span>)}
-                                    button={(<a>删除</a>)}
-                                    ok={this.onDeleteDictionary({ dictionary: record, index })}
-                                    clearFloat={true} />
+                                {
+                                    this.$p('/dictionaries/:id:DELETE') ?
+                                        <IiModal
+                                            title="删除"
+                                            content={(<span>是否删除字典:{record.name}</span>)}
+                                            button={(<a>删除</a>)}
+                                            ok={this.onDeleteDictionary({ dictionary: record, index })}
+                                            clearFloat={true} />
+                                        : null
+                                }
                             </div>
                         )
                     },
@@ -278,13 +286,22 @@ export default {
                     bodyStyle={{ padding: "2px", flex: 1 }}
                     style={{
                         height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white',
-                        display: 'flex', flexDirection: 'column'                    }}>
-                    <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="refresh" onClick={this.refetchDictionaries}>
-                        <AIcon type="reload" /> 刷新
-                    </AButton>
-                    <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="add" onClick={this.showAdd}>
-                        <AIcon type="plus" /> 创建字典
-                    </AButton>
+                        display: 'flex', flexDirection: 'column'
+                    }}>
+                    {
+                        this.$p('/dictionaries/:key?:GET') ?
+                            <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="refresh" onClick={this.refetchDictionaries}>
+                                <AIcon type="reload" /> 刷新
+                            </AButton>
+                            : null
+                    }
+                    {
+                        this.$p('/dictionaries:POST') ?
+                            <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="add" onClick={this.showAdd}>
+                                <AIcon type="plus" /> 创建字典
+                            </AButton>
+                            : null
+                    }
                     <AModal
                         title="新建字典"
                         key={'addDict'}
@@ -410,14 +427,22 @@ export default {
                     customRender: (text, record) => {
                         return (
                             <div class='operation'>
-                                <a onClick={this.onShowItemEdit(record)}>编辑</a>
+                                {
+                                    this.$p('/dictionaries/:dictionaryId/items/:id:PUT') ?
+                                        <a onClick={this.onShowItemEdit(record)}>编辑</a>
+                                        : null
+                                }
                                 <ADivider type="vertical" />
-                                <IiModal
-                                    title="删除"
-                                    content={(<span>是否删除字典条目:{record.name}</span>)}
-                                    button={(<a>删除</a>)}
-                                    ok={this.onDeleteItem(record)}
-                                    clearFloat={true} />
+                                {
+                                    this.$p('/dictionaries/:dictionaryId/items/:id:DELETE') ?
+                                        <IiModal
+                                            title="删除"
+                                            content={(<span>是否删除字典条目:{record.name}</span>)}
+                                            button={(<a>删除</a>)}
+                                            ok={this.onDeleteItem(record)}
+                                            clearFloat={true} />
+                                        : null
+                                }
                             </div>
                         )
                     },
@@ -425,12 +450,16 @@ export default {
             let children = []
             if (this.dictionary.editItem) {
                 children = [
-                    <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="refresh" onClick={this.refetchDictionaryItems}>
-                        <AIcon type="reload" /> 刷新
-                    </AButton>,
-                    <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="add" onClick={this.showItemAdd}>
-                        <AIcon type="plus" /> 创建条目
-                    </AButton>,
+                    this.$p('/dictionaries/:dictionaryId/items:GET') ?
+                        <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="refresh" onClick={this.refetchDictionaryItems}>
+                            <AIcon type="reload" /> 刷新
+                        </AButton>
+                        : null,
+                    this.$p('/dictionaries/:dictionaryId/items:POST') ?
+                        <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="add" onClick={this.showItemAdd}>
+                            <AIcon type="plus" /> 创建条目
+                        </AButton>
+                        : null,
                     <AModal
                         title="新建条目"
                         key={'addItem'}

@@ -263,7 +263,7 @@ export default {
                     title: '创建时间',
                     dataIndex: 'createdAt',
                     key: 'createdAt',
-                    width: '30%',
+                    width: '20%',
                     customRender: (text, record) => {
                         return record.createdAt ? moment(record.createdAt).format('YYYY-MM-DD HH:mm:ss') : ''
                     }
