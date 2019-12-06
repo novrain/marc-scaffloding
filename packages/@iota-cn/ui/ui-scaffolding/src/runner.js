@@ -54,7 +54,7 @@ import defaultApp from './App.vue'
 import defaultConfig from './config'
 
 export default ({ config, App }) => {
-    const appLoader = new AppLoader(config || defaultConfig)
+    const appLoader = new AppLoader(config || defaultConfig, Vue)
     const { store, routes, messages } = appLoader.load()
 
     const i18n = new VueI18n({

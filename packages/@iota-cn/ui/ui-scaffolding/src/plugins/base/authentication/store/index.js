@@ -4,12 +4,10 @@ import actions from './actions'
 import * as U from '../util'
 
 // 注释部分为默认的基本 UserProfile Control，由于后续功能模块叠加，应该可以配置或覆盖
-// import Vue from 'vue'
 // import UserProfileControl from '../view/UserProfileControl'
 
-// Vue.component('ii-user-profile-control', UserProfileControl)
-
 export default (opts) => {
+    // Vue.component('ii-user-profile-control', UserProfileControl)
     // const { containerId } = opts
     const store = {
         modules: {

@@ -163,13 +163,16 @@ export default {
                 customRender: (text, record) => {
                     return (
                         <div class='operation'>
-                            <IiModal
-                                title="删除关联"
-                                content={(<span>是否删除关联角色：{record.name}</span>)}
-                                button={(<a> 删除关联</a>)}
-                                ok={this.onDelete(record)}
-                                clearFloat={true}
-                            />
+                            {
+                                this.$p('/authorizations/users/:userId/roles/:id?:DELETE') ?
+                                    <IiModal
+                                        title="删除关联"
+                                        content={(<span>是否删除关联角色：{record.name}</span>)}
+                                        button={(<a> 删除关联</a>)}
+                                        ok={this.onDelete(record)}
+                                        clearFloat={true} />
+                                    : null
+                            }
                         </div>
                     )
                 },
@@ -218,30 +221,36 @@ export default {
         const pageSizeOptions = ['20', '40', '60', '80']
         const hasSelected = selectedRowKeys.length > 0
         const controls = [
-            <AButton size='small' key="refresh" onClick={this.refetch}>
-                <AIcon type="reload" /> 刷新
-            </AButton>,
-            <IiModal key={this.modalKey}
-                width={1150}
-                title="添加关联角色"
-                content={(addRelated)}
-                button={(<AButton size='small' icon='plus' key="new" style={{ marginRight: '8px' }} >添加关联角色</AButton>)}
-                ok={this.onAdd}
-                clearFloat={true}
-                cancel={this.onCancel}
-            />,
-            hasSelected ?
-                <APopconfirm placement="top" key="bactchDelete"
-                    title={'是否确定删除选中的关联角色'}
-                    onConfirm={this.onBatchDelete} disabled={!hasSelected}>
-                    <AButton size='small'>
-                        <AIcon type="delete" />删除关联
-                    </AButton>
-                </APopconfirm>
-                :
-                <AButton size='small' disabled>
-                    <AIcon type="delete" />删除关联
+            this.$p('/authorizations/users/:userId/roles:GET') ?
+                <AButton size='small' key="refresh" onClick={this.refetch}>
+                    <AIcon type="reload" /> 刷新
                 </AButton>
+                : null,
+            this.$p('/authorizations/users/:userId/roles:POST') ?
+                <IiModal key={this.modalKey}
+                    width={1150}
+                    title="添加关联角色"
+                    content={(addRelated)}
+                    button={(<AButton size='small' icon='plus' key="new" style={{ marginRight: '8px' }} >添加关联角色</AButton>)}
+                    ok={this.onAdd}
+                    clearFloat={true}
+                    cancel={this.onCancel} />
+                : null,
+            this.$p('/authorizations/users/:userId/roles/:id?:DELETE') ?
+                (hasSelected ?
+                    <APopconfirm placement="top" key="bactchDelete"
+                        title={'是否确定删除选中的关联角色'}
+                        onConfirm={this.onBatchDelete} disabled={!hasSelected}>
+                        <AButton size='small'>
+                            <AIcon type="delete" />删除关联
+                    </AButton>
+                    </APopconfirm>
+                    :
+                    <AButton size='small' disabled>
+                        <AIcon type="delete" />删除关联
+                </AButton>
+                )
+                : null
         ]
         const roles = this.roles
         return (

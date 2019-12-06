@@ -37,7 +37,7 @@ export const findUser = async (ctx, next) => {
         if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
             convertor = moment;
         }
-        Utils.sort({users, orderBy, orderDirection, convertor});
+        Utils.sort({ rows: users, orderBy, orderDirection, convertor });
     }
     ctx.status = 200;
     ctx.body = {
@@ -441,7 +441,7 @@ export const findMenuOfUser = async (ctx, next) => {
         if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
             convertor = moment;
         }
-        Utils.sort({menus, orderBy, orderDirection, convertor});
+        Utils.sort({ rows: menus, orderBy, orderDirection, convertor });
         ctx.status = 200;
         ctx.body = {
             menus: menus
@@ -479,7 +479,7 @@ export const findOperationOfUser = async (ctx, next) => {
         if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
             convertor = moment;
         }
-        Utils.sort({operations, orderBy, orderDirection, convertor});
+        Utils.sort({ rows: operations, orderBy, orderDirection, convertor });
         ctx.status = 200;
         ctx.body = {
             operations: operations

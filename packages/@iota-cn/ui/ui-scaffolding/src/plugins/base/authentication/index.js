@@ -1,24 +1,10 @@
-import Vue from 'vue'
 import store from './store'
 import messages from './view/locale'
 import routes from './routes'
+import AuthComponets from './components'
 
-import ResetPasswordForm from './components/ResetPasswordForm'
-import UserInfoExtendsForm from './components/UserInfoExtendsForm'
-
-Vue.component('ii-reset-password-form', ResetPasswordForm)
-Vue.component('ii-user-extends-form', UserInfoExtendsForm)
-
-Vue.mixin({
-    computed: {
-        $user() {
-            const state = this.$store.state.iota.global.authentication
-            return state.user
-        }
-    }
-})
-
-const entry = (opts) => {
+const entry = (opts, Vue) => {
+    Vue.use(AuthComponets)
     return {
         store: store(opts),
         messages,
