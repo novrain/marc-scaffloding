@@ -98,12 +98,22 @@ export default {
                     <AMenu
                         class='rightMenu'
                         onClick={this.handleMenuClick}
-                        style={tmpStyle}
-                    //class={style.categs_tree_rightmenu}
-                    >
-                        {this.hasAuthOfAddNode(this.rightClickNodeTreeItem.id) ? <AMenu.Item key='addChildNode'><AIcon type='plus-circle-o' />{'增加子职位'}</AMenu.Item> : null}
-                        {this.hasRight(this.rightClickNodeTreeItem.id) ? <AMenu.Item key='editNode'><AIcon type='edit' />{'编辑'}</AMenu.Item> : null}
-                        {this.hasRight(this.rightClickNodeTreeItem.id) ? <AMenu.Item key='delConfirm'><AIcon type='minus-circle-o' />{'删除'}</AMenu.Item> : null}
+                        style={tmpStyle} >
+                        {
+                            this.$p('/authorizations/positions:POST') && this.hasAuthOfAddNode(this.rightClickNodeTreeItem.id) ?
+                                <AMenu.Item key='addChildNode'><AIcon type='plus-circle-o' />{'增加子职位'}</AMenu.Item>
+                                : null
+                        }
+                        {
+                            this.$p('/authorizations/positions/:id:PUT') && this.hasRight(this.rightClickNodeTreeItem.id) ?
+                                <AMenu.Item key='editNode'><AIcon type='edit' />{'编辑'}</AMenu.Item>
+                                : null
+                        }
+                        {
+                            this.$p('/authorizations/positions/:id:DELETE') && this.hasRight(this.rightClickNodeTreeItem.id) ?
+                                <AMenu.Item key='delConfirm'><AIcon type='minus-circle-o' />{'删除'}</AMenu.Item>
+                                : null
+                        }
                     </AMenu>
                 </div>
             )
@@ -242,12 +252,20 @@ export default {
                             bordered={false}
                             bodyStyle={{ padding: '2px', overflow: 'scroll', height: '100%' }}
                             class='ii-card'>
-                            <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="refresh" onClick={this.refetch}>
-                                <AIcon type="reload" /> 刷新
-                            </AButton>
-                            <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="new" onClick={this.addChildNode}>
-                                <AIcon type="plus" /> 创建职位
-                            </AButton>
+                            {
+                                this.$p('/authorizations/positions:GET') ?
+                                    <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="refresh" onClick={this.refetch}>
+                                        <AIcon type="reload" /> 刷新
+                                    </AButton>
+                                    : null
+                            }
+                            {
+                                this.$p('/authorizations/positions:POST') ?
+                                    <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="new" onClick={this.addChildNode}>
+                                        <AIcon type="plus" /> 创建职位
+                                    </AButton>
+                                    : null
+                            }
                             {
                                 tree.length > 0 ? <IiArrayTree
                                     tree={tree}

@@ -98,9 +98,7 @@ export default {
                     <AMenu
                         class='rightMenu'
                         onClick={this.handleMenuClick}
-                        style={tmpStyle}
-                    //class={style.categs_tree_rightmenu}
-                    >
+                        style={tmpStyle} >
                         {
                             this.$p('/authorizations/organizations:POST') && this.hasAuthOfAddNode(this.rightClickNodeTreeItem.id) ?
                                 <AMenu.Item key='addChildNode'><AIcon type='plus-circle-o' />{'增加子组织'}</AMenu.Item>
