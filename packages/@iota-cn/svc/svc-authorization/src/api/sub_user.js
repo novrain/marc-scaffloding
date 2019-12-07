@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2017/2/16.
- */
 import { valBetween } from '@iota-cn/svc-util';
 
 /**

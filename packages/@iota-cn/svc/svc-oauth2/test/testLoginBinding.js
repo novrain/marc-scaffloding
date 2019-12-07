@@ -1,8 +1,5 @@
-/**
- * Created by rain on 2016/8/22.
- */
 import client from 'supertest';
-import chai, {assert, expect} from 'chai';
+import chai, { assert, expect } from 'chai';
 
 import scaffold from '@iota-cn/svc-scaffolding';
 
@@ -66,19 +63,19 @@ describe("All Test", function () {
     let models = app.iota.dc.models;
     let user1, user2, user3;
     before(async function () {
-        await models.User.sync({force: true});
-        await models.SubUser.sync({force: true});
-        user1 = await models.User.create({username: 'abc', password: 'Iota123_'});
-        user2 = await models.User.create({username: 'abcd', password: 'Iota123_'});
-        user3 = await models.User.create({username: 'abcde', password: 'Iota123_'});
-        await models.User.create({username: 'abcdef', password: 'Iota123_'});
-        await models.UserOAuth2.sync({force: true});
+        await models.User.sync({ force: true });
+        await models.SubUser.sync({ force: true });
+        user1 = await models.User.create({ username: 'abc', password: 'Iota123_' });
+        user2 = await models.User.create({ username: 'abcd', password: 'Iota123_' });
+        user3 = await models.User.create({ username: 'abcde', password: 'Iota123_' });
+        await models.User.create({ username: 'abcdef', password: 'Iota123_' });
+        await models.UserOAuth2.sync({ force: true });
         await models.UserOAuth2.create({
             userId: user2.id,
             openId: testWxToken.unionid,
             platform: OAuth2Plat.WeChat
         });
-        await models.UserOAuth2.create({userId: user3.id, openId: 'testid', platform: OAuth2Plat.WeChat});
+        await models.UserOAuth2.create({ userId: user3.id, openId: 'testid', platform: OAuth2Plat.WeChat });
     });
 
     after(function () {
@@ -100,7 +97,7 @@ describe("All Test", function () {
 
         it('test query binding status: already binding.', function (done) {
             cli.post('/signin')
-                .send({username: 'abcd', password: 'Iota123_'})
+                .send({ username: 'abcd', password: 'Iota123_' })
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -122,7 +119,7 @@ describe("All Test", function () {
 
         it('test query binding status: does not binding.', function (done) {
             cli.post('/signin')
-                .send({username: 'abc', password: 'Iota123_'})
+                .send({ username: 'abc', password: 'Iota123_' })
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -144,7 +141,7 @@ describe("All Test", function () {
 
         it('test unbind : does not binding.', function (done) {
             cli.post('/signin')
-                .send({username: 'abc', password: 'Iota123_'})
+                .send({ username: 'abc', password: 'Iota123_' })
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {
@@ -157,7 +154,7 @@ describe("All Test", function () {
 
         it('test unbind : already binding.', function (done) {
             cli.post('/signin')
-                .send({username: 'abcd', password: 'Iota123_'})
+                .send({ username: 'abcd', password: 'Iota123_' })
                 .expect(200)
                 .end(function (err, res) {
                     if (err) {

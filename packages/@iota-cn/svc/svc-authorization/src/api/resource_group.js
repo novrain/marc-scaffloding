@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2017/2/20.
- */
 import { Validator } from '@iota-cn/util-validation';
 import { uniqueArray, valBetween } from '@iota-cn/svc-util';
 

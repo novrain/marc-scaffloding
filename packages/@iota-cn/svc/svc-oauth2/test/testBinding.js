@@ -1,8 +1,5 @@
-/**
- * Created by rain on 2016/7/7.
- */
 import client from 'supertest';
-import chai, {assert, expect} from 'chai';
+import chai, { assert, expect } from 'chai';
 
 import scaffold from '@iota-cn/svc-scaffolding';
 
@@ -66,18 +63,18 @@ describe("All Test", function () {
     let models = app.iota.dc.models;
     let user1, user2, user3, user4;
     before(async function () {
-        await models.User.sync({force: true});
-        user1 = await models.User.create({username: 'abc', password: 'Iota123_'});
-        user2 = await models.User.create({username: 'abcd', password: 'Iota123_'});
-        user3 = await models.User.create({username: 'abcde', password: 'Iota123_'});
-        user4 = await models.User.create({username: 'abcdef', password: 'Iota123_'});
-        await models.UserOAuth2.sync({force: true});
+        await models.User.sync({ force: true });
+        user1 = await models.User.create({ username: 'abc', password: 'Iota123_' });
+        user2 = await models.User.create({ username: 'abcd', password: 'Iota123_' });
+        user3 = await models.User.create({ username: 'abcde', password: 'Iota123_' });
+        user4 = await models.User.create({ username: 'abcdef', password: 'Iota123_' });
+        await models.UserOAuth2.sync({ force: true });
         await models.UserOAuth2.create({
             userId: user2.id,
             openId: testWxToken.unionid,
             platform: OAuth2Plat.WeChat
         });
-        await models.UserOAuth2.create({userId: user3.id, openId: 'testid', platform: OAuth2Plat.WeChat});
+        await models.UserOAuth2.create({ userId: user3.id, openId: 'testid', platform: OAuth2Plat.WeChat });
     });
 
     after(function () {
@@ -118,7 +115,7 @@ describe("All Test", function () {
 
         it('test binding invalid user without username.', function (done) {
             cli.post('/oauth2/third_parties/wechat/signin')
-                .send({password: 'bbb'})
+                .send({ password: 'bbb' })
                 .set('Cookie', ['wxk=userkey'])
                 .expect(400)
                 .end(function (err, res) {
@@ -134,7 +131,7 @@ describe("All Test", function () {
 
         it('test binding invalid user without password.', function (done) {
             cli.post('/oauth2/third_parties/wechat/signin')
-                .send({email: 'bbb'})
+                .send({ email: 'bbb' })
                 .set('Cookie', ['wxk=userkey'])
                 .expect(400)
                 .end(function (err, res) {
@@ -150,7 +147,7 @@ describe("All Test", function () {
 
         it('test binding user does not exist.', function (done) {
             cli.post('/oauth2/third_parties/wechat/signin')
-                .send({username: 'xxx', password: 'bbb'})
+                .send({ username: 'xxx', password: 'bbb' })
                 .set('Cookie', ['wxk=userkey'])
                 .expect(404)
                 .end(function (err, res) {
@@ -166,7 +163,7 @@ describe("All Test", function () {
 
         it('test binding user already binding other wechat.', function (done) {
             cli.post('/oauth2/third_parties/wechat/signin')
-                .send({username: 'abcde', password: 'Iota123_'})
+                .send({ username: 'abcde', password: 'Iota123_' })
                 .set('Cookie', ['wxk=userkey1'])
                 .expect(409)
                 .end(function (err, res) {
@@ -182,7 +179,7 @@ describe("All Test", function () {
 
         it('test binding wechat already binding other user.', function (done) {
             cli.post('/oauth2/third_parties/wechat/signin')
-                .send({username: 'abc', password: 'Iota123_'})
+                .send({ username: 'abc', password: 'Iota123_' })
                 .set('Cookie', ['wxk=userkey'])
                 .expect(409)
                 .end(function (err, res) {
@@ -198,14 +195,14 @@ describe("All Test", function () {
 
         it('test binding user already binding.', function (done) {
             cli.post('/oauth2/third_parties/wechat/signin')
-                .send({username: 'abcd', password: 'Iota123_'})
+                .send({ username: 'abcd', password: 'Iota123_' })
                 .set('Cookie', ['wxk=userkey'])
                 .expect(204, done);
         });
 
         it('test binding key expires.', function (done) {
             cli.post('/oauth2/third_parties/wechat/signin')
-                .send({username: 'xxx', password: 'bbb'})
+                .send({ username: 'xxx', password: 'bbb' })
                 .set('Cookie', ['wxk=erkey'])
                 .expect(400)
                 .end(function (err, res) {

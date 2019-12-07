@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2016/11/4.
- */
 import { Buffer } from 'buffer';
 import crypto from 'crypto';
 
@@ -18,7 +15,7 @@ function checkRequest(fn, requiredGrantType, defaultStatus = 401, defaultBody = 
     name: 'authenticity_token_error',
     message: "Unable to verify your credentials"
 }) {
-    return async(ctx, next) => {
+    return async (ctx, next) => {
         let authorization,
             contentType,
             key,
@@ -117,7 +114,7 @@ async function access(ctx, next) {
                 ctx.session.service = ctx.session.service.get({ plain: true });
             }
         }
-    } catch (err) {}
+    } catch (err) { }
     //cache refresh token
     await cache.extra(`refresh_token=${refresh}`, token, 'PX', ctx.session.maxAge + 24 * 36 * 1000); //one more day.
 }

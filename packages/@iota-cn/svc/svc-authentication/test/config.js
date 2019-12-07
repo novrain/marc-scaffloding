@@ -1,15 +1,12 @@
-/**
- * Created by rain on 2016/6/21.
- */
 import path from 'path';
 import os from 'os';
-import {entry as userEntry, models as userModels} from '@iota-cn/svc-user';
-import {entry as authenticationEntry, models as authenticationModels} from '../src';
-import {entry as accountEntry, models as accountModels} from '../src';
+import { entry as userEntry, models as userModels } from '@iota-cn/svc-user';
+import { entry as authenticationEntry, models as authenticationModels } from '../src';
+import { entry as accountEntry, models as accountModels } from '../src';
 export default {
     port: 4000,
     mws: [
-        {entry: userEntry, opts: {}},
+        { entry: userEntry, opts: {} },
         {
             entry: authenticationEntry,
             opts: {
@@ -20,12 +17,12 @@ export default {
 
             }
         },
-        {entry: accountEntry, opts: {}}
+        { entry: accountEntry, opts: {} }
     ],
     dc: {
         orm: {
             url: "postgres://postgres:ROOT@localhost:5433/iOTA_ut",
-            opts: {logging: false}
+            opts: { logging: false }
         },
         cache: {
             host: '127.0.0.1',

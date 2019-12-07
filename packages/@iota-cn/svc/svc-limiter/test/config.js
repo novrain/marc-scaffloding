@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2016/6/21.
- */
 import path from 'path';
 import os from 'os';
 import { entry as restfulEntry } from '@iota-cn/svc-restful'

@@ -1,7 +1,4 @@
-/**
- * Created by rain on 2016/11/3.
- */
-import {AppPlatArray} from './appplat';
+import { AppPlatArray } from './appplat';
 
 export default function (dc) {
     let User = dc.models.User;
@@ -38,6 +35,6 @@ export default function (dc) {
     });
     dc.models.UserApp = UserApp;
     // User has different Application
-    User.hasMany(UserApp, {as: 'apps', foreignKey: 'userId'});
+    User.hasMany(UserApp, { as: 'apps', foreignKey: 'userId' });
     return UserApp;
 };

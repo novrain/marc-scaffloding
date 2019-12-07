@@ -1,6 +1,3 @@
-/**
- * Created by kadven on 2017/2/17.
- */
 export default function (dc) {
     let AccountServicePackage = dc.orm.define('AccountServicePackage', {
         accountId: {

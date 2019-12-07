@@ -1,6 +1,3 @@
-/**
- * Created by guan on 2017/2/16.
- */
 export default function (dc) {
     let Order = dc.orm.define('Order', {
         id: {
@@ -64,8 +61,8 @@ export default function (dc) {
             allowNull: true
         }
     }, {
-            tableName: 'Order'
-        });
+        tableName: 'Order'
+    });
     dc.models.Order = Order;
     let Account = dc.models.Account;
     Account.hasMany(Order, { as: 'orders', foreignKey: 'accountId', onDelete: 'cascade', hooks: true });

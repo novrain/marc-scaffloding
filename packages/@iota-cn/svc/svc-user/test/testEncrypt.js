@@ -1,10 +1,7 @@
-/**
- * Created by rain on 2016/7/31.
- */
-import {encrypt} from '../src/model/user'
+import { encrypt } from '../src/model/user'
 import client from 'supertest';
 
-import chai, {assert, expect} from 'chai';
+import chai, { assert, expect } from 'chai';
 
 describe('encrypt test >', function () {
     it('test null', function () {

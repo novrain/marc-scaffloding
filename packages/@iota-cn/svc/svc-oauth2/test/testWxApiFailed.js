@@ -1,8 +1,5 @@
-/**
- * Created by rain on 2016/8/1.
- */
 import client from 'supertest';
-import chai, {assert, expect} from 'chai';
+import chai, { assert, expect } from 'chai';
 
 import scaffold from '@iota-cn/svc-scaffolding';
 

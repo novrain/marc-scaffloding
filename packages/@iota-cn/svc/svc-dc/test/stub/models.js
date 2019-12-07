@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2015/11/11.
- */
 export default function (dc) {
     dc.models.Role = dc.orm.define('role', {
         name: {

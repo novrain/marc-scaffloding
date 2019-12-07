@@ -1,7 +1,3 @@
-/**
- * Created by kadven on 2017/2/17.
- */
-
 let find = async function (ctx, next) {
     const models = ctx.iota.dc.models;
     let sp_id = ctx.params.id;

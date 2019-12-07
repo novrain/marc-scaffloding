@@ -1,8 +1,5 @@
-/**
- * Created by rain on 2017/2/17.
- */
 import client from 'supertest';
-import chai, {assert, expect} from 'chai';
+import chai, { assert, expect } from 'chai';
 
 import scaffold from '@iota-cn/svc-scaffolding';
 
@@ -19,10 +16,10 @@ describe("iota authorization resource type and operation type test", function ()
     let models = dc.models;
     let RsOpTypes = models.ResourceOperationType;
     before(async function () {
-        await models.User.sync({force: true});
-        await models.User.create({username: 'abc', password: '123456'});
-        await models.ResourceType.sync({force: true});
-        await models.ResourceOperationType.sync({force: true});
+        await models.User.sync({ force: true });
+        await models.User.create({ username: 'abc', password: '123456' });
+        await models.ResourceType.sync({ force: true });
+        await models.ResourceOperationType.sync({ force: true });
         let protocolRs = await models.ResourceType.create({
             name: "协议",
             type: models.ResourceType.RSkeys.Protocol,
@@ -74,30 +71,30 @@ describe("iota authorization resource type and operation type test", function ()
             url: 'things'
         });
         //
-        await RsOpTypes.create({name: '所有', type: 'protocol.*', desc: '', resourceTypeKey: protocolRs.type});
-        await RsOpTypes.create({name: '查看', type: 'protocol.view', desc: '', resourceTypeKey: protocolRs.type});
-        await RsOpTypes.create({name: '修改', type: 'protocol.update', desc: '', resourceTypeKey: protocolRs.type});
-        await RsOpTypes.create({name: '删除', type: 'protocol.delete', desc: '', resourceTypeKey: protocolRs.type});
+        await RsOpTypes.create({ name: '所有', type: 'protocol.*', desc: '', resourceTypeKey: protocolRs.type });
+        await RsOpTypes.create({ name: '查看', type: 'protocol.view', desc: '', resourceTypeKey: protocolRs.type });
+        await RsOpTypes.create({ name: '修改', type: 'protocol.update', desc: '', resourceTypeKey: protocolRs.type });
+        await RsOpTypes.create({ name: '删除', type: 'protocol.delete', desc: '', resourceTypeKey: protocolRs.type });
         //
-        await RsOpTypes.create({name: '所有', type: 'interface.*', desc: '', resourceTypeKey: interfaceRs.type});
-        await RsOpTypes.create({name: '查看', type: 'interface.view', desc: '', resourceTypeKey: interfaceRs.type});
-        await RsOpTypes.create({name: '修改', type: 'interface.update', desc: '', resourceTypeKey: interfaceRs.type});
-        await RsOpTypes.create({name: '删除', type: 'interface.delete', desc: '', resourceTypeKey: interfaceRs.type});
+        await RsOpTypes.create({ name: '所有', type: 'interface.*', desc: '', resourceTypeKey: interfaceRs.type });
+        await RsOpTypes.create({ name: '查看', type: 'interface.view', desc: '', resourceTypeKey: interfaceRs.type });
+        await RsOpTypes.create({ name: '修改', type: 'interface.update', desc: '', resourceTypeKey: interfaceRs.type });
+        await RsOpTypes.create({ name: '删除', type: 'interface.delete', desc: '', resourceTypeKey: interfaceRs.type });
         //
-        await RsOpTypes.create({name: '所有', type: 'device.*', desc: '', resourceTypeKey: deviceRs.type});
-        await RsOpTypes.create({name: '查看', type: 'device.view', desc: '', resourceTypeKey: deviceRs.type});
-        await RsOpTypes.create({name: '修改', type: 'device.update', desc: '', resourceTypeKey: deviceRs.type});
-        await RsOpTypes.create({name: '删除', type: 'device.delete', desc: '', resourceTypeKey: deviceRs.type});
+        await RsOpTypes.create({ name: '所有', type: 'device.*', desc: '', resourceTypeKey: deviceRs.type });
+        await RsOpTypes.create({ name: '查看', type: 'device.view', desc: '', resourceTypeKey: deviceRs.type });
+        await RsOpTypes.create({ name: '修改', type: 'device.update', desc: '', resourceTypeKey: deviceRs.type });
+        await RsOpTypes.create({ name: '删除', type: 'device.delete', desc: '', resourceTypeKey: deviceRs.type });
         //
-        await RsOpTypes.create({name: '所有', type: 'thing.*', desc: '', resourceTypeKey: thingRs.type});
-        await RsOpTypes.create({name: '查看', type: 'thing.view', desc: '', resourceTypeKey: thingRs.type});
-        await RsOpTypes.create({name: '修改', type: 'thing.update', desc: '', resourceTypeKey: thingRs.type});
-        await RsOpTypes.create({name: '删除', type: 'thing.delete', desc: '', resourceTypeKey: thingRs.type});
+        await RsOpTypes.create({ name: '所有', type: 'thing.*', desc: '', resourceTypeKey: thingRs.type });
+        await RsOpTypes.create({ name: '查看', type: 'thing.view', desc: '', resourceTypeKey: thingRs.type });
+        await RsOpTypes.create({ name: '修改', type: 'thing.update', desc: '', resourceTypeKey: thingRs.type });
+        await RsOpTypes.create({ name: '删除', type: 'thing.delete', desc: '', resourceTypeKey: thingRs.type });
         //
-        await RsOpTypes.create({name: '所有', type: 'deploy.*', desc: '', resourceTypeKey: deployRs.type});
-        await RsOpTypes.create({name: '查看', type: 'deploy.view', desc: '', resourceTypeKey: deployRs.type});
-        await RsOpTypes.create({name: '修改', type: 'deploy.update', desc: '', resourceTypeKey: deployRs.type});
-        await RsOpTypes.create({name: '删除', type: 'deploy.delete', desc: '', resourceTypeKey: deployRs.type});
+        await RsOpTypes.create({ name: '所有', type: 'deploy.*', desc: '', resourceTypeKey: deployRs.type });
+        await RsOpTypes.create({ name: '查看', type: 'deploy.view', desc: '', resourceTypeKey: deployRs.type });
+        await RsOpTypes.create({ name: '修改', type: 'deploy.update', desc: '', resourceTypeKey: deployRs.type });
+        await RsOpTypes.create({ name: '删除', type: 'deploy.delete', desc: '', resourceTypeKey: deployRs.type });
     });
 
     after(function () {

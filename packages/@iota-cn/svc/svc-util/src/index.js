@@ -1,6 +1,4 @@
-/**
- * Created by rain.
- */import { pathToRegexp } from 'path-to-regexp';
+import { pathToRegexp } from 'path-to-regexp';
 
 class ExcludesUrls {
     constructor(opts, prefix) {

@@ -1,6 +1,3 @@
-/**
- * Created by kadven on 2017/2/17.
- */
 import { changeBalance } from './index';
 
 let createDefaultServiceHook = async (ctx, next) => {

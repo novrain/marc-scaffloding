@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2015/11/11.
- */
 export default function (dc) {
     dc.models.Role = dc.orm.define('role', {
         name: {
@@ -51,6 +48,6 @@ export default function (dc) {
     var User = dc.models.User;
     var Role = dc.models.Role;
 
-    User.belongsToMany(Role, {through: UserRole, as: 'roles', foreignKey: 'userId'});
-    Role.belongsToMany(User, {through: UserRole, as: 'users', foreignKey: 'roleId'});
+    User.belongsToMany(Role, { through: UserRole, as: 'roles', foreignKey: 'userId' });
+    Role.belongsToMany(User, { through: UserRole, as: 'users', foreignKey: 'roleId' });
 };

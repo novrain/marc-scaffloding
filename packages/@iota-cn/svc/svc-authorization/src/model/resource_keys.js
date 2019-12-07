@@ -1,7 +1,3 @@
-/**
- * Created by rain on 2017/2/17.
- */
-
 //key 必须与模型名称一致
 const RSKeys = {
     Interface: 'Interface',

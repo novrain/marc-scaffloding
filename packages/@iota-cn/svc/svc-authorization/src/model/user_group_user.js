@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2017/2/17.
- */
 export default function (dc) {
     const UserGroupUser = dc.orm.define('UserGroupUser', {
         id: {
@@ -33,13 +30,13 @@ export default function (dc) {
     const UserGroup = dc.models.UserGroup;
     const User = dc.models.User;
 
-    User.belongsToMany(UserGroup, {through: UserGroupUser, as: 'userGroups', foreignKey: 'userId'});
-    User.hasMany(UserGroupUser, {as: 'groups', foreignKey: 'userId'});
+    User.belongsToMany(UserGroup, { through: UserGroupUser, as: 'userGroups', foreignKey: 'userId' });
+    User.hasMany(UserGroupUser, { as: 'groups', foreignKey: 'userId' });
     //conflict with UserGroup.hasMany...
-    UserGroup.belongsToMany(User, {through: UserGroupUser, as: 'members', foreignKey: 'userGroupId'});
-    UserGroup.hasMany(UserGroupUser, {as: 'users', foreignKey: 'userGroupId'});
-    UserGroupUser.belongsTo(User, {as: 'user', foreignKey: 'userId'});
-    UserGroupUser.belongsTo(UserGroup, {as: 'userGroup', foreignKey: 'userGroupId'});
+    UserGroup.belongsToMany(User, { through: UserGroupUser, as: 'members', foreignKey: 'userGroupId' });
+    UserGroup.hasMany(UserGroupUser, { as: 'users', foreignKey: 'userGroupId' });
+    UserGroupUser.belongsTo(User, { as: 'user', foreignKey: 'userId' });
+    UserGroupUser.belongsTo(UserGroup, { as: 'userGroup', foreignKey: 'userGroupId' });
 
     return UserGroupUser;
 };

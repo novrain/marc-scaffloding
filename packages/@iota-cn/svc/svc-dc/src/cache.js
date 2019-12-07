@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2016/6/15.
- */
 import redis, { RedisClient } from 'redis';
 
 export default class Cache {

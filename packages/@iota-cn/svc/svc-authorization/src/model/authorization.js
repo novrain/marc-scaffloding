@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2017/2/17.
- */
 export default function (dc) {
     const Authorization = dc.orm.define('Authorization', {
         id: {

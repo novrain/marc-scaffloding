@@ -1,7 +1,3 @@
-/**
- * Created by rain on 2016/7/28.
- */
-
 const AppPlat = {
     iOS: 'iOS',
     Android: 'Android',
@@ -16,6 +12,6 @@ for (let plat in AppPlat) {
 
 export default AppPlat;
 
-export{
+export {
     AppPlatArray
 }

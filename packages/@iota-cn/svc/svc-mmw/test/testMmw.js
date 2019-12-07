@@ -1,10 +1,7 @@
-/**
- * Created by rain on 2016/6/22.
- */
 'use strict';
 
 import MMw from '../src/index';
-import chai, {assert} from 'chai';
+import chai, { assert } from 'chai';
 import path from 'path';
 const should = chai.should();
 
@@ -12,11 +9,11 @@ describe('Mmw test', function () {
     it('empty middleware', function (done) {
         let mmw = new MMw();
         mmw.callMw(1)
-            .then(()=> {
+            .then(() => {
                 assert.equal(1, 1, "callMw finished.");
                 done();
             })
-            .catch((err)=> {
+            .catch((err) => {
             });
     });
 
@@ -57,10 +54,10 @@ describe('Mmw test', function () {
             done();
         });
         mmw.callMw()
-            .then(()=> {
+            .then(() => {
                 assert.equal(1, 1, "callMw finished.");
             })
-            .catch((err)=> {
+            .catch((err) => {
                 done();
             });
     });
@@ -75,10 +72,10 @@ describe('Mmw test', function () {
             done();
         });
         mmw.callMw()
-            .then(()=> {
+            .then(() => {
                 assert.equal(1, 1, "callMw finished.");
             })
-            .catch((err)=> {
+            .catch((err) => {
                 done();
             });
     });
@@ -104,10 +101,10 @@ describe('Mmw test', function () {
         });
         let value = 1;
         mmw.callMw(value)
-            .then(()=> {
+            .then(() => {
                 assert.equal(1, 1, "callMw finished.");
             })
-            .catch((err)=> {
+            .catch((err) => {
                 done(err);
             });
     });
@@ -122,10 +119,10 @@ describe('Mmw test', function () {
         });
         let value = 1;
         mmw.callMw(value)
-            .then(()=> {
+            .then(() => {
                 assert.equal(1, 1, "callMw finished.");
             })
-            .catch((err)=> {
+            .catch((err) => {
                 assert.equal(err.message, 'I am a error');
                 assert.equal(1, 1, err.message);
                 done();

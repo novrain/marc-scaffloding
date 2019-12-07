@@ -1,9 +1,6 @@
-/**
- * Created by rain on 2017/3/30.
- */
-import chai, {assert, expect} from 'chai';
+import chai, { assert, expect } from 'chai';
 
-import {valBetween} from '../src/index';
+import { valBetween } from '../src/index';
 
 describe('iota util test>', function () {
     it('test between', () => {
@@ -11,7 +8,7 @@ describe('iota util test>', function () {
         assert.equal(20, valBetween(NaN, 20, 1000));
         assert.equal(20, valBetween('xqawed', 20, 1000));
         assert.equal(20, valBetween({}, 20, 1000));
-        assert.equal(20, valBetween(() => {}, 20, 1000));
+        assert.equal(20, valBetween(() => { }, 20, 1000));
         assert.equal(20, valBetween(20, 20, 1000));
         assert.equal(21, valBetween(21, 20, 1000));
         assert.equal(40, valBetween(40, 20, 1000));

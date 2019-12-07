@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2015/8/15.
- */
 /*jslint node:true */
 /*jslint nomen:true */
 'use strict';

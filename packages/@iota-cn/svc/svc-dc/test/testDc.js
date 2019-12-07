@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2016/6/17.
- */
 'use strict';
 
 import dc from '../src/index';

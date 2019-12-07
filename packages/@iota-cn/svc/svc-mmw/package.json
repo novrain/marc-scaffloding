@@ -4,7 +4,8 @@
     "description": "iOTA middleware of middleware",
     "main": "./dist/index.js",
     "scripts": {
-        "compile": "babel -d dist/ src/",
+        "compile": "babel -d dist/ src/ --presets minify",
+        "compiledev": "babel -d dist/ src/",
         "prepublishOnly": "npm run compile",
         "test": "mocha --exit",
         "testbreak": "mocha -b --exit",
@@ -13,10 +14,10 @@
     },
     "author": "",
     "license": "MIT",
-    "dependencies": {},
     "devDependencies": {
         "@babel/plugin-transform-modules-commonjs": "^7.7.0",
         "@babel/register": "^7.7.0",
+        "babel-preset-minify": "^0.5.1",
         "chai": "^4.2.0",
         "mocha": "^6.2.2",
         "mochawesome": "^4.1.0"

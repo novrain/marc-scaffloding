@@ -5,6 +5,7 @@
     "main": "./dist/index.js",
     "scripts": {
         "compile": "babel -d dist/ src/",
+        "compiledev": "babel --config-file=./.babelrc-dev -d dist/ src/",
         "prepublishOnly": "npm run compile",
         "test": "mocha --exit",
         "testbreak": "mocha -b --exit",
@@ -23,9 +24,10 @@
         "xml2js": "^0.4.22"
     },
     "devDependencies": {
-        "@iota-cn/svc-scaffolding": "^1.0.0",
         "@babel/plugin-transform-modules-commonjs": "^7.7.0",
         "@babel/register": "^7.7.0",
+        "@iota-cn/svc-scaffolding": "^1.0.0",
+        "babel-preset-minify": "^0.5.1",
         "chai": "^4.2.0",
         "mocha": "^6.2.2",
         "mochawesome": "^4.1.0",

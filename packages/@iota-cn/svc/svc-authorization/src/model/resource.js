@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2017/2/17.
- */
 export default function (dc) {
     let Resource = dc.orm.define('Resource', {
         id: {
@@ -30,7 +27,7 @@ export default function (dc) {
 
     dc.models.Resource = Resource;
     const ResourceGroup = dc.models.ResourceGroup;
-    ResourceGroup.hasMany(Resource, {as: 'resources', foreignKey: 'resourceGroupId', onDelete: 'cascade', hooks: true});
+    ResourceGroup.hasMany(Resource, { as: 'resources', foreignKey: 'resourceGroupId', onDelete: 'cascade', hooks: true });
     Resource.belongsTo(ResourceGroup, {
         as: 'resourceGroup',
         foreignKey: 'resourceGroupId',

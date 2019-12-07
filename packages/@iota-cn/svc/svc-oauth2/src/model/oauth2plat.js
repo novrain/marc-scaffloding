@@ -1,7 +1,3 @@
-/**
- * Created by rain on 2016/7/28.
- */
-
 const OAuth2Plat = {
     WeChat: 'WeChat',
     GitHub: 'GitHub'
@@ -14,6 +10,6 @@ for (let plat in OAuth2Plat) {
 
 export default OAuth2Plat;
 
-export{
+export {
     OAuth2PlatArray
 }
