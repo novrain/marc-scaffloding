@@ -32,7 +32,7 @@ export default function (app, router, opts) {
                 target: flowable.target
             }
             proxyServer.web(ctx.req, ctx.res, reqOpts, function (e) {
-                ctx.iota.logger.log(e)
+                ctx.iota.logger.log('error', e)
                 resolve(); // resolve anyway
             });
         });

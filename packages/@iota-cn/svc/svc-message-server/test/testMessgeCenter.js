@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2017/6/7.
- */
 import client from 'supertest';
 import chai, { assert, expect } from 'chai';
 
@@ -10,23 +7,23 @@ import io from 'socket.io-client';
 
 const should = chai.should();
 
-describe('iota message center test >', function() {
+describe('iota message center test >', function () {
     this.timeout(20000);
     config.port = 17607;
     const app = scaffold(config);
     const request = client.agent(app.server);
     const models = app.iota.dc.models;
 
-    before(async function(done) {
+    before(async function (done) {
         done();
     });
 
-    it('send a notice', function(done) {
+    it('send a notice', function (done) {
         let consumer = io('http://localhost:3223/background');
-        consumer.on('message', function(message) {
+        consumer.on('message', function (message) {
             done();
         })
-        consumer.on('connect', function() {
+        consumer.on('connect', function () {
             let message = {};
             message.method = 'broadcast';
             message.receiver = '-1';

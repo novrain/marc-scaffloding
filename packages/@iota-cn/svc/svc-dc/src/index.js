@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2016/6/15.
- */
 import Cache from './cache';
 import Sequelize from '@iota-fork/sequelize';
 import mqtt from 'mqtt';

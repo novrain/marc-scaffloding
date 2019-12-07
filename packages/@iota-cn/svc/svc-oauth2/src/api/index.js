@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2016/7/28.
- */
 import {
     signin,
     binding,
@@ -20,7 +17,7 @@ import {
     _delete
 } from './application';
 import { createMiddleware } from '@iota-cn/svc-util'
-export default function(app, router, opts) {
+export default function (app, router, opts) {
     //wechat
     router.get('/oauth2/third_parties/wechat', signin(opts));
     router.post('/oauth2/third_parties/wechat/signin', binding);

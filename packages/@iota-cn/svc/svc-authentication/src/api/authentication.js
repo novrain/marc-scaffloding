@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2017/2/14.
- */
 import { Validator } from '@iota-cn/util-validation';
 import Mmw from '@iota-cn/svc-mmw';
 const userAttr = ['id', 'username', 'email', 'mobile', 'gravatar', 'actEmail', 'type', 'isAdmin'];

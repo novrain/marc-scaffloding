@@ -1,6 +1,3 @@
-/**
- * Created by kadve on 2016/12/30.
- */
 import { Buffer } from 'buffer';
 import client from 'supertest';
 import chai, { assert, expect } from 'chai';

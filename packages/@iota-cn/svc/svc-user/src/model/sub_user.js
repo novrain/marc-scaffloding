@@ -1,7 +1,3 @@
-/**
- * Created by rain on 2017/2/14.
- */
-// @TODO remove unuseable id column.
 export default function (dc) {
     let SubUser = dc.orm.define('SubUser', {
         userId: {

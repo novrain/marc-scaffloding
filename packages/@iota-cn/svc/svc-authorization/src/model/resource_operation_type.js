@@ -1,7 +1,3 @@
-/**
- * Created by rain on 2017/2/27.
- */
-
 export default function (dc) {
     let ResourceOperationType = dc.orm.define('ResourceOperationType', {
         name: {

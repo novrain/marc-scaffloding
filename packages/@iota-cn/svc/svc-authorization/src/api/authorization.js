@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2017/2/28.
- */
 import { uniqueArray, valBetween } from '@iota-cn/svc-util';
 
 let create = async function (ctx, next) {

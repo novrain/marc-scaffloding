@@ -1,9 +1,3 @@
-/**
- * Created by rain on 2015/11/12.
- */
-/**
- * Created by nestn on 2015/11/10.
- */
 'use strict';
 
 import chai from 'chai';

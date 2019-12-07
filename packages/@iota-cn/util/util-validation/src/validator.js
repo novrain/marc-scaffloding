@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2016/9/13.
- */
 class Validator {
     static nameHelp = '支持1-40位非空格字符'
     static commonStrHelp = '支持1-40位非空格字符'

@@ -1,7 +1,4 @@
-/**
- * Created by rain on 2016/7/28.
- */
-import {OAuth2PlatArray} from './oauth2plat';
+import { OAuth2PlatArray } from './oauth2plat';
 
 export default function (dc) {
     let UserOAuth2 = dc.orm.define('userOAuth2', {
@@ -26,6 +23,6 @@ export default function (dc) {
 
     let User = dc.models.User;
     // User has different AUTH2 platform
-    User.hasMany(UserOAuth2, {as: 'oauth2s', foreignKey: 'userId'});
+    User.hasMany(UserOAuth2, { as: 'oauth2s', foreignKey: 'userId' });
     return UserOAuth2;
 };

@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2017/2/17.
- */
 import RSKeys, { RSKeyArray } from './resource_keys';
 
 export default function (dc) {
@@ -47,8 +44,8 @@ export default function (dc) {
             defaultValue: true
         }
     }, {
-            tableName: 'ResourceType'
-        });
+        tableName: 'ResourceType'
+    });
 
     ResourceType.RSkeys = RSKeys;
     dc.models.ResourceType = ResourceType;

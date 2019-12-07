@@ -1,7 +1,4 @@
-/**
- * Created by rain on 2016/7/28.
- */
-import {oauth2Model, userAppModel} from './model';
+import { oauth2Model, userAppModel } from './model';
 import api from './api';
 
 export function models(dc) {

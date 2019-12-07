@@ -1,6 +1,3 @@
-/**
- * Created by kadven on 2017/2/17.
- */
 import ServiceType from './service_type';
 
 export default function (dc) {
@@ -32,8 +29,8 @@ export default function (dc) {
             allowNull: false
         }
     }, {
-            tableName: "ServicePackage"
-        });
+        tableName: "ServicePackage"
+    });
     ServicePackage.ServiceType = ServiceType;
     dc.models.ServicePackage = ServicePackage;
     return ServicePackage;

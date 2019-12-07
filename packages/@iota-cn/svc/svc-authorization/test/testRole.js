@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2017/2/27.
- */
 import client from 'supertest';
 import chai, { assert, expect } from 'chai';
 

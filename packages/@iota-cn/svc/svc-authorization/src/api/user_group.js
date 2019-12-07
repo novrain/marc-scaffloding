@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2017/2/22.
- */
 import { Validator } from '@iota-cn/util-validation';
 import uuid from 'uuid';
 import nodemailer from 'nodemailer';
@@ -345,7 +342,7 @@ let sendInvitedNotice = async (ctx, code, userGroupId, invitee, inviter, opts) =
 }
 
 let createCreateApi = (app, opts) => {
-    return async function(ctx, next) {
+    return async function (ctx, next) {
         let createBy = ctx.session.user.id;
         const models = ctx.iota.dc.models;
         const userGroup = ctx.request.body ? ctx.request.body : {};
@@ -482,7 +479,7 @@ let createCreateApi = (app, opts) => {
     }
 };
 
-let find = async function(ctx, next) {
+let find = async function (ctx, next) {
     let createBy = ctx.session.user.id;
     const id = ctx.params.id;
     const limit = valBetween(ctx.query.limit, 1, 200, 20);
@@ -514,7 +511,7 @@ let find = async function(ctx, next) {
     }
 };
 
-let findUserInGroup = async function(ctx, next) {
+let findUserInGroup = async function (ctx, next) {
     const userGroupId = ctx.params.userGroupId;
     const createBy = ctx.session.user.id;
     const id = ctx.params.id;
@@ -583,7 +580,7 @@ let findUserInGroup = async function(ctx, next) {
     }
 };
 
-let update = async function(ctx, next) {
+let update = async function (ctx, next) {
     let id = ctx.params.id;
     let models = ctx.iota.dc.models;
     let userGroup = ctx.request.body;
@@ -618,7 +615,7 @@ let update = async function(ctx, next) {
     }
 };
 
-let _delete = async function(ctx, next) {
+let _delete = async function (ctx, next) {
     const id = ctx.params.id;
     let ids = ctx.query.ids ? ctx.query.ids.split(',') : [];
     let createBy = ctx.session.user.id;
@@ -731,7 +728,7 @@ let findSubUserNotInGroup = async (ctx, next) => {
     }
 };
 
-let createAddUserApi = function(app, opts) {
+let createAddUserApi = function (app, opts) {
     return async (ctx, next) => {
         let createBy = ctx.session.user.id;
         let userGroupId = ctx.params.userGroupId;
@@ -912,7 +909,7 @@ let removeUser = async (ctx, next) => {
     }
 };
 
-let updateAll = async function(ctx, ids, userGroupId, values, transaction) {
+let updateAll = async function (ctx, ids, userGroupId, values, transaction) {
     const models = ctx.iota.dc.models;
     if (Array.isArray(ids)) {
         let condition = {
@@ -930,7 +927,7 @@ let updateAll = async function(ctx, ids, userGroupId, values, transaction) {
 };
 
 
-let enable = async function(ctx, next) {
+let enable = async function (ctx, next) {
     const userGroupId = ctx.params.userGroupId;
     const ids = ctx.request.body.ids;
     let count = await updateAll(ctx, ids, userGroupId, { enable: true });
@@ -941,7 +938,7 @@ let enable = async function(ctx, next) {
     }
 };
 
-let disable = async function(ctx, next) {
+let disable = async function (ctx, next) {
     const userGroupId = ctx.params.userGroupId;
     const ids = ctx.request.body.ids;
     let count = await updateAll(ctx, ids, userGroupId, { enable: false });
@@ -952,7 +949,7 @@ let disable = async function(ctx, next) {
     }
 };
 
-let accept = function(opts) {
+let accept = function (opts) {
     return async (ctx, next) => {
         const userGroupId = ctx.params.userGroupId;
         const invitedCode = ctx.query.code;

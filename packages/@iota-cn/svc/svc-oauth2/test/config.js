@@ -1,12 +1,9 @@
-/**
- * Created by rain on 2016/6/21.
- */
 import path from 'path';
 import os from 'os';
-import {entry as userEntry, models as userModels} from '@iota-cn/svc-user';
-import {entry as authenticationEntry, models as authenticationModels} from '@iota-cn/svc-authentication';
-import {entry as authorizationEntry, models as authorizationModels} from '@iota-cn/svc-authorization';
-import {entry as oauth2Entry, models as oauth2Models} from '../src';
+import { entry as userEntry, models as userModels } from '@iota-cn/svc-user';
+import { entry as authenticationEntry, models as authenticationModels } from '@iota-cn/svc-authentication';
+import { entry as authorizationEntry, models as authorizationModels } from '@iota-cn/svc-authorization';
+import { entry as oauth2Entry, models as oauth2Models } from '../src';
 
 export default {
     global: {
@@ -14,22 +11,22 @@ export default {
     },
     port: 4000,
     mws: [
-        {entry: userEntry, opts: {}},
+        { entry: userEntry, opts: {} },
         {
             entry: authenticationEntry,
             opts: {
                 exclude: [
-                    {p: '/oauth2/third_parties/wechat', o: 'GET'},
-                    {p: '/oauth2/third_parties/wechat/signin', o: 'POST'},
-                    {p: '/oauth2/third_parties/wechat/signup', o: 'POST'},
-                    {p: '/oauth2/token', o: 'POST'},
-                    {p: '/oauth2/token/refresh', o: 'POST'},
-                    {p: '/oauth2/token/invalidate', o: 'POST'}
+                    { p: '/oauth2/third_parties/wechat', o: 'GET' },
+                    { p: '/oauth2/third_parties/wechat/signin', o: 'POST' },
+                    { p: '/oauth2/third_parties/wechat/signup', o: 'POST' },
+                    { p: '/oauth2/token', o: 'POST' },
+                    { p: '/oauth2/token/refresh', o: 'POST' },
+                    { p: '/oauth2/token/invalidate', o: 'POST' }
                 ],
                 remMaxAge: 30
             }
         },
-        {entry: authorizationEntry, opts: {dcInstance: 'console'}},
+        { entry: authorizationEntry, opts: { dcInstance: 'console' } },
         {
             entry: oauth2Entry,
             opts: {
@@ -51,7 +48,7 @@ export default {
     dc: {
         orm: {
             url: "postgres://postgres:ROOT@localhost:5433/iOTA_ut",
-            opts: {logging: true}
+            opts: { logging: true }
         },
         cache: {
             host: '127.0.0.1',

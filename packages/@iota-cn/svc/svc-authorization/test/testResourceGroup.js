@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2017/2/21.
- */
 import client from 'supertest';
 import chai, { assert, expect } from 'chai';
 
@@ -10,7 +7,7 @@ import options from './config';
 
 const should = chai.should();
 
-describe("iota authorization resource group test", function() {
+describe("iota authorization resource group test", function () {
     this.timeout(10000);
     options.port = 2211;
     let app = scaffold(options);
@@ -18,7 +15,7 @@ describe("iota authorization resource group test", function() {
     let dc = app.iota.dc;
     let models = dc.models;
     let user, protocol1, protocol2, protocol3, group1Id, group2Id, resource1Id;
-    before(async function() {
+    before(async function () {
         await models.User.sync({ force: true });
         user = await models.User.create({ username: 'abc', password: '123456' });
         await models.ResourceType.sync({ force: true });
@@ -110,11 +107,11 @@ describe("iota authorization resource group test", function() {
             }).expect(200);
     });
 
-    after(function() {
+    after(function () {
         app.server.close();
     });
 
-    it('create resource group', function(done) {
+    it('create resource group', function (done) {
         cli.post('/resource_groups')
             .send({
                 name: 'group1',
@@ -124,12 +121,12 @@ describe("iota authorization resource group test", function() {
                     key: protocol1.id
                 }]
             })
-            .expect(200, function(err, res) {
+            .expect(200, function (err, res) {
                 if (err) {
                     return done(err);
                 }
                 cli.get('/resource_groups')
-                    .expect(200, function(err, res) {
+                    .expect(200, function (err, res) {
                         if (err) {
                             return done(err);
                         }
@@ -140,18 +137,18 @@ describe("iota authorization resource group test", function() {
             })
     })
 
-    it('update resource group', function(done) {
+    it('update resource group', function (done) {
         cli.put(`/resource_groups/${group1Id}`)
             .send({
                 name: 'changeNameGroup1',
                 desc: 'changeDescGroup1',
             })
-            .expect(204, function(err) {
+            .expect(204, function (err) {
                 if (err) {
                     return done(err);
                 }
                 cli.get('/resource_groups')
-                    .expect(200, function(err, res) {
+                    .expect(200, function (err, res) {
                         if (err) {
                             return done(err);
                         }
@@ -162,17 +159,17 @@ describe("iota authorization resource group test", function() {
             })
     })
 
-    it('update one item(name) resource group', function(done) {
+    it('update one item(name) resource group', function (done) {
         cli.put(`/resource_groups/${group1Id}`)
             .send({
                 name: 'chgagain',
             })
-            .expect(204, function(err) {
+            .expect(204, function (err) {
                 if (err) {
                     return done(err);
                 }
                 cli.get('/resource_groups')
-                    .expect(200, function(err, res) {
+                    .expect(200, function (err, res) {
                         if (err) {
                             return done(err);
                         }
@@ -182,22 +179,22 @@ describe("iota authorization resource group test", function() {
             })
     })
 
-    it('update resource group when id is wrong', function(done) {
+    it('update resource group when id is wrong', function (done) {
         cli.put(`/resource_groups/48f0ad36-bf0d-4e15-a122-b348da053530`)
             .send({
                 name: 'changeNameGroup1',
             })
-            .expect(404, function(err) {
+            .expect(404, function (err) {
                 if (err) {
                     return done(err);
                 }
                 cli.get('/resource_groups/48f0ad36-bf0d-4e15-a122-b348da053530')
-                    .expect(404, function(err, res) {
+                    .expect(404, function (err, res) {
                         if (err) {
                             return done(err);
                         }
                         cli.get('/resource_groups')
-                            .expect(200, function(err, res) {
+                            .expect(200, function (err, res) {
                                 if (err) {
                                     return done(err);
                                 }
@@ -208,14 +205,14 @@ describe("iota authorization resource group test", function() {
             })
     })
 
-    it('delete resource group when id is wrong', function(done) {
+    it('delete resource group when id is wrong', function (done) {
         cli.delete(`/resource_groups?ids=48f0ad36-bf0d-4e15-a122-b348da053530`)
-            .expect(404, function(err) {
+            .expect(404, function (err) {
                 if (err) {
                     return done(err);
                 }
                 cli.get('/resource_groups')
-                    .expect(200, function(err, res) {
+                    .expect(200, function (err, res) {
                         if (err) {
                             return done(err);
                         }
@@ -225,14 +222,14 @@ describe("iota authorization resource group test", function() {
             })
     })
 
-    it('delete resource group1', function(done) {
+    it('delete resource group1', function (done) {
         cli.delete(`/resource_groups/${group1Id}`)
-            .expect(204, function(err) {
+            .expect(204, function (err) {
                 if (err) {
                     return done(err);
                 }
                 cli.get('/resource_groups')
-                    .expect(200, function(err, res) {
+                    .expect(200, function (err, res) {
                         if (err) {
                             return done(err);
                         }
@@ -242,7 +239,7 @@ describe("iota authorization resource group test", function() {
             })
     })
 
-    it('create another resource group with some resources', function(done) {
+    it('create another resource group with some resources', function (done) {
         cli.post('/resource_groups')
             .send({
                 name: 'group2',
@@ -255,13 +252,13 @@ describe("iota authorization resource group test", function() {
                     key: protocol3.id
                 }]
             })
-            .expect(200, function(err, res) {
+            .expect(200, function (err, res) {
                 if (err) {
                     return done(err);
                 }
                 group2Id = res.body.id;
                 cli.get(`/resource_groups/${group2Id}/resources`)
-                    .expect(200, function(err, res) {
+                    .expect(200, function (err, res) {
                         if (err) {
                             return done(err);
                         }
@@ -273,9 +270,9 @@ describe("iota authorization resource group test", function() {
             })
     })
 
-    it('find resource not in group2 after create', function(done) {
+    it('find resource not in group2 after create', function (done) {
         cli.get(`/resource_groups/${group2Id}/not_in_group/resources/Protocol`)
-            .expect(200, function(err, res) {
+            .expect(200, function (err, res) {
                 if (err) {
                     return done(err);
                 }
@@ -284,7 +281,7 @@ describe("iota authorization resource group test", function() {
             })
     })
 
-    it('create resource in group1(not exist) ', function(done) {
+    it('create resource in group1(not exist) ', function (done) {
         cli.post(`/resource_groups/${group1Id}/resources`)
             .send({
                 resources: [{
@@ -292,7 +289,7 @@ describe("iota authorization resource group test", function() {
                     key: protocol2.id
                 }]
             })
-            .expect(400, function(err) {
+            .expect(400, function (err) {
                 if (err) {
                     return done(err);
                 }
@@ -300,7 +297,7 @@ describe("iota authorization resource group test", function() {
             })
     })
 
-    it('create resource in group2(exist) ', function(done) {
+    it('create resource in group2(exist) ', function (done) {
         cli.post(`/resource_groups/${group2Id}/resources`)
             .send({
                 resources: [{
@@ -308,12 +305,12 @@ describe("iota authorization resource group test", function() {
                     key: protocol1.id
                 }]
             })
-            .expect(200, function(err, res) {
+            .expect(200, function (err, res) {
                 if (err) {
                     return done(err);
                 }
                 cli.get(`/resource_groups/${group2Id}/resources`)
-                    .expect(200, function(err, res) {
+                    .expect(200, function (err, res) {
                         if (err) {
                             return done(err);
                         }
@@ -324,18 +321,18 @@ describe("iota authorization resource group test", function() {
             })
     })
 
-    it('update resource in group2(exist) ', function(done) {
+    it('update resource in group2(exist) ', function (done) {
         cli.put(`/resource_groups/${group2Id}/resources/${resource1Id}`)
             .send({
                 type: models.ResourceType.RSkeys.Protocol,
                 key: protocol1.id
             })
-            .expect(204, function(err, res) {
+            .expect(204, function (err, res) {
                 if (err) {
                     return done(err);
                 }
                 cli.get(`/resource_groups/${group2Id}/resources`)
-                    .expect(200, function(err, res) {
+                    .expect(200, function (err, res) {
                         if (err) {
                             return done(err);
                         }
@@ -345,9 +342,9 @@ describe("iota authorization resource group test", function() {
             })
     })
 
-    it('find resource not in group2 after create', function(done) {
+    it('find resource not in group2 after create', function (done) {
         cli.get(`/resource_groups/${group2Id}/not_in_group/resources/Protocol`)
-            .expect(200, function(err, res) {
+            .expect(200, function (err, res) {
                 if (err) {
                     return done(err);
                 }
@@ -356,14 +353,14 @@ describe("iota authorization resource group test", function() {
             })
     })
 
-    it('delete resource in group2(exist) ', function(done) {
+    it('delete resource in group2(exist) ', function (done) {
         cli.delete(`/resource_groups/${group2Id}/resources?ids=${resource1Id}`)
-            .expect(204, function(err, res) {
+            .expect(204, function (err, res) {
                 if (err) {
                     return done(err);
                 }
                 cli.get(`/resource_groups/${group2Id}/resources`)
-                    .expect(200, function(err, res) {
+                    .expect(200, function (err, res) {
                         if (err) {
                             return done(err);
                         }
@@ -373,9 +370,9 @@ describe("iota authorization resource group test", function() {
             })
     })
 
-    it('find resource not in group2 after delete', function(done) {
+    it('find resource not in group2 after delete', function (done) {
         cli.get(`/resource_groups/${group2Id}/not_in_group/resources/Protocol`)
-            .expect(200, function(err, res) {
+            .expect(200, function (err, res) {
                 if (err) {
                     return done(err);
                 }
@@ -384,9 +381,9 @@ describe("iota authorization resource group test", function() {
             })
     })
 
-    it('delete resource in group1(no exist) ', function(done) {
+    it('delete resource in group1(no exist) ', function (done) {
         cli.delete(`/resource_groups/${group1Id}/resources/${resource1Id}`)
-            .expect(404, function(err, res) {
+            .expect(404, function (err, res) {
                 if (err) {
                     return done(err);
                 }
@@ -394,7 +391,7 @@ describe("iota authorization resource group test", function() {
             })
     })
 
-    it('test limit', async function() {
+    it('test limit', async function () {
         let condition = {
             where: {
                 createBy: user.id,
@@ -435,7 +432,7 @@ describe("iota authorization resource group test", function() {
     //     let resources = await models.ProtocolMeta.findAndCountAll(condition);
     // })
 
-    it('test sub query in where', async function() {
+    it('test sub query in where', async function () {
         const Model = require('sequelize/lib/model')
         let rsCondition = {
             attributes: ['key'],

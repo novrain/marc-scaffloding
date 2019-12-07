@@ -1,8 +1,5 @@
-/**
- * Created by rain on 2016/10/27.
- */
 import Cache from '../src/cache';
-import chai, {assert} from 'chai';
+import chai, { assert } from 'chai';
 import mqtt from 'mqtt';
 
 const should = chai.should();
@@ -10,7 +7,7 @@ const should = chai.should();
 describe("Mqtt Test", function () {
     this.timeout(500000);
     it("test connect/disconnect.", function (done) {
-        var client = mqtt.connect('mqtt://test.mosquitto.org:1883', {reconnectPeriod: 10000});
+        var client = mqtt.connect('mqtt://test.mosquitto.org:1883', { reconnectPeriod: 10000 });
         client.on('connect', function () {
             console.log('server connected');
             client.publish('cm/notify', 'test msg');

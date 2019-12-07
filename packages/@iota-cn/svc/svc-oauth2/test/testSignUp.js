@@ -1,8 +1,5 @@
-/**
- * Created by rain on 2016/7/7.
- */
 import client from 'supertest';
-import chai, {assert, expect} from 'chai';
+import chai, { assert, expect } from 'chai';
 
 import scaffold from '@iota-cn/svc-scaffolding';
 
@@ -67,9 +64,9 @@ describe("All Test", function () {
     let models = app.iota.dc.models;
     let user1;
     before(async function () {
-        await models.User.sync({force: true});
-        user1 = await models.User.create({username: 'abc', password: 'Iota123_'});
-        await models.UserOAuth2.sync({force: true});
+        await models.User.sync({ force: true });
+        user1 = await models.User.create({ username: 'abc', password: 'Iota123_' });
+        await models.UserOAuth2.sync({ force: true });
         await models.UserOAuth2.create({
             userId: user1.id,
             openId: testWxToken.unionid,
@@ -113,7 +110,7 @@ describe("All Test", function () {
 
         it('test signup wx biding other.', function (done) {
             cli.post('/oauth2/third_parties/wechat/signup')
-                .send({username: 'abc', password: 'Iota123_'})
+                .send({ username: 'abc', password: 'Iota123_' })
                 .set('Cookie', ['wxk=userkey'])
                 .expect(409)
                 .end(function (err, res) {
@@ -129,7 +126,7 @@ describe("All Test", function () {
 
         it('test signup key expires.', function (done) {
             cli.post('/oauth2/third_parties/wechat/signup')
-                .send({username: 'xxx', password: 'bbb'})
+                .send({ username: 'xxx', password: 'bbb' })
                 .set('Cookie', ['wxk=erkey'])
                 .expect(400)
                 .end(function (err, res) {

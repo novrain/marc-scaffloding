@@ -1,6 +1,3 @@
-/**
- * Created by kadven on 2017/2/27.
- */
 import WXpay from '../mw/wechat';
 import { valBetween } from '@iota-cn/svc-util';
 import { changeBalance } from './index';

@@ -105,7 +105,7 @@ function createConfig(args) {
         }
     }
     const notice = { entry: noticeEntry, opts: {} }
-    const attachment = { entry: attachmentEntry, opts: {} }
+    const attachment = { entry: attachmentEntry, opts: { maxSize: 100 * 1204 * 1024 } }
 
     const messageClient = {
         entry: messageClientEntry,

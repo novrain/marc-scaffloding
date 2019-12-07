@@ -1,6 +1,3 @@
-/**
- * Created by guan on 2017/2/24.
- */
 export default class alipayMmw {
     constructor(opts) {
         this.opts = opts;
@@ -251,11 +248,11 @@ export default class alipayMmw {
             ctx.status = 200;
             ctx.body = 'success';
         }
-            ).catch((err) => {
-                console.log(err);
-                ctx.status = 200;
-                ctx.body = 'fail'
-            });
+        ).catch((err) => {
+            console.log(err);
+            ctx.status = 200;
+            ctx.body = 'fail'
+        });
     };
 
     payReturn = async (ctx, next) => {
@@ -282,11 +279,11 @@ export default class alipayMmw {
             ctx.status = 200;
             ctx.body = "success"
         }
-            ).catch((err) => {
-                console.log(err);
-                ctx.status = 400;
-                ctx.body = 'fail'
-            });
+        ).catch((err) => {
+            console.log(err);
+            ctx.status = 400;
+            ctx.body = 'fail'
+        });
         //that.verity(params, function (result) {
         //    console.log('result',result);
         //    //如果成功，更新表记录

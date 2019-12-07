@@ -4,7 +4,8 @@
     "description": "iOTA database wrapper with cache.",
     "main": "./dist/index.js",
     "scripts": {
-        "compile": "babel -d dist/ src/",
+        "compile": "babel -d dist/ src/ --presets minify",
+        "compiledev": "babel -d dist/ src/",
         "prepublishOnly": "npm run compile",
         "test": "mocha --exit",
         "testbreak": "mocha -b --exit",
@@ -16,15 +17,16 @@
     "dependencies": {
         "@iota-cn/svc-mmw": "^1.0.0",
         "@iota-cn/svc-util": "^1.0.0",
+        "@iota-fork/sequelize": "^5.21.2",
         "mqtt": "^3.0.0",
         "pg": "^7.12.1",
         "pg-hstore": "^2.3.3",
-        "redis": "^2.8.0",
-        "@iota-fork/sequelize": "^5.21.2"
+        "redis": "^2.8.0"
     },
     "devDependencies": {
         "@babel/plugin-transform-modules-commonjs": "^7.7.0",
         "@babel/register": "^7.7.0",
+        "babel-preset-minify": "^0.5.1",
         "chai": "^4.2.0",
         "mocha": "^6.2.2",
         "mochawesome": "^4.1.0"

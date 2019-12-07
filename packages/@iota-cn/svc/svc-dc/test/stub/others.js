@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2017/3/30.
- */
 export default function (dc) {
     dc.models.A = dc.orm.define('a', {
         name: {

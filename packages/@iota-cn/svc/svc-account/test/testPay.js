@@ -1,6 +1,3 @@
-/**
- * Created by guan on 2017/2/17.
- */
 import client from 'supertest';
 import parser from 'xml2js';
 import chai, { assert, expect } from 'chai';

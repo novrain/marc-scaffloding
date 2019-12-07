@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2016/6/17.
- */
 import Sequelize from '@iota-fork/sequelize';
 
 describe('Sequelize test', function () {

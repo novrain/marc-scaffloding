@@ -1,6 +1,3 @@
-/**
- * Created by rain on 2016/7/28.
- */
 import crypto from 'crypto';
 import util from 'util';
 import client from 'superagent'

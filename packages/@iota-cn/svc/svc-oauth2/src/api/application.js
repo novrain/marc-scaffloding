@@ -1,6 +1,3 @@
-/**
- * Created by kadve on 2016/11/8.
- */
 import { valBetween } from '@iota-cn/svc-util';
 
 async function find(ctx, next) {

@@ -103,7 +103,7 @@ export default class Attachment {
                 let conf = {
                     rootPath: opts && opts.rootPath ? opts.rootPath : 'static',
                     childPath: opts && opts.childPath ? opts.childPath : ['upload'],
-                    maxSize: opts && opts.maxSize ? opts.maxSize : '2097152'
+                    maxSize: opts && opts.maxSize ? opts.maxSize : 2097152
                 }
                 conf.childPath = conf.childPath + '/' + doc;
                 let form = new formidable.IncomingForm();

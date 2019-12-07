@@ -4,7 +4,8 @@
     "description": "",
     "main": "./dist/index.js",
     "scripts": {
-        "compile": "babel -d dist/ src/",
+        "compile": "babel -d dist/ src/ --presets minify",
+        "compiledev": "babel -d dist/ src/",
         "prepublishOnly": "npm run compile",
         "test": "mocha --exit",
         "testbreak": "mocha -b --exit",

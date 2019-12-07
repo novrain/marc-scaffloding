@@ -1,7 +1,3 @@
-/**
- * Created by rain on 2017/2/17.
- */
-
 export default function (dc) {
     let Permission = dc.orm.define('Permission', {
         id: {
@@ -18,7 +14,7 @@ export default function (dc) {
     const ResourceType = dc.models.ResourceType;
     const ResourceOperationType = dc.models.ResourceOperationType;
     const Role = dc.models.Role;
-    Role.hasMany(Permission, {as: 'permissions', foreignKey: 'roleId', onDelete: 'cascade', hooks: true});
+    Role.hasMany(Permission, { as: 'permissions', foreignKey: 'roleId', onDelete: 'cascade', hooks: true });
     Permission.belongsTo(ResourceType, {
         as: 'resourceType',
         foreignKey: 'resourceTypeKey',

@@ -1,6 +1,3 @@
-/**
- * Created by guan on 2017/2/16.
- */
 export default function (dc) {
     let Recharge = dc.orm.define('Recharge', {
         id: {
@@ -52,8 +49,8 @@ export default function (dc) {
             type: dc.ORM.STRING
         }
     }, {
-            tableName: 'Recharge'
-        });
+        tableName: 'Recharge'
+    });
     dc.models.Recharge = Recharge;
     let Account = dc.models.Account;
     Account.hasMany(Recharge, { as: 'recharges', foreignKey: 'accountId' });
