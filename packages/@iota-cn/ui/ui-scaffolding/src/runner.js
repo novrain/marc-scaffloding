@@ -11,6 +11,7 @@ import VueI18n from 'vue-i18n'
 
 // iota-cn
 import Avatar from '@iota-cn/avatar'
+import '@iota-cn/avatar/dist/avatar.css'
 // Add to Vue prototype
 import FrameComponents from './framework/components'
 

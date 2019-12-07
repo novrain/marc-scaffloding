@@ -8,12 +8,25 @@
             <a-card class="info"
                 style="width: 300px"
                 :bordered='false'>
-                <avatar-viewer :img='$user.gravatar||"/assets/imgs/defaultAvatar.png"'
+                <iota-avatar slot="cover"
+                    @avatar='getFile'
+                    class='avatar-viewer'
                     :width='100'
                     :height='100'
                     :radius='50'
-                    className='avatar-viewer'
-                    slot="cover" />
+                    title="上传个人头像"
+                    previewHint="图像预览"
+                    cropHint="最佳尺寸 100×100，可以上传高质量图片进行裁切"
+                    selectImgHint="选择图片"
+                    okText="确认"
+                    cancelText="取消">
+                    <iota-avatar-viewer :img='$user.gravatar||"/assets/imgs/defaultAvatar.png"'
+                        slot="controller"
+                        :width='100'
+                        :height='100'
+                        :radius='50'
+                        showUpload />
+                </iota-avatar>
                 <a-row type='flex'
                     class="item">
                     <a-col :span="8">{{t('account')}}</a-col>
@@ -521,6 +534,29 @@ export default {
             })
             this.$fetchAssignedPositions().then((assignedPositions) => {
                 this.positions = assignedPositions
+            })
+        },
+        // avatar
+        /**
+         * 从 canvas 获取数据
+         * 首先更新头像
+         * 再传入到data中，提交到服务器更新
+         */
+        getFile(canvas) {
+            this.avatarBase64 = canvas.toDataURL();
+            canvas.toBlob(blob => {
+                let fd = new FormData()
+                let gravatar
+                fd.append("fileBlob", blob, `${this.$user.username}.png`); //目前后端做的验证必须加后缀
+                this.$axios.silentPost('/v1/api/attachment/gravatar', fd, true)
+                    .then((res) => {
+                        gravatar = res.data.uploaded
+                        return this.$axios.silentPut('/v1/api/accounts/profile', {
+                            gravatar: gravatar
+                        }, true)
+                    }).then(() => {
+                        this.$store.dispatch('iota/global/updateUser', { gravatar: gravatar })
+                    }).catch(() => { })
             })
         }
     }
