@@ -3,7 +3,7 @@
         <div class="ii-user-profile-control-overlay"
             slot="overlay">
             <div class="basic">
-                <avatar-viewer :img='$user.gravatar||"/assets/imgs/defaultAvatar.png"'
+                <iota-avatar-viewer :img='$user.gravatar||"/assets/imgs/defaultAvatar.png"'
                     :width='60'
                     :height='60' />
                 <a-divider type="vertical"
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="ii-user-profile-control">
-            <avatar-viewer :img='$user.gravatar||"/assets/imgs/defaultAvatar.png"'
+            <iota-avatar-viewer :img='$user.gravatar||"/assets/imgs/defaultAvatar.png"'
                 :width='32'
                 :radius='50'
                 :height='32' />

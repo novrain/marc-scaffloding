@@ -1,5 +1,5 @@
 import * as T from './mutation-types'
-import { axios, commonPost, noop, silentGet } from '../../../../axios'
+import { axios, commonPost, noop, silentGet, baseURL } from '../../../../axios'
 import cookie, { createi18n, isCookieValid, isUserValid } from '../../../../framework/util'
 
 const $i = createi18n('iota.global.authentication.')
@@ -39,6 +39,10 @@ export default {
             })
     },
     updateUser({ commit }, user) {
+        // @Todo 目前这种无代理的部署方式可以使用这种形式，有代理的情况下，可以通过代理配置
+        if (user.gravatar) {
+            user.gravatar = `${baseURL()}${user.gravatar}`
+        }
         commit(T.GLOBAL_AUTHENTICATION_SIGNIN, user)
     },
     async signout({ commit }) {
