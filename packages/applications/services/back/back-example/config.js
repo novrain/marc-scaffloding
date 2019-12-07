@@ -90,8 +90,8 @@ function createConfig(args) {
         opts: {
             notAllowRegistry: true,
             tokenApi: 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code',
-            appid: 'wx5849e7b79af8f5de',
-            secret: '378fb28f504099e1c0b27e26fe8557a3',
+            appid: 'xxxx',
+            secret: 'yyyy',
             userApi: 'https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s',
             oauth2: {
                 redirect: {

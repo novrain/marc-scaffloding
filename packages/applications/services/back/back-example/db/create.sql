@@ -2626,14 +2626,6 @@ ALTER TABLE ONLY act_hi_tsk_log ALTER COLUMN id_ SET DEFAULT nextval('act_hi_tsk
 
 
 --
--- Data for Name: CommunistPartyProcessCategory; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO "CommunistPartyProcessCategory" (id, name, "desc", index, "belongTo", "createdAt", "updatedAt", "parentId") VALUES ('956a8909-93a3-48e9-ba1a-9d999cb734d2', 'da', NULL, NULL, NULL, '2019-11-25 15:11:10.365+08', '2019-11-25 15:11:10.365+08', NULL);
-INSERT INTO "CommunistPartyProcessCategory" (id, name, "desc", index, "belongTo", "createdAt", "updatedAt", "parentId") VALUES ('2d4bc892-4a42-4f03-b109-dc1542a6bb5b', 'da', NULL, NULL, NULL, '2019-11-25 15:11:15.511+08', '2019-11-25 15:11:15.511+08', '956a8909-93a3-48e9-ba1a-9d999cb734d2');
-
-
---
 -- Data for Name: Dictionary; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
