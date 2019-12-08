@@ -15,8 +15,8 @@
     "author": "",
     "license": "MIT",
     "devDependencies": {
-        "@babel/plugin-transform-modules-commonjs": "^7.7.0",
-        "@babel/register": "^7.7.0",
+        "@babel/plugin-transform-modules-commonjs": "^7.7.5",
+        "@babel/register": "^7.7.4",
         "babel-preset-minify": "^0.5.1",
         "chai": "^4.2.0",
         "mocha": "^6.2.2",

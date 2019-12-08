@@ -19,13 +19,13 @@
         "@iota-cn/svc-util": "^1.0.0",
         "@iota-fork/sequelize": "^5.21.2",
         "mqtt": "^3.0.0",
-        "pg": "^7.12.1",
+        "pg": "^7.14.0",
         "pg-hstore": "^2.3.3",
         "redis": "^2.8.0"
     },
     "devDependencies": {
-        "@babel/plugin-transform-modules-commonjs": "^7.7.0",
-        "@babel/register": "^7.7.0",
+        "@babel/plugin-transform-modules-commonjs": "^7.7.5",
+        "@babel/register": "^7.7.4",
         "babel-preset-minify": "^0.5.1",
         "chai": "^4.2.0",
         "mocha": "^6.2.2",

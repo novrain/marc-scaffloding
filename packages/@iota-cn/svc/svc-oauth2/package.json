@@ -19,11 +19,11 @@
         "@iota-cn/svc-authorization": "^1.0.0",
         "@iota-cn/svc-mmw": "^1.0.0",
         "@iota-cn/svc-user": "^1.0.0",
-        "superagent": "^5.1.0"
+        "superagent": "^5.1.2"
     },
     "devDependencies": {
-        "@babel/plugin-transform-modules-commonjs": "^7.7.0",
-        "@babel/register": "^7.7.0",
+        "@babel/plugin-transform-modules-commonjs": "^7.7.5",
+        "@babel/register": "^7.7.4",
         "@iota-cn/svc-scaffolding": "^1.0.0",
         "babel-preset-minify": "^0.5.1",
         "chai": "^4.2.0",

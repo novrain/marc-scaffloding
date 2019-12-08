@@ -15,11 +15,11 @@
     "author": "",
     "license": "MIT",
     "dependencies": {
-        "path-to-regexp": "^5.0.0"
+        "path-to-regexp": "^6.1.0"
     },
     "devDependencies": {
-        "@babel/plugin-transform-modules-commonjs": "^7.7.0",
-        "@babel/register": "^7.7.0",
+        "@babel/plugin-transform-modules-commonjs": "^7.7.5",
+        "@babel/register": "^7.7.4",
         "babel-preset-minify": "^0.5.1",
         "chai": "^4.2.0",
         "mocha": "^6.2.2",
