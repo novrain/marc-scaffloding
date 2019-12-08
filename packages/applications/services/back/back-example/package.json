@@ -27,11 +27,11 @@
         "@iota-cn/svc-user": "^1.0.0",
         "@iota-cn/svc-util": "^1.0.0",
         "@iota-cn/util-validation": "^1.0.10",
-        "commander": "^4.0.0"
+        "commander": "^4.0.1"
     },
     "devDependencies": {
-        "@babel/plugin-transform-modules-commonjs": "^7.7.0",
-        "@babel/register": "^7.7.0",
+        "@babel/plugin-transform-modules-commonjs": "^7.7.5",
+        "@babel/register": "^7.7.4",
         "chai": "^4.2.0",
         "mocha": "^6.2.2",
         "mochawesome": "^4.1.0",

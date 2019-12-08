@@ -20,11 +20,11 @@
         "@iota-cn/svc-restful": "^1.0.0",
         "@iota-cn/util-validation": "^1.0.10",
         "moment": "^2.24.0",
-        "path-to-regexp": "^5.0.0"
+        "path-to-regexp": "^6.1.0"
     },
     "devDependencies": {
-        "@babel/plugin-transform-modules-commonjs": "^7.7.0",
-        "@babel/register": "^7.7.0",
+        "@babel/plugin-transform-modules-commonjs": "^7.7.5",
+        "@babel/register": "^7.7.4",
         "@iota-cn/svc-scaffolding": "^1.0.0",
         "@iota-cn/svc-user": "^1.0.0",
         "babel-preset-minify": "^0.5.1",

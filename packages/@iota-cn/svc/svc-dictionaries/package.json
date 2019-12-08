@@ -19,8 +19,8 @@
         "@iota-cn/svc-restful": "^1.0.0"
     },
     "devDependencies": {
-        "@babel/plugin-transform-modules-commonjs": "^7.7.0",
-        "@babel/register": "^7.7.0",
+        "@babel/plugin-transform-modules-commonjs": "^7.7.5",
+        "@babel/register": "^7.7.4",
         "@iota-cn/svc-scaffolding": "^1.0.0",
         "@iota-cn/svc-user": "^1.0.0",
         "babel-preset-minify": "^0.5.1",

@@ -19,8 +19,8 @@
         "uid-safe": "^2.1.5"
     },
     "devDependencies": {
-        "@babel/plugin-transform-modules-commonjs": "^7.7.0",
-        "@babel/register": "^7.7.0",
+        "@babel/plugin-transform-modules-commonjs": "^7.7.5",
+        "@babel/register": "^7.7.4",
         "babel-preset-minify": "^0.5.1",
         "chai": "^4.2.0",
         "koa": "^2.11.0",
