@@ -13,7 +13,7 @@ export const layoutContainerPlugin = {
         simple: { // 简单页面，用于包裹简单的登录、404等页面 
             logo: '/assets/imgs/logo.png',  // 放置在静态目录页面
             background: '/assets/imgs/bg.png',
-            copyright: '@2015-2017 以太数据 版权所有 苏ICP备:16022233号',
+            copyright: `@2015-${new Date().getFullYear()}  版权所有 `,
             path: SIMPLE_CONTAINER_PATH
         },
         complex: {
