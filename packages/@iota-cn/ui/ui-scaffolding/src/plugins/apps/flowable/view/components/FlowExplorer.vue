@@ -281,7 +281,7 @@ export default {
                         columns={columns}
                         rows={this.flows}>
                     </IiTableLayout>
-                </div>
+                </div >
             )
         }
     },
