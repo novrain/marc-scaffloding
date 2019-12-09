@@ -1,4 +1,4 @@
-import Overview from "./view/Overview";
+const Overview = () => import("./view/Overview")
 
 export default (opts) => {
     const containerId = opts.containerId
@@ -8,9 +8,7 @@ export default (opts) => {
                 redirect: '/console/overview', // 覆盖 console 的 默认 路由
                 overview: {
                     path: '/console/overview',
-                    component: {
-                        mixins: [Overview]
-                    },
+                    component: Overview,
                     props: { widages: opts.widages }
                 }
             }

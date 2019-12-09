@@ -1,14 +1,12 @@
-import Signin from './view/Signin'
-import RequireRestPassword from './view/RequireResetPassword'
-import RequireRestPasswordError from './view/RequireResetPasswordError'
-import RequireRestPasswordSuccess from './view/RequireResetPasswordSuccess'
-import RestPassword from './view/ResetPassword'
-import RestPasswordError from './view/ResetPasswordError'
-import RestPasswordSuccess from './view/ResetPasswordSuccess'
-import EmailActivateSuccess from './view/EmailActivateSuccess'
-import EmailActivateError from './view/EmailActivateError'
-// import UserProfile from './view/UserProfile'
-import { TrySigninInterceptor } from '../../../framework/mixins'
+const RequireRestPassword = () => import('./view/RequireResetPassword')
+const RequireRestPasswordError = () => import('./view/RequireResetPasswordError')
+const RequireRestPasswordSuccess = () => import('./view/RequireResetPasswordSuccess')
+const RestPassword = () => import('./view/ResetPassword')
+const RestPasswordError = () => import('./view/ResetPasswordError')
+const RestPasswordSuccess = () => import('./view/ResetPasswordSuccess')
+const EmailActivateSuccess = () => import('./view/EmailActivateSuccess')
+const EmailActivateError = () => import('./view/EmailActivateError')
+const TrySignin = () => import('./view/TrySignin')
 
 export default (opts) => {
     const signin = opts.signin || {}
@@ -18,63 +16,42 @@ export default (opts) => {
             app: {
                 signin: {
                     path: 'signin',
-                    component: {
-                        mixins: [
-                            TrySigninInterceptor,
-                            Signin
-                        ]
-                    },
+                    component: TrySignin,
                     props: {
                         redirect: signin.redirect
                     }
                 },
                 requireRestPwd: {
                     path: 'reset/send/email',
-                    component: {
-                        mixins: [RequireRestPassword]
-                    }
+                    component: RequireRestPassword
                 },
                 requireRestPwdError: {
                     path: 'reset/send/email/error',
-                    component: {
-                        mixins: [RequireRestPasswordError]
-                    }
+                    component: RequireRestPasswordError
                 },
                 requireRestPwdSuccess: {
                     path: 'reset/send/email/success',
-                    component: {
-                        mixins: [RequireRestPasswordSuccess]
-                    }
+                    component: RequireRestPasswordSuccess
                 },
                 restPwd: {
                     path: 'reset/password',
-                    component: {
-                        mixins: [RestPassword]
-                    }
+                    component: RestPassword
                 },
                 restPwdError: {
                     path: 'reset/password/error',
-                    component: {
-                        mixins: [RestPasswordError]
-                    }
+                    component: RestPasswordError
                 },
                 restPwdSuccess: {
                     path: 'reset/password/success',
-                    component: {
-                        mixins: [RestPasswordSuccess]
-                    }
+                    component: RestPasswordSuccess
                 },
                 emailActivateSuccess: {
                     path: 'email/activation/success',
-                    component: {
-                        mixins: [EmailActivateSuccess]
-                    }
+                    component: EmailActivateSuccess
                 },
                 emailActivateError: {
                     path: 'email/activation/error',
-                    component: {
-                        mixins: [EmailActivateError]
-                    }
+                    component: EmailActivateError
                 },
                 // [containerId || 'container']: {
                 //     authentication: {

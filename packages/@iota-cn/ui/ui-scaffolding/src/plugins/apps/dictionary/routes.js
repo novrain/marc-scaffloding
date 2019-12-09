@@ -1,4 +1,4 @@
-import Dictionaries from "./view/Dictionaries";
+const Dictionaries = () => import("./view/Dictionaries")
 
 export default (opts) => {
     const containerId = opts.containerId
@@ -7,9 +7,7 @@ export default (opts) => {
             [containerId || 'container']: {
                 dictionary: { // dictionary
                     path: '/console/system/dictionaries',
-                    component: {
-                        mixins: [Dictionaries]
-                    }
+                    component: Dictionaries
                 }
             }
         }

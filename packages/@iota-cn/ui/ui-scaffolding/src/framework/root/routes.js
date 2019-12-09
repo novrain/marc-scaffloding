@@ -1,4 +1,5 @@
-import Root from './view/Root'
+// import Root from './view/Root'
+const Root = () => import('./view/Root')
 
 const routes = function (opts) {
     const rs = {

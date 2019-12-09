@@ -1,4 +1,4 @@
-import Flowable from "./view/console/Flowable";
+const Flowable = () => import("./view/console/Flowable")
 
 export default (opts) => {
     const containerId = opts.containerId
@@ -6,10 +6,7 @@ export default (opts) => {
     opts.flows.forEach(f => {
         routes[f.key] = {
             path: f.path,
-            component: {
-                // mixins: [Flowable, ...(f.mixins || [])]
-                mixins: [Flowable]  // 目前混入在第一层没有意义
-            },
+            component: Flowable,
             props: { flowId: f.flowId, flowHelper: f.flowHelper }
         }
     })
