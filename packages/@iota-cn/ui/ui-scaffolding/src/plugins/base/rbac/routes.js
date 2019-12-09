@@ -1,9 +1,9 @@
-import UserProfile from './view/profile/UserProfile'
-import Overview from './view/rbac/Overview'
-import User from './view/rbac/User'
-import Role from './view/rbac/Role'
-import Position from './view/rbac/Position'
-import Organization from './view/rbac/Organization'
+const UserProfile = () => import('./view/profile/UserProfile')
+const Overview = () => import('./view/rbac/Overview')
+const User = () => import('./view/rbac/User')
+const Role = () => import('./view/rbac/Role')
+const Position = () => import('./view/rbac/Position')
+const Organization = () => import('./view/rbac/Organization')
 
 export default (opts) => {
     const containerId = opts.containerId
@@ -13,41 +13,29 @@ export default (opts) => {
                 authentication: {
                     profile: {
                         path: '/console/account/profile',
-                        component: {
-                            mixins: [UserProfile]
-                        }
+                        component: UserProfile
                     }
                 },
                 authorizations: { // rbac
                     overview: {
                         path: '/console/authorizations/overview',
-                        component: {
-                            mixins: [Overview]
-                        }
+                        component: Overview
                     },
                     users: {
                         path: '/console/authorizations/users',
-                        component: {
-                            mixins: [User]
-                        }
+                        component: User
                     },
                     roles: {
                         path: '/console/authorizations/roles',
-                        component: {
-                            mixins: [Role]
-                        }
+                        component: Role
                     },
                     positions: {
                         path: '/console/authorizations/positions',
-                        component: {
-                            mixins: [Position]
-                        }
+                        component: Position
                     },
                     organizations: {
                         path: '/console/authorizations/organizations',
-                        component: {
-                            mixins: [Organization]
-                        }
+                        component: Organization
                     }
                 }
             }

@@ -1,7 +1,6 @@
-import E404 from './view/404.vue'
-import E504 from './view/504.vue'
-import E500 from './view/500.vue'
-// import merge from 'deepmerge'
+const E404 = () => import('./view/404')
+const E504 = () => import('./view/504')
+const E500 = () => import('./view/500')
 
 export default (opts) => {
     let parents = opts.parents

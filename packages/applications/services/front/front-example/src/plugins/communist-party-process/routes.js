@@ -1,4 +1,4 @@
-import CommunistPartyProcess from "./view/CommunistPartyProcess";
+const CommunistPartyProcess = () => import("./view/CommunistPartyProcess")
 
 export default (opts) => {
     const containerId = opts.containerId
@@ -8,9 +8,7 @@ export default (opts) => {
             [containerId || 'container']: {
                 'communist_party_process': {
                     path: '/console/applications/communist_party_process',
-                    component: {
-                        mixins: [CommunistPartyProcess]
-                    },
+                    component: CommunistPartyProcess,
                     props: { flowId: flow.flowId, flowHelper: flow.flowHelper }
                 }
             }

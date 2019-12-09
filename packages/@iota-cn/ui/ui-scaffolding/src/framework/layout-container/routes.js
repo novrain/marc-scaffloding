@@ -1,7 +1,5 @@
-import LayoutContainer from './view/LayoutContainer'
-import SinglePageLayout from './view/SinglePageLayout'
-import MessageCenter from './mixins/MessageCenter'
-import { AuthenticationInterceptor, TrySigninInterceptor } from '../mixins'
+const MixedContainer = () => import('./view/MixedContainer')
+const SinglePageLayout = () => import('./view/SinglePageLayout')
 
 export default (opts) => {
     let { simple, complex } = opts
@@ -12,14 +10,7 @@ export default (opts) => {
             [id || 'container']: { // root(empty) / container
                 path: path || '/container',
                 redirect: redirect, // 可以覆盖默认路由
-                component: {
-                    mixins: [// 这里混入两个组件，这样减少依赖，注意顺序
-                        TrySigninInterceptor,
-                        AuthenticationInterceptor,
-                        MessageCenter,
-                        LayoutContainer
-                    ]
-                },
+                component: MixedContainer,
                 props: { id, authFailRedirect },
             }
         }
