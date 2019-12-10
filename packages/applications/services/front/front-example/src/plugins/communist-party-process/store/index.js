@@ -2,7 +2,7 @@ import mutations from './mutations'
 import actions from './actions'
 
 export default (opts) => {
-    const { containerId } = opts
+    const { id, containerId } = opts
     const state = {}
     const store = {
         modules: {
@@ -10,7 +10,7 @@ export default (opts) => {
                 modules: {
                     [containerId || 'container']: {
                         modules: {
-                            communistPartyProcess: {
+                            [id || 'communistPartyProcess']: {
                                 namespaced: true,
                                 state,
                                 mutations,

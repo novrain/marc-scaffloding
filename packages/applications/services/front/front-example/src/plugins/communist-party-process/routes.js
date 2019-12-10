@@ -1,15 +1,38 @@
-const CommunistPartyProcess = () => import("./view/CommunistPartyProcess")
+
+
+/**
+ * 强制路由刷新
+ * @param {} flowId 
+ */
+const createFlowableContainer = (flowId) => {
+    const CommunistPartyProcess = () => import("./view/CommunistPartyProcess")
+    return {
+        props: ['flowId', 'flowHelper'],
+        name: flowId,
+        components: {
+            flowable: CommunistPartyProcess
+        },
+        render() {
+            return (<flowable flowId={this.flowId} flowHelper={this.flowHelper} />)
+        }
+    }
+}
 
 export default (opts) => {
-    const containerId = opts.containerId
-    const flow = opts.flow
+    const { id, containerId } = opts
+    let routes = {}
+    opts.flows.forEach(f => {
+        routes[f.flowId] = {
+            path: f.path,
+            component: createFlowableContainer(f.flowId),
+            props: { flowId: f.flowId, flowHelper: f.flowHelper }
+        }
+    })
     return {
         iota: {
             [containerId || 'container']: {
-                'communist_party_process': {
-                    path: '/console/applications/communist_party_process',
-                    component: CommunistPartyProcess,
-                    props: { flowId: flow.flowId, flowHelper: flow.flowHelper }
+                [id || 'communist_party_process']: {
+                    ...routes
                 }
             }
         }
