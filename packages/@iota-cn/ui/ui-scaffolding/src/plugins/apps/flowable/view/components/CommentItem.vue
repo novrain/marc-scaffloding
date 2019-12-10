@@ -4,7 +4,7 @@
             <div class="header"
                 v-if="!newComment">
                 <div class="info">
-                    <strong>{{innerComment.user.username || innerComment.user.fullname}}</strong>
+                    <strong>{{innerComment.user.fullname || innerComment.user.username}}</strong>
                     <span>{{innerComment.createdAt}}</span>
                 </div>
                 <div class="top-toolbar"
@@ -24,13 +24,15 @@
             <div class="header"
                 v-else>
                 <div class="info">
-                    <strong>{{user.username || user.fullname}}</strong>
+                    <strong>{{U.nameOfUser(user)}}</strong>
                     <span>{{innerComment.createdAt}}</span>
                 </div>
             </div>
             <ckeditor :editor="editor.ui"
                 v-if="newComment || status === 'edit'"
                 v-model="innerComment.message"
+                ref='_ckEditor'
+                @ready='onEditorReady'
                 :config="editor.config"></ckeditor>
             <div v-else
                 class="body"
@@ -57,8 +59,44 @@ import moment from 'moment'
 import * as U from '../../util'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
+class UploadAdapter {
+    constructor(loader, axios, uploadParams) {
+        this.loader = loader
+        this.axios = axios
+        this.uploadParams = uploadParams
+    }
+    upload = () => {
+        return this.loader.file.then(file => {
+            const fd = new FormData()
+            fd.append('file', file)
+
+            //与flowable分离的方式，由 attachement 模块实现决定
+            return this.axios.silentPost('/v1/api/attachment/flowable', fd, true)
+                .then((res) => {
+                    return {
+                        default: `${this.axios.baseURL()}${res.data.uploaded}`
+                    }
+                }).catch(() => { })
+
+            /**
+             * 利用flowable的content服务，坏处是可能被删除
+             */
+            // fd.append('createdBy', this.uploadParams.createdBy)
+            // fd.append('processInstanceId', this.uploadParams.processInstanceId)
+            // return this.axios.silentPost(`${this.axios.baseURL()}/fl/content/content-service/content-items`, fd, true)
+            //     .then((res) => {
+            //         return {
+            //             default: `${this.axios.baseURL()}${res.data.uploaded}`
+            //         }
+            //     }).catch(() => { })
+        })
+    }
+    abort = () => {
+    }
+}
+
 export default {
-    props: ['index', 'id', 'user', 'comment', 'onDelete', 'onCreate', 'onUpdate', 'disabled'],
+    props: ['index', 'id', 'user', 'comment', 'onDelete', 'onCreate', 'onUpdate', 'disabled', 'processInstanceId'],
     data() {
         let editorable = false
         let innerComment = { message: '' }
@@ -77,13 +115,15 @@ export default {
             editor: {
                 ui: ClassicEditor,
                 config: {
-                    toolbar: ['bold', 'italic', 'bulletedList', 'numberedList']
+                    toolbar: ['bold', 'italic', 'bulletedList', 'numberedList', 'imageUpload']
                 }
             },
             innerComment: innerComment,  // 内部的保存 comment 的变量
             newComment: !this.comment, // 如果没有传递 comment ，就是新建状态
             editorable: editorable && !this.disabled, // 如果是当前用户的comment，就是可编辑的
-            status: 'view' // 当是可编辑的时候，可以切换编辑状态 view / edit
+            status: 'view', // 当是可编辑的时候，可以切换编辑状态 view / edit
+            // 使得模板可以访问
+            U: U
         }
     },
     methods: {
@@ -121,6 +161,17 @@ export default {
                 this.onCreate({ comment }).then(() => {
                     this.innerComment.message = ''
                 }).catch(() => { })
+            }
+        },
+        onEditorReady() {
+            const instance = this.$refs._ckEditor.instance
+            const fileRepository = instance.plugins.get('FileRepository')
+
+            if (fileRepository != null) {
+                fileRepository.createUploadAdapter = (loader) => new UploadAdapter(loader, this.$axios, {
+                    createdBy: U.idOfUser(this.user),
+                    processInstanceId: this.processInstanceId
+                })
             }
         }
     }

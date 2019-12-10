@@ -73,6 +73,15 @@ export default {
                 showTotal={total => this.$t('iota.frame.components.tablelayout.total', { total })} />
         ) : null;
         const size = this.size || 'middle'
+        let rowSelection = this.rowSelection
+        if (rowSelection && rowSelection.type === 'radio') {
+            rowSelection = Object.assign({
+                onSelect: (row) => {
+                    this.onEvent('rowClick')(row)
+                }
+            }, rowSelection
+            )
+        }
         return (
             <div class={classNames('layout', this.className)}>
                 {
@@ -96,7 +105,7 @@ export default {
                 }
                 <div class={'layout__table'} ref='_tableContainer'>
                     <resize-observer onNotify={this.onResize} />
-                    <ATable rowSelection={this.rowSelection}
+                    <ATable rowSelection={rowSelection}
                         columns={this.columns}
                         scroll={{ y: this.tabScroll.y - space }}
                         dataSource={this.rows}

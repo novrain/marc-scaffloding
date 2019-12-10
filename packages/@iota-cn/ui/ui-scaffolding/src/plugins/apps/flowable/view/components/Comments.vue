@@ -2,6 +2,7 @@
     <div class="ii-comments">
         <ii-comment-item :user='user'
             v-if='commentable && $p("/fl/process/history/historic-process-instances/:instanceId/comments:POST")'
+            :processInstanceId='flow.processInstanceId'
             :onCreate='onCreateComment' />
         <template v-for="(comment, index) in comments.items">
             <ii-comment-item :key="comment.id"

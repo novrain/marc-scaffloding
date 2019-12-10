@@ -404,6 +404,7 @@ export default {
             let filter = (input, option) => {
                 return option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }
+            const users = this.subUsers.concat(this.user)
             return (
                 <a-modal title="重新指派"
                     bodyStyle={{ maxHeight: "80%", padding: "10px" }}
@@ -415,8 +416,8 @@ export default {
                         <a-select vModel={this.currentAssigneeUser} showSearch
                             style={{ width: '200px' }} filterOption={filter}>
                             {
-                                this.subUsers.map((user) => {
-                                    return <a-select-option value={U.idOfUser(user)}>{user.fullname || user.username}</a-select-option>
+                                users.map((user) => {
+                                    return <a-select-option value={U.idOfUser(user)}>{U.nameOfUser(user)}</a-select-option>
                                 })
                             }
                         </a-select>
@@ -428,6 +429,7 @@ export default {
             if (!this.currentTask) {
                 return null
             }
+            const users = this.subUsers.concat(this.user)
             return (
                 <a-modal title="候选人"
                     bodyStyle={{ padding: "10px", height: '400px', display: 'flex', flexDirection: 'column' }}
@@ -437,8 +439,8 @@ export default {
                     footer={null}>
                     <a-input-search style={{ width: '250px', margin: '0 auto' }} placeholder="用户名" vModel={this.candidateUsersSearch}></a-input-search>
                     <div style={{ flex: 1 }} >
-                        {this.subUsers.map((user) => {
-                            let fullname = user.fullname || ''
+                        {users.map((user) => {
+                            let fullname = user.userExt ? user.userExt.fullname : ''
                             if (this.candidateUsersSearch
                                 && fullname.toLowerCase().indexOf(this.candidateUsersSearch.toLowerCase()) === -1
                                 && user.username.toLowerCase().indexOf(this.candidateUsersSearch.toLowerCase()) === -1) {
@@ -449,7 +451,7 @@ export default {
                             })
                             return (<a-checkbox style={{ width: '50%', padding: '10px', margin: 0 }}
                                 checked={link !== undefined} onChange={(e) => this.onCandidateUserChecked(e, user, link)}>
-                                {user.fullname || user.username}
+                                {U.nameOfUser(user)}
                             </a-checkbox>)
                         })}
                     </div>
