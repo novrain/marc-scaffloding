@@ -80,24 +80,33 @@ let verifyCaptchaSMS = async function (ctx, next) {
     }
 };
 
+const condition = (models) => {
+    return {
+        attributes: userAttr,
+        include: [
+            {
+                model: models.SubUser,
+                as: 'subExt'
+            },
+            {
+                model: models.UserExtention,
+                as: 'userExt'
+            }
+        ]
+    }
+}
+
 function passwordAuth(info) {
     return async function (ctx, next) {
         const models = ctx.iota.dc.models;
         if (!ctx.iota.authed) {
             if (info && info.username && info.psdEncrypt) {
-                let user = await models.User.findOne({
+                let user = await models.User.findOne(Object.assign({
                     where: {
                         username: info.username,
                         password: info.psdEncrypt
-                    },
-                    attributes: userAttr,
-                    include: [
-                        {
-                            model: models.SubUser,
-                            as: 'subExt'
-                        }
-                    ]
-                });
+                    }
+                }, condition(models)));
                 await auth(ctx, user, info, next);
             } else {
                 await next(info);
@@ -111,19 +120,12 @@ function emailAuth(info) {
         const models = ctx.iota.dc.models;
         if (!ctx.iota.authed) {
             if (info && info.email && info.psdEncrypt) {
-                let user = await models.User.findOne({
+                let user = await models.User.findOne(Object.assign({
                     where: {
                         email: info.email,
                         password: info.psdEncrypt
-                    },
-                    attributes: userAttr,
-                    include: [
-                        {
-                            model: models.SubUser,
-                            as: 'subExt'
-                        }
-                    ]
-                });
+                    }
+                }, condition(models)));
                 await auth(ctx, user, info, next);
             } else {
                 await next(info);
@@ -137,19 +139,12 @@ function mobileAuth(info) {
         const models = ctx.iota.dc.models;
         if (!ctx.iota.authed) {
             if (info && info.mobile && info.psdEncrypt) {
-                let user = await models.User.findOne({
+                let user = await models.User.findOne(Object.assign({
                     where: {
                         mobile: info.mobile,
                         password: info.psdEncrypt
-                    },
-                    attributes: userAttr,
-                    include: [
-                        {
-                            model: models.SubUser,
-                            as: 'subExt'
-                        }
-                    ]
-                });
+                    }
+                }, condition(models)));
                 await auth(ctx, user, info, next);
             } else {
                 await next(info);

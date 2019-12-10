@@ -19,7 +19,7 @@ export default {
         const state = this.$store.state.iota.global.authentication
         const systemVariables = {
             initiatorId: state.user.id,
-            initiatorName: state.user.fullname || state.user.username,
+            initiatorName: U.nameOfUser(state.user),
             initiatorUser: U.idOfUser(state.user)
         }
         const layout = this.flowHelper.layout || 'table'
@@ -59,7 +59,7 @@ export default {
                     },
                     constants: {
                         initiatorId: this.$user.id,
-                        initiatorName: this.$user.fullname || this.$user.username,
+                        initiatorName: U.nameOfUser(this.$user),
                         currentTaskId: 'start'
                     }
                 }

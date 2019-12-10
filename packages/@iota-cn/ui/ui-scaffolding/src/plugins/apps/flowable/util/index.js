@@ -3,9 +3,16 @@
  * @param {*} user 
  */
 export const idOfUser = (user) => {
-    return `u:${user.id}:${user.username}:${user.fullname || ''}`
+    return `u:${user.id}:${user.username}:${user.userExt ? user.userExt.fullname || '' : ''}`
 }
 
+export const nameOfUser = (user) => {
+    return user.userExt && user.userExt.fullname ? user.userExt.fullname : user.username
+}
+
+export const fullnameOfUser = (user) => {
+    return user.userExt && user.userExt.fullname ? user.userExt.fullname : ''
+}
 /**
  * 用于查询，利用flowable的 assigneeLike 功能
  * @param {*} user 

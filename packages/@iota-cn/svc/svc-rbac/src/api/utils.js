@@ -29,10 +29,18 @@ export const buildAdminFilterUserQuery = async (dc, user, asFilter = false, incl
                 where: {
                     parentId: { $not: null }
                 },
-                attributes: asFilter ? [] : ['userId', 'enable']
+                attributes: asFilter ? [] : ['enable', 'dependent']
             }
         ]
     };
+    if (!asFilter) {
+        condition.include.push(
+            {
+                model: dc.models.UserExtention,
+                as: 'userExt',
+            }
+        )
+    }
     if (includeDeleted) {
         condition.paranoid = false;
     }
@@ -186,8 +194,12 @@ export const findAllChildrenOfUsersIncludeSoftDeleted = async (parents, models, 
             {
                 model: models.SubUser,
                 as: 'subExt',
-                attributes: ['userId', 'enable', 'dependent', 'parentId'],
+                attributes: ['enable', 'dependent', 'parentId'],
                 where: { parentId: { $in: ids } }
+            },
+            {
+                model: models.UserExtention,
+                as: 'userExt',
             }
         ],
         paranoid: false
@@ -553,7 +565,7 @@ export const findUserIn = async (ctx, through, target, targetAs, targetKey, allo
         include: {
             model: models.SubUser,
             as: 'subExt',
-            attributes: ['userId', 'enable']
+            attributes: ['enable']
         },
         where: {
             $and: [
@@ -668,7 +680,7 @@ export const findUserNotIn = async (ctx, through, target, targetAs, targetKey, a
         include: {
             model: models.SubUser,
             as: 'subExt',
-            attributes: ['userId', 'enable']
+            attributes: ['enable']
         },
         distinct: true,
         limit: limit,

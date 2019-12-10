@@ -523,6 +523,7 @@ export default {
                         success: this.t('updateSuccess'),
                         error: this.t('updateError')
                     }).then(() => {
+                        this.$store.dispatch('iota/global/updateUser', { userExt: values })
                     }).catch(() => {
                     })
                 }

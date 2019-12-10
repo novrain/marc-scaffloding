@@ -1,11 +1,6 @@
 import request from "request";
 
-let sendCaptchaSMS = function (opts) {
-    // 根据选择的短信提供商，实现自己的短信提醒
-    return fakesms
-}
-
-let fakesms = async function (ctx, next) {
+let fakeSMS = async function (ctx, next) {
     let mobile = ctx.request.body.mobile + '';
     let aday = 86400000; //24小时->60*60*1000*24
     if (mobile && (/^1\d{10}$/.test(mobile))) {
@@ -52,7 +47,12 @@ function createpromiserequest(params) {
     });
 }
 
+let sendCaptchaSMS = function (opts) {
+    // 根据选择的短信提供商，实现自己的短信提醒
+    return fakeSMS
+}
+
 export default {
-    fakesms,
+    fakeSMS,
     sendCaptchaSMS
 }
