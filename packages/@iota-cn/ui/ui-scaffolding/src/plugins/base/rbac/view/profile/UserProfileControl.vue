@@ -9,7 +9,7 @@
                 <a-divider type="vertical"
                     class="divider" />
                 <div class="name-mail">
-                    <div>{{$user.username}}</div>
+                    <div>{{`${$user.username} ${$user.userExt && $user.userExt.fullname ? $user.userExt.fullname : ''}`}}</div>
                     <div>{{$user.email||'--'}}</div>
                 </div>
             </div>

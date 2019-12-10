@@ -10,6 +10,8 @@ export default {
             success: that.$t($i('signinsuccess')),
             error: that.$t($i('signinerror'))
         }).then(res => {
+            res.data.userExt = res.data.userExt || {}
+            res.data.subExt = res.data.subExt || {}
             if (require.remember) {
                 // 存储 localStorage
                 localStorage.setItem('ii:user', JSON.stringify(res.data))

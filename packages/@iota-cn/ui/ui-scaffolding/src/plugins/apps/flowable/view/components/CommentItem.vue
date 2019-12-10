@@ -4,7 +4,7 @@
             <div class="header"
                 v-if="!newComment">
                 <div class="info">
-                    <strong>{{innerComment.user.username || innerComment.user.fullname}}</strong>
+                    <strong>{{innerComment.user.fullname || innerComment.user.username}}</strong>
                     <span>{{innerComment.createdAt}}</span>
                 </div>
                 <div class="top-toolbar"
@@ -24,7 +24,7 @@
             <div class="header"
                 v-else>
                 <div class="info">
-                    <strong>{{user.username || user.fullname}}</strong>
+                    <strong>{{U.nameOfUser(user)}}</strong>
                     <span>{{innerComment.createdAt}}</span>
                 </div>
             </div>
@@ -121,7 +121,9 @@ export default {
             innerComment: innerComment,  // 内部的保存 comment 的变量
             newComment: !this.comment, // 如果没有传递 comment ，就是新建状态
             editorable: editorable && !this.disabled, // 如果是当前用户的comment，就是可编辑的
-            status: 'view' // 当是可编辑的时候，可以切换编辑状态 view / edit
+            status: 'view', // 当是可编辑的时候，可以切换编辑状态 view / edit
+            // 使得模板可以访问
+            U: U
         }
     },
     methods: {
