@@ -27,3 +27,5 @@ yarn.lock*
 
 # static
 static
+
+*-lock.json
