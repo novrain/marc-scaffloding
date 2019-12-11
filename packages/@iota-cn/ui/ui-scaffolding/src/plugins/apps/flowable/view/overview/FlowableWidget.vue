@@ -38,7 +38,7 @@ export default {
         const name = this.processDef ? this.processDef.name : ''
         // 没有这个模块的访问权限，就不显示
         return this.$m(this.redirect) ? (
-            <a-card title={name} size='small' class='ii-flow-widage'
+            <a-card title={name} size='small' class='ii-flow-widget'
                 bodyStyle={{ padding: "10px", flex: 1 }}>
                 <a slot='extra' onClick={() => {
                     this.$router.push({ path: this.redirect })
@@ -62,7 +62,7 @@ export default {
 <style lang="stylus" scoped>
 @import '../../../../../styles/imports';
 
-.ii-flow-widage {
+.ii-flow-widget {
     display: flex;
     flex-direction: column;
     width: 100%;

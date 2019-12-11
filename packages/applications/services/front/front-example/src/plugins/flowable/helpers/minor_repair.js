@@ -100,7 +100,7 @@ export default {
         ]
         return columns
     },
-    columnsForWidage() {
+    columnsForWidget() {
         let columns = [
             {
                 title: '名称',

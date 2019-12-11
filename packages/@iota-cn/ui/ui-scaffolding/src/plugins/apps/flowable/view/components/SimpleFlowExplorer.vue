@@ -119,8 +119,8 @@ export default {
                     width: '30%',
                 }
             ]
-            if (typeof this.flowHelper.columnsForWidage === 'function') {
-                columns = this.flowHelper.columnsForWidage() || columns
+            if (typeof this.flowHelper.columnsForWidget === 'function') {
+                columns = this.flowHelper.columnsForWidget() || columns
             }
             if (this.showNode) { // 扩展类提供
                 const taskNodeColumn = {

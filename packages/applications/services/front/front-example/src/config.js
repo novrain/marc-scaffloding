@@ -11,9 +11,9 @@ layoutContainerPlugin.opts.simple.redirect = '/console'
 const overviewPlugin = {
     plugin: require('./plugins/overview'), opts: {
         containerId: COMPLEX_CONTAINER_ID,
-        widages: [
+        widgets: [
             {
-                component: 'ii-flowable-widage',
+                component: 'ii-flowable-widget',
                 props: {
                     flowId: 'project_of_year',
                     flowHelper: require('./plugins/flowable/helpers/project_of_year').default,
@@ -21,7 +21,7 @@ const overviewPlugin = {
                 }
             },
             {
-                component: 'ii-flowable-widage',
+                component: 'ii-flowable-widget',
                 props: {
                     flowId: 'minor_repair',
                     flowHelper: require('./plugins/flowable/helpers/minor_repair').default,
@@ -29,7 +29,7 @@ const overviewPlugin = {
                 }
             },
             {
-                component: 'ii-flowable-widage',
+                component: 'ii-flowable-widget',
                 props: {
                     flowId: 'monthly_routine_task',
                     flowHelper: require('./plugins/flowable/helpers/monthly_routine_task').default,
@@ -37,7 +37,7 @@ const overviewPlugin = {
                 }
             },
             {
-                component: 'ii-flowable-widage',
+                component: 'ii-flowable-widget',
                 props: {
                     flowId: 'temporary_task',
                     flowHelper: require('./plugins/flowable/helpers/temporary_task').default,
@@ -45,7 +45,7 @@ const overviewPlugin = {
                 }
             },
             {
-                component: 'ii-flowable-widage',
+                component: 'ii-flowable-widget',
                 props: {
                     flowId: 'cpp_party_construction',
                     flowHelper: require('./plugins/flowable/helpers/cpp_party_construction').default,
@@ -53,7 +53,7 @@ const overviewPlugin = {
                 }
             },
             {
-                component: 'ii-flowable-widage',
+                component: 'ii-flowable-widget',
                 props: {
                     flowId: 'cpp_temporary_task',
                     flowHelper: require('./plugins/flowable/helpers/cpp_temporary_task').default,

@@ -1,7 +1,7 @@
 <script>
 
 export default {
-    props: ['widages'],
+    props: ['widgets'],
     data() {
         return {
         }
@@ -18,9 +18,9 @@ export default {
         return (
             <div class='ii-app-overview'>
                 {
-                    this.widages.map(w => {
+                    this.widgets.map(w => {
                         const component = w.component
-                        return <div class='widage'>
+                        return <div class='widget'>
                             <component {...{ props: w.props }} />
                         </div>
                     })
@@ -42,7 +42,7 @@ export default {
     flex-wrap: wrap;
     justify-content: space-between;
 
-    .widage {
+    .widget {
         width: calc(50% - 10px);
         height: 300px;
         display: inline-block;
