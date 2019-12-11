@@ -46,6 +46,15 @@ export default {
         return basic
     },
     queryPlaceHolder: '项目名称、编号、描述',
+    //创建扩展
+    create(opts) {
+        const { process } = opts
+        process.variables.push({ name: "contact.user", value: '' })
+        process.variables.push({ name: 'construction.user', value: '', })
+        process.variables.push({ name: 'finaReport.user', value: '' })
+        process.variables.push({ name: 'payment.user', value: '' })
+        return process
+    },
     columns() {
         const columns = [
             {
