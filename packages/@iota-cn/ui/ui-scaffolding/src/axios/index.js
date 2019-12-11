@@ -21,10 +21,10 @@ const onRes = (res, { success, error, doNotHint }) => {
     return res
 }
 
-const onErr = (err, { message, doNotHint, handleErr }) => {
+const onErr = (err, { message: m, doNotHint, handleErr }) => {
     // eslint-disable-next-line no-undef
     if (!doNotHint) {
-        message.error(message || err.toString())
+        message.error(m || err.toString())
     }
     if (handleErr) {
         throw err
