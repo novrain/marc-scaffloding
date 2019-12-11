@@ -9,7 +9,7 @@ export default (opts) => {
                 overview: {
                     path: '/console/overview',
                     component: Overview,
-                    props: { widages: opts.widages }
+                    props: { widgets: opts.widgets }
                 }
             }
         }
