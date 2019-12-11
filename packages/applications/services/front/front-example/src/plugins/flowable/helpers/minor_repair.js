@@ -4,28 +4,6 @@ const dateRender = (time) => {
     return time ? moment(time * 1).format('YYYY-MM-DD') : ''
 }
 
-const convertCategoriesToQueryVariables = function (categories) {
-    let level = categories.length
-    return categories.map((category) => {
-        return {
-            name: `category_L${level--}_Id`,
-            value: category.id,
-            operation: "equals",
-            type: "string"
-        }
-    })
-}
-
-const convertCategoriesToCreateVariables = function (categories) {
-    let level = categories.length
-    return categories.map(category => {
-        return {
-            name: `category_L${level--}_Id`,
-            value: category.id
-        }
-    })
-}
-
 export default {
     simplified({ formData }) {
         let process = ''
@@ -33,34 +11,47 @@ export default {
             process = `进度：${formData.process}%`
         }
         return {
-           name: formData.projectName,
-           summary: `编号：${formData.projectNumber} ${process}`,
-           desc: formData.projectDescribe,
+            name: formData.projectName,
+            summary: `编号：${formData.projectNumber} ${process}`,
+            desc: formData.projectDescribe,
         }
     },
-    //查询条件扩展
-    query(opts) {
-        const {
-            basic,
-            categories
-        } = opts
-        if (Array.isArray(categories) && categories.length > 0) {
-            basic.variables = (basic.variables || []).concat(convertCategoriesToQueryVariables(categories))
+    query({ basic, conditions }) {
+        if (conditions) {
+            if (conditions.fuzzyQuery) {
+                basic.orVariables = basic.orVariables || []
+                basic.orVariables.push({
+                    name: "projectNumber",
+                    value: `%${conditions.fuzzyQuery}%`,
+                    operation: "like",
+                    type: "string"
+                })
+                basic.orVariables.push({
+                    name: "projectName",
+                    value: `%${conditions.fuzzyQuery}%`,
+                    operation: "like",
+                    type: "string"
+                })
+                basic.orVariables.push({
+                    name: "projectDescribe",
+                    value: `%${conditions.fuzzyQuery}%`,
+                    operation: "like",
+                    type: "string"
+                })
+            }
         }
         return basic
     },
+    queryPlaceHolder: '项目名称、编号、描述',
     //创建扩展
     create(opts) {
-        const {
-            process,
-            categories
-        } = opts
-        if (Array.isArray(categories) && categories.length > 0) {
-            process.variables = (process.variables || []).concat(convertCategoriesToCreateVariables(categories))
-        }
+        const { process } = opts
+        process.variables.push({ name: "contact_TaskAssignee", value: '' })
+        process.variables.push({ name: 'construction_TaskAssignee', value: '', })
+        process.variables.push({ name: 'finalReport_TaskAssignee', value: '' })
+        process.variables.push({ name: 'payment_TaskAssignee', value: '' })
         return process
     },
-    queryPlaceHolder: '项目名称、编号、描述',
     columns() {
         const columns = [
             {

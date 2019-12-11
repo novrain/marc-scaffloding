@@ -127,6 +127,7 @@ export default {
                 <a-input-search key='search'
                     placeholder={this.flowHelper.queryPlaceHolder}
                     class="search"
+                    style={{ width: '280px' }}
                     v-model={this.fuzzyQuery}
                     onSearch={this.refetch}
                     enterButton />
@@ -308,6 +309,7 @@ export default {
 
         .search {
             flex: 1;
+            width: 280px;
         }
     }
 

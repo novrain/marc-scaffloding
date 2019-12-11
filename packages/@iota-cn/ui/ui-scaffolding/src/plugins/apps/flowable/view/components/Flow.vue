@@ -1,12 +1,9 @@
 <template>
     <a-row class="ii-flow">
-        <a-tabs defaultActiveKey="content"
-            size="small"
-            v-model="activeTab"
-            class="flowtabs">
-            <a-tab-pane tab="正文"
-                class="tabpanel"
-                key="content">
+        <splitpanes class="default-theme">
+            <splitpane size='60'
+                min-size="30"
+                max-size="70">
                 <div class="detail"
                     ref='_detail'>
                     <!-- <a-back-top :target='()=>$refs._detail' /> -->
@@ -23,28 +20,38 @@
                             v-if="handleable"
                             @click="handleSubmit">提交</a-button>
                     </div>
-                    <ii-comments :user='user'
-                        v-if='$p("/fl/process/history/historic-process-instances/:instanceId/comments:GET")'
-                        :flow='flow' />
                 </div>
-            </a-tab-pane>
-            <a-tab-pane tab="流程"
-                key="tasks">
-                <ii-tasks :user='user'
-                    :active='activeTab === "tasks"'
-                    :flow='flow'
-                    :processDef='processDef' />
-            </a-tab-pane>
-            <a-tab-pane tab="附件"
-                v-if='$p("/fl/content/content-service/content-items:GET")'
-                class="tabpanel"
-                key="attachements">
-                <ii-attachments :user='
-                    user'
-                    :active='activeTab === "attachements"'
-                    :flow='flow' />
-            </a-tab-pane>
-        </a-tabs>
+            </splitpane>
+            <splitpane size='40'>
+                <a-tabs defaultActiveKey="comments"
+                    size="small"
+                    v-model="activeTab"
+                    class="flowtabs">
+                    <a-tab-pane tab="跟踪信息"
+                        key="comments">
+                        <ii-comments :user='user'
+                            :active='activeTab === "comments"'
+                            v-if='$p("/fl/process/history/historic-process-instances/:instanceId/comments:GET")'
+                            :flow='flow' />
+                    </a-tab-pane>
+                    <a-tab-pane tab="附件"
+                        v-if='$p("/fl/content/content-service/content-items:GET")'
+                        class="tabpanel"
+                        key="attachements">
+                        <ii-attachments :user='user'
+                            :active='activeTab === "attachements"'
+                            :flow='flow' />
+                    </a-tab-pane>
+                    <a-tab-pane tab="流程"
+                        key="tasks">
+                        <ii-tasks :user='user'
+                            :active='activeTab === "tasks"'
+                            :flow='flow'
+                            :processDef='processDef' />
+                    </a-tab-pane>
+                </a-tabs>
+            </splitpane>
+        </splitpanes>
     </a-row>
 </template>
 
@@ -70,7 +77,7 @@ export default {
             contents: {
                 items: []
             },
-            activeTab: 'content'
+            activeTab: 'comments'
         }
     },
     watch: {
@@ -85,20 +92,17 @@ export default {
                 this.updateForm()
             }
         },
-        activeTab: {
-            handler() {
-                this.refetch()
-            }
-        }
+        // activeTab: {
+        //     handler() {
+        //         this.refetch()
+        //     }
+        // }
     },
     mounted() {
         this.refetch()
     },
     methods: {
         refetch() {
-            if (this.activeTab !== 'content') {
-                return
-            }
             const instanceId = this.flow.processInstanceId
             // 如果没有定义，则查询一下，通过watch来触发刷新form
             if (!this.processDef) {
@@ -171,10 +175,8 @@ export default {
                             {},
                             this.flow.formData,
                             this.formData,
-                            {
-                                name: `${this.flow.task.taskDefinitionKey}_TaskAssignee`,
-                                value: `${U.idOfUser(this.user)}`
-                            })
+                            { [`${this.flow.task.taskDefinitionKey}_TaskAssignee`]: `${U.idOfUser(this.user)}` }
+                        )
                         Object.keys(fullFormData).forEach(k => {
                             variables.push({
                                 name: k,
@@ -227,6 +229,7 @@ export default {
         padding: 10px;
         // border-right: 1px solid $primary-color;
         overflow-y: auto;
+        background-color: white;
 
         .title {
             text-align: center;
@@ -247,6 +250,7 @@ export default {
         display: flex;
         flex-direction: column;
         padding: 10px;
+        background-color: white;
 
         /deep/ .ant-tabs-bar {
             margin: 0;

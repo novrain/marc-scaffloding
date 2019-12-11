@@ -89,20 +89,22 @@ export default {
             this.$axios.silentPost(`/fl/process/query/historic-task-instances`, {
                 size: 2000,// 不支持分页，暂时认为没有这么多任务流程
                 processInstanceId: this.flow.processInstanceId,
-                includeIdentityLinks: true
+                includeIdentityLinks: true,
+                sort: 'startTime',
+                order: 'desc'
             }, true)
                 .then((res) => {
                     this.running.items = []
                     this.finished.items = []
                     res.data.data.forEach(d => {
                         d.assignee = U.parseAssignee(d.assignee)
-                        d.startTime = moment(d.startTime).format('YYYY-MM-DD HH:mm:ss')
+                        d.startTime = moment(d.startTime).format('YYYY-MM-DD')
                         if (d.endTime) {
-                            d.endTime = moment(d.endTime).format('YYYY-MM-DD HH:mm:ss')
+                            d.endTime = moment(d.endTime).format('YYYY-MM-DD')
                             this.finished.items.push(d)
                         } else {
                             if (d.dueDate) {
-                                d.dueDate = moment(d.dueDate).format('YYYY-MM-DD HH:mm:ss')
+                                d.dueDate = moment(d.dueDate).format('YYYY-MM-DD')
                             }
                             if (this.$refs._bpmn) {
                                 this.$refs._bpmn.colorNode(d.taskDefinitionKey)
@@ -234,7 +236,7 @@ export default {
                 assignee: assignee
             }, true).then(() => {
                 message.success('认领成功')
-                task.assignee = assignee
+                task.assignee = U.parseAssignee(assignee)
             }).catch(() => {
                 message.error('认领失败，请稍后再试')
             })
@@ -266,6 +268,7 @@ export default {
         renderBpmn() {
             return (
                 <div class='bpmn'>
+                    <h6>流程图</h6>
                     {
                         this.processDef.bpmnDef ?
                             <ii-bpmn defineXML={this.processDef.bpmnDef} ref='_bpmn' />
@@ -308,7 +311,7 @@ export default {
                 {
                     title: '操作',
                     dataIndex: 'operation',
-                    width: '28%',
+                    width: '18%',
                     customRender: (text, record) => {
                         let claimable = this.$p('/fl/process/runtime/tasks/:id/claim:PUT')
                             && U.isTaskClaimable({
@@ -328,13 +331,9 @@ export default {
                             null
                             : <div class='operation' >
                                 {assigneeable ? <a onClick={() => this.onAssignee(record)}>{record.assignee && record.assignee.id ? '重新指派' : '指派'}</a> : null}
-                                {claimable ? <ADivider type="vertical" /> : null}
                                 {claimable ? <a onClick={() => this.onClaim(record)}>认领</a> : null}
-                                {editCandidateUsers ? <ADivider type="vertical" /> : null}
                                 {editCandidateUsers ? <a onClick={() => this.onCandidateUsers(record)}>候选人</a> : null}
-                                {editCandidateGroups ? <ADivider type="vertical" /> : null}
                                 {editCandidateGroups ? <a onClick={() => this.onCandidateGroups(record)}>候选组</a> : null}
-                                <ADivider type="vertical" />
                                 <a onClick={() => this.onDueDate(record)}>{record.dueDate ? '更新到期时间' : '设置到期时间'}</a>
                             </div>
                     }
@@ -547,29 +546,21 @@ export default {
     render() {
         return (
             <div class='ii-task'>
-                <splitpanes class="default-theme">
-                    {
-                        this.$p('/fl/process/repository/process-definitions/:flowableInstance/resourcedata:GET') ?
-                            <splitpane size='30' min-size="20" max-size="40">
-                                {this.renderBpmn()}
-                            </splitpane>
-                            : null
-                    }
-                    {
-                        this.$p('/fl/process/query/historic-task-instances:POST') ?
-                            <splitpane style={{ flex: 1 }} size='70'>
-                                <splitpanes horizontal class="default-theme">
-                                    <splitpane min-size="20" max-size="60">
-                                        {this.renderRunning()}
-                                    </splitpane>
-                                    <splitpane style={{ flex: 1 }}>
-                                        {this.renderFinished()}
-                                    </splitpane>
-                                </splitpanes>
-                            </splitpane>
-                            : null
-                    }
-                </splitpanes>
+                {
+                    this.$p('/fl/process/query/historic-task-instances:POST') ?
+                        this.renderRunning()
+                        : null
+                }
+                {
+                    this.$p('/fl/process/query/historic-task-instances:POST') ?
+                        this.renderFinished()
+                        : null
+                }
+                {
+                    this.$p('/fl/process/repository/process-definitions/:flowableInstance/resourcedata:GET') ?
+                        this.renderBpmn()
+                        : null
+                }
                 {this.renderAssigneeEditor()}
                 {this.renderCandidateUsersEditor()}
                 {this.renderCandidateGroupsEditor()}
@@ -585,9 +576,7 @@ export default {
 
 .ii-task {
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    padding-top: 10px;
+    overflow-y: auto;
 
     h6 {
         margin: 0 10px;
@@ -595,31 +584,28 @@ export default {
     }
 
     .bpmn {
-        height: 100%;
+        height: 400px;
         width: 100%;
         background-color: white;
         position: relative;
     }
 
     .running {
-        height: 100%;
+        height: 240px;
         display: flex;
         flex-direction: column;
         background-color: white;
 
         .operation {
-            display: flex;
-            justify-content: left;
-            align-items: center;
-
             a {
+                display: block;
                 color: $primary-color;
             }
         }
     }
 
     .finished {
-        height: 100%;
+        height: 240px;
         display: flex;
         flex-direction: column;
         background-color: white;

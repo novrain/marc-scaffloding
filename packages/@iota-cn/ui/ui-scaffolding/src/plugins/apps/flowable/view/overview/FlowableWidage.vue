@@ -22,7 +22,9 @@ export default {
     mounted() {
         this.$axios.silentGet(`/v1/api/processdefs/${this.flowId}`)
             .then((res) => {
-                this.processDef = res.data
+                if (res) {
+                    this.processDef = res.data
+                }
             })
     },
     computed: {

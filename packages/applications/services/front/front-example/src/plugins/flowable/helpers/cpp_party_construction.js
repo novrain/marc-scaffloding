@@ -44,10 +44,34 @@ export default {
     query(opts) {
         const {
             basic,
-            categories
+            categories,
+            conditions
         } = opts
         if (Array.isArray(categories) && categories.length > 0) {
             basic.variables = (basic.variables || []).concat(convertCategoriesToQueryVariables(categories))
+        }
+        if (conditions) {
+            if (conditions.fuzzyQuery) {
+                basic.orVariables = basic.orVariables || []
+                basic.orVariables.push({
+                    name: "projectNumber",
+                    value: `%${conditions.fuzzyQuery}%`,
+                    operation: "like",
+                    type: "string"
+                })
+                basic.orVariables.push({
+                    name: "projectName",
+                    value: `%${conditions.fuzzyQuery}%`,
+                    operation: "like",
+                    type: "string"
+                })
+                basic.orVariables.push({
+                    name: "projectDescribe",
+                    value: `%${conditions.fuzzyQuery}%`,
+                    operation: "like",
+                    type: "string"
+                })
+            }
         }
         return basic
     },
@@ -62,7 +86,7 @@ export default {
         }
         return process
     },
-    queryPlaceHolder: '项目名称、编号、描述',
+    queryPlaceHolder: '名称、编号、描述',
     columns() {
         const columns = [
             {

@@ -44,10 +44,34 @@ export default {
     query(opts) {
         const {
             basic,
-            categories
+            categories,
+            conditions
         } = opts
         if (Array.isArray(categories) && categories.length > 0) {
             basic.variables = (basic.variables || []).concat(convertCategoriesToQueryVariables(categories))
+        }
+        if (conditions) {
+            if (conditions.fuzzyQuery) {
+                basic.orVariables = basic.orVariables || []
+                basic.orVariables.push({
+                    name: "projectNumber",
+                    value: `%${conditions.fuzzyQuery}%`,
+                    operation: "like",
+                    type: "string"
+                })
+                basic.orVariables.push({
+                    name: "projectName",
+                    value: `%${conditions.fuzzyQuery}%`,
+                    operation: "like",
+                    type: "string"
+                })
+                basic.orVariables.push({
+                    name: "projectDescribe",
+                    value: `%${conditions.fuzzyQuery}%`,
+                    operation: "like",
+                    type: "string"
+                })
+            }
         }
         return basic
     },
@@ -62,78 +86,78 @@ export default {
         }
         return process
     },
-    queryPlaceHolder: '项目名称、编号、描述',
+    queryPlaceHolder: '名称、编号、描述',
     columns() {
         const columns = [{
-                title: '年度',
-                dataIndex: 'formData.projectYear',
-                key: 'formData.projectYear',
-                width: '5%',
-            },
-            {
-                title: '月份',
-                dataIndex: 'formData.projectMonth',
-                key: 'formData.projectMonth',
-                width: '5%',
-            },
-            {
-                title: '名称',
-                dataIndex: 'formData.projectName',
-                key: 'formData.projectName',
-            },
-            {
-                title: '编号',
-                dataIndex: 'formData.projectNumber',
-                key: 'formData.projectNumber',
-                width: '10%',
-            },
-            {
-                title: '开始时间',
-                dataIndex: 'formData.startTime',
-                key: 'formData.startTime',
-                width: '10%',
-                customRender: dateRender
-            },
-            {
-                title: '结束时间',
-                dataIndex: 'formData.finishTime',
-                key: 'formData.finishTime',
-                width: '10%',
-                customRender: dateRender
-            },
-            {
-                title: '发起人',
-                dataIndex: 'formData.initiatorName',
-                key: 'formData.initiatorName',
-                width: '5%',
-            },
+            title: '年度',
+            dataIndex: 'formData.projectYear',
+            key: 'formData.projectYear',
+            width: '5%',
+        },
+        {
+            title: '月份',
+            dataIndex: 'formData.projectMonth',
+            key: 'formData.projectMonth',
+            width: '5%',
+        },
+        {
+            title: '名称',
+            dataIndex: 'formData.projectName',
+            key: 'formData.projectName',
+        },
+        {
+            title: '编号',
+            dataIndex: 'formData.projectNumber',
+            key: 'formData.projectNumber',
+            width: '10%',
+        },
+        {
+            title: '开始时间',
+            dataIndex: 'formData.startTime',
+            key: 'formData.startTime',
+            width: '10%',
+            customRender: dateRender
+        },
+        {
+            title: '结束时间',
+            dataIndex: 'formData.finishTime',
+            key: 'formData.finishTime',
+            width: '10%',
+            customRender: dateRender
+        },
+        {
+            title: '发起人',
+            dataIndex: 'formData.initiatorName',
+            key: 'formData.initiatorName',
+            width: '5%',
+        },
         ]
         return columns
     },
     columnsForWidage() {
         let columns = [{
-                title: '名称',
-                dataIndex: 'formData.projectName',
-                key: 'formData.projectName',
-            },
-            {
-                title: '发起人',
-                dataIndex: 'formData.initiatorName',
-                key: 'formData.initiatorName',
-                width: '10%',
-            },
-            {
-                title: '编号',
-                dataIndex: 'formData.projectNumber',
-                key: 'formData.projectNumber',
-                width: '20%',
-            },
-            {
-                title: '进度',
-                dataIndex: 'formData.process',
-                key: 'formData.process',
-                width: '20%',
-            },
+            title: '名称',
+            dataIndex: 'formData.projectName',
+            key: 'formData.projectName',
+        },
+        {
+            title: '发起人',
+            dataIndex: 'formData.initiatorName',
+            key: 'formData.initiatorName',
+            width: '10%',
+        },
+        {
+            title: '编号',
+            dataIndex: 'formData.projectNumber',
+            key: 'formData.projectNumber',
+            width: '20%',
+        },
+        {
+            title: '进度',
+            dataIndex: 'formData.process',
+            key: 'formData.process',
+            width: '20%',
+        },
         ]
         return columns
     },
