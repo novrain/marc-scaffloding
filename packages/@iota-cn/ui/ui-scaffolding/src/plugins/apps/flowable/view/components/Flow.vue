@@ -165,10 +165,11 @@ export default {
                 this.$ncformValidate('_submitForm').then(data => {
                     if (data.result) {
                         const variables = []
-                        Object.keys(this.formData).forEach(k => {
+                        let fullFormData = Object.assign({}, this.flow.formData, this.formData)
+                        Object.keys(fullFormData).forEach(k => {
                             variables.push({
                                 name: k,
-                                value: this.formData[k]
+                                value: fullFormData[k]
                             })
                         })
                         // 暂存一个当前任务的被指派人/执行人，供可能的其他节点使用
