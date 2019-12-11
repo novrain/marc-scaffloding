@@ -34,11 +34,9 @@ describe("iota authorization SMS test", function () {
     it("right verification SMS", async function () {
         await cache.extra(`mobileRegister=18120155703`, '123456', 'PX', '300000');
         return client
-            .get('/validations/smses/validate')
-            .query({ mobile: '18130380275', captcha: 123456 })
-            .expect(204, (err, res) => {
-
-            })
+            .get(`/validations/smses/validate`)
+            .query({ mobile: '18120155703', captcha: 123456 })
+            .expect(204)
     });
 
     it("wrong verification SMS", function (done) {
