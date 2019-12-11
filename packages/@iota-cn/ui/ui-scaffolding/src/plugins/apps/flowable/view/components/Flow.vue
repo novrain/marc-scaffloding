@@ -165,17 +165,21 @@ export default {
                 this.$ncformValidate('_submitForm').then(data => {
                     if (data.result) {
                         const variables = []
-                        let fullFormData = Object.assign({}, this.flow.formData, this.formData)
+                        // 全程的变量都重复提交，FORM里的覆盖旧变量
+                        // 暂存一个当前任务的被指派人/执行人，供可能的其他节点使用
+                        let fullFormData = Object.assign(
+                            {},
+                            this.flow.formData,
+                            this.formData,
+                            {
+                                name: `${this.flow.task.taskDefinitionKey}_TaskAssignee`,
+                                value: `${U.idOfUser(this.user)}`
+                            })
                         Object.keys(fullFormData).forEach(k => {
                             variables.push({
                                 name: k,
                                 value: fullFormData[k]
                             })
-                        })
-                        // 暂存一个当前任务的被指派人/执行人，供可能的其他节点使用
-                        variables.push({
-                            name: `${this.flow.task.taskDefinitionKey}.user`,
-                            value: `${U.idOfUser(this.user)}`
                         })
                         this.$axios.silentPost(`/fl/process/runtime/tasks/${this.flow.task.id}`, {
                             action: 'complete',
