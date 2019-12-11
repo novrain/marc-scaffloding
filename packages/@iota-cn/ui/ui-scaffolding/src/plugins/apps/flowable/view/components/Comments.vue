@@ -1,9 +1,5 @@
 <template>
     <div class="ii-comments">
-        <ii-comment-item :user='user'
-            v-if='commentable && $p("/fl/process/history/historic-process-instances/:instanceId/comments:POST")'
-            :processInstanceId='flow.processInstanceId'
-            :onCreate='onCreateComment' />
         <template v-for="(comment, index) in comments.items">
             <ii-comment-item :key="comment.id"
                 :comment='comment'
@@ -13,6 +9,10 @@
                 :onDelete='onDeleteComment'
                 :onUpdate='onUpdateComment' />
         </template>
+        <ii-comment-item :user='user'
+            v-if='commentable && $p("/fl/process/history/historic-process-instances/:instanceId/comments:POST")'
+            :processInstanceId='flow.processInstanceId'
+            :onCreate='onCreateComment' />
     </div>
 </template>
 
@@ -88,5 +88,8 @@ export default {
 .ii-comments {
     border-top: 1px solid $ii-gray-300;
     padding: 10px;
+    background-color: white;
+    overflow-y: auto;
+    height: 100%;
 }
 </style>

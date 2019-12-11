@@ -51,7 +51,7 @@ export default {
         const { process } = opts
         process.variables.push({ name: "contact_TaskAssignee", value: '' })
         process.variables.push({ name: 'construction_TaskAssignee', value: '', })
-        process.variables.push({ name: 'finaReport_TaskAssignee', value: '' })
+        process.variables.push({ name: 'finalReport_TaskAssignee', value: '' })
         process.variables.push({ name: 'payment_TaskAssignee', value: '' })
         return process
     },
