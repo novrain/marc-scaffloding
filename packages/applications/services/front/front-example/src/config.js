@@ -24,7 +24,7 @@ const overviewPlugin = {
                 component: 'ii-flowable-widage',
                 props: {
                     flowId: 'minor_repair',
-                    flowHelper: require('./plugins/flowable/helpers/cppf').default,
+                    flowHelper: require('./plugins/flowable/helpers/minor_repair').default,
                     redirect: '/console/applications/minor_repair'
                 }
             },
@@ -32,7 +32,7 @@ const overviewPlugin = {
                 component: 'ii-flowable-widage',
                 props: {
                     flowId: 'monthly_routine_task',
-                    flowHelper: require('./plugins/flowable/helpers/cppf').default,
+                    flowHelper: require('./plugins/flowable/helpers/monthly_routine_task').default,
                     redirect: '/console/applications/monthly_routine_task'
                 }
             },
@@ -40,7 +40,7 @@ const overviewPlugin = {
                 component: 'ii-flowable-widage',
                 props: {
                     flowId: 'temporary_task',
-                    flowHelper: require('./plugins/flowable/helpers/cppf').default,
+                    flowHelper: require('./plugins/flowable/helpers/temporary_task').default,
                     redirect: '/console/applications/temporary_task'
                 }
             },
@@ -48,7 +48,7 @@ const overviewPlugin = {
                 component: 'ii-flowable-widage',
                 props: {
                     flowId: 'cpp_party_construction',
-                    flowHelper: require('./plugins/flowable/helpers/cppf').default,
+                    flowHelper: require('./plugins/flowable/helpers/cpp_party_construction').default,
                     redirect: '/console/applications/cpp_party_construction'
                 }
             },
@@ -56,7 +56,7 @@ const overviewPlugin = {
                 component: 'ii-flowable-widage',
                 props: {
                     flowId: 'cpp_temporary_task',
-                    flowHelper: require('./plugins/flowable/helpers/cppf').default,
+                    flowHelper: require('./plugins/flowable/helpers/cpp_temporary_task').default,
                     redirect: '/console/applications/cpp_temporary_task'
                 }
             }
@@ -77,17 +77,17 @@ const projectProcessPlugin = {
             {
                 path: '/console/applications/minor_repair',
                 flowId: 'minor_repair',
-                flowHelper: require('./plugins/flowable/helpers/cppf').default
+                flowHelper: require('./plugins/flowable/helpers/minor_repair').default
             },
             {
                 path: '/console/applications/monthly_routine_task',
                 flowId: 'monthly_routine_task',
-                flowHelper: require('./plugins/flowable/helpers/cppf').default
+                flowHelper: require('./plugins/flowable/helpers/monthly_routine_task').default
             },
             {
                 path: '/console/applications/temporary_task',
                 flowId: 'temporary_task',
-                flowHelper: require('./plugins/flowable/helpers/cppf').default
+                flowHelper: require('./plugins/flowable/helpers/temporary_task').default
             }
         ]
     }
@@ -102,12 +102,12 @@ const communistPartyProcessPlugin = {
             {
                 path: '/console/applications/cpp_party_construction',
                 flowId: 'cpp_party_construction',
-                flowHelper: require('./plugins/flowable/helpers/cppf').default
+                flowHelper: require('./plugins/flowable/helpers/cpp_party_construction').default
             },
             {
                 path: '/console/applications/cpp_temporary_task',
                 flowId: 'cpp_temporary_task',
-                flowHelper: require('./plugins/flowable/helpers/cppf').default
+                flowHelper: require('./plugins/flowable/helpers/cpp_temporary_task').default
             }
         ]
     }

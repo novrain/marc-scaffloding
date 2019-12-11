@@ -20,7 +20,8 @@ function createConfig(args) {
         (typeof process.env.IOTA_ORCHESTRATOR_RUN_IN_POD !== 'undefined' ? !!process.env.IOTA_ORCHESTRATOR_RUN_IN_POD : false)
 
     config.dc.orm.opts = { logging: verbose }
-    config.dc.orm.url = args.postgres || process.env.IOTA_POSTGRES || "postgres://postgres:111111@localhost:5433/back-example"
+    config.dc.orm.url = args.postgres || process.env.IOTA_POSTGRES || "postgres://postgres:ROOT@49.4.2.82:5432/back-example"
+    // config.dc.orm.url = args.postgres || process.env.IOTA_POSTGRES || "postgres://postgres:111111@localhost:5433/back-example"
     //config.dc.mqtt = {broker: 'mqtt://127.0.0.1:1883', reconnectPeriod: 10000}
     config.dc.cache = consoleRedis
     config.session.db = sessionRedis
