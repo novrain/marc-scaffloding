@@ -61,7 +61,7 @@ export default {
         "ii-attachments": Attachments,
         "ii-tasks": Tasks
     },
-    props: ['flow', 'processDef', 'user', 'onSubmit'],
+    props: ['flow', 'processDef', 'user'],
     data() {
         return {
             formData: {},
@@ -181,9 +181,7 @@ export default {
                             variables: variables
                         }, true)
                             .then(() => {
-                                if (this.onSubmit) {
-                                    this.onSubmit({ flow: this.flow })
-                                }
+                                this.$emit('submit', { flow: this.flow })
                                 message.success('任务已提交')
                             }).catch(() => {
                                 message.error('提交失败，请稍后再试')
