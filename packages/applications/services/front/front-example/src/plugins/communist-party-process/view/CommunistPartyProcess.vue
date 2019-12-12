@@ -1,13 +1,16 @@
 <script>
 import { Menu as AMenu } from 'ant-design-vue'
 import { convertArrayToTree } from '@iota-cn/ui-scaffolding/src/framework/util'
+//@Todo 这里引入比较丑陋，但是混入不支持字符串组件名形式
+import FlowHelperMixin from '@iota-cn/ui-scaffolding/src/plugins/apps/flowable/view/components/FlowHelperMixin'
 
 const VIRTUAl_ROOT = 'virtual-root'
 
 export default {
-    props: ['flowId', 'flowHelper'],
+    props: ['flowId'],
+    // mixins: ['ii-flowable-helper-mixin'],
+    mixins: [FlowHelperMixin],
     data() {
-        const wrappderFlowHelper = Object.assign({}, this.flowHelper)
         return {
             categories: [],
             selectedKeys: [],
@@ -15,7 +18,7 @@ export default {
             rightClickNodeTreeItem: {},
             addNode: false,
             propEditNode: false,
-            wrappderFlowHelper: wrappderFlowHelper
+            wrappedFlowHelper: undefined
         }
     },
     mounted() {
@@ -162,6 +165,14 @@ export default {
         },
     },
     watch: {
+        innerFlowHelper: {
+            handler() {
+                if (this.innerFlowHelper) {
+                    this.wrappedFlowHelper = Object.assign({}, this.innerFlowHelper)
+                }
+            },
+            immediate: true
+        },
         selectedKeys: {
             handler() {
                 if (this.flowHelper && this.selectedKeys.length === 1) {
@@ -185,7 +196,7 @@ export default {
                             opts.categories = categories
                             return oldQuery(opts)
                         }
-                        this.wrappderFlowHelper = Object.assign({}, this.wrappderFlowHelper, { query: query })
+                        this.wrappedFlowHelper = Object.assign({}, this.wrappedFlowHelper, { query: query })
                     }
                     if (this.flowHelper.create) {
                         const oldCreate = this.flowHelper.create
@@ -193,7 +204,7 @@ export default {
                             opts.categories = categories
                             return oldCreate(opts)
                         }
-                        this.wrappderFlowHelper = Object.assign({}, this.wrappderFlowHelper, { create: create })
+                        this.wrappedFlowHelper = Object.assign({}, this.wrappedFlowHelper, { create: create })
                     }
                 }
             }
@@ -263,7 +274,7 @@ export default {
                 </a-col>
                 <a-col class="col"
                     span={20}>
-                    <ii-flowable flowId={this.flowId} flowHelper={this.wrappderFlowHelper} />
+                    {this.wrappedFlowHelper ? <ii-flowable flowId={this.flowId} flowHelper={this.wrappedFlowHelper} /> : null}
                 </a-col>
                 {this.getNodeTreeRightClickMenu()}
             </a-row>

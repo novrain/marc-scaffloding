@@ -12,6 +12,7 @@ import SimpleEditor from './SimpleEditor'
 import Empty from './Empty'
 import ArrayTree from './ArrayTree'
 import BpmnViewer from './BpmnViewer'
+import LoadScript from './LoadScript'
 
 const components = [
     Icon,
@@ -44,6 +45,7 @@ export {
 const install = function (Vue) {
     Vue.use(Cookie)
     Vue.use(axios)
+    Vue.use(LoadScript)
     components.forEach(c => {
         Vue.component(c.name, c)
     })
