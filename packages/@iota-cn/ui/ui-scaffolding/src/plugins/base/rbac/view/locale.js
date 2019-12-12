@@ -36,7 +36,7 @@ export default {
                         invalidCaptcha: '无效的验证码',
 
                         updateSuccess: '更新成功',
-                        updateFail: '更新失败',
+                        updateError: '更新失败',
                         active: '发送激活邮件',
                         retry: '后重试',
                         successSendActiveEmail: '发送激活邮件成功',
