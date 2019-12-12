@@ -16,7 +16,7 @@ const overviewPlugin = {
                 component: 'ii-flowable-widget',
                 props: {
                     flowId: 'project_of_year',
-                    flowHelper: require('./plugins/flowable/helpers/project_of_year').default,
+                    flowHelper: '/assets/js/helpers/project_of_year.js',
                     redirect: '/console/applications/project_of_year'
                 }
             },
@@ -24,7 +24,7 @@ const overviewPlugin = {
                 component: 'ii-flowable-widget',
                 props: {
                     flowId: 'minor_repair',
-                    flowHelper: require('./plugins/flowable/helpers/minor_repair').default,
+                    flowHelper: '/assets/js/helpers/minor_repair.js',
                     redirect: '/console/applications/minor_repair'
                 }
             },
@@ -32,7 +32,7 @@ const overviewPlugin = {
                 component: 'ii-flowable-widget',
                 props: {
                     flowId: 'monthly_routine_task',
-                    flowHelper: require('./plugins/flowable/helpers/monthly_routine_task').default,
+                    flowHelper: '/assets/js/helpers/monthly_routine_task.js',
                     redirect: '/console/applications/monthly_routine_task'
                 }
             },
@@ -40,7 +40,7 @@ const overviewPlugin = {
                 component: 'ii-flowable-widget',
                 props: {
                     flowId: 'temporary_task',
-                    flowHelper: require('./plugins/flowable/helpers/temporary_task').default,
+                    flowHelper: '/assets/js/helpers/temporary_task.js',
                     redirect: '/console/applications/temporary_task'
                 }
             },
@@ -48,7 +48,7 @@ const overviewPlugin = {
                 component: 'ii-flowable-widget',
                 props: {
                     flowId: 'cpp_party_construction',
-                    flowHelper: require('./plugins/flowable/helpers/cpp_party_construction').default,
+                    flowHelper: '/assets/js/helpers/cpp_party_construction.js',
                     redirect: '/console/applications/cpp_party_construction'
                 }
             },
@@ -56,7 +56,7 @@ const overviewPlugin = {
                 component: 'ii-flowable-widget',
                 props: {
                     flowId: 'cpp_temporary_task',
-                    flowHelper: require('./plugins/flowable/helpers/cpp_temporary_task').default,
+                    flowHelper: '/assets/js/helpers/cpp_temporary_task.js',
                     redirect: '/console/applications/cpp_temporary_task'
                 }
             }
@@ -72,22 +72,22 @@ const projectProcessPlugin = {
             {
                 path: '/console/applications/project_of_year',
                 flowId: 'project_of_year',
-                flowHelper: require('./plugins/flowable/helpers/project_of_year').default
+                flowHelper: '/assets/js/helpers/project_of_year.js'
             },
             {
                 path: '/console/applications/minor_repair',
                 flowId: 'minor_repair',
-                flowHelper: require('./plugins/flowable/helpers/minor_repair').default
+                flowHelper: '/assets/js/helpers/minor_repair.js'
             },
             {
                 path: '/console/applications/monthly_routine_task',
                 flowId: 'monthly_routine_task',
-                flowHelper: require('./plugins/flowable/helpers/monthly_routine_task').default
+                flowHelper: '/assets/js/helpers/monthly_routine_task.js'
             },
             {
                 path: '/console/applications/temporary_task',
                 flowId: 'temporary_task',
-                flowHelper: require('./plugins/flowable/helpers/temporary_task').default
+                flowHelper: '/assets/js/helpers/temporary_task.js'
             }
         ]
     }
@@ -102,12 +102,12 @@ const communistPartyProcessPlugin = {
             {
                 path: '/console/applications/cpp_party_construction',
                 flowId: 'cpp_party_construction',
-                flowHelper: require('./plugins/flowable/helpers/cpp_party_construction').default
+                flowHelper: '/assets/js/helpers/cpp_party_construction.js'
             },
             {
                 path: '/console/applications/cpp_temporary_task',
                 flowId: 'cpp_temporary_task',
-                flowHelper: require('./plugins/flowable/helpers/cpp_temporary_task').default
+                flowHelper: '/assets/js/helpers/cpp_temporary_task.js'
             }
         ]
     }

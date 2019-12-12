@@ -4,14 +4,16 @@
 // import StartBySelfExplorer from './StartBySelfExplorer'
 import TaskAssigneeExplorer from './SimpleTaskAssigneeExplorer'
 // import TaskInvolvedExplorer from './TaskInvolvedExplorer'
+import FlowHelperMixin from '../components/FlowHelperMixin'
 
 export default {
-    props: ['flowId', 'flowHelper', 'redirect'],
+    props: ['flowId', 'redirect'],
     components: {
         'assignee-explorer': TaskAssigneeExplorer,
         // 'startby-explorer': StartBySelfExplorer,
         // 'involved-explorer': TaskInvolvedExplorer,
     },
+    mixins: [FlowHelperMixin],
     data() {
         return {
             processDef: undefined,
@@ -44,9 +46,9 @@ export default {
                     this.$router.push({ path: this.redirect })
                 }}>前往处理</a>
                 {
-                    this.processDef ? <assignee-explorer processDef={this.processDef}
+                    this.processDef && this.innerFlowHelper ? <assignee-explorer processDef={this.processDef}
                         user={this.$user}
-                        flowHelper={this.flowHelper}
+                        flowHelper={this.innerFlowHelper}
                         selectedFlow={this.selectedFlowsOfTab.assignee}
                         active={this.activeTab === "assignee"}
                         onSelect={this.onSelectFlow} />

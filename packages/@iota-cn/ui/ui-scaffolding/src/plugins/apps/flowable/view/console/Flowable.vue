@@ -5,6 +5,7 @@ import StartBySelfExplorer from './StartBySelfExplorer'
 import TaskAssigneeExplorer from './TaskAssigneeExplorer'
 import TaskInvolvedExplorer from './TaskInvolvedExplorer'
 import Flow from '../components/Flow'
+import FlowHelperMixin from '../components/FlowHelperMixin'
 
 export default {
     components: {
@@ -13,7 +14,8 @@ export default {
         'involved-explorer': TaskInvolvedExplorer,
         'flow': Flow
     },
-    props: ['flowId', 'flowHelper'],
+    mixins: [FlowHelperMixin],
+    props: ['flowId'],
     data() {
         // 这里无法使用全局的计算属性
         const state = this.$store.state.iota.global.authentication
@@ -22,7 +24,6 @@ export default {
             initiatorName: U.nameOfUser(state.user),
             initiatorUser: U.idOfUser(state.user)
         }
-        const layout = this.flowHelper.layout || 'table'
         return {
             processDef: undefined,
             activeTab: 'assignee',
@@ -32,8 +33,7 @@ export default {
             systemVariables: systemVariables,
             processVariables: {
                 ...systemVariables
-            },
-            layout
+            }
         }
     },
     mounted() {
@@ -104,8 +104,8 @@ export default {
                         variables: variables
                     }
                     // 允许增加参数
-                    if (this.flowHelper && this.flowHelper.create) {
-                        process = this.flowHelper.create({ processDef: this.processDef, process: process })
+                    if (this.innerFlowHelper && this.innerFlowHelper.create) {
+                        process = this.innerFlowHelper.create({ processDef: this.processDef, process: process })
                     }
                     this.$axios.silentPost(`/fl/process/runtime/process-instances`, process, true)
                         .then(() => {
@@ -134,8 +134,8 @@ export default {
             })
         },
         renderFlows() {
-            return (
-                <div class={this.layout}>
+            return this.innerFlowHelper ?
+                <div class={this.innerFlowHelper.layout || 'table'}>
                     <a-modal title="新建任务"
                         bodyStyle={{ maxHeight: "80%", padding: "10px" }}
                         width={this.formWidth}
@@ -170,7 +170,7 @@ export default {
                             <assignee-explorer processDef={this.processDef}
                                 layout={this.layout}
                                 user={this.$user}
-                                flowHelper={this.flowHelper}
+                                flowHelper={this.innerFlowHelper}
                                 selectedFlow={this.selectedFlowsOfTab.assignee}
                                 active={this.activeTab === "assignee"}
                                 onSelect={this.onSelectFlow} />
@@ -180,7 +180,7 @@ export default {
                             <startby-explorer processDef={this.processDef}
                                 layout={this.layout}
                                 user={this.$user}
-                                flowHelper={this.flowHelper}
+                                flowHelper={this.innerFlowHelper}
                                 selectedFlow={this.selectedFlowsOfTab.startBySelf}
                                 active={this.activeTab === "startBySelf"}
                                 onSelect={this.onSelectFlow} />
@@ -190,14 +190,14 @@ export default {
                             <involved-explorer processDef={this.processDef}
                                 layout={this.layout}
                                 user={this.$user}
-                                flowHelper={this.flowHelper}
+                                flowHelper={this.innerFlowHelper}
                                 selectedFlow={this.selectedFlowsOfTab.involved}
                                 active={this.activeTab === "involved"}
                                 onSelect={this.onSelectFlow} />
                         </a-tab-pane>
                     </a-tabs>
                 </div>
-            )
+                : null
         },
         renderSigleFlow() {
             return (
