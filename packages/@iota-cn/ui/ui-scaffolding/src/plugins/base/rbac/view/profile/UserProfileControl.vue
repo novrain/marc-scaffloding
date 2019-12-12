@@ -30,6 +30,7 @@
             </div>
         </div>
         <div class="ii-user-profile-control">
+            <span>{{$user.userExt? ($user.userExt.fullname || $user.username) : $user.username}}</span>
             <iota-avatar-viewer :img='$user.gravatar||"/assets/imgs/defaultAvatar.png"'
                 :width='32'
                 :radius='50'
@@ -74,6 +75,13 @@ export default {
     align-items: center;
     padding: 0 10px;
     cursor: pointer;
+
+    span {
+        color: white;
+        font-weight: 400px;
+        font-size: 16px;
+        margin: 0 10px;
+    }
 
     &:hover {
         background-color: darken($primary-color, 20%);
