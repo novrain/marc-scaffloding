@@ -8,28 +8,19 @@ export default {
     methods: {
         async refetch() {
             if (this.processDef) {
-                let url = '/fl/iota/query/process-instances'
+                let url = '/fl/iota/query/historic-process-instances'
                 let query = {
                     processDefinitionId: this.processDef.flowableInstance,
                     includeProcessVariables: true,
                     includeIdentityLinks: true,
+                    finished: false,
                     sort: 'startTime',
                     order: 'desc',
                     size: this.size,
                     start: (this.page - 1) * this.size
                 }
                 if (this.dataType === 'finished') {
-                    url = '/fl/iota/query/historic-process-instances'
-                    query = {
-                        processDefinitionId: this.processDef.flowableInstance,
-                        includeProcessVariables: true,
-                        includeIdentityLinks: true,
-                        finished: true,
-                        sort: 'startTime',
-                        order: 'desc',
-                        size: this.size,
-                        start: (this.page - 1) * this.size
-                    }
+                    query.finished = true
                 }
                 // 这样的逻辑要放到封装的接口中去
                 if (!this.user.isAdmin) {// 非管理只能查看 有连接 关系的任务以及实例 
