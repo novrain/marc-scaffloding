@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
     productionSourceMap: false,
@@ -24,5 +25,18 @@ module.exports = {
                 // '@util': path.resolve(__dirname, './src/framework/util'),
             },
         },
+        plugins: [
+            new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+        ],
+        externals: {
+            'moment': 'moment',
+            'vue': 'Vue',
+            // 'ant-design-vue': 'antd',
+            'element-ui': 'Element',
+            'echarts': 'echarts',
+            'v-charts': 'VeIndex',
+            '@ckeditor/ckeditor5-vue': 'CKEditor',
+            '@ckeditor/ckeditor5-build-classic': 'ClassicEditor'
+        }
     },
 }

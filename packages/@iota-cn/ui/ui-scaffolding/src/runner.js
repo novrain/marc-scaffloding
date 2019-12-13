@@ -6,7 +6,7 @@ import Router from 'vue-router'
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.less'
 
-import VCharts from 'v-charts'
+import VChart from 'v-charts'
 import VueI18n from 'vue-i18n'
 
 // iota-cn
@@ -19,10 +19,11 @@ import FrameComponents from './framework/components'
 import axios from 'axios'
 import vueNcform from '@ncform/ncform'
 import Element from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+// import 'element-ui/lib/theme-chalk/index.css'
 import ncformStdComps from '@ncform/ncform-theme-elementui'
 import rules from './framework/ncform-rules'
-Vue.use(Element) // Element部分全局变量会被antd覆盖掉
+// Element部分全局变量会被antd覆盖掉
+try { Vue.use(Element) } catch (e) { console.log('externals mode') }
 Vue.use(vueNcform, { extComponents: ncformStdComps, extRules: rules, lang: 'zh-cn' })
 window.$http = Vue.prototype.$http = axios
 // ncform -end
@@ -43,7 +44,7 @@ import VueResize from 'vue-resize'
 Vue.use(VueResize)
 
 Vue.use(Antd)
-Vue.use(VCharts)
+Vue.use(VChart)
 Vue.use(VueI18n)
 Vue.use(Vuex)
 Vue.use(Router)
