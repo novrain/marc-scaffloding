@@ -10,6 +10,22 @@ const product = {
         credentials: true,
         origin: '*'
     },
+    eventRecordLog: {
+        _id: 'undefined',
+        username: 'undefined',
+        userId: 'undefined',
+        method: 'undefined',
+        host: 'undefined',
+        url: 'undefined',
+        status: null,
+        description: null,
+        exception_detail: 'undefined',
+        log_type: 'undefined',
+        request_ip: 'undefined',
+        time: 'undefined',
+        browser: 'undefined',
+        _v: '1.0.0',
+    },
     mws: [],
     dc: {
         orm: {
