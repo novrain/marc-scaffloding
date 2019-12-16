@@ -448,6 +448,7 @@ DROP TABLE IF EXISTS public."Dictionary";
 DROP TABLE IF EXISTS public."CommunistPartyProcessCategory";
 DROP TYPE IF EXISTS public."enum_User_type";
 DROP TYPE IF EXISTS public."enum_UserExtention_sex";
+DROP TABLE IF EXISTS public."EventRecord";
 DROP EXTENSION IF EXISTS plpgsql;
 DROP SCHEMA IF EXISTS public;
 --
@@ -872,6 +873,43 @@ CREATE TABLE "UserRole" (
 
 
 ALTER TABLE "UserRole" OWNER TO postgres;
+
+--
+-- Name: EventRecord; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."EventRecord" (
+  "id" varchar(100) COLLATE "pg_catalog"."default" NOT NULL,
+  "username" varchar(20) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
+  "userId" varchar(255) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
+  "method" varchar(20) COLLATE "pg_catalog"."default" NOT NULL DEFAULT NULL::character varying,
+  "host" varchar(50) COLLATE "pg_catalog"."default" NOT NULL DEFAULT NULL::character varying,
+  "url" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "status" varchar(11) COLLATE "pg_catalog"."default" NOT NULL,
+  "description" varchar(255) COLLATE "pg_catalog"."default",
+  "exception_detail" text COLLATE "pg_catalog"."default",
+  "log_type" varchar(255) COLLATE "pg_catalog"."default",
+  "request_ip" varchar(20) COLLATE "pg_catalog"."default",
+  "time" varchar(15) COLLATE "pg_catalog"."default" NOT NULL,
+  "browser" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "_v" varchar(50) COLLATE "pg_catalog"."default",
+  "createdAt" timestamptz(0) NOT NULL
+);
+
+
+ALTER TABLE "EventRecord" OWNER TO postgres;
+
+COMMENT ON COLUMN "public"."EventRecord"."method" IS '请求类型';
+COMMENT ON COLUMN "public"."EventRecord"."host" IS '访问地址';
+COMMENT ON COLUMN "public"."EventRecord"."url" IS '访问路径';
+COMMENT ON COLUMN "public"."EventRecord"."status" IS '状态码 200  404  500 503 ...';
+COMMENT ON COLUMN "public"."EventRecord"."description" IS '描述';
+COMMENT ON COLUMN "public"."EventRecord"."exception_detail" IS '异常日志';
+COMMENT ON COLUMN "public"."EventRecord"."log_type" IS '日志类型';
+COMMENT ON COLUMN "public"."EventRecord"."request_ip" IS '真实ip地址';
+COMMENT ON COLUMN "public"."EventRecord"."time" IS '耗时';
+COMMENT ON COLUMN "public"."EventRecord"."browser" IS '浏览器类型';
+COMMENT ON COLUMN "public"."EventRecord"."createdAt" IS '发起时间';
 
 --
 -- Name: act_adm_databasechangelog; Type: TABLE; Schema: public; Owner: postgres
@@ -3837,6 +3875,12 @@ ALTER TABLE ONLY "Dictionary"
 ALTER TABLE ONLY "Dictionary"
     ADD CONSTRAINT "Dictionary_pkey" PRIMARY KEY (id);
 
+--
+-- Name: EventRecord Log_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE "public"."EventRecord" 
+    ADD CONSTRAINT "Log_pkey" PRIMARY KEY ("id");
 
 --
 -- Name: MenuPreDepends MenuPreDepends_menuId_dependMenuId_key; Type: CONSTRAINT; Schema: public; Owner: postgres

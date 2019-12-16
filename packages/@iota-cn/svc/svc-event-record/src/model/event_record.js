@@ -1,6 +1,6 @@
 export default function (dc) {
     let EventRecord = dc.orm.define('EventRecord', {
-        _id: {
+        id: {
             type: dc.ORM.STRING,
             primaryKey: true,
             defaultValue: dc.ORM.UUIDV4,

@@ -95,7 +95,7 @@ export function entry(app) {
         var _description = null
         var _exception_detail = null
         //用户日志 系统日志
-        var _log_type = 0
+        var _log_type = 'user_record'
 
         var _username = null
         var _userId = null
@@ -106,7 +106,7 @@ export function entry(app) {
             ctx.iota.logger.log("error", "[iOTA-USER-RECORD]", err);
 
             //系统日志
-            _log_type = 1
+            _log_type = 'sys_record'
             _exception_detail = err
         } finally {
             /**  
@@ -114,8 +114,7 @@ export function entry(app) {
              * 1. 系统级日志的err可能为空？
              * 2. 日志筛选...
              */
-            console.log('log_type', _log_type)
-            if (_log_type == 1 || (operation && operation.verify)) {
+            if (_log_type === 'sys_record' || (operation && operation.verify)) {
                 if (ctx.session.user) {
                     //user info
                     let user = ctx.session.user
@@ -129,7 +128,7 @@ export function entry(app) {
                 } else {
                     _description = 'undefined'
                 }
-                if (_log_type !== 1) {
+                if (_log_type !== 'sys_record') {
                     _exception_detail = ctx.response.message
                 }
 
@@ -161,9 +160,9 @@ export function entry(app) {
                     _v: operations.prefix
                 }
                 //插入数据库
-                const dc = ctx.iota.dc;
-                await dc.models.EventRecord.create({
-                    _id: eventRecordLog._id,
+                const dc = ctx.iota.dc
+                dc.models.EventRecord.create({
+                    id: eventRecordLog._id,
                     username: eventRecordLog.username,
                     userId: eventRecordLog.userId,
                     method: eventRecordLog.method,
