@@ -8,6 +8,14 @@ export default {
     mounted() {
         this.loadHelper()
     },
+    // support change helper
+    watch: {
+        flowHelper: {
+            handler() {
+                this.loadHelper()
+            }
+        }
+    },
     methods: {
         loadHelper() {
             if (typeof this.flowHelper === 'string') {

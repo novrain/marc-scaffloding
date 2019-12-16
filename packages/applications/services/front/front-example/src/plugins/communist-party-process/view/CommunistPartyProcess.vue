@@ -175,7 +175,7 @@ export default {
         },
         selectedKeys: {
             handler() {
-                if (this.flowHelper && this.selectedKeys.length === 1) {
+                if (this.innerFlowHelper && this.selectedKeys.length === 1) {
                     let categories = []
                     let key = this.selectedKeys[0]
                     if (key !== VIRTUAl_ROOT) {
@@ -190,16 +190,16 @@ export default {
                         }
                     }
                     //扩展query，传递自定义参数
-                    if (this.flowHelper.query) {
-                        const oldQuery = this.flowHelper.query
+                    if (this.innerFlowHelper.query) {
+                        const oldQuery = this.innerFlowHelper.query
                         let query = function (opts) {
                             opts.categories = categories
                             return oldQuery(opts)
                         }
                         this.wrappedFlowHelper = Object.assign({}, this.wrappedFlowHelper, { query: query })
                     }
-                    if (this.flowHelper.create) {
-                        const oldCreate = this.flowHelper.create
+                    if (this.innerFlowHelper.create) {
+                        const oldCreate = this.innerFlowHelper.create
                         let create = function (opts) {
                             opts.categories = categories
                             return oldCreate(opts)
