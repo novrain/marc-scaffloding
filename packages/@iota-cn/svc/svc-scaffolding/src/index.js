@@ -136,7 +136,6 @@ function scaffold(config) {
     app.use(iotaDC(app, config.dc));
     //init restful base on dc model.
     app.use(iotaRestful(app, router, config.restful));
-
     config.mws.forEach(function (mv) {
         if (typeof mv.entry === 'function') {
             try {

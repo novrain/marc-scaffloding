@@ -95,6 +95,9 @@ export function entry(app, router, opts) {
         ctx.iota = ctx.iota || {};
         ctx.iota.rbac = app.iota.rbac;
         const user = ctx.session.user;
+        if (!operations.loaded) {  
+            await operations.load();
+        }
         if (user.isAdmin) {
             await next();
         }
@@ -118,9 +121,6 @@ export function entry(app, router, opts) {
                 rbac = ctx.session.rbac = {
                     operations: userOperations
                 }
-            }
-            if (!operations.loaded) {
-                await operations.load();
             }
             let operation = operations.findOperation(path, method);
             if (!operation || !operation.verify) {
