@@ -74,7 +74,8 @@ export default {
                                 // 任务是否挂起，必须明确有值，否则认为无法处理
                                 suspended: process.suspended !== undefined ? process.suspended : undefined,
                                 endTime: process.endTime,
-                                finished: this.dataType === 'finished'
+                                finished: this.dataType === 'finished',
+                                deleteReason: process.deleteReason
                             }
                         })
                         this.total = res.data.total

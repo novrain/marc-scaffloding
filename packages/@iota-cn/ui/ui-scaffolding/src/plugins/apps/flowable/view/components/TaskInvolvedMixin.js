@@ -68,7 +68,8 @@ export default {
                                 summary,
                                 desc,
                                 formData,
-                                finished: this.dataType === 'finished'
+                                finished: this.dataType === 'finished',
+                                deleteReason: flow.deleteReason
                             }
                         })
                         this.total = res.data.total

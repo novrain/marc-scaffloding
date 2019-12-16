@@ -19,6 +19,7 @@ export default {
         'controls',
         'selected',
         'rowSelection',
+        'rowClassName',
         'rows',
         'columns',
         'size'

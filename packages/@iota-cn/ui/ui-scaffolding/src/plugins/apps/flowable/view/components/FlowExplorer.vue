@@ -176,6 +176,13 @@ export default {
             this.page = 1
             this.refetch()
         },
+        rowClassName(record) {
+            if (record && record.deleteReason) {
+                return 'deleted-flow'
+            } else {
+                return ''
+            }
+        },
         renderTable() {
             let columns = this.flowHelper.columns
             if (typeof this.flowHelper.columns === 'function') {
@@ -200,6 +207,10 @@ export default {
                     }
                 }
                 columns.push(taskNodeColumn)
+            }
+            let rowClassName = undefined
+            if (this.dataType === 'finished') {
+                rowClassName = this.rowClassName
             }
             // 操作
             if (this.dataType === 'running') {
@@ -278,6 +289,7 @@ export default {
                         onRowClick={this.onSelectFlow}
                         showPagination={'top'}
                         showSizeChanger={true}
+                        rowClassName={rowClassName}
                         class={'table'}
                         columns={columns}
                         rows={this.flows}>
@@ -376,6 +388,12 @@ export default {
                 color: $primary-color;
                 cursor: pointer;
             }
+        }
+
+        /deep/ .deleted-flow {
+            font-style: italic;
+            color: $ii-gray-300;
+            text-decoration: line-through;
         }
     }
 }
