@@ -1,8 +1,4 @@
 import {
-    pathToRegexp
-} from 'path-to-regexp';
-
-import {
     event_record
 } from './model';
 
@@ -85,7 +81,6 @@ export function entry(app) {
         let startTime = Date.now()
         let _method = ctx.request.method
         let operation = operations.findOperation(path, _method);
-        console.log('operation info', operation)
 
         // let getClientIp = function (req) {
         //     return req.header['x-forwarded-for'] ||
@@ -116,13 +111,11 @@ export function entry(app) {
         } finally {
             /**  
              * @TODO 
-             * 1. 请求类型过滤 targetMethods, 包含则处理，不包含则不记录
-             * 2. 从operation取出接口description
-             * 3. 系统级日志的err可能为空？
-             * 4. 插入数据库
+             * 1. 系统级日志的err可能为空？
+             * 2. 日志筛选...
              */
-
-            if (operation && operation.verify) {
+            console.log('log_type', _log_type)
+            if (_log_type == 1 || (operation && operation.verify)) {
                 if (ctx.session.user) {
                     //user info
                     let user = ctx.session.user
@@ -131,8 +124,8 @@ export function entry(app) {
                 }
 
                 _status = ctx.response.status
-                if (operation) {
-                    _description = operation.name || 'undefined'
+                if (operation && operation.name) {
+                    _description = operation.name
                 } else {
                     _description = 'undefined'
                 }
@@ -171,8 +164,8 @@ export function entry(app) {
                 const dc = ctx.iota.dc;
                 await dc.models.EventRecord.create({
                     _id: eventRecordLog._id,
-                    username: eventRecordLog.username || 'undefined',
-                    userId: eventRecordLog.userId || 'undefined',
+                    username: eventRecordLog.username,
+                    userId: eventRecordLog.userId,
                     method: eventRecordLog.method,
                     host: eventRecordLog.host,
                     url: eventRecordLog.url,
