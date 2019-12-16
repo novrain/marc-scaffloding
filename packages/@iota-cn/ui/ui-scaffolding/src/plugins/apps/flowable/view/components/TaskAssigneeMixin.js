@@ -43,7 +43,7 @@ export default {
                         // 转为统一的Flow数据结构 
                         this.flows = res.data.data.map(task => {
                             const formData = {}
-                            task.variables.forEach(v => {
+                            U.decodeFormVariables(task.variables).forEach(v => {
                                 formData[v.name] = v.value
                             })
                             const { name, summary, desc } = this.flowHelper.simplified.call(this, { formData })

@@ -54,7 +54,7 @@ export default {
                     .then((res) => {
                         this.flows = res.data.data.map(flow => {
                             const formData = {}
-                            flow.variables.forEach(v => {
+                            U.decodeFormVariables(flow.variables).forEach(v => {
                                 formData[v.name] = v.value
                             })
                             const { name, summary, desc } = this.flowHelper.simplified.call(this, { formData })
