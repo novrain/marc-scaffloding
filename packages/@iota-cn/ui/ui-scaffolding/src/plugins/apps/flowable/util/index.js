@@ -132,3 +132,23 @@ export const suspendable = ({ user, flow }) => {
 export const activeable = ({ user, flow }) => {
     return (user.isAdmin || flow.formData.initiatorId === user.id) && flow.suspended === true
 }
+
+export const encodeFormVariables = (variables) => {
+    return variables.map(v => {
+        if (v.value !== undefined && v.value !== null
+            && typeof v.value === 'object') {
+            v.type = 'json'
+            // v.value = JSON.stringify(v.value)
+        }
+        return v
+    })
+}
+
+export const decodeFormVariables = (variables) => {
+    return variables.map(v => {
+        // if (v.type === 'json') {
+        //     v.value = JSON.parse(v.value)
+        // }
+        return v
+    })
+}

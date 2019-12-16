@@ -1,4 +1,5 @@
 import moment from 'moment'
+import * as U from '../../util'
 
 export default {
     mounted() {
@@ -58,7 +59,7 @@ export default {
                     .then((res) => {
                         this.flows = res.data.data.map(process => {
                             const formData = {}
-                            process.variables.forEach(v => {
+                            U.decodeFormVariables(process.variables).forEach(v => {
                                 formData[v.name] = v.value
                             })
                             const { name, summary, desc } = this.flowHelper.simplified.call(this, { formData })

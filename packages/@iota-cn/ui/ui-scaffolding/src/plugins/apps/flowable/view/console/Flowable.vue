@@ -107,6 +107,7 @@ export default {
                     if (this.innerFlowHelper && this.innerFlowHelper.create) {
                         process = this.innerFlowHelper.create({ processDef: this.processDef, process: process })
                     }
+                    process.variables = U.encodeFormVariables(process.variables)
                     this.$axios.silentPost(`/fl/process/runtime/process-instances`, process, true)
                         .then(() => {
                             message.success('新建成功，请在 由我发起 中查看')
