@@ -12,7 +12,6 @@ import position_role from './position_role';
 import user_organization from './user_organization';
 import user_position from './user_position';
 import user_role from './user_role';
-import event_record from './event_record'
 
 export {
     menu,
@@ -28,6 +27,5 @@ export {
     position_role,
     user_organization,
     user_position,
-    user_role,
-    event_record
+    user_role
 }
