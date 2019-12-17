@@ -11,7 +11,7 @@ export default {
         refetch() {
             if (this.processDef) {
                 let query = {
-                    processDefinitionId: this.processDef.flowableInstance,
+                    processDefinitionKey: this.processDef.flowableInstance,
                     assigneeLike: `${U.idOfQueryUser(this.user)}%`, // 查询的时候模糊
                     includeProcessVariables: true,
                     // includeIdentityLinks: true,
@@ -59,7 +59,8 @@ export default {
                                 desc,
                                 formData,
                                 task: task, // 自身是task
-                                finished: this.dataType === 'finished'
+                                finished: this.dataType === 'finished',
+                                processDefinitionId: task.processDefinitionId
                             }
                         })
                         this.total = res.data.total

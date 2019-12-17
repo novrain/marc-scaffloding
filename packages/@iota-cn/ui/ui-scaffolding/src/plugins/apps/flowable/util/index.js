@@ -1,3 +1,6 @@
+import { silentGet } from '../../../../axios'
+
+
 /**
  * 用户ID，保存用户ID/用户名/用户显示名至flowable，暂不考虑名称变化的一致性
  * @param {*} user 
@@ -151,4 +154,15 @@ export const decodeFormVariables = (variables) => {
         // }
         return v
     })
+}
+
+// BPMNdef 避免重复加载
+const BPMNDEF = {}
+
+export const fetchBPMNDef = async (processDefinitionId) => {
+    return BPMNDEF[processDefinitionId]
+        || silentGet(`/fl/process/repository/process-definitions/${processDefinitionId}/resourcedata`)
+            .then(res => {
+                return res ? res.data : undefined
+            })
 }
