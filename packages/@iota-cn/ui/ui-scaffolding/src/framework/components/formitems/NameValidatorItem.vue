@@ -31,7 +31,6 @@ export default {
         let label = this.label ? this.label : this.$t('iota.frame.components.common.name');
         return (
             <AForm.Item
-                class={this.className}
                 {...formOptions}
                 hasFeedback
                 label={label}

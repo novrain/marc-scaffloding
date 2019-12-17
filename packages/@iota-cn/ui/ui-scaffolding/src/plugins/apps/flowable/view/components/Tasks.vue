@@ -352,7 +352,7 @@ export default {
                         size='small'
                         headheight={68}
                         showSizeChanger={false}
-                        className={'table'}
+                        class={'table'}
                         showPagination='none'
                         columns={columns}
                         rows={this.running.items}>
@@ -397,7 +397,7 @@ export default {
                         size='small'
                         headheight={68}
                         showSizeChanger={false}
-                        className={'table'}
+                        class={'table'}
                         showPagination='none'
                         columns={columns}
                         rows={this.finished.items}>

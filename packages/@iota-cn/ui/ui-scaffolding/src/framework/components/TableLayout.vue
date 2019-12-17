@@ -1,5 +1,4 @@
 <script>
-import classNames from 'classnames'
 
 const TABLE_HEAD_HEIGHT = 56;
 // const TABLE_CONTROL_HEIGHT = 40;
@@ -84,12 +83,12 @@ export default {
             )
         }
         return (
-            <div class={classNames('layout', this.className)}>
+            <div class='layout'>
                 {
                     this.controls ? <div class={'layout__controls'}>
                         {this.controls}
                         <span
-                            class={classNames('layout__controls__item', 'layout__controls__selected')}>
+                            class='layout__controls__item layout__controls__selected'>
                             {this.selected ? this.$t('iota.frame.components.tablelayout.selected', { count: this.selected }) : ''}
                         </span>
                         <span class={'layout__controls__pagination'}>
@@ -131,7 +130,7 @@ export default {
                         size={size}
                         pagination={false} />
                     {
-                        showBottomPagination ? <div class={classNames('layout__controls', 'layout__controls__bottom')}>
+                        showBottomPagination ? <div class='layout__controls layout__controls__bottom'>
                             <span class={'layout__controls__pagination'}>
                                 {pagination}
                             </span>

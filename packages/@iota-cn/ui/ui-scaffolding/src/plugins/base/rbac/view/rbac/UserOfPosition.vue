@@ -270,7 +270,7 @@ export default {
                 onShowSizeChange={this.onLimitChange}
                 pageSizeOptions={pageSizeOptions}
                 onRowClick={this.onRowClick}
-                className={'wrapper__row__col__tabs__table'}
+                class={'table'}
                 showPagination='both'
                 selected={selectedRowKeys.length}
                 showSizeChanger={false}
@@ -297,26 +297,6 @@ export default {
     }
 }
 
-.wrapper {
-    &__row {
-        height: 100% !important;
-
-        &__col {
-            height: 100% !important;
-
-            &_white {
-                background-color: white;
-            }
-
-            &__tabs {
-                margin: 10px 0 10px 0;
-                background-color: white;
-
-                &__table {
-                    padding: 0;
-                }
-            }
-        }
-    }
+.table {
 }
 </style>

@@ -2,7 +2,6 @@
 import { message } from 'ant-design-vue/es'
 import merge from 'deepmerge'
 import moment from 'moment'
-import classNames from 'classnames'
 import { AuthCheckStrictlyTree } from '../../components'
 import UserOfRole from './UserOfRole'
 
@@ -106,22 +105,22 @@ export default {
                 role = this.findRole(this.selectedRowKeys[0])
             }
             return (<ATabPane tab="权限" key="menusandoperations" class='tabpanel'>
-                <ARow gutter={16} class={classNames('wrapper__row')}>
-                    <ACol span={12} class={classNames('wrapper__row__col')}>
+                <splitpanes class="default-theme">
+                    <splitpane size='50' min-size="20" max-size="80">
                         <AuthCheckStrictlyTree
                             target={this.$p('/authorizations/roles/:roleId/menus:GET') ? role : undefined}
                             dispost={!this.$p('/authorizations/roles/:roleId/menus:POST')}
                             disdelete={!this.$p('/authorizations/roles/:roleId/menus/:id?:DELETE')}
                             sourceUrlKey='menus' targetUrlKey='roles' resultKey='menus' />
-                    </ACol>
-                    <ACol span={12} class={classNames('wrapper__row__col')}>
+                    </splitpane>
+                    <splitpane size='50' style={{ flex: 1 }}>
                         <AuthCheckStrictlyTree
                             target={this.$p('/authorizations/roles/:roleId/operations:GET') ? role : undefined}
                             dispost={!this.$p('/authorizations/roles/:roleId/operations:POST')}
                             disdelete={!this.$p('/authorizations/roles/:roleId/operations/:id?:DELETE')}
                             sourceUrlKey='operations' targetUrlKey='roles' resultKey='operations' />
-                    </ACol>
-                </ARow>
+                    </splitpane>
+                </splitpanes>
             </ATabPane>)
         },
 
@@ -308,7 +307,7 @@ export default {
             const hasSelected = selectedRowKeys.length > 0
             const roles = this.roles
             return (
-                <a-card title="角色管理"
+                <a-card title={<div class='ii-card-head'><IiIcon type='role' /><span>角色管理</span></div>}
                     bordered={false}
                     bodyStyle={{ padding: "2px", flex: 1 }}
                     class='ii-card'>
@@ -377,16 +376,14 @@ export default {
 
     render() {
         return (
-            <div style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
-                <ARow gutter={16} class={classNames('wrapper__row')}>
-                    <ACol span={10} class={classNames('wrapper__row__col')}>
-                        {this.renderRole()}
-                    </ACol>
-                    <ACol span={14} class={classNames('wrapper__row__col', 'wrapper__row__col_white')}>
-                        {this.renderRelated()}
-                    </ACol>
-                </ARow>
-            </div>
+            <splitpanes class="default-theme">
+                <splitpane size='35' min-size="20" max-size="60">
+                    {this.renderRole()}
+                </splitpane>
+                <splitpane size='65' style={{ flex: 1 }}>
+                    {this.renderRelated()}
+                </splitpane>
+            </splitpanes>
         )
     }
 }
@@ -438,20 +435,6 @@ export default {
 .table {
     :global(.ant-table-fixed-header .ant-table-scroll .ant-table-header) {
         height: 59px;
-    }
-}
-
-.wrapper {
-    &__row {
-        height: 100% !important;
-
-        &__col {
-            height: 100% !important;
-
-            &_white {
-                background-color: white;
-            }
-        }
     }
 }
 </style>
