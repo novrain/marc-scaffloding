@@ -22,26 +22,24 @@ export default {
     },
     render() {
         return (
-            <div style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
-                <ARow gutter={16} type='flex' justify='center' style={{ height: '100%' }}>
-                    <ACol span={12} style={{ height: '100%' }}>
-                        <a-card title={<div class='ii-head'><IiIcon type='menu' /><span>我的菜单</span></div>}
-                            bordered={false}
-                            bodyStyle={{ padding: '2px', overflow: 'scroll', height: '100%' }}
-                            class='ii-card'>
-                            {this.menus.length > 0 ? <IiArrayTree tree={this.menus} /> : null}
-                        </a-card>
-                    </ACol>
-                    <ACol span={12} style={{ height: '100%' }}>
-                        <a-card title="我的操作"
-                            bordered={false}
-                            bodyStyle={{ padding: '2px', overflow: 'scroll', height: '100%' }}
-                            class='ii-card'>
-                            {this.operations.length > 0 ? <IiArrayTree tree={this.operations} /> : null}
-                        </a-card>
-                    </ACol>
-                </ARow>
-            </div>
+            <splitpanes class="default-theme">
+                <splitpane size='50' min-size="20" max-size="80">
+                    <a-card title={<div class='ii-card-head'><IiIcon type='menu' /><span>我的菜单</span></div>}
+                        bordered={false}
+                        bodyStyle={{ padding: '2px', overflow: 'auto', height: '100%' }}
+                        class='ii-card'>
+                        {this.menus.length > 0 ? <IiArrayTree tree={this.menus} /> : null}
+                    </a-card>
+                </splitpane>
+                <splitpane size='50' style={{ flex: 1 }}>
+                    <a-card title={<div class='ii-card-head'><IiIcon type='menu' /><span>我的操作</span></div>}
+                        bordered={false}
+                        bodyStyle={{ padding: '2px', overflow: 'auto', height: '100%' }}
+                        class='ii-card'>
+                        {this.operations.length > 0 ? <IiArrayTree tree={this.operations} /> : null}
+                    </a-card>
+                </splitpane>
+            </splitpanes>
         )
     }
 }
@@ -49,13 +47,6 @@ export default {
 
 <style lang="stylus" scoped>
 @import '../../../../../styles/imports';
-
-.ii-head {
-    span {
-        color: $primary-color;
-        margin-left: 8px;
-    }
-}
 
 .ii-card {
     height: 100%;

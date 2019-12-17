@@ -1,9 +1,8 @@
 <script>
-import classNames from 'classnames'
 
 export default {
     name: 'IiModal',
-    props: ['button', 'content', 'title', 'className', 'ok', 'cancel', 'clearFloat', 'width'],
+    props: ['button', 'content', 'title', 'ok', 'cancel', 'clearFloat', 'width'],
     data() {
         return {
             visible: false,
@@ -47,7 +46,7 @@ export default {
 
     render() {
         return (
-            <div class={classNames(this.clearFloat ? 'button' : 'modal', this.className)}>
+            <div class={this.clearFloat ? 'button' : 'modal'}>
                 <div onClick={this.showModal}>
                     {this.button}
                 </div>

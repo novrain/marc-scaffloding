@@ -178,7 +178,7 @@ export default {
                     onShowSizeChange={this.onLimitChange}
                     onPaginationChange={this.onPageChange}
                     pageSizeOptions={pageSizeOptions}
-                    className={'table'}
+                    class={'table'}
                     showPagination='both'
                     columns={columns}
                     rows={this.contents.items}>

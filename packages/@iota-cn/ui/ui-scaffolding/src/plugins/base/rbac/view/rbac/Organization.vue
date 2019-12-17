@@ -1,5 +1,4 @@
 <script>
-import classNames from 'classnames'
 import { Menu as AMenu } from 'ant-design-vue'
 import * as U from '../../util'
 
@@ -243,59 +242,57 @@ export default {
         })
         tree = U.createTree(tree).roots
         return (
-            <div style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
-                <ARow gutter={16} class={classNames('wrapper__row')}>
-                    <ACol span={8} class={classNames('wrapper__row__col')}>
-                        <a-card title="组织管理"
-                            bordered={false}
-                            bodyStyle={{ padding: '2px', overflow: 'scroll', height: '100%' }}
-                            class='ii-card'>
-                            {
-                                this.$p('/authorizations/organizations:GET') ?
-                                    <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="refresh" onClick={this.refetch}>
-                                        <AIcon type="reload" /> 刷新
+            <splitpanes class="default-theme">
+                <splitpane size='35' min-size="20" max-size="60">
+                    <a-card title={<div class='ii-card-head'><IiIcon type='organization' /><span>组织管理</span></div>}
+                        bordered={false}
+                        bodyStyle={{ padding: '2px', overflow: 'auto', height: '100%' }}
+                        class='ii-card'>
+                        {
+                            this.$p('/authorizations/organizations:GET') ?
+                                <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="refresh" onClick={this.refetch}>
+                                    <AIcon type="reload" /> 刷新
                                     </AButton>
-                                    : null
-                            }
-                            {
-                                this.$p('/authorizations/organizations:POST') ?
-                                    <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="new" onClick={this.addChildNode}>
-                                        <AIcon type="plus" /> 创建组织
+                                : null
+                        }
+                        {
+                            this.$p('/authorizations/organizations:POST') ?
+                                <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="new" onClick={this.addChildNode}>
+                                    <AIcon type="plus" /> 创建组织
                                     </AButton>
-                                    : null
-                            }
-                            {
-                                tree.length > 0 ? <IiArrayTree
-                                    tree={tree}
-                                    onSelect={this.onTreeSelect}
-                                    selectedKeys={this.selectedKeys}
-                                    onRightClick={this.treeNodeonRightClick}
-                                /> : null
-                            }
-                            <AModal
-                                title="增加组织"
-                                key={'addNode'}
-                                visible={this.addNode}
-                                onOk={this.onAddOk}
-                                onCancel={this.onAddCancel}>
-                                <Form_IiSimpleEditor ref={'_addForm'} data={{}} disableDesc />
-                            </AModal>
-                            <AModal
-                                title="编辑组织"
-                                key={'editNode'}
-                                visible={this.propEditNode}
-                                onOk={this.onEditOk}
-                                onCancel={this.onEditCancel}>
-                                <Form_IiSimpleEditor ref={'_editForm'} data={{ name: this.currentEditNode ? this.currentEditNode.title : '' }} disableDesc />
-                            </AModal>
-                        </a-card>
-                    </ACol>
-                    <ACol span={16} class={classNames('wrapper__row__col', 'wrapper__row__col_white')}>
-                        {this.renderRelated()}
-                    </ACol>
-                    {this.getNodeTreeRightClickMenu()}
-                </ARow>
-            </div>
+                                : null
+                        }
+                        {
+                            tree.length > 0 ? <IiArrayTree
+                                tree={tree}
+                                onSelect={this.onTreeSelect}
+                                selectedKeys={this.selectedKeys}
+                                onRightClick={this.treeNodeonRightClick}
+                            /> : null
+                        }
+                        <AModal
+                            title="增加组织"
+                            key={'addNode'}
+                            visible={this.addNode}
+                            onOk={this.onAddOk}
+                            onCancel={this.onAddCancel}>
+                            <Form_IiSimpleEditor ref={'_addForm'} data={{}} disableDesc />
+                        </AModal>
+                        <AModal
+                            title="编辑组织"
+                            key={'editNode'}
+                            visible={this.propEditNode}
+                            onOk={this.onEditOk}
+                            onCancel={this.onEditCancel}>
+                            <Form_IiSimpleEditor ref={'_editForm'} data={{ name: this.currentEditNode ? this.currentEditNode.title : '' }} disableDesc />
+                        </AModal>
+                    </a-card>
+                </splitpane>
+                <splitpane size='65' style={{ flex: 1 }}>
+                    {this.renderRelated()}
+                </splitpane>
+                {this.getNodeTreeRightClickMenu()}
+            </splitpanes>
         )
     }
 }
@@ -334,20 +331,6 @@ export default {
 
     /deep/ .ant-tabs-bar {
         margin: 0;
-    }
-}
-
-.wrapper {
-    &__row {
-        height: 100% !important;
-
-        &__col {
-            height: 100% !important;
-
-            &_white {
-                background-color: white;
-            }
-        }
     }
 }
 </style>

@@ -1,5 +1,4 @@
 <script>
-import classNames from 'classnames'
 import TableLayout from './TableLayout'
 
 export default {
@@ -100,7 +99,7 @@ export default {
             return (<div class={'multiAdd__selected'}>
                 <div class={'multiAdd__title'}>
                     <span class={'multiAdd__subTitle'}>{this.$t('iota.frame.components.tablelayout.selected', { count: selected.length })}</span>
-                    <i class={classNames('iota-icon iota-icon-clean', 'multiAdd__clean')}
+                    <i class={'iota-icon iota-icon-clean multiAdd__clean'}
                         onClick={this.onRemoveAll} />
                 </div>
                 <div class={'multiAdd__selected__list'}>
@@ -140,6 +139,7 @@ export default {
                     </div>
                     <TableLayout
                         class={'multiAdd__table'}
+                        size='small'
                         showPagination={this.hidePagination ? 'none' : 'top'}
                         onPaginationChange={this.onPageChange}
                         total={this.total}

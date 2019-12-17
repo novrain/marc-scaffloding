@@ -281,7 +281,7 @@ export default {
             // const rowSelection = { onChange: this.onSelectChange }
             const pageSizeOptions = ['20', '40', '60', '80']
             return (
-                <a-card title="字典管理"
+                <a-card title={<div class='ii-card-head'><IiIcon type='dictionary' /><span>字典管理</span></div>}
                     bordered={false}
                     bodyStyle={{ padding: "2px", flex: 1 }}
                     style={{
@@ -330,7 +330,7 @@ export default {
                         onPaginationChange={this.onPageChange}
                         pageSizeOptions={pageSizeOptions}
                         onRowClick={this.onDictionaryClick}
-                        className={'table'}
+                        class={'table'}
                         showPagination='both'
                         columns={columns}
                         rows={this.dictionary.items}>
@@ -480,14 +480,14 @@ export default {
                         key='table'
                         size='small'
                         headheight={68}
-                        className={'table'}
+                        class={'table'}
                         columns={columns}
                         rows={this.dictionaryItem.items}>
                     </IiTableLayout>
                 ]
             }
             return (
-                <a-card title="字典条目"
+                <a-card title={<div class='ii-card-head'><IiIcon type='list' /><span>字典条目</span></div>}
                     bordered={false}
                     bodyStyle={{ padding: "2px", flex: 1 }}
                     style={{
@@ -502,14 +502,14 @@ export default {
     render() {
         return (
             <div class='ii-dictionary'>
-                <ARow gutter={16} class='row'>
-                    <ACol span={10} class='col'>
+                <splitpanes class="default-theme">
+                    <splitpane size='35' min-size="20" max-size="60">
                         {this.renderDictionaries()}
-                    </ACol>
-                    <ACol span={14} class='col'>
+                    </splitpane>
+                    <splitpane size='65' style={{ flex: 1 }}>
                         {this.renderItems()}
-                    </ACol>
-                </ARow>
+                    </splitpane>
+                </splitpanes>
             </div>
         )
     }
@@ -533,13 +533,5 @@ export default {
     height: 100%;
     width: 100%;
     overflow: hidden;
-
-    .row {
-        height: 100%;
-    }
-
-    .col {
-        height: 100%;
-    }
 }
 </style>

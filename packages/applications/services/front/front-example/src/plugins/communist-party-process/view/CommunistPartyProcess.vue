@@ -228,13 +228,11 @@ export default {
     render() {
         let tree = this.tree.roots
         return (
-            <a-row class="ii-row"
-                gutter={0}>
-                <a-col class="col bordered"
-                    span={4}>
-                    <a-card title="任务分类"
+            <splitpanes class="default-theme ii-row">
+                <splitpane size='20' min-size="20" max-size="40">
+                    <a-card title={<div class='ii-card-head'><IiIcon type='antv-schedule' /><span>任务分类</span></div>}
                         bordered={false}
-                        bodyStyle={{ padding: '2px', overflow: 'scroll', height: '100%' }}
+                        bodyStyle={{ padding: '2px', overflow: 'auto', height: '100%' }}
                         class='ii-card'>
                         <div class='categories'>
                             <div class='operation'>
@@ -271,13 +269,12 @@ export default {
                             <Form_IiSimpleEditor ref={'_editForm'} data={{ name: this.currentEditNode ? this.currentEditNode.title : '' }} disableDesc />
                         </AModal>
                     </a-card>
-                </a-col>
-                <a-col class="col"
-                    span={20}>
+                </splitpane>
+                <splitpane size='65' style={{ flex: 1 }}>
                     {this.wrappedFlowHelper ? <ii-flowable flowId={this.flowId} flowHelper={this.wrappedFlowHelper} /> : null}
-                </a-col>
+                </splitpane>
                 {this.getNodeTreeRightClickMenu()}
-            </a-row>
+            </splitpanes>
         )
     }
 }

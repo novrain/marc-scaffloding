@@ -265,7 +265,7 @@ export default {
                 onShowSizeChange={this.onLimitChange}
                 pageSizeOptions={pageSizeOptions}
                 onRowClick={this.onRowClick}
-                className={'wrapper__row__col__tabs__table'}
+                class={'table'}
                 showPagination='both'
                 selected={selectedRowKeys.length}
                 showSizeChanger={false}

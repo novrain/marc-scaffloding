@@ -1,7 +1,6 @@
 <script>
 import merge from 'deepmerge'
 import moment from 'moment'
-import classNames from 'classnames'
 import { AuthCheckStrictlyTree, Status, UserEditor } from '../../components'
 import RoleOfUser from './RoleOfUser'
 import { Menu as AMenu } from 'ant-design-vue'
@@ -435,7 +434,7 @@ export default {
             )
             const users = this.users
             return (
-                <a-card title="用户管理"
+                <a-card title={<div class='ii-card-head'><IiIcon type='subuser' /><span>用户管理</span></div>}
                     bordered={false}
                     bodyStyle={{ padding: "2px", flex: 1 }}
                     class='ii-card'>
@@ -478,7 +477,7 @@ export default {
                         pageSizeOptions={pageSizeOptions}
                         // showPagination='both'
                         onRowClick={this.onRowClick}
-                        className={'table'}
+                        class={'table'}
                         selected={selectedRowKeys.length}
                         showSizeChanger={false}
                         rowSelection={rowSelection}
@@ -491,16 +490,14 @@ export default {
     },
     render() {
         return (
-            <div style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
-                <ARow gutter={16} class={classNames('wrapper__row')}>
-                    <ACol span={12} class={classNames('wrapper__row__col')}>
-                        {this.renderUser()}
-                    </ACol>
-                    <ACol span={12} class={classNames('wrapper__row__col', 'wrapper__row__col_white')}>
-                        {this.renderRelated()}
-                    </ACol>
-                </ARow>
-            </div>
+            <splitpanes class="default-theme">
+                <splitpane size='35' min-size="20" max-size="60">
+                    {this.renderUser()}
+                </splitpane>
+                <splitpane size='65' style={{ flex: 1 }}>
+                    {this.renderRelated()}
+                </splitpane>
+            </splitpanes>
         )
     }
 }
@@ -551,20 +548,6 @@ export default {
 .table {
     :global(.ant-table-fixed-header .ant-table-scroll .ant-table-header) {
         height: 59px;
-    }
-}
-
-.wrapper {
-    &__row {
-        height: 100% !important;
-
-        &__col {
-            height: 100% !important;
-
-            &_white {
-                background-color: white;
-            }
-        }
     }
 }
 
