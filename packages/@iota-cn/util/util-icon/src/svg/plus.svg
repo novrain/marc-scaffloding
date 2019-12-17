@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="1024px" height="1024px" viewBox="0 0 1024 1024" enable-background="new 0 0 1024 1024" xml:space="preserve">
-<g>
-	<path d="M568.23,455.839V287.293H455.825v168.546H287.05v112.362h168.775v168.865H568.23V568.202h169.004V455.839H568.23z"/>
-	<path d="M455.675,62H118.256H62v56.24v337.464h56.256V118.24h337.419V62z"/>
-	<path d="M568.324,62h337.42H962v56.24v337.464h-56.256V118.24h-337.42V62z"/>
-	<path d="M455.675,962H118.256H62V905.76V568.297h56.256V905.76h337.419V962z"/>
-	<path d="M568.324,962h337.42H962V905.76V568.297h-56.256V905.76h-337.42V962z"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024"><path d="M568 456V287H456v169H287v112h169v169h112V568h169V456H568zM456 62H62v394h56V118h338V62zm112 0h394v394h-56V118H568V62zM456 962H62V568h56v338h338v56zm112 0h394V568h-56v338H568v56z"/></svg>

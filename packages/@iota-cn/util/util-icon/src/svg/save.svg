@@ -1,18 +1,1 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="&#x56FE;&#x5C42;_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-	 y="0px" viewBox="0 0 1024 1024" style="enable-background:new 0 0 1024 1024;" xml:space="preserve">
-<g id="XMLID_210_">
-	<g id="XMLID_185_">
-		<path id="XMLID_217_" d="M862,162v700H162V162H862 M862,62H162c-55.229,0-100,44.772-100,100v700c0,55.228,44.771,100,100,100h700
-			c55.229,0,100-44.772,100-100V162C962,106.772,917.229,62,862,62L862,62z"/>
-	</g>
-	<g id="XMLID_180_">
-		<path id="XMLID_211_" d="M705.75,162v178.125h-387.5V162H705.75 M705.75,62h-387.5c-55.228,0-100,44.772-100,100v178.125
-			c0,55.228,44.772,100,100,100h387.5c55.229,0,100-44.772,100-100V162C805.75,106.772,760.979,62,705.75,62L705.75,62z"/>
-	</g>
-	<g id="XMLID_179_">
-		<rect id="XMLID_184_" x="511.992" y="65.125" width="100" height="215.625"/>
-	</g>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path d="M862 162v700H162V162h700m0-100H162A100 100 0 0 0 62 162v700a100 100 0 0 0 100 100h700a100 100 0 0 0 100-100V162A100 100 0 0 0 862 62z"/><path d="M706 162v178H318V162h388m0-100H318a100 100 0 0 0-100 100v178a100 100 0 0 0 100 100h388a100 100 0 0 0 100-100V162A100 100 0 0 0 706 62z"/><path d="M512 65h100v216H512z"/></svg>

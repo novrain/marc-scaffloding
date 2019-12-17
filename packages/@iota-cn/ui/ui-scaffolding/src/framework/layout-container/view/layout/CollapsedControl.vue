@@ -29,7 +29,6 @@ export default {
 
 <style lang="stylus" scoped>
 .ii-collapsed {
-    line-height: 42px;
     color: white;
     font-size: 20px;
     padding: 0px 10px;

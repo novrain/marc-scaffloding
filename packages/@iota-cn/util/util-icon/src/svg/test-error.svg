@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="&#x56FE;&#x5C42;_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-	 y="0px" viewBox="0 0 1024 1024" style="enable-background:new 0 0 1024 1024;" xml:space="preserve">
-<g id="XMLID_600_">
-	<g id="XMLID_635_">
-		<polygon id="XMLID_663_" points="231.448,844.548 179.428,792.528 792.552,179.452 844.572,231.472 		"/>
-	</g>
-	<g id="XMLID_632_">
-		<polygon id="XMLID_662_" points="792.552,844.548 179.428,231.472 231.448,179.452 844.572,792.528 		"/>
-	</g>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path d="M231 845l-52-52 614-613 52 52z"/><path d="M793 845L179 232l52-52 614 613z"/></svg>
