@@ -1,8 +1,1 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="&#x56FE;&#x5C42;_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-	 y="0px" viewBox="0 0 1024 1024" style="enable-background:new 0 0 1024 1024;" xml:space="preserve">
-<path id="XMLID_950_" d="M512,62C263.47,62,62,263.486,62,511.984C62,760.546,263.47,962,512,962s450-201.454,450-450.016
-	C962,263.486,760.53,62,512,62z M445.052,686.717L299.388,541.053l46.561-46.561l99.103,99.103l232.999-232.999l46.561,46.561
-	L445.052,686.717z"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path d="M512 62a450 450 0 1 0 0 900 450 450 0 0 0 0-900zm-67 625L300 541l46-46 99 99 233-233 47 46-280 280z"/></svg>

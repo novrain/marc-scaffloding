@@ -128,6 +128,7 @@ export default {
             .left {
                 display: flex;
                 flex-direction: row;
+                align-items: center;
             }
 
             .middle {

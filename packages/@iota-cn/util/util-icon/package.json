@@ -4,6 +4,7 @@
     "description": "",
     "main": "dist/index.html",
     "scripts": {
+        "shrink": "svgo -f src/svg --config=./svgo.json -p 0",
         "build": "gulp",
         "metapak": "metapak || exit 0",
         "postinstall": "npm run metapak --silent"
