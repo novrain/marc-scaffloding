@@ -37,11 +37,14 @@ export default {
             // 更新dueDate
             showDueDate: false,
             dueDate: moment().add(1, 'd').endOf('day'),
+            // bpmn
+            bpmnDef: undefined
         }
     },
     mounted() {
         this.refetchRBAC()//只获取一次权限信息
         this.refetch()
+        this.fetchBPMNDef()
     },
     watch: {
         flow: {
@@ -57,6 +60,9 @@ export default {
         }
     },
     methods: {
+        async fetchBPMNDef() {
+            this.bpmnDef = await U.fetchBPMNDef(this.flow.processDefinitionId)
+        },
         refetchRBAC() {
             // 拥有的
             this.$fetchUsers().then((subUsers) => {
@@ -270,8 +276,8 @@ export default {
                 <div class='bpmn'>
                     <h6>流程图</h6>
                     {
-                        this.processDef.bpmnDef ?
-                            <ii-bpmn defineXML={this.processDef.bpmnDef} ref='_bpmn' />
+                        this.bpmnDef ?
+                            <ii-bpmn defineXML={this.bpmnDef} ref='_bpmn' />
                             :
                             <ii-empty />
                     }

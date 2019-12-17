@@ -40,10 +40,6 @@ export default {
         this.$axios.silentGet(`/v1/api/processdefs/${this.flowId}`, true)
             .then((res) => {
                 this.processDef = res.data
-                this.$axios.silentGet(`/fl/process/repository/process-definitions/${this.processDef.flowableInstance}/resourcedata`)
-                    .then(res => {
-                        this.processDef.bpmnDef = res.data
-                    }).catch(() => { })
             }).catch(() => { })
     },
     computed: {
@@ -99,7 +95,7 @@ export default {
                         })
                     })
                     let process = {
-                        processDefinitionId: this.processDef.flowableInstance,
+                        processDefinitionKey: this.processDef.flowableInstance,
                         returnVariables: true,
                         variables: variables
                     }

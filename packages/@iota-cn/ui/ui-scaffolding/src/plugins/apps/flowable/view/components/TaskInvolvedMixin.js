@@ -10,7 +10,7 @@ export default {
             if (this.processDef) {
                 let url = '/fl/iota/query/historic-process-instances'
                 let query = {
-                    processDefinitionId: this.processDef.flowableInstance,
+                    processDefinitionKey: this.processDef.flowableInstance,
                     includeProcessVariables: true,
                     includeIdentityLinks: true,
                     finished: false,
@@ -69,7 +69,8 @@ export default {
                                 desc,
                                 formData,
                                 finished: this.dataType === 'finished',
-                                deleteReason: flow.deleteReason
+                                deleteReason: flow.deleteReason,
+                                processDefinitionId: flow.processDefinitionId
                             }
                         })
                         this.total = res.data.total

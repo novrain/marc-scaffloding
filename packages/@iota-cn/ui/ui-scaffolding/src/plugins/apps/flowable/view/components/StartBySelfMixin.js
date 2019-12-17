@@ -10,7 +10,7 @@ export default {
             if (this.processDef) {
                 let url = '/fl/iota/query/process-instances'
                 let query = {
-                    processDefinitionId: this.processDef.flowableInstance,
+                    processDefinitionKey: this.processDef.flowableInstance,
                     includeProcessVariables: true,
                     sort: 'startTime',
                     order: 'desc',
@@ -28,7 +28,7 @@ export default {
                 if (this.dataType === 'finished') {
                     url = '/fl/iota/query/historic-process-instances'
                     query = {
-                        processDefinitionId: this.processDef.flowableInstance,
+                        processDefinitionKey: this.processDef.flowableInstance,
                         includeProcessVariables: true,
                         sort: 'startTime',
                         order: 'desc',
@@ -75,7 +75,8 @@ export default {
                                 suspended: process.suspended !== undefined ? process.suspended : undefined,
                                 endTime: process.endTime,
                                 finished: this.dataType === 'finished',
-                                deleteReason: process.deleteReason
+                                deleteReason: process.deleteReason,
+                                processDefinitionId: process.processDefinitionId
                             }
                         })
                         this.total = res.data.total
