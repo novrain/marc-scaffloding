@@ -5,6 +5,7 @@ import getters from './getters'
 export default (opts) => {
     const { id } = opts.complex
     const state = {
+        initActions: [],
         messageCenter: {
             // actions 注册地
             actions: {

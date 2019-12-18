@@ -24,6 +24,14 @@ export default {
     },
 
     mounted() {
+        const initActions = this.$store.state.iota[this.id || 'container'].initActions
+        initActions.forEach(action => {
+            if (typeof action === 'string') {
+                this.$store.dispatch(action)
+            } else if (typeof action === 'object' && typeof action.action === 'string') {
+                this.$store.dispatch(action.action, action.params)
+            }
+        })
     },
 
     computed: {
