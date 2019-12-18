@@ -55,7 +55,6 @@ export default {
     mounted() {
         // 带变量的命名空间，暂时使用这种方式调用Action
         // 模块应该清楚自己所在的命名空间
-        this.$store.dispatch(`iota/${this.containerId}/${this.id}/fetchOperations`, this)
         this.$store.dispatch(`iota/${this.containerId}/${this.id}/fetchMenus`).then(() => {
             this.updateMenuState()
         })

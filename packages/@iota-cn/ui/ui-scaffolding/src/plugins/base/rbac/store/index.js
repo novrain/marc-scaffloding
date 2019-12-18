@@ -17,6 +17,7 @@ export default (opts) => {
                     [containerId || 'container']: {
                         // 注入到 container
                         state: {
+                            initActions: [`iota/${containerId}/${id}/fetchOperations`],
                             layout: {
                                 console: {
                                     left: {
