@@ -809,7 +809,11 @@ CREATE TABLE "UserExtention" (
     telephone character varying(255),
     "createdAt" timestamp(6) with time zone NOT NULL,
     "updatedAt" timestamp(6) with time zone NOT NULL,
-    "userId" character varying(255) NOT NULL
+    "userId" character varying(255) NOT NULL,
+    "joinTime" timestamp(6) with time zone,
+    "entryTime" timestamp(6) with time zone,
+    photo character varying(255),
+    politic character varying(255)
 );
 
 

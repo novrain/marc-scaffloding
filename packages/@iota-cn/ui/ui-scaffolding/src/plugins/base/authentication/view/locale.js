@@ -64,7 +64,11 @@ export default {
                     sex: '性别',
                     birthday: '出生日期',
                     education: '学历',
-                    telephone: '电话'
+                    telephone: '电话',
+                    politic: '政治面貌',
+                    photo: '个人照片',
+                    joinTime: '加入时间',
+                    entryTime: '入职时间'
                 }
             }
         }

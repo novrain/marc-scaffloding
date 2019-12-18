@@ -8,12 +8,20 @@ export const createEmptyUser = () => {
     }
 }
 
+//扩展信息
 let educationOptions = undefined
 
 export const setEducationOptions = (options) => {
     educationOptions = options
 }
 
+let politicsOptions = undefined
+
+export const setPoliticsOptions = (options) => {
+    politicsOptions = options
+}
+
 export {
-    educationOptions
+    educationOptions,
+    politicsOptions
 }

@@ -19,6 +19,18 @@ export default function (dc) {
         },
         telephone: {
             type: dc.ORM.STRING
+        },
+        politic: {
+            type: dc.ORM.STRING
+        },
+        joinTime: {
+            type: dc.ORM.DATE
+        },
+        photo: {
+            type: dc.ORM.STRING
+        },
+        entryTime: {
+            type: dc.ORM.DATE
         }
     },
         {
