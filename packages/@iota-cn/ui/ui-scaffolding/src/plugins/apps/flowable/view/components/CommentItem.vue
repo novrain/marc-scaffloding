@@ -218,6 +218,15 @@ export default {
             max-height: 250px;
         }
 
+        /deep/ .image {
+            margin: 10px auto;
+            max-width: 70% !important;
+
+            img {
+                width: 100%;
+            }
+        }
+
         .avatar {
             position: absolute;
             top: 0;
@@ -271,7 +280,7 @@ export default {
         .body {
             width: 100%;
             padding: 10px 10px 0 10px;
-            overflow: visible;
+            overflow: auto;
             position: relative;
         }
 
