@@ -3,7 +3,7 @@
         :class="fullscreen ? 'ii-bpmn-diagram-container ii-bpmn-diagram-container-fullscreen' : 'ii-bpmn-diagram-container'">
         <div class='toolbar'>
             <a-button size='small'
-                @click='onFullScreen'
+                @click='onFullscreen'
                 :icon="fullscreen ? 'shrink' : 'arrows-alt'" />
             <a-divider type="vertical" />
             <a-button size='small'
@@ -105,7 +105,7 @@ export default {
         onZoomOut() {
             this.bpmnViewer.get('zoomScroll').stepZoom(-1);
         },
-        onFullScreen() {
+        onFullscreen() {
             this.fullscreen = !this.fullscreen
         },
         onFit() {

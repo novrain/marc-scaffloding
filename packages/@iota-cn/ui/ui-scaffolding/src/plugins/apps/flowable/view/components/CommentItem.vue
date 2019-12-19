@@ -220,7 +220,7 @@ export default {
 
         /deep/ .image {
             margin: 10px auto;
-            max-width: 70% !important;
+            max-width: 30% !important;
 
             img {
                 width: 100%;
