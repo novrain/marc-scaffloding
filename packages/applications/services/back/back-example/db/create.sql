@@ -2672,6 +2672,7 @@ ALTER TABLE ONLY act_hi_tsk_log ALTER COLUMN id_ SET DEFAULT nextval('act_hi_tsk
 --
 
 INSERT INTO "Dictionary" (id, name, key, "belongTo", "createdAt", "updatedAt") VALUES ('c563fee9-dc87-44c9-8778-0345b915615b', '学历', 'frame_education', NULL, '2019-12-05 18:34:09.809+08', '2019-12-05 18:34:09.809+08');
+INSERT INTO "Dictionary" (id, name, key, "belongTo", "createdAt", "updatedAt") VALUES ('b2d6d9a3-37cb-4ea8-9563-81f2d047547f', '政治面貌', 'frame_politics', NULL, '2019-12-18 16:00:07.237+08', '2019-12-18 16:00:07.237+08');
 
 
 --
@@ -2683,6 +2684,10 @@ INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "d
 INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "dictionaryId") VALUES ('e555ed62-9618-44c4-9a46-b833c77a6ae3', '硕士', 'master', 3, '2019-12-05 18:34:52.701+08', '2019-12-05 18:34:52.701+08', 'c563fee9-dc87-44c9-8778-0345b915615b');
 INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "dictionaryId") VALUES ('3a0d4431-e469-487f-8409-67f8ba2fc89e', '博士', 'doctor', 4, '2019-12-05 18:35:05.981+08', '2019-12-05 18:35:05.981+08', 'c563fee9-dc87-44c9-8778-0345b915615b');
 INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "dictionaryId") VALUES ('2f463a7c-92da-4298-b840-cc2b4d5dbb62', '其他', 'others', 5, '2019-12-05 18:35:17.343+08', '2019-12-05 18:35:17.343+08', 'c563fee9-dc87-44c9-8778-0345b915615b');
+INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "dictionaryId") VALUES ('591b66d0-f528-421d-a4fe-d2369cd3ab4a', '中共党员', 'party_member', 1, '2019-12-18 16:01:40.889+08', '2019-12-18 16:04:08.293+08', 'b2d6d9a3-37cb-4ea8-9563-81f2d047547f');
+INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "dictionaryId") VALUES ('ae7397bd-9f3e-4a3a-b30e-b9160db81e88', '群众', 'masses', 4, '2019-12-18 16:02:44.787+08', '2019-12-18 16:02:44.787+08', 'b2d6d9a3-37cb-4ea8-9563-81f2d047547f');
+INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "dictionaryId") VALUES ('4baf3bbf-4a0d-4c52-8372-600aee3cab88', '中共预备党员', 'pobationary_party_member', 2, '2019-12-18 16:06:01.284+08', '2019-12-18 16:06:01.284+08', 'b2d6d9a3-37cb-4ea8-9563-81f2d047547f');
+INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "dictionaryId") VALUES ('d248ddb5-ef17-4f04-a0c8-f131bbcb74f4', '共青团员', 'league_member', 3, '2019-12-18 16:02:07.511+08', '2019-12-18 16:04:16.419+08', 'b2d6d9a3-37cb-4ea8-9563-81f2d047547f');
 
 
 --
@@ -2691,6 +2696,14 @@ INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "d
 
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('0', '管理控制台', '/console', NULL, NULL, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', NULL);
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1', '总览', '/console/overview', '/console/overview', 'overview', '', '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '0');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4', '项目管理', '/console/applications/project', '', 'antv-layout', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:26:41+08', '0');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4.1', '年度工程项目', '/console/applications/project_of_year', '/console/applications/project_of_year', 'antv-audit', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:27:31+08', '4');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4.2', '中小修项目', '/console/applications/minor_repair', '/console/applications/minor_repair', 'antv-audit', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:27:31+08', '4');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4.3', '月度例行任务', '/console/applications/monthly_routine_task', '/console/applications/monthly_routine_task', 'antv-audit', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:27:31+08', '4');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4.4', '临时任务', '/console/applications/temporary_task', '/console/applications/temporary_task', 'antv-audit', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:27:31+08', '4');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5', '党建管理', '/console.cpp', '', 'antv-hdd', NULL, '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '0');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1', '党建台账任务', '/console/applications/cpp_party_construction', '/console/applications/cpp_party_construction', 'antv-schedule', NULL, '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '5');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.2', '临时任务', '/console/applications/cpp_temporary_task', '/console/applications/cpp_temporary_task', 'antv-schedule', NULL, '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '5');
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6', '权限管理', '/console/authorizations', NULL, 'authorization', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.1', '菜单与操作', '/console/authorizations/overview', '/console/authorizations/overview', 'menu', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.2', '角色', '/console/authorizations/roles', '/console/authorizations/roles', 'role', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
@@ -2701,11 +2714,6 @@ INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updated
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1', '字典管理', '/console/system/dictionaries', '/console/system/dictionaries', 'dictionary', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '8');
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('9', '账号管理', '/console/account', NULL, 'account-sec', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('9.1', '账号安全', '/console/account/profile', '/console/account/profile', 'profile', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '9');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5', '党建管理', '/console.cpp', '', 'antv-hdd', NULL, '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1', 'Example', '/console/applications/communist_party_process', '/console/applications/communist_party_process', 'antv-schedule', NULL, '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '5');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4', '项目管理', '/console/applications/project', '', 'antv-layout', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:26:41+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4.1', '年度工程项目', '/console/applications/project_of_year', '/console/applications/project_of_year', 'antv-audit', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:27:31+08', '4');
-
 
 --
 -- Data for Name: MenuPreDepends; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -2884,331 +2892,6 @@ INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "up
 --
 -- Data for Name: ProcessDef; Type: TABLE DATA; Schema: public; Owner: postgres
 --
-
-INSERT INTO "ProcessDef" (id, name, "flowableInstance", "formDef", "belongTo", "createdAt", "updatedAt") VALUES ('project_of_year', '年度工程项目', 'process:4:942d7f66-11af-11ea-aa8d-7c7a916bf543', '{
-    "type": "object",
-    "properties": {
-        "projectId": {
-            "type": "string",
-            "ui": {
-                "columns": 5,
-                "label": "项目ID",
-                "hidden": true
-            }
-        },
-        "projectYear": {
-            "type": "string",
-            "ui": {
-                "columns": 5,
-                "label": "年度",
-                "disabled": "dx: !({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit_modify'')",
-                "placeholder": "选择年份……",
-                "enumSource": [
-                    {
-                        "value": 2020,
-                        "label": "2020"
-                    },
-                    {
-                        "value": 2021,
-                        "label": "2021"
-                    },
-                    {
-                        "value": 2022,
-                        "label": "2022"
-                    },
-                    {
-                        "value": 2023,
-                        "label": "2023"
-                    },
-                    {
-                        "value": 2024,
-                        "label": "2024"
-                    },
-                    {
-                        "value": 2025,
-                        "label": "2025"
-                    }
-                ],
-                "widget": "select"
-            }
-        },
-        "initiatorName": {
-            "type": "string",
-            "ui": {
-                "columns": 5,
-                "label": "发起人",
-                "disabled": true
-            }
-        },
-        "projectNumber": {
-            "type": "select",
-            "ui": {
-                "label": "项目编号",
-                "disabled": "dx: !({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit_modify'')"
-            }
-        },
-        "projectName": {
-            "type": "string",
-            "ui": {
-                "label": "项目名称",
-                "disabled": "dx: !({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit_modify'')"
-            }
-        },
-        "projectDescribe": {
-            "type": "string",
-            "ui": {
-                "label": "项目描述",
-                "disabled": "dx: !({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit_modify'')",
-                "widget": "textarea",
-                "widgetConfig": {
-                    "rows": 3,
-                    "autoSize": {
-                        "minRows": 2,
-                        "maxRows": 4
-                    }
-                }
-            }
-        },
-        "startTime": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit_modify'')",
-                "columns": 5,
-                "widget": "date-picker",
-                "label": "开始时间"
-            }
-        },
-        "finishTime": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === ''acceptance'')",
-                "hidden": "dx: ({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit'' ||{{$const.currentTaskId}} === ''audit_modify'' ||{{$const.currentTaskId}} === ''contact'')",
-                "columns": 5,
-                "widget": "date-picker",
-                "label": "结束时间"
-            }
-        },
-        "constructionCost": {
-            "type": "string",
-            "ui": {
-                "columns": 5,
-                "label": "施工费用",
-                "disabled": "dx: !({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit_modify'')"
-            }
-        },
-        "deviceCost": {
-            "type": "select",
-            "ui": {
-                "columns": 5,
-                "label": "设备费用",
-                "disabled": "dx: !({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit_modify'')"
-            }
-        },
-        "memo": {
-            "type": "text",
-            "ui": {
-                "label": "备注",
-                "widget": "textarea"
-            }
-        },
-        "contractTime": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === ''contact'')",
-                "hidden": "dx: ({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit'' ||{{$const.currentTaskId}} === ''audit_modify'')",
-                "columns": 5,
-                "widget": "date-picker",
-                "label": "合同时间"
-            }
-        },
-        "constructCorp": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === ''contact'')",
-                "hidden": "dx: ({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit'' ||{{$const.currentTaskId}} === ''audit_modify'')",
-                "columns": 5,
-                "label": "施工单位"
-            }
-        },
-        "constructSponsor": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === ''contact'')",
-                "hidden": "dx: ({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit'' ||{{$const.currentTaskId}} === ''audit_modify'')",
-                "columns": 5,
-                "label": "施工联系人"
-            }
-        },
-        "constructSponsorPhone": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === ''contact'')",
-                "hidden": "dx: ({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit'' ||{{$const.currentTaskId}} === ''audit_modify'')",
-                "columns": 5,
-                "label": "联系人电话"
-            }
-        },
-        "processBar": {
-            "type": "number",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === ''acceptance'')",
-                "hidden": "dx: ({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit'' ||{{$const.currentTaskId}} === ''audit_modify'' ||{{$const.currentTaskId}} === ''contact'')",
-                "widget": "slider",
-                "label": "施工进度"
-            }
-        },
-        "finalReportTime": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === ''finalReport'')",
-                "hidden": "dx: ({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit'' ||{{$const.currentTaskId}} === ''audit_modify'' || {{$const.currentTaskId}} === ''contact''||{{$const.currentTaskId}} === ''acceptance'')",
-                "columns": 5,
-                "widget": "date-picker",
-                "label": "决算时间"
-            }
-        },
-        "finalReportSponsor": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === ''finalReport'')",
-                "hidden": "dx: ({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit'' ||{{$const.currentTaskId}} === ''audit_modify'' || {{$const.currentTaskId}} === ''contact''||{{$const.currentTaskId}} === ''acceptance'')",
-                "columns": 5,
-                "label": "决算人"
-            }
-        },
-        "finalReportConstructionCost": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === ''finalReport'')",
-                "hidden": "dx: ({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit'' ||{{$const.currentTaskId}} === ''audit_modify'' || {{$const.currentTaskId}} === ''contact''||{{$const.currentTaskId}} === ''acceptance'')",
-                "columns": 5,
-                "label": "决算施工费"
-            }
-        },
-        "finalReportDeviceCost": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === ''finalReport'')",
-                "hidden": "dx: ({{$const.currentTaskId}} === ''start'' || {{$const.currentTaskId}} === ''audit'' ||{{$const.currentTaskId}} === ''audit_modify'' || {{$const.currentTaskId}} === ''contact''||{{$const.currentTaskId}} === ''acceptance'')",
-                "columns": 5,
-                "label": "决算设备费"
-            }
-        },
-        "resendRequest": {
-            "type": "boolean",
-            "value": "",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === ''audit_modify'')",
-                "hidden": "dx: !({{$const.currentTaskId}} === ''audit_modify'')",
-                "label": "重新提交"
-            }
-        },
-        "vacationApproved": {
-            "type": "boolean",
-            "value": "",
-            "ui": {
-                "disabled": "dx: {{$const.currentTaskId}} !== ''audit''",
-                "hidden": "dx: {{$const.currentTaskId}} !== ''audit'' ",
-                "label": "审核通过"
-            }
-        },
-        "vacationReason": {
-            "type": "text",
-            "value": "",
-            "ui": {
-                "disabled": "dx: {{$const.currentTaskId}} !== ''audit''",
-                "hidden": "dx: !({{$const.currentTaskId}} === ''audit'' || {{$const.currentTaskId}} === ''audit_modify'') ",
-                "label": "审核意见",
-                "widget": "textarea"
-            }
-        },
-        "acceptanceOpt": {
-            "type": "number",
-            "value": "",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === ''acceptance'')",
-                "hidden": "dx: !({{$const.currentTaskId}} === ''acceptance'')",
-                "label": "施工提交选项",
-                "widget": "radio",
-                "widgetConfig": {
-                    "enumSource": [
-                        {
-                            "value": 0,
-                            "label": "开始施工，填写施工信息"
-                        },
-                        {
-                            "value": 1,
-                            "label": "合同信息错误，回退上一流程处理"
-                        },
-                        {
-                            "value": 2,
-                            "label": "实施完毕，提交验收"
-                        }
-                    ]
-                }
-            }
-        },
-        "finalReportOpt": {
-            "type": "number",
-            "value": "",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === ''finalReport'')",
-                "hidden": "dx: !({{$const.currentTaskId}} === ''finalReport'')",
-                "label": "决算提交选项",
-                "widget": "radio",
-                "widgetConfig": {
-                    "enumSource": [
-                        {
-                            "value": 0,
-                            "label": "开始决算，更新决算信息信息"
-                        },
-                        {
-                            "value": 1,
-                            "label": "施工信息错误，回退上一流程处理"
-                        },
-                        {
-                            "value": 2,
-                            "label": "决算完毕，提交付款"
-                        }
-                    ]
-                }
-            }
-        },
-        "paymentOpt": {
-            "type": "number",
-            "value": "",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === ''payment'')",
-                "hidden": "dx: !({{$const.currentTaskId}} === ''payment'')",
-                "label": "付款提交选项",
-                "widget": "radio",
-                "widgetConfig": {
-                    "enumSource": [
-                        {
-                            "value": 0,
-                            "label": "开始付款，更新付款信息"
-                        },
-                        {
-                            "value": 1,
-                            "label": "决算信息错误，回退上一流程处理"
-                        },
-                        {
-                            "value": 2,
-                            "label": "付款完毕，提交归档"
-                        }
-                    ]
-                }
-            }
-        }
-    },
-    "ui": {
-        "width": 700,
-        "widgetConfig": {
-            "layout": "h"
-        }
-    }
-}', '', '2019-11-22 17:01:18+08', '2019-11-22 17:01:23+08');
-
 
 --
 -- Data for Name: Role; Type: TABLE DATA; Schema: public; Owner: postgres
