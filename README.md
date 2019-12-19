@@ -268,6 +268,7 @@ npm i -g lerna
 
 ```
 lerna bootstrap
+lerna run compile
 ```
 
 #### 目录结构
@@ -339,7 +340,6 @@ lerna run --stream --scope @iota-app/back-example testbreak
 packages/applications/services/back/back-example
 
 启动：
-lerna run compile
 lerna run --stream --scope @iota-app/back-example serve
 
 访问：
