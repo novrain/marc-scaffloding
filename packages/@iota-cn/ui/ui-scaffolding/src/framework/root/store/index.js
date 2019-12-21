@@ -11,7 +11,8 @@ export default {
                     namespaced: true,
                     state: {
                         theme: 'default',
-                        lang: 'zh-cn'
+                        lang: 'zh-cn',
+                        initActions: []
                     },
                     mutations,
                     modules: {

@@ -39,8 +39,6 @@ function createConfig(args) {
     const authorizationModel = require('@iota-cn/svc-authorization').models
     const rbacEntry = require('@iota-cn/svc-rbac').entry
     const rbacModel = require('@iota-cn/svc-rbac').models
-    const eventRecordEntry = require('@iota-cn/svc-event-record').entry
-    const eventRecordModel = require('@iota-cn/svc-event-record').models
     const attachmentEntry = require('@iota-cn/svc-attachment').entry
     const oauth2Entry = require('@iota-cn/svc-oauth2').entry
     const oauth2Model = require('@iota-cn/svc-oauth2').models
@@ -58,6 +56,8 @@ function createConfig(args) {
     const cppEntry = require('@iota-app/svc-communist-party-process').entry
     const cppModel = require('@iota-app/svc-communist-party-process').models
 
+    const sysconfigEntry = require('@iota-cn/svc-sysconfig').entry
+    const sysconfigModel = require('@iota-cn/svc-sysconfig').models
     const user = { entry: userEntry, opts: {} }
     const authentication = {
         entry: authenticationEntry,
@@ -72,6 +72,7 @@ function createConfig(args) {
                 { p: '/oauth2/third_parties/wechat', o: 'GET' },
                 { p: '/oauth2/third_parties/wechat/signin', o: 'POST' },
                 { p: '/oauth2/third_parties/wechat/signup', o: 'POST' },
+                { p: '/sysconfig', o: 'GET' },
             ],
             remMaxAge: 30,
             redirect: {
@@ -87,7 +88,6 @@ function createConfig(args) {
     }
     const authorization = { entry: authorizationEntry, opts: {} }
     const rbac = { entry: rbacEntry, opts: {} }
-    const eventRecord = { entry: eventRecordEntry, opts: {} }
     const oauth2 = {
         entry: oauth2Entry,
         opts: {
@@ -137,11 +137,15 @@ function createConfig(args) {
         opts: {}
     }
 
+    const sysconfig = {
+        entry: sysconfigEntry,
+        opts: {}
+    }
     //entry
     config.mws.push(user)
     config.mws.push(authentication)
+    config.mws.push(sysconfig)
     config.mws.push(rbac)
-    config.mws.push(eventRecord)
     config.mws.push(oauth2)
     config.mws.push(notice)
     config.mws.push(attachment)
@@ -157,13 +161,13 @@ function createConfig(args) {
 
     //models
     config.dc.models.push(userModel)
-    config.dc.models.push(eventRecordModel)
     config.dc.models.push(rbacModel)
     config.dc.models.push(oauth2Model)
     config.dc.models.push(noticeModel)
     config.dc.models.push(dictionariesModel)
     config.dc.models.push(bpEnginesModel)
     config.dc.models.push(cppModel)
+    config.dc.models.push(sysconfigModel)
 
     return config
 }

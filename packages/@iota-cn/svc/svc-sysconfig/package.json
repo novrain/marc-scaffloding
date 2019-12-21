@@ -1,7 +1,7 @@
 {
-    "name": "@iota-cn/svc-event-record",
+    "name": "@iota-cn/svc-sysconfig",
     "version": "1.0.0",
-    "description": "iOTA event record",
+    "description": "sysconfig",
     "main": "./dist/index.js",
     "scripts": {
         "compile": "babel -d dist/ src/ --presets minify",
@@ -12,14 +12,18 @@
         "coverage": "nyc npm run test",
         "check": "eslint src -f html  > eslintResults.html||true"
     },
-    "author": "",
+    "author": "wang.liang@theiota.cn",
     "license": "MIT",
     "dependencies": {
-        "@iota-cn/svc-util": "^1.0.0",
-        "moment": "^2.24.0",
-        "path-to-regexp": "^6.1.0"
+        "@iota-cn/svc-authentication": "^1.0.0",
+        "@iota-cn/svc-restful": "^1.0.0"
     },
     "devDependencies": {
+        "@babel/plugin-transform-modules-commonjs": "^7.7.5",
+        "@babel/register": "^7.7.4",
+        "@iota-cn/svc-scaffolding": "^1.0.0",
+        "@iota-cn/svc-user": "^1.0.0",
+        "babel-preset-minify": "^0.5.1",
         "chai": "^4.2.0",
         "mocha": "^6.2.2",
         "mochawesome": "^4.1.0",

@@ -3,9 +3,10 @@
         <div class="left"
             :class="layout.left.collapsed ? 'left-collapsed' : ''">
             <div class="top">
-                <img v-if='!layout.left.top.hiddenDefault'
-                    class="default-logo"
-                    :src="layout.left.collapsed ? layout.left.top.defaultLogoCollapsed: layout.left.top.defaultLogo">
+                <div class="default-logo">
+                    <img v-if='!layout.left.top.hiddenDefault'
+                        :src="layout.left.collapsed ? $settings.consoleCollapsedLogo: $settings.consoleLogo">
+                </div>
             </div>
             <div class="middle">
                 <component v-for="(item,i) in layout.left.middle.items"
@@ -15,19 +16,21 @@
                 </component>
             </div>
             <div class="bottom">
-
             </div>
         </div>
         <div class="main">
             <div class="header">
-                <div class="left">
+                <div class="h-left">
                     <component v-for="(item, i) in layout.head.left.items"
                         :key="i"
                         :is="item.component"
                         v-bind="item.props">
                     </component>
+                    <span class="system-title">{{$settings.title}}</span>
                 </div>
-                <div class="right">
+                <div class="h-middle">
+                </div>
+                <div class="h-right">
                     <component v-for="(item, i) in layout.head.right.items"
                         :key="i"
                         :is="item.component"
@@ -92,7 +95,21 @@ export default {
             align-items: center;
 
             .default-logo {
-                height: 36px;
+                width: calc(100% - 4px);
+                height: calc(100% - 4px);
+                margin: 2px;
+                position: relative;
+
+                img {
+                    max-width: 100%;
+                    max-height: 100%;
+                    margin: auto;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    bottom: 0;
+                    right: 0;
+                }
 
                 &-collapsed {
                 }
@@ -125,19 +142,26 @@ export default {
             background-color: $ii-primary-color;
             justify-content: space-between;
 
-            .left {
+            .h-left {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
+
+                .system-title {
+                    margin: 0 10px;
+                    font-size: 18px;
+                    color: white;
+                    line-height: 40px;
+                }
             }
 
-            .middle {
+            .h-middle {
                 display: flex;
                 flex-direction: row;
                 flex: 1;
             }
 
-            .right {
+            .h-right {
                 display: flex;
                 flex-direction: row;
             }

@@ -22,14 +22,25 @@
                     </div>
                 </div>
             </splitpane>
-            <splitpane size='40'>
+            <splitpane size='40'
+                :class="fullscreen ? 'tabsplit tabsplit-fullscreen': 'tabsplit'">
+                <div class="toolbar">
+                    <a-button v-if="activeTab === 'comments'"
+                        size='small'
+                        @click='onShowGallery'
+                        icon="pic-left" />
+                    <a-button size='small'
+                        @click='onFullscreen'
+                        :icon="fullscreen ? 'shrink' : 'arrows-alt'" />
+                </div>
                 <a-tabs defaultActiveKey="comments"
                     size="small"
                     v-model="activeTab"
-                    class="flowtabs">
+                    class='flowtabs'>
                     <a-tab-pane tab="跟踪信息"
                         key="comments">
                         <ii-comments :user='user'
+                            ref='_comments'
                             :active='activeTab === "comments"'
                             v-if='$p("/fl/process/history/historic-process-instances/:instanceId/comments:GET")'
                             :flow='flow' />
@@ -50,6 +61,29 @@
                             :processDef='processDef' />
                     </a-tab-pane>
                 </a-tabs>
+                <a-modal centered
+                    class="ii-gallery-modal"
+                    v-model="showGallery"
+                    :closable='false'
+                    :footer='null'>
+                    <a-carousel arrows
+                        :dots='false'>
+                        <div slot="prevArrow"
+                            class="custom-slick-arrow"
+                            style="left: 10px;zIndex: 1">
+                            <a-icon type="left-circle" />
+                        </div>
+                        <div slot="nextArrow"
+                            class="custom-slick-arrow"
+                            style="right: 10px">
+                            <a-icon type="right-circle" />
+                        </div>
+                        <div v-for="img in getImgsInComments()"
+                            :key="img">
+                            <img :src="img" />
+                        </div>
+                    </a-carousel>
+                </a-modal>
             </splitpane>
         </splitpanes>
     </a-row>
@@ -71,6 +105,8 @@ export default {
     props: ['flow', 'processDef', 'user'],
     data() {
         return {
+            fullscreen: false,
+            showGallery: false,
             formData: {},
             isFormDirty: false,
             formDef: undefined,
@@ -102,6 +138,12 @@ export default {
         this.refetch()
     },
     methods: {
+        onFullscreen() {
+            this.fullscreen = !this.fullscreen
+        },
+        onShowGallery() {
+            this.showGallery = true
+        },
         refetch() {
             const instanceId = this.flow.processInstanceId
             // 如果没有定义，则查询一下，通过watch来触发刷新form
@@ -196,6 +238,17 @@ export default {
                     }
                 })
             }
+        },
+        getImgsInComments() {
+            let imgs = []
+            if (this.$refs._comments) {
+                this.$refs._comments.$el.querySelectorAll('img').forEach(i => {
+                    if (i.src) {
+                        imgs.push(i.src)
+                    }
+                })
+            }
+            return imgs
         }
     },
     computed: {
@@ -211,6 +264,15 @@ export default {
     }
 }
 </script>
+<style lang="stylus">
+.ii-gallery-modal {
+    width: 40% !important;
+
+    .ant-modal-content {
+        background-color: transparent;
+    }
+}
+</style>
 
 <style lang="stylus" scoped>
 @import '../../../../../styles/imports';
@@ -245,6 +307,32 @@ export default {
         }
     }
 
+    .tabsplit {
+        position: relative;
+
+        .toolbar {
+            position: absolute;
+            right: 18px;
+            z-index: 1;
+            top: 11px;
+
+            :not(:last-child) {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    .tabsplit-fullscreen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 50;
+        width: 100% !important;
+        padding: 0 20%;
+    }
+
     .flowtabs {
         height: 100%;
         display: flex;
@@ -256,9 +344,63 @@ export default {
             margin: 0;
         }
 
+        .ant-tabs-content {
+            flex: 1;
+            height: 0;
+        }
+
         .tabpanel {
             height: 100%;
         }
     }
+}
+
+.ant-carousel >>> .custom-slick-arrow {
+    width: 25px;
+    height: 25px;
+    font-size: 25px;
+    color: #fff;
+    background-color: rgba(31, 45, 61, 0.11);
+    opacity: 0.3;
+}
+
+.ant-carousel >>> .custom-slick-arrow:before {
+    display: none;
+}
+
+.ant-carousel >>> .custom-slick-arrow:hover {
+    opacity: 0.5;
+}
+
+.ant-carousel >>> .slick-dots {
+    height: auto;
+}
+
+.ant-carousel >>> .slick-slide img {
+    border: 5px solid #fff;
+    display: block;
+    margin: auto;
+    max-width: 80%;
+}
+
+.ant-carousel >>> .slick-thumb {
+    bottom: -45px;
+    width: 100px;
+    overflow-x: auto;
+}
+
+.ant-carousel >>> .slick-thumb li {
+    width: 60px;
+    height: 45px;
+}
+
+.ant-carousel >>> .slick-thumb li img {
+    width: 100%;
+    height: 100%;
+    filter: grayscale(100%);
+}
+
+.ant-carousel >>> .slick-thumb li.slick-active img {
+    filter: grayscale(0%);
 }
 </style>

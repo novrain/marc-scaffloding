@@ -300,7 +300,8 @@ export default {
 
     /deep/ .ant-tabs-content {
         padding-left: 0;
-        height: 100%;
+        height: 0;
+        flex: 1;
     }
 
     /deep/ .splitpanes__splitter {
