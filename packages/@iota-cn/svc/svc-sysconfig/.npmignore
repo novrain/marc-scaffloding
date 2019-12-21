@@ -1,0 +1,12 @@
+src/
+test/
+backup/
+dev/
+coverage/
+mochawesome-report/
+mochawesome-reports/
+.babelrc
+.eslintrc
+.npmignore
+babel-watch.cmd
+.nyc_output

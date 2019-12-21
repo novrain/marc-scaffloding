@@ -30,6 +30,18 @@ export default {
 
     mounted() {
         this[T.ROOT_CHANGE_THEME](localStorage.getItem('ii:theme') || 'default')
+
+        /**
+         * 
+         */
+        const initActions = this.$store.state.iota.global.initActions
+        initActions.forEach(action => {
+            if (typeof action === 'string') {
+                this.$store.dispatch(action)
+            } else if (typeof action === 'object' && typeof action.action === 'string') {
+                this.$store.dispatch(action.action, action.params)
+            }
+        })
         // @TODO change locale
     },
 }

@@ -449,6 +449,7 @@ DROP TABLE IF EXISTS public."CommunistPartyProcessCategory";
 DROP TYPE IF EXISTS public."enum_User_type";
 DROP TYPE IF EXISTS public."enum_UserExtention_sex";
 DROP TABLE IF EXISTS public."EventRecord";
+DROP TABLE IF EXISTS public."Sysconfig";
 DROP EXTENSION IF EXISTS plpgsql;
 DROP SCHEMA IF EXISTS public;
 --
@@ -2653,6 +2654,16 @@ CREATE SEQUENCE userextention_id_seq
 
 ALTER TABLE userextention_id_seq OWNER TO postgres;
 
+CREATE TABLE "Sysconfig"
+(
+    title character varying(255),
+    copyright character varying(255) ,
+    logo character varying(255)  DEFAULT ''::character varying,
+    "collapsedLogo" character varying(255)  DEFAULT ''::character varying,
+    "processInfoEditDisable" boolean DEFAULT false,
+    "userNameEditDisable" boolean DEFAULT false
+);
+ALTER TABLE "Sysconfig" OWNER to postgres;
 --
 -- Name: act_evt_log log_nr_; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2712,6 +2723,8 @@ INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updated
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.5', '用户', '/console/authorizations/users', '/console/authorizations/users', 'subuser', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8', '系统管理', '/console/system', NULL, 'system', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1', '字典管理', '/console/system/dictionaries', '/console/system/dictionaries', 'dictionary', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '8');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.2', '系统配置', '/console/system/sysconfig', '/console/system/sysconfig', 'system', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '8');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.3', '操作记录', '/console/system/event_record', '/console/system/event_record', 'antv-profile', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '8');
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('9', '账号管理', '/console/account', NULL, 'account-sec', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('9.1', '账号安全', '/console/account/profile', '/console/account/profile', 'profile', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '9');
 
@@ -2849,6 +2862,7 @@ INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "up
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.4.3.4', '删除用户已赋予职位', '/authorizations/users/:userId/positions/:id?', 'DELETE', true, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', '6.4.3');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8', '系统管理', '', '', false, '', '2019-12-05 10:21:09+08', '2019-12-05 10:21:12+08', '0');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1', '字典管理', '', '', false, '', '2019-12-05 10:22:52+08', '2019-12-05 10:22:57+08', '8');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.2', '系统配置', '', '', false, '', '2019-12-05 10:22:52+08', '2019-12-05 10:22:57+08', '8');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1.0.1', '查询字典', '/dictionaries/:key?', 'GET', false, ' ', '2019-12-05 10:26:09+08', '2019-12-05 10:26:12+08', '8.1');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1.0.2', '创建字典', '/dictionaries', 'POST', true, '', '2019-12-05 10:39:21+08', '2019-12-05 10:39:23+08', '8.1');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1.0.3', '修改字典', '/dictionaries/:id', 'PUT', true, '', '2019-12-05 10:40:18+08', '2019-12-05 10:40:20+08', '8.1');
@@ -3264,6 +3278,7 @@ INSERT INTO act_ge_property (name_, value_, rev_) VALUES ('cfg.task-related-enti
 
 
 --
+INSERT INTO "Sysconfig" (title, copyright, logo, "collapsedLogo","processInfoEditDisable", "userNameEditDisable") VALUES ('Marc Scaffolding', 'Copyright © 2016-2020 All rights reserved.', '', '', true, true);
 -- Data for Name: act_hi_actinst; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 

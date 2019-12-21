@@ -9,7 +9,7 @@
     "dependencies": {
         "@ckeditor/ckeditor5-build-classic": "^16.0.0",
         "@ckeditor/ckeditor5-vue": "^1.0.1",
-        "@iota-cn/avatar": "^0.1.9",
+        "@iota-cn/avatar": "^0.1.10",
         "@iota-cn/icon": "^1.1.2",
         "@iota-cn/util-validation": "^1.0.10",
         "@ncform/ncform": "^1.6.9",

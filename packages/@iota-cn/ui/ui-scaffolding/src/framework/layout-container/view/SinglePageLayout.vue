@@ -7,8 +7,7 @@
                 v-if="!!logo" />
         </div>
         <router-view />
-        <span class="copyright"
-            v-if="!!copyright">{{copyright}}</span>
+        <span class="copyright">{{$settings.copyright || copyright}}</span>
     </div>
 </template>
 

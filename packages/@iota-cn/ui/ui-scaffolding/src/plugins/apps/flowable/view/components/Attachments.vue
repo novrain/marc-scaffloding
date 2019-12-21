@@ -183,11 +183,46 @@ export default {
                     columns={columns}
                     rows={this.contents.items}>
                 </IiTableLayout>
+                {
+                    this.previewDoc && this.showPreview ?
+                        <a-modal centered
+                            class="ii-preview-modal"
+                            v-model={this.showPreview}
+                            closable={true}
+                            footer={null} >
+                            <object>
+                                <embed src={this.previewDoc.link} type={this.previewDoc.mimeType} class='ii-preview-embed' />
+                            </object>
+                        </a-modal>
+                        : null
+                }
             </div>
         )
     }
 }
 </script>
+<style lang="stylus">
+.ii-preview-modal {
+    width: 90% !important;
+    height: 90%;
+
+    .ant-modal-content {
+        height: 100%;
+
+        .ant-modal-body {
+            height: 100%;
+            overflow-y: auto;
+            text-align: center;
+        }
+    }
+}
+
+.ii-preview-embed {
+    width: 96%;
+    min-height: 100%;
+    margin: 0 auto;
+}
+</style>
 
 <style lang="stylus" scoped>
 @import '../../../../../styles/imports';
