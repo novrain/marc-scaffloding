@@ -76,7 +76,7 @@ export default {
     },
     computed: {
         commentable() {
-            return !this.flow.finished
+            return !this.flow.finished && !this.$settings.disableProcessCommentEdit // 全局设置开关
         }
     }
 }
