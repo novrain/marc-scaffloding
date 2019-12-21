@@ -1,23 +1,37 @@
 export default function (dc) {
     let Sysconfig = dc.orm.define('Sysconfig',
         {
-            title: {
+            index: {
+                type: dc.ORM.INTEGER,
+                allowNull: false
+            },
+            category: {
+                type: dc.ORM.STRING
+            },
+            key: {
+                type: dc.ORM.STRING,
+                primaryKey: true,
+                allowNull: false
+            },
+            name: {
+                type: dc.ORM.STRING,
+                allowNull: false
+            },
+            desc: {
+                type: dc.ORM.STRING
+            },
+            value: {
                 type: dc.ORM.STRING,
             },
-            copyright: {
+            defaultValue: {
                 type: dc.ORM.STRING,
             },
-            logo: {
+            type: {
                 type: dc.ORM.STRING,
+                allowNull: false
             },
-            collapsedLogo: {
-                type: dc.ORM.STRING,
-            },
-            processInfoEditDisable: {
-                type: dc.ORM.BOOLEAN,
-            },
-            userNameEditDisable: {
-                type: dc.ORM.BOOLEAN,
+            widgetSettings: {
+                type: dc.ORM.STRING
             }
         },
         {

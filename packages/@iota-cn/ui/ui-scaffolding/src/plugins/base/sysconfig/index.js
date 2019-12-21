@@ -8,9 +8,15 @@ const entry = (opts, Vue) => {
         computed: {
             $settings() {
                 const state = this.$store.state.iota.global.sysconfig
-                const settings = Object.assign({}, state.settings || {})
-                settings.logo = settings.logo ? `${this.$axios.baseURL()}${settings.logo}` : "/assets/imgs/defaultLogo.png"
-                settings.collapsedLogo = settings.collapsedLogo ? `${this.$axios.baseURL()}${settings.collapsedLogo}` : "/assets/imgs/defaultLogoCollapsed.png"
+                const settings = {}
+                state.settings.forEach(s => {
+                    let value = s.value || s.defaultValue
+                    if (s.type === 'image') {
+                        // 图片分上传或默认的，上传走API静态目录，默认走WEB静态目录
+                        value = s.value ? `${this.$axios.baseURL()}${s.value}` : s.defaultValue
+                    }
+                    settings[s.key] = value
+                })
                 return settings
             }
         }

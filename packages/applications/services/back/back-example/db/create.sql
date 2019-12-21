@@ -2654,16 +2654,24 @@ CREATE SEQUENCE userextention_id_seq
 
 ALTER TABLE userextention_id_seq OWNER TO postgres;
 
-CREATE TABLE "Sysconfig"
-(
-    title character varying(255),
-    copyright character varying(255) ,
-    logo character varying(255)  DEFAULT ''::character varying,
-    "collapsedLogo" character varying(255)  DEFAULT ''::character varying,
-    "processInfoEditDisable" boolean DEFAULT false,
-    "userNameEditDisable" boolean DEFAULT false
+
+-- Table: public."Sysconfig"
+
+CREATE TABLE "public"."Sysconfig" (
+  "key" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "value" varchar(255) COLLATE "pg_catalog"."default",
+  "type" varchar(40) COLLATE "pg_catalog"."default" DEFAULT false,
+  "widgetSettings" varchar(255) COLLATE "pg_catalog"."default" DEFAULT false,
+  "desc" varchar(255) COLLATE "pg_catalog"."default",
+  "defaultValue" varchar(255) COLLATE "pg_catalog"."default",
+  "index" int2,
+  "category" varchar(255) COLLATE "pg_catalog"."default"
 );
+
+
 ALTER TABLE "Sysconfig" OWNER to postgres;
+
 --
 -- Name: act_evt_log log_nr_; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -3278,11 +3286,20 @@ INSERT INTO act_ge_property (name_, value_, rev_) VALUES ('cfg.task-related-enti
 
 
 --
-INSERT INTO "Sysconfig" (title, copyright, logo, "collapsedLogo","processInfoEditDisable", "userNameEditDisable") VALUES ('Marc Scaffolding', 'Copyright © 2016-2020 All rights reserved.', '', '', true, true);
--- Data for Name: act_hi_actinst; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: Sysconfig; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO "public"."Sysconfig" VALUES ('copyright', '版权说明', NULL, 'string', '{"icon":"notice"}', NULL, '@Copyright 2019~2020 ', 120, NULL);
+INSERT INTO "public"."Sysconfig" VALUES ('consoleLogo', '控制台Logo', NULL, 'image', '{"icon":"antv-menu-unfold","width":"192","height":"38","color":"#0d3ae3","radius":"0"}', '最佳尺寸192x38', '/assets/imgs/defaultLogo.png', 130, NULL);
+INSERT INTO "public"."Sysconfig" VALUES ('consoleCollapsedLogo', '控制台Mini Logo', NULL, 'image', '{"icon":"antv-menu-fold","width":"72","height":"38","color":"#0d3ae3","radius":"0"}', '最佳尺寸72x38', '/assets/imgs/defaultLogoCollapsed.png', 140, NULL);
+INSERT INTO "public"."Sysconfig" VALUES ('logo', '系统Logo', NULL, 'image', '{"icon":"antv-desktop","width":"192","height":"38","color":"transport","radius":"0"}', '最佳比例192:38', '/assets/imgs/logo.png', 110, NULL);
+INSERT INTO "public"."Sysconfig" VALUES ('title', '系统名称', NULL, 'string', '{"icon":"application"}', NULL, '管理控制台', 100, NULL);
+INSERT INTO "public"."Sysconfig" VALUES ('dsiableUsernameEdit', '禁止编辑用户名', NULL, 'boolean', '{"icon":"antv-user"}', '选中后，用户名将不可修改', NULL, 160, NULL);
+INSERT INTO "public"."Sysconfig" VALUES ('disableProcessCommentEdit', '禁止编辑/删除流程跟踪信息', NULL, 'boolean', '{"icon":"protocol"}', '选中后，流程跟踪信息将不可删除或编辑', NULL, 150, NULL);
 
+--
+-- Data for Name: act_hi_actinst; Type: TABLE DATA; Schema: public; Owner: postgres
+--
 
 --
 -- Data for Name: act_hi_attachment; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -4087,6 +4104,11 @@ ALTER TABLE ONLY act_ge_bytearray
 ALTER TABLE ONLY act_ge_property
     ADD CONSTRAINT act_ge_property_pkey PRIMARY KEY (name_);
 
+
+-- ----------------------------
+-- Primary Key structure for table Sysconfig
+-- ----------------------------
+ALTER TABLE "public"."Sysconfig" ADD CONSTRAINT "Sysconfig_pkey" PRIMARY KEY ("key");
 
 --
 -- Name: act_hi_actinst act_hi_actinst_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres

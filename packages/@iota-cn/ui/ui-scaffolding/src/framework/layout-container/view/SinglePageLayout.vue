@@ -3,8 +3,8 @@
         :style="{ background: 'url(' + background + ') no-repeat center center' }">
         <div class="head">
             <img class="logo"
-                :src="logo"
-                v-if="!!logo" />
+                :src="$settings.logo || logo"
+                v-if="!!($settings.logo || logo)" />
         </div>
         <router-view />
         <span class="copyright">{{$settings.copyright || copyright}}</span>

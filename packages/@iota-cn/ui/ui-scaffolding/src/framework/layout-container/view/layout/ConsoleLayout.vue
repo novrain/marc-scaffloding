@@ -5,7 +5,7 @@
             <div class="top">
                 <div class="default-logo">
                     <img v-if='!layout.left.top.hiddenDefault'
-                        :src="layout.left.collapsed ? $settings.collapsedLogo: $settings.logo">
+                        :src="layout.left.collapsed ? $settings.consoleCollapsedLogo: $settings.consoleLogo">
                 </div>
             </div>
             <div class="middle">

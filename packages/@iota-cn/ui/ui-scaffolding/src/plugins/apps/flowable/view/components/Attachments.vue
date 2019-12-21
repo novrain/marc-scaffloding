@@ -14,7 +14,9 @@ export default {
             },
             limit: 60,
             page: 1,
-            total: 0
+            total: 0,
+            showPreview: false,
+            previewDoc: undefined
         }
     },
     watch: {
@@ -80,6 +82,16 @@ export default {
             } else if (file.status === 'error') {
                 message.error('文件上传失败，请稍后重试')
             }
+        },
+        onPreview(doc) {
+            this.previewDoc = doc
+            this.showPreview = true
+        },
+        previewable(doc) {
+            return doc.mimeType.indexOf('image/') === 0
+                || doc.mimeType.indexOf('text/') === 0
+                || doc.mimeType.indexOf('video/') === 0
+                || doc.mimeType.indexOf('application/pdf') === 0
         }
     },
     computed: {
@@ -128,6 +140,12 @@ export default {
                     // <a href={`${record.link}`} target='_blank' onClick={(e) => e.stopPropagation()}>预览</a>
                     return (
                         <div class='operation'>
+                            {
+                                this.$p('/fl/content/content-service/content-items/:attachmentId/data:GET') && this.previewable(record) ?
+                                    <a onClick={() => this.onPreview(record)}>预览</a>
+                                    : null
+                            }
+                            <ADivider type="vertical" />
                             {
                                 this.$p('/fl/content/content-service/content-items/:attachmentId/data:GET') ?
                                     <a href={`${record.link}?op=download`} target='_blank' download={record.name} onClick={(e) => e.stopPropagation()}>下载</a>
@@ -260,6 +278,10 @@ export default {
         display: flex;
         justify-content: left;
         align-items: center;
+
+        /deep/ .ant-divider-vertical {
+            margin: 0 1px;
+        }
 
         a {
             color: $primary-color;

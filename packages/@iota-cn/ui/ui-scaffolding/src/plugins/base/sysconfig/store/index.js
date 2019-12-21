@@ -3,7 +3,7 @@ import actions from './actions'
 
 export default () => {
     const state = {
-        settings: {}
+        settings: []
     }
     const store = {
         modules: {

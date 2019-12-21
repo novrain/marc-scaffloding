@@ -79,13 +79,6 @@ export const dictionaryPlugin = {
     }
 }
 
-export const eventRecordPlugin = {
-    plugin: require('./plugins/apps/event-record'), opts: {
-        id: 'eventRecord', // 实例id
-        containerId: COMPLEX_CONTAINER_ID
-    }
-}
-
 export default {
     cookie: {
         prefix: 'ii-'
@@ -97,8 +90,6 @@ export default {
         generalPagePlugin,
         rbacPlugin,
         authenticationPlugin,
-        dictionaryPlugin,
-        eventRecordPlugin,
-        sysconfigPlugin
+        dictionaryPlugin
     ]
 }
