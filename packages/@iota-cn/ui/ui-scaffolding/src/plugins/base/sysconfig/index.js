@@ -11,9 +11,16 @@ const entry = (opts, Vue) => {
                 const settings = {}
                 state.settings.forEach(s => {
                     let value = s.value || s.defaultValue
-                    if (s.type === 'image') {
+                    switch (s.type) {
+                        case 'image':
                         // 图片分上传或默认的，上传走API静态目录，默认走WEB静态目录
                         value = s.value ? `${this.$axios.baseURL()}${s.value}` : s.defaultValue
+                            break
+                        case 'boolean':
+                            value = s.value === 'true'
+                            break
+                        default:
+                            break
                     }
                     settings[s.key] = value
                 })
