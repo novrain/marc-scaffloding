@@ -39,6 +39,8 @@ function createConfig(args) {
     const authorizationModel = require('@iota-cn/svc-authorization').models
     const rbacEntry = require('@iota-cn/svc-rbac').entry
     const rbacModel = require('@iota-cn/svc-rbac').models
+    const eventRecordEntry = require('@iota-cn/svc-event-record').entry
+    const eventRecordModel = require('@iota-cn/svc-event-record').models
     const attachmentEntry = require('@iota-cn/svc-attachment').entry
     const oauth2Entry = require('@iota-cn/svc-oauth2').entry
     const oauth2Model = require('@iota-cn/svc-oauth2').models
@@ -88,6 +90,7 @@ function createConfig(args) {
     }
     const authorization = { entry: authorizationEntry, opts: {} }
     const rbac = { entry: rbacEntry, opts: {} }
+    const eventRecord = { entry: eventRecordEntry, opts: {} }
     const oauth2 = {
         entry: oauth2Entry,
         opts: {
@@ -146,6 +149,7 @@ function createConfig(args) {
     config.mws.push(authentication)
     config.mws.push(sysconfig)
     config.mws.push(rbac)
+    config.mws.push(eventRecord)
     config.mws.push(oauth2)
     config.mws.push(notice)
     config.mws.push(attachment)
@@ -161,6 +165,7 @@ function createConfig(args) {
 
     //models
     config.dc.models.push(userModel)
+    config.dc.models.push(eventRecordModel)
     config.dc.models.push(rbacModel)
     config.dc.models.push(oauth2Model)
     config.dc.models.push(noticeModel)
