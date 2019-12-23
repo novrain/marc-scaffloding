@@ -8,6 +8,12 @@ export const rootContainerPlugin = {
     plugin: require('./framework/root'), opts: {}
 }
 
+export const sysconfigPlugin = {
+    plugin: require('./plugins/base/sysconfig'), opts: {
+        containerId: COMPLEX_CONTAINER_ID
+    }
+}
+
 export const layoutContainerPlugin = {
     plugin: require('./framework/layout-container'), opts: {
         simple: { // 简单页面，用于包裹简单的登录、404等页面 
@@ -79,6 +85,7 @@ export default {
     },
     plugins: [
         rootContainerPlugin,
+        sysconfigPlugin,
         layoutContainerPlugin,
         generalPagePlugin,
         rbacPlugin,

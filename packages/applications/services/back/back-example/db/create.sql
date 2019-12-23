@@ -449,6 +449,7 @@ DROP TABLE IF EXISTS public."CommunistPartyProcessCategory";
 DROP TYPE IF EXISTS public."enum_User_type";
 DROP TYPE IF EXISTS public."enum_UserExtention_sex";
 DROP TABLE IF EXISTS public."EventRecord";
+DROP TABLE IF EXISTS public."Sysconfig";
 DROP EXTENSION IF EXISTS plpgsql;
 DROP SCHEMA IF EXISTS public;
 --
@@ -2653,6 +2654,24 @@ CREATE SEQUENCE userextention_id_seq
 
 ALTER TABLE userextention_id_seq OWNER TO postgres;
 
+
+-- Table: public."Sysconfig"
+
+CREATE TABLE "public"."Sysconfig" (
+  "key" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "value" varchar(255) COLLATE "pg_catalog"."default",
+  "type" varchar(40) COLLATE "pg_catalog"."default" DEFAULT false,
+  "widgetSettings" varchar(255) COLLATE "pg_catalog"."default" DEFAULT false,
+  "desc" varchar(255) COLLATE "pg_catalog"."default",
+  "defaultValue" varchar(255) COLLATE "pg_catalog"."default",
+  "index" int2,
+  "category" varchar(255) COLLATE "pg_catalog"."default"
+);
+
+
+ALTER TABLE "Sysconfig" OWNER to postgres;
+
 --
 -- Name: act_evt_log log_nr_; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2712,6 +2731,8 @@ INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updated
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.5', '用户', '/console/authorizations/users', '/console/authorizations/users', 'subuser', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8', '系统管理', '/console/system', NULL, 'system', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1', '字典管理', '/console/system/dictionaries', '/console/system/dictionaries', 'dictionary', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '8');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.2', '系统配置', '/console/system/sysconfig', '/console/system/sysconfig', 'system', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '8');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.3', '操作记录', '/console/system/event_record', '/console/system/event_record', 'antv-profile', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '8');
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('9', '账号管理', '/console/account', NULL, 'account-sec', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('9.1', '账号安全', '/console/account/profile', '/console/account/profile', 'profile', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '9');
 
@@ -2849,6 +2870,7 @@ INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "up
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.4.3.4', '删除用户已赋予职位', '/authorizations/users/:userId/positions/:id?', 'DELETE', true, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', '6.4.3');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8', '系统管理', '', '', false, '', '2019-12-05 10:21:09+08', '2019-12-05 10:21:12+08', '0');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1', '字典管理', '', '', false, '', '2019-12-05 10:22:52+08', '2019-12-05 10:22:57+08', '8');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.2', '系统配置', '', '', false, '', '2019-12-05 10:22:52+08', '2019-12-05 10:22:57+08', '8');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1.0.1', '查询字典', '/dictionaries/:key?', 'GET', false, ' ', '2019-12-05 10:26:09+08', '2019-12-05 10:26:12+08', '8.1');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1.0.2', '创建字典', '/dictionaries', 'POST', true, '', '2019-12-05 10:39:21+08', '2019-12-05 10:39:23+08', '8.1');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1.0.3', '修改字典', '/dictionaries/:id', 'PUT', true, '', '2019-12-05 10:40:18+08', '2019-12-05 10:40:20+08', '8.1');
@@ -3264,10 +3286,20 @@ INSERT INTO act_ge_property (name_, value_, rev_) VALUES ('cfg.task-related-enti
 
 
 --
--- Data for Name: act_hi_actinst; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: Sysconfig; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO "public"."Sysconfig" VALUES ('copyright', '版权说明', NULL, 'string', '{"icon":"notice"}', NULL, '@Copyright 2019~2020 ', 120, NULL);
+INSERT INTO "public"."Sysconfig" VALUES ('consoleLogo', '控制台Logo', NULL, 'image', '{"icon":"antv-menu-unfold","width":"192","height":"38","color":"#0d3ae3","radius":"0"}', '最佳尺寸192x38', '/assets/imgs/defaultLogo.png', 130, NULL);
+INSERT INTO "public"."Sysconfig" VALUES ('consoleCollapsedLogo', '控制台Mini Logo', NULL, 'image', '{"icon":"antv-menu-fold","width":"72","height":"38","color":"#0d3ae3","radius":"0"}', '最佳尺寸72x38', '/assets/imgs/defaultLogoCollapsed.png', 140, NULL);
+INSERT INTO "public"."Sysconfig" VALUES ('logo', '系统Logo', NULL, 'image', '{"icon":"antv-desktop","width":"192","height":"38","color":"transport","radius":"0"}', '最佳比例192:38', '/assets/imgs/logo.png', 110, NULL);
+INSERT INTO "public"."Sysconfig" VALUES ('title', '系统名称', NULL, 'string', '{"icon":"application"}', NULL, '管理控制台', 100, NULL);
+INSERT INTO "public"."Sysconfig" VALUES ('dsiableUsernameEdit', '禁止编辑用户名', NULL, 'boolean', '{"icon":"antv-user"}', '选中后，用户名将不可修改', NULL, 160, NULL);
+INSERT INTO "public"."Sysconfig" VALUES ('disableProcessCommentEdit', '禁止编辑/删除流程跟踪信息', NULL, 'boolean', '{"icon":"protocol"}', '选中后，流程跟踪信息将不可删除或编辑', NULL, 150, NULL);
 
+--
+-- Data for Name: act_hi_actinst; Type: TABLE DATA; Schema: public; Owner: postgres
+--
 
 --
 -- Data for Name: act_hi_attachment; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -4072,6 +4104,11 @@ ALTER TABLE ONLY act_ge_bytearray
 ALTER TABLE ONLY act_ge_property
     ADD CONSTRAINT act_ge_property_pkey PRIMARY KEY (name_);
 
+
+-- ----------------------------
+-- Primary Key structure for table Sysconfig
+-- ----------------------------
+ALTER TABLE "public"."Sysconfig" ADD CONSTRAINT "Sysconfig_pkey" PRIMARY KEY ("key");
 
 --
 -- Name: act_hi_actinst act_hi_actinst_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
