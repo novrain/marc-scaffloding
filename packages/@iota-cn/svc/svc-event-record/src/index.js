@@ -121,7 +121,7 @@ export function entry(app, router, opts) {
                 if (ctx.session.user) {
                     //user info
                     let user = ctx.session.user
-                    _username = user.userExt.fullname || user.username || 'undefined'
+                    _username = (user.userExt !== null ? user.userExt.fullname : (user.username !== null ? user.username : 'undefined'))
                     _userId = user.id
                 }
 
@@ -147,7 +147,7 @@ export function entry(app, router, opts) {
                 let _time = now - startTime
 
                 let eventRecordLog = {
-                    _id: uid.v4(),
+                    id: uid.v4(),
                     username: _username || 'undefined',
                     userId: _userId || 'undefined',
                     method: _method,
@@ -159,28 +159,12 @@ export function entry(app, router, opts) {
                     log_type: _log_type,
                     request_ip: 'undefined',
                     time: _time,
-                    browser: judgeTerminalBrowser(ctx.request.headers['user-agent']),
+                    browser: JSON.stringify(judgeTerminalBrowser(ctx.request.headers['user-agent'])),
                     _v: operations.prefix
                 }
                 //插入数据库
                 const dc = ctx.iota.dc
-                dc.models.EventRecord.create({
-                    id: eventRecordLog._id,
-                    username: eventRecordLog.username,
-                    userId: eventRecordLog.userId,
-                    method: eventRecordLog.method,
-                    host: eventRecordLog.host,
-                    url: eventRecordLog.url,
-                    status: eventRecordLog.status,
-                    description: eventRecordLog.description,
-                    exception_detail: eventRecordLog.exception_detail,
-                    log_type: eventRecordLog.log_type,
-                    request_ip: eventRecordLog.request_ip,
-                    time: eventRecordLog.time,
-                    create_time: startTime,
-                    browser: JSON.stringify(eventRecordLog.browser),
-                    _v: eventRecordLog._v
-                })
+                dc.models.EventRecord.create(eventRecordLog)
             }
         }
     }

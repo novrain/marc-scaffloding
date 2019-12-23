@@ -17,6 +17,7 @@
 - 系统管理
   - 系统设置
   - 字典管理
+  - 操作日志
 - 工作流整合
 	- 基于[flowable](https://flowable.org/ "flowable")，结合权限管理，基本实现了通用的工作流（这部分对flowable有一定fork修改，暂未实现流程定义和表单定义，需要独立运行flowable服务，采用HTTP接口交互）
 - 系统通知（消息中心服务）
