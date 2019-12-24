@@ -28,9 +28,7 @@ export default {
         ...mapMutations([T.ROOT_CHANGE_THEME])
     },
 
-    mounted() {
-        this[T.ROOT_CHANGE_THEME](localStorage.getItem('ii:theme') || 'default')
-
+    beforeCreate() {
         /**
          * 
          */
@@ -42,6 +40,10 @@ export default {
                 this.$store.dispatch(action.action, action.params)
             }
         })
+    },
+
+    mounted() {
+        this[T.ROOT_CHANGE_THEME](localStorage.getItem('ii:theme') || 'default')
         // @TODO change locale
     },
 }

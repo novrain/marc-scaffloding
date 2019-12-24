@@ -1,31 +1,16 @@
-/**
- * 强制路由刷新
- * @param {} flowId 
- */
-const createFlowableContainer = (flowId) => {
-    const Flowable = () => import("./view/console/Flowable")
-    return {
-        props: ['flowId', 'flowHelper'],
-        name: flowId,
-        components: {
-            flowable: Flowable
-        },
-        render() {
-            return (<flowable flowId={this.flowId} flowHelper={this.flowHelper} />)
-        }
-    }
-}
+const SingleFlowable = () => import('./view/SingleFlowable')
 
 export default (opts) => {
-    const containerId = opts.containerId
-    let routes = {}
-    opts.flows.forEach(f => {
-        routes[f.flowId] = {
-            path: f.path,
-            component: createFlowableContainer(f.flowId),
-            props: { flowId: f.flowId, flowHelper: f.flowHelper }
-        }
-    })
+    const { id, containerId, path } = opts
+    let routes = {
+        path: `${path || '/console/flowable'}/:processDefinitionKey`,
+        component: SingleFlowable,
+        props: (route) => ({
+            id: id,
+            containerId: containerId,
+            processDefinitionKey: route.params.processDefinitionKey
+        })
+    }
     return {
         iota: {
             [containerId || 'container']: {

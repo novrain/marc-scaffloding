@@ -8,7 +8,7 @@ export default function (app, router, opts) {
 
     const processdefs = restful.resource({
         model: models.ProcessDef,
-        endpoints: ['/processdefs', '/processdefs/:id'],
+        endpoints: ['/processdefs', '/processdefs/:processDefinitionKey'],
         search: [
             { param: 'name', attributes: ['name'] },
             { operator: '$eq', param: 'belongTo', attributes: ['belongTo'] },

@@ -1,9 +1,14 @@
 import mutations from './mutations'
 import actions from './actions'
+import getters from './getters'
 
 export default (opts) => {
     const { id, containerId } = opts
-    const state = {}  // 如果需要使用全局的store，则需要区分出具体的流程相关数据
+    // 流程的定义、帮助类
+    const state = {
+        processdefs: {},
+        helpers: {}
+    }
     const store = {
         modules: {
             iota: {
@@ -13,8 +18,9 @@ export default (opts) => {
                             [id || 'flowable']: {
                                 namespaced: true,
                                 state,
-                                mutations,
-                                actions
+                                mutations: mutations(opts),
+                                actions: actions(opts),
+                                getters: getters(opts)
                             }
                         }
                     }

@@ -60,6 +60,7 @@ function createConfig(args) {
 
     const sysconfigEntry = require('@iota-cn/svc-sysconfig').entry
     const sysconfigModel = require('@iota-cn/svc-sysconfig').models
+
     const user = { entry: userEntry, opts: {} }
     const authentication = {
         entry: authenticationEntry,
@@ -130,7 +131,7 @@ function createConfig(args) {
         opts: {
             flowable: {
                 routes: ['/fl/process/*', '/fl/content/*', '/fl/iota/*'],
-                target: 'http://localhost:8888'
+                target: 'http://49.4.2.82:8888'
             }
         }
     }
@@ -147,6 +148,7 @@ function createConfig(args) {
     //entry
     config.mws.push(user)
     config.mws.push(authentication)
+    //sysconfig 特殊，需要放置在这里，避开RBAC的鉴权 @Todo 需要优化为无顺序性
     config.mws.push(sysconfig)
     config.mws.push(rbac)
     config.mws.push(eventRecord)
@@ -162,7 +164,6 @@ function createConfig(args) {
     ]
     config.mws.push(bpEngines)
     config.mws.push(cpp)
-
     //models
     config.dc.models.push(userModel)
     config.dc.models.push(eventRecordModel)
