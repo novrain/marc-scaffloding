@@ -316,6 +316,7 @@ ALTER TABLE IF EXISTS ONLY public."UserPosition" DROP CONSTRAINT IF EXISTS "User
 ALTER TABLE IF EXISTS ONLY public."UserOrganization" DROP CONSTRAINT IF EXISTS "UserOrganization_userId_organizationId_key";
 ALTER TABLE IF EXISTS ONLY public."UserOrganization" DROP CONSTRAINT IF EXISTS "UserOrganization_pkey";
 ALTER TABLE IF EXISTS ONLY public."UserExtention" DROP CONSTRAINT IF EXISTS "UserExtention_pkey";
+ALTER TABLE IF EXISTS ONLY public."Sysconfig" DROP CONSTRAINT IF EXISTS "Sysconfig_pkey";
 ALTER TABLE IF EXISTS ONLY public."SubUser" DROP CONSTRAINT IF EXISTS "SubUser_pkey";
 ALTER TABLE IF EXISTS ONLY public."Role" DROP CONSTRAINT IF EXISTS "Role_pkey";
 ALTER TABLE IF EXISTS ONLY public."RoleOperation" DROP CONSTRAINT IF EXISTS "RoleOperation_pkey";
@@ -336,6 +337,7 @@ ALTER TABLE IF EXISTS ONLY public."OperationPreDepends" DROP CONSTRAINT IF EXIST
 ALTER TABLE IF EXISTS ONLY public."Menu" DROP CONSTRAINT IF EXISTS "Menu_pkey";
 ALTER TABLE IF EXISTS ONLY public."MenuPreDepends" DROP CONSTRAINT IF EXISTS "MenuPreDepends_pkey";
 ALTER TABLE IF EXISTS ONLY public."MenuPreDepends" DROP CONSTRAINT IF EXISTS "MenuPreDepends_menuId_dependMenuId_key";
+ALTER TABLE IF EXISTS ONLY public."EventRecord" DROP CONSTRAINT IF EXISTS "Log_pkey";
 ALTER TABLE IF EXISTS ONLY public."Dictionary" DROP CONSTRAINT IF EXISTS "Dictionary_pkey";
 ALTER TABLE IF EXISTS ONLY public."Dictionary" DROP CONSTRAINT IF EXISTS "Dictionary_name_key";
 ALTER TABLE IF EXISTS ONLY public."Dictionary" DROP CONSTRAINT IF EXISTS "Dictionary_key_key";
@@ -430,6 +432,7 @@ DROP TABLE IF EXISTS public."UserOrganization";
 DROP SEQUENCE IF EXISTS public."UserExtention_id_seq";
 DROP TABLE IF EXISTS public."UserExtention";
 DROP TABLE IF EXISTS public."User";
+DROP TABLE IF EXISTS public."Sysconfig";
 DROP TABLE IF EXISTS public."SubUser";
 DROP TABLE IF EXISTS public."RoleOperation";
 DROP TABLE IF EXISTS public."RoleMenu";
@@ -443,13 +446,12 @@ DROP TABLE IF EXISTS public."OperationPreDepends";
 DROP TABLE IF EXISTS public."Operation";
 DROP TABLE IF EXISTS public."MenuPreDepends";
 DROP TABLE IF EXISTS public."Menu";
+DROP TABLE IF EXISTS public."EventRecord";
 DROP TABLE IF EXISTS public."DictionaryItem";
 DROP TABLE IF EXISTS public."Dictionary";
 DROP TABLE IF EXISTS public."CommunistPartyProcessCategory";
 DROP TYPE IF EXISTS public."enum_User_type";
 DROP TYPE IF EXISTS public."enum_UserExtention_sex";
-DROP TABLE IF EXISTS public."EventRecord";
-DROP TABLE IF EXISTS public."Sysconfig";
 DROP EXTENSION IF EXISTS plpgsql;
 DROP SCHEMA IF EXISTS public;
 --
@@ -562,6 +564,24 @@ CREATE TABLE "DictionaryItem" (
 
 
 ALTER TABLE "DictionaryItem" OWNER TO postgres;
+CREATE TABLE "EventRecord" (
+    id character varying(100) NOT NULL,
+    username character varying(20) DEFAULT NULL::character varying,
+    "userId" character varying(255) DEFAULT NULL::character varying,
+    method character varying(20) DEFAULT NULL::character varying NOT NULL,
+    host character varying(50) DEFAULT NULL::character varying NOT NULL,
+    url character varying(255) NOT NULL,
+    status character varying(11) NOT NULL,
+    description character varying(255),
+    exception_detail text,
+    log_type character varying(255),
+    request_ip character varying(20),
+    "time" character varying(15) NOT NULL,
+    browser character varying(255) NOT NULL,
+    _v character varying(50),
+    "createdAt" timestamp(0) with time zone NOT NULL
+);
+ALTER TABLE "EventRecord" OWNER TO postgres;
 
 --
 -- Name: Menu; Type: TABLE; Schema: public; Owner: postgres
@@ -700,13 +720,17 @@ ALTER TABLE "PositionRole" OWNER TO postgres;
 --
 
 CREATE TABLE "ProcessDef" (
-    id character varying(255) NOT NULL,
     name character varying(255) NOT NULL,
-    "flowableInstance" character varying(255) NOT NULL,
+    "processDefinitionKey" character varying(255) NOT NULL,
     "formDef" text NOT NULL,
     "belongTo" character varying(255),
     "createdAt" timestamp with time zone NOT NULL,
-    "updatedAt" timestamp with time zone NOT NULL
+    "updatedAt" timestamp with time zone NOT NULL,
+    "desc" character varying(255),
+    category character varying(255),
+    "helperScript" character varying(255),
+    widget character varying,
+    component character varying
 );
 
 
@@ -773,6 +797,18 @@ CREATE TABLE "SubUser" (
 
 
 ALTER TABLE "SubUser" OWNER TO postgres;
+CREATE TABLE "Sysconfig" (
+    key character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    value character varying(255),
+    type character varying(40) DEFAULT false,
+    "widgetSettings" character varying(255) DEFAULT false,
+    "desc" character varying(255),
+    "defaultValue" character varying(255),
+    index smallint,
+    category character varying(255)
+);
+ALTER TABLE "Sysconfig" OWNER TO postgres;
 
 --
 -- Name: User; Type: TABLE; Schema: public; Owner: postgres
@@ -878,43 +914,6 @@ CREATE TABLE "UserRole" (
 
 
 ALTER TABLE "UserRole" OWNER TO postgres;
-
---
--- Name: EventRecord; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE "public"."EventRecord" (
-  "id" varchar(100) COLLATE "pg_catalog"."default" NOT NULL,
-  "username" varchar(20) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "userId" varchar(255) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "method" varchar(20) COLLATE "pg_catalog"."default" NOT NULL DEFAULT NULL::character varying,
-  "host" varchar(50) COLLATE "pg_catalog"."default" NOT NULL DEFAULT NULL::character varying,
-  "url" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "status" varchar(11) COLLATE "pg_catalog"."default" NOT NULL,
-  "description" varchar(255) COLLATE "pg_catalog"."default",
-  "exception_detail" text COLLATE "pg_catalog"."default",
-  "log_type" varchar(255) COLLATE "pg_catalog"."default",
-  "request_ip" varchar(20) COLLATE "pg_catalog"."default",
-  "time" varchar(15) COLLATE "pg_catalog"."default" NOT NULL,
-  "browser" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "_v" varchar(50) COLLATE "pg_catalog"."default",
-  "createdAt" timestamptz(0) NOT NULL
-);
-
-
-ALTER TABLE "EventRecord" OWNER TO postgres;
-
-COMMENT ON COLUMN "public"."EventRecord"."method" IS '请求类型';
-COMMENT ON COLUMN "public"."EventRecord"."host" IS '访问地址';
-COMMENT ON COLUMN "public"."EventRecord"."url" IS '访问路径';
-COMMENT ON COLUMN "public"."EventRecord"."status" IS '状态码 200  404  500 503 ...';
-COMMENT ON COLUMN "public"."EventRecord"."description" IS '描述';
-COMMENT ON COLUMN "public"."EventRecord"."exception_detail" IS '异常日志';
-COMMENT ON COLUMN "public"."EventRecord"."log_type" IS '日志类型';
-COMMENT ON COLUMN "public"."EventRecord"."request_ip" IS '真实ip地址';
-COMMENT ON COLUMN "public"."EventRecord"."time" IS '耗时';
-COMMENT ON COLUMN "public"."EventRecord"."browser" IS '浏览器类型';
-COMMENT ON COLUMN "public"."EventRecord"."createdAt" IS '发起时间';
 
 --
 -- Name: act_adm_databasechangelog; Type: TABLE; Schema: public; Owner: postgres
@@ -2654,24 +2653,6 @@ CREATE SEQUENCE userextention_id_seq
 
 ALTER TABLE userextention_id_seq OWNER TO postgres;
 
-
--- Table: public."Sysconfig"
-
-CREATE TABLE "public"."Sysconfig" (
-  "key" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "value" varchar(255) COLLATE "pg_catalog"."default",
-  "type" varchar(40) COLLATE "pg_catalog"."default" DEFAULT false,
-  "widgetSettings" varchar(255) COLLATE "pg_catalog"."default" DEFAULT false,
-  "desc" varchar(255) COLLATE "pg_catalog"."default",
-  "defaultValue" varchar(255) COLLATE "pg_catalog"."default",
-  "index" int2,
-  "category" varchar(255) COLLATE "pg_catalog"."default"
-);
-
-
-ALTER TABLE "Sysconfig" OWNER to postgres;
-
 --
 -- Name: act_evt_log log_nr_; Type: DEFAULT; Schema: public; Owner: postgres
 --
@@ -2940,6 +2921,13 @@ INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "up
 
 
 --
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('copyright', '版权说明', NULL, 'string', '{"icon":"notice"}', NULL, '@Copyright 2019~2020 ', 120, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('consoleLogo', '控制台Logo', NULL, 'image', '{"icon":"antv-menu-unfold","width":"192","height":"38","color":"#0d3ae3","radius":"0"}', '最佳尺寸192x38', '/assets/imgs/defaultLogo.png', 130, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('consoleCollapsedLogo', '控制台Mini Logo', NULL, 'image', '{"icon":"antv-menu-fold","width":"72","height":"38","color":"#0d3ae3","radius":"0"}', '最佳尺寸72x38', '/assets/imgs/defaultLogoCollapsed.png', 140, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('logo', '系统Logo', NULL, 'image', '{"icon":"antv-desktop","width":"192","height":"38","color":"transport","radius":"0"}', '最佳比例192:38', '/assets/imgs/logo.png', 110, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('disableProcessCommentEdit', '禁止编辑/删除流程跟踪信息', 'false', 'boolean', '{"icon":"protocol"}', '选中后，流程跟踪信息将不可删除或编辑', NULL, 150, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('dsiableUsernameEdit', '禁止编辑用户名', 'false', 'boolean', '{"icon":"antv-user"}', '选中后，用户名将不可修改', NULL, 160, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('title', '系统名称', '管理控制台', 'string', '{"icon":"application"}', NULL, '管理控制台', 100, NULL);
 -- Data for Name: User; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -3286,17 +3274,6 @@ INSERT INTO act_ge_property (name_, value_, rev_) VALUES ('cfg.task-related-enti
 
 
 --
--- Data for Name: Sysconfig; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO "public"."Sysconfig" VALUES ('copyright', '版权说明', NULL, 'string', '{"icon":"notice"}', NULL, '@Copyright 2019~2020 ', 120, NULL);
-INSERT INTO "public"."Sysconfig" VALUES ('consoleLogo', '控制台Logo', NULL, 'image', '{"icon":"antv-menu-unfold","width":"192","height":"38","color":"#0d3ae3","radius":"0"}', '最佳尺寸192x38', '/assets/imgs/defaultLogo.png', 130, NULL);
-INSERT INTO "public"."Sysconfig" VALUES ('consoleCollapsedLogo', '控制台Mini Logo', NULL, 'image', '{"icon":"antv-menu-fold","width":"72","height":"38","color":"#0d3ae3","radius":"0"}', '最佳尺寸72x38', '/assets/imgs/defaultLogoCollapsed.png', 140, NULL);
-INSERT INTO "public"."Sysconfig" VALUES ('logo', '系统Logo', NULL, 'image', '{"icon":"antv-desktop","width":"192","height":"38","color":"transport","radius":"0"}', '最佳比例192:38', '/assets/imgs/logo.png', 110, NULL);
-INSERT INTO "public"."Sysconfig" VALUES ('title', '系统名称', NULL, 'string', '{"icon":"application"}', NULL, '管理控制台', 100, NULL);
-INSERT INTO "public"."Sysconfig" VALUES ('dsiableUsernameEdit', '禁止编辑用户名', NULL, 'boolean', '{"icon":"antv-user"}', '选中后，用户名将不可修改', NULL, 160, NULL);
-INSERT INTO "public"."Sysconfig" VALUES ('disableProcessCommentEdit', '禁止编辑/删除流程跟踪信息', NULL, 'boolean', '{"icon":"protocol"}', '选中后，流程跟踪信息将不可删除或编辑', NULL, 150, NULL);
-
 --
 -- Data for Name: act_hi_actinst; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -3598,8 +3575,8 @@ ALTER TABLE ONLY "Dictionary"
 -- Name: EventRecord Log_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE "public"."EventRecord" 
-    ADD CONSTRAINT "Log_pkey" PRIMARY KEY ("id");
+ALTER TABLE ONLY "EventRecord"
+    ADD CONSTRAINT "Log_pkey" PRIMARY KEY (id);
 
 --
 -- Name: MenuPreDepends MenuPreDepends_menuId_dependMenuId_key; Type: CONSTRAINT; Schema: public; Owner: postgres
@@ -3702,7 +3679,7 @@ ALTER TABLE ONLY "Position"
 --
 
 ALTER TABLE ONLY "ProcessDef"
-    ADD CONSTRAINT "ProcessDef_flowableInstance_key" UNIQUE ("flowableInstance");
+    ADD CONSTRAINT "ProcessDef_flowableInstance_key" UNIQUE ("processDefinitionKey");
 
 
 --
@@ -3710,7 +3687,7 @@ ALTER TABLE ONLY "ProcessDef"
 --
 
 ALTER TABLE ONLY "ProcessDef"
-    ADD CONSTRAINT "ProcessDef_pkey" PRIMARY KEY (id);
+    ADD CONSTRAINT "ProcessDef_pkey" PRIMARY KEY ("processDefinitionKey");
 
 
 --
@@ -3759,6 +3736,8 @@ ALTER TABLE ONLY "Role"
 
 ALTER TABLE ONLY "SubUser"
     ADD CONSTRAINT "SubUser_pkey" PRIMARY KEY ("userId");
+ALTER TABLE ONLY "Sysconfig"
+    ADD CONSTRAINT "Sysconfig_pkey" PRIMARY KEY (key);
 
 
 --
@@ -4104,11 +4083,6 @@ ALTER TABLE ONLY act_ge_bytearray
 ALTER TABLE ONLY act_ge_property
     ADD CONSTRAINT act_ge_property_pkey PRIMARY KEY (name_);
 
-
--- ----------------------------
--- Primary Key structure for table Sysconfig
--- ----------------------------
-ALTER TABLE "public"."Sysconfig" ADD CONSTRAINT "Sysconfig_pkey" PRIMARY KEY ("key");
 
 --
 -- Name: act_hi_actinst act_hi_actinst_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
