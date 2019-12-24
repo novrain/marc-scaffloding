@@ -13,8 +13,8 @@ const entry = (opts, Vue) => {
                     let value = s.value || s.defaultValue
                     switch (s.type) {
                         case 'image':
-                        // 图片分上传或默认的，上传走API静态目录，默认走WEB静态目录
-                        value = s.value ? `${this.$axios.baseURL()}${s.value}` : s.defaultValue
+                            // 图片分上传或默认的，上传走API静态目录，默认走WEB静态目录
+                            value = s.value ? `${this.$axios.baseURL()}${s.value}` : s.defaultValue
                             break
                         case 'boolean':
                             value = s.value === 'true'

@@ -8,14 +8,19 @@ rootContainerPlugin.opts.redirect = '/console'
 // 此应用直接跳转到 signin 或者在 routes 中直接覆盖
 layoutContainerPlugin.opts.simple.redirect = '/console'
 
+
+const overviewId = 'app-overview'
+
 const overviewPlugin = {
     plugin: require('./plugins/overview'), opts: {
+        id: overviewId,
         containerId: COMPLEX_CONTAINER_ID,
         widgets: []  // 可以在代码中注入
     }
 }
 
 const flowableId = 'flowable'
+const flowablePath = '/console/applications/flows'
 
 const projectProcessPlugin = {
     plugin: require('@iota-cn/ui-scaffolding/src/plugins/apps/flowable'), opts: {
@@ -28,7 +33,9 @@ const projectProcessPlugin = {
 const communistPartyProcessPlugin = {
     plugin: require('./plugins/communist-party-process'), opts: {
         id: 'cpp_party',
+        overviewId: overviewId,
         flowableId: flowableId,
+        flowablePath: flowablePath,
         containerId: COMPLEX_CONTAINER_ID
     }
 }

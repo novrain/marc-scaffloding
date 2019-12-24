@@ -37,14 +37,17 @@ export default {
                 <a slot='extra' onClick={() => {
                     this.$router.push({ path: this.redirect })
                 }}>前往处理</a>
-                <assignee-explorer
-                    processDefinitionKey={this.processDefinitionKey}
-                    processdef={this.processdef}
-                    flowHelper={this.helper}
-                    user={this.$user}
-                    selectedFlow={this.selectedFlowsOfTab.assignee}
-                    active={this.activeTab === "assignee"}
-                    onSelect={this.onSelectFlow} />
+                {
+                    this.helper ? <assignee-explorer
+                        processDefinitionKey={this.processDefinitionKey}
+                        processdef={this.processdef}
+                        flowHelper={this.helper}
+                        user={this.$user}
+                        selectedFlow={this.selectedFlowsOfTab.assignee}
+                        active={this.activeTab === "assignee"}
+                        onSelect={this.onSelectFlow} />
+                        : null
+                }
             </a-card>)
             : null
     }

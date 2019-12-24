@@ -1,7 +1,7 @@
 <script>
 
 export default {
-    props: ['widgets'],
+    props: ['id', 'containerId', 'widgets'],
     data() {
         return {
         }
@@ -15,10 +15,11 @@ export default {
     computed: {
     },
     render() {
+        const widgets = this.$store.state.iota[this.containerId][this.id].widgets || []
         return (
             <div class='ii-app-overview'>
                 {
-                    this.widgets.map(w => {
+                    widgets.concat(...this.widgets).map(w => {
                         const component = w.component
                         return <div class='widget'>
                             <component {...{ props: w.props }} />

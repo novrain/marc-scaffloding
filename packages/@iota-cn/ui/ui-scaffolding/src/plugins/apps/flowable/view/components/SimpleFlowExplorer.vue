@@ -3,7 +3,7 @@ import { message } from 'ant-design-vue/es'
 import * as U from '../../util'
 
 export default {
-    props: ['processdef', 'user', 'selectedFlow', 'flowHelper', 'active'],
+    props: ['processDefinitionKey', 'processdef', 'user', 'selectedFlow', 'flowHelper', 'active'],
     data() {
         return {
             flows: [],

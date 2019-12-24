@@ -9,12 +9,15 @@ export default (opts) => {
             iota: {
                 modules: {
                     [containerId || 'container']: {
+                        state: {
+                            initActions: [`iota/${containerId}/${id}/loadWidgets`]
+                        },
                         modules: {
                             [id || 'communistPartyProcess']: {
                                 namespaced: true,
                                 state,
                                 mutations,
-                                actions
+                                actions: actions(opts)
                             }
                         }
                     }
