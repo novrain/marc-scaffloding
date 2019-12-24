@@ -25,4 +25,20 @@ export default function (app, router, opts) {
         // }],
         actions: ['read', 'update', 'delete']
     })
+
+    router.get('/applications/processdefs/widgets', async (ctx, next) => {
+        const models = ctx.iota.dc.models
+        const widgets = await models.ProcessDef.findAll({
+            where: {
+                widget: {
+                    $not: null
+                }
+            },
+            attributes: ['widget', 'processDefinitionKey']
+        })
+        ctx.body = {
+            widgets: widgets
+        }
+        ctx.status = 200
+    })
 }

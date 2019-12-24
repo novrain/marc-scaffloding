@@ -89,7 +89,7 @@ export default {
         },
         //页面配置
         renderItems() {
-            const pageSizeOptions = ['5', '10', '60', '80']
+            const pageSizeOptions = ['20', '40', '60', '80']
             const columns = [
                 {
                     title: "用户昵称",
