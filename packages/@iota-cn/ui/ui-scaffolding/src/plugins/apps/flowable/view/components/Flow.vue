@@ -58,7 +58,7 @@
                         <ii-tasks :user='user'
                             :active='activeTab === "tasks"'
                             :flow='flow'
-                            :processDef='processDef' />
+                            :processdef='processdef' />
                     </a-tab-pane>
                 </a-tabs>
                 <a-modal centered
@@ -102,7 +102,7 @@ export default {
         "ii-attachments": Attachments,
         "ii-tasks": Tasks
     },
-    props: ['flow', 'processDef', 'user'],
+    props: ['flow', 'processdef', 'user'],
     data() {
         return {
             fullscreen: false,
@@ -123,7 +123,7 @@ export default {
             },
             deep: true
         },
-        processDef: {
+        processdef: {
             handler() {
                 this.updateForm()
             }
@@ -147,10 +147,10 @@ export default {
         refetch() {
             const instanceId = this.flow.processInstanceId
             // 如果没有定义，则查询一下，通过watch来触发刷新form
-            if (!this.processDef) {
+            if (!this.processdef) {
                 this.$axios.silentGet(`/fl/process/${instanceId}`, true)
                     .then((res) => {
-                        this.processDef = res.data
+                        this.processdef = res.data
                     })
             } else {
                 this.updateForm()
@@ -169,7 +169,7 @@ export default {
         updateForm() {
             // 确保数据是深度复制的，避免相互间的冲突
             this.formData = Object.assign({}, this.flow.formData)
-            this.formDef = JSON.parse(this.processDef.formDef)
+            this.formDef = JSON.parse(this.processdef.formDef)
             const variables = this.flow.formData
             /**
              * 针对表单的全局配置

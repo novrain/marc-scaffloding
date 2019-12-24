@@ -7,7 +7,7 @@ import TaskAssigneeExplorer from './SimpleTaskAssigneeExplorer'
 import FlowHelperMixin from '../components/FlowHelperMixin'
 
 export default {
-    props: ['flowId', 'redirect'],
+    props: ['processDefinitionKey', 'redirect'],
     components: {
         'assignee-explorer': TaskAssigneeExplorer,
         // 'startby-explorer': StartBySelfExplorer,
@@ -16,18 +16,11 @@ export default {
     mixins: [FlowHelperMixin],
     data() {
         return {
-            processDef: undefined,
             activeTab: 'assignee',
             selectedFlowsOfTab: {}
         }
     },
     mounted() {
-        this.$axios.silentGet(`/v1/api/processdefs/${this.flowId}`)
-            .then((res) => {
-                if (res) {
-                    this.processDef = res.data
-                }
-            })
     },
     computed: {
     },
@@ -37,23 +30,23 @@ export default {
         }
     },
     render() {
-        const name = this.processDef ? this.processDef.name : ''
         // 没有这个模块的访问权限，就不显示
-        return this.$m(this.redirect) ? (
-            <a-card title={name} size='small' class='ii-flow-widget'
+        return this.$m(this.redirect) && this.processDefinitionKey ? (
+            <a-card title={this.processdef ? this.processdef.name : ''} size='small' class='ii-flow-widget'
                 bodyStyle={{ padding: "10px", flex: 1 }}>
                 <a slot='extra' onClick={() => {
                     this.$router.push({ path: this.redirect })
                 }}>前往处理</a>
                 {
-                    this.processDef && this.innerFlowHelper ? <assignee-explorer processDef={this.processDef}
+                    this.helper ? <assignee-explorer
+                        processDefinitionKey={this.processDefinitionKey}
+                        processdef={this.processdef}
+                        flowHelper={this.helper}
                         user={this.$user}
-                        flowHelper={this.innerFlowHelper}
                         selectedFlow={this.selectedFlowsOfTab.assignee}
                         active={this.activeTab === "assignee"}
                         onSelect={this.onSelectFlow} />
-                        :
-                        null
+                        : null
                 }
             </a-card>)
             : null

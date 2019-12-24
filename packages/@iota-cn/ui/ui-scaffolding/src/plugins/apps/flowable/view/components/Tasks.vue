@@ -5,7 +5,7 @@ import moment from 'moment'
 import * as U from '../../util'
 
 export default {
-    props: ['user', 'flow', 'active', 'processDef'],
+    props: ['user', 'flow', 'active', 'processdef'],
     data() {
         return {
             running: {

@@ -1,7 +1,7 @@
 const Overview = () => import("./view/Overview")
 
 export default (opts) => {
-    const containerId = opts.containerId
+    const { id, containerId } = opts
     return {
         iota: {
             [containerId || 'container']: {
@@ -9,7 +9,11 @@ export default (opts) => {
                 overview: {
                     path: '/console/overview',
                     component: Overview,
-                    props: { widgets: opts.widgets }
+                    props: {
+                        id: id || 'app-overview',
+                        containerId: containerId,
+                        widgets: opts.widgets,
+                    }
                 }
             }
         }

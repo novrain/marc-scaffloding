@@ -7,8 +7,7 @@ import FlowHelperMixin from '@iota-cn/ui-scaffolding/src/plugins/apps/flowable/v
 const VIRTUAl_ROOT = 'virtual-root'
 
 export default {
-    props: ['flowId'],
-    // mixins: ['ii-flowable-helper-mixin'],
+    props: ['processDefinitionKey'],
     mixins: [FlowHelperMixin],
     data() {
         return {
@@ -17,8 +16,7 @@ export default {
             currentEditNode: {},
             rightClickNodeTreeItem: {},
             addNode: false,
-            propEditNode: false,
-            wrappedFlowHelper: undefined
+            propEditNode: false
         }
     },
     mounted() {
@@ -165,47 +163,47 @@ export default {
         },
     },
     watch: {
-        innerFlowHelper: {
-            handler() {
-                if (this.innerFlowHelper) {
-                    this.wrappedFlowHelper = Object.assign({}, this.innerFlowHelper)
-                }
-            },
-            immediate: true
-        },
         selectedKeys: {
             handler() {
-                if (this.innerFlowHelper && this.selectedKeys.length === 1) {
-                    let categories = []
-                    let key = this.selectedKeys[0]
-                    if (key !== VIRTUAl_ROOT) {
-                        let idMap = this.tree.idMap
-                        let node = idMap[key]
-                        categories.push(node)
-                        while (node && node.parentId !== VIRTUAl_ROOT) {
-                            node = idMap[node.parentId]
-                            if (node) {
-                                categories.push(node)
+                if (this.helper) {
+                    let wrappedFlowHelper = this.helper
+                    if (this.selectedKeys.length === 1) { //选中
+                        let categories = []
+                        let key = this.selectedKeys[0]
+                        if (key !== VIRTUAl_ROOT) {
+                            let idMap = this.tree.idMap
+                            let node = idMap[key]
+                            categories.push(node)
+                            while (node && node.parentId !== VIRTUAl_ROOT) {
+                                node = idMap[node.parentId]
+                                if (node) {
+                                    categories.push(node)
+                                }
                             }
                         }
-                    }
-                    //扩展query，传递自定义参数
-                    if (this.innerFlowHelper.query) {
-                        const oldQuery = this.innerFlowHelper.query
-                        let query = function (opts) {
-                            opts.categories = categories
-                            return oldQuery(opts)
+                        //扩展query，传递自定义参数
+                        if (this.helper.oldQuery || this.helper.query) {
+                            const oldQuery = this.helper.oldQuery || this.helper.query
+                            let query = function (opts) {
+                                opts.categories = categories
+                                return oldQuery(opts)
+                            }
+                            wrappedFlowHelper = Object.assign({}, wrappedFlowHelper, { query, oldQuery })
                         }
-                        this.wrappedFlowHelper = Object.assign({}, this.wrappedFlowHelper, { query: query })
-                    }
-                    if (this.innerFlowHelper.create) {
-                        const oldCreate = this.innerFlowHelper.create
-                        let create = function (opts) {
-                            opts.categories = categories
-                            return oldCreate(opts)
+                        if (this.helper.oldCreate || this.helper.create) {
+                            const oldCreate = this.helper.oldCreate || this.helper.create
+                            let create = function (opts) {
+                                opts.categories = categories
+                                return oldCreate(opts)
+                            }
+                            wrappedFlowHelper = Object.assign({}, wrappedFlowHelper, { create, oldCreate })
                         }
-                        this.wrappedFlowHelper = Object.assign({}, this.wrappedFlowHelper, { create: create })
+                    } else {
+                        const query = this.helper.oldQuery || this.helper.query
+                        const create = this.helper.oldCreate || this.helper.create
+                        wrappedFlowHelper = Object.assign({}, wrappedFlowHelper, { create, query })
                     }
+                    this.$store.dispatch(`iota/${this.containerId}/${this.id}/updateHelper`, { [this.processDefinitionKey]: wrappedFlowHelper })
                 }
             }
         }
@@ -271,7 +269,11 @@ export default {
                     </a-card>
                 </splitpane>
                 <splitpane size='65' style={{ flex: 1 }}>
-                    {this.wrappedFlowHelper ? <ii-flowable flowId={this.flowId} flowHelper={this.wrappedFlowHelper} /> : null}
+                    {   // 只支持单流程的模式
+                        this.processDefinitionKey ?
+                            <ii-flowable id={this.id} containerId={this.containerId} processDefinitionKey={this.processDefinitionKey} />
+                            : null
+                    }
                 </splitpane>
                 {this.getNodeTreeRightClickMenu()}
             </splitpanes>

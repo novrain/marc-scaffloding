@@ -7,15 +7,31 @@ export default {
     },
     methods: {
         refetch() {
-            if (this.processDef) {
-                let url = '/fl/iota/query/process-instances'
-                let query = {
-                    processDefinitionKey: this.processDef.flowableInstance,
+            let url = '/fl/iota/query/process-instances'
+            let query = {
+                includeProcessVariables: true,
+                sort: 'startTime',
+                order: 'desc',
+                size: this.size,
+                start: (this.page - 1) * this.size,
+                variables: [
+                    {
+                        name: "initiatorId",
+                        value: this.user.id,
+                        operation: "equals",
+                        type: "string"
+                    }
+                ]
+            }
+            if (this.dataType === 'finished') {
+                url = '/fl/iota/query/historic-process-instances'
+                query = {
                     includeProcessVariables: true,
                     sort: 'startTime',
                     order: 'desc',
                     size: this.size,
                     start: (this.page - 1) * this.size,
+                    finished: true,
                     variables: [
                         {
                             name: "initiatorId",
@@ -25,34 +41,16 @@ export default {
                         }
                     ]
                 }
-                if (this.dataType === 'finished') {
-                    url = '/fl/iota/query/historic-process-instances'
-                    query = {
-                        processDefinitionKey: this.processDef.flowableInstance,
-                        includeProcessVariables: true,
-                        sort: 'startTime',
-                        order: 'desc',
-                        size: this.size,
-                        start: (this.page - 1) * this.size,
-                        finished: true,
-                        variables: [
-                            {
-                                name: "initiatorId",
-                                value: this.user.id,
-                                operation: "equals",
-                                type: "string"
-                            }
-                        ]
-                    }
-                }
+            }
+            if (this.processDefinitionKey) { // 单流程模式，必须提供flowHelper
+                query.processDefinitionKey = this.processDefinitionKey
                 if (this.flowHelper.query) { // 允许扩展查询条件
                     query = this.flowHelper.query({
                         basic: query,
                         conditions: {
                             fuzzyQuery: this.fuzzyQuery
                         },
-                        dataType: this.dataType,
-                        processDef: this.processDef
+                        dataType: this.dataType
                     })
                 }
                 this.$axios.silentPost(url, query, true)
@@ -63,6 +61,10 @@ export default {
                                 formData[v.name] = v.value
                             })
                             const { name, summary, desc } = this.flowHelper.simplified.call(this, { formData })
+                            let processDefinitionKey = this.processDefinitionKey
+                            if (!processDefinitionKey) {// 非单流程模式下，依赖flowable的processDefinitionId
+                                processDefinitionKey = process.processDefinitionId.split[':'][0]
+                            }
                             return {
                                 id: process.id,
                                 processInstanceId: process.id,
@@ -76,7 +78,8 @@ export default {
                                 endTime: process.endTime,
                                 finished: this.dataType === 'finished',
                                 deleteReason: process.deleteReason,
-                                processDefinitionId: process.processDefinitionId
+                                processDefinitionId: process.processDefinitionId,
+                                processDefinitionKey: processDefinitionKey
                             }
                         })
                         this.total = res.data.total

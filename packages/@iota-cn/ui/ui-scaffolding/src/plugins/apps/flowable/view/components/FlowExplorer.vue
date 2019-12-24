@@ -7,7 +7,7 @@ export default {
     components: {
         "ii-list-item": ListItem
     },
-    props: ['processDef', 'user', 'selectedFlow', 'flowHelper', 'active', 'layout'],
+    props: ['processDefinitionKey', 'processdef', 'flowHelper', 'user', 'selectedFlow', 'active', 'layout'],
     data() {
         return {
             flows: [],
@@ -25,17 +25,17 @@ export default {
         this.refetch()
     },
     watch: {
-        processDef: {
+        // processdef: {
+        //     handler() {
+        //         this.callRefetch(true)
+        //     }
+        // },
+        flowHelper: {
             handler() {
                 this.callRefetch(true)
             }
         },
         dataType: {
-            handler() {
-                this.callRefetch(true)
-            }
-        },
-        flowHelper: {
             handler() {
                 this.callRefetch(true)
             }

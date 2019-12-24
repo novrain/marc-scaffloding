@@ -136,6 +136,6 @@
         layout: 'table'
     }
     const helpers = window.$IOTA_FLOW_HELPERS || {}
-    helpers['project_of_year'] = helper
+    helpers['process_project_of_year'] = helper
     window.$IOTA_FLOW_HELPERS = helpers
 }())

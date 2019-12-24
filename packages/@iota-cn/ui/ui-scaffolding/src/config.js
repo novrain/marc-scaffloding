@@ -85,6 +85,7 @@ export const eventRecordPlugin = {
         containerId: COMPLEX_CONTAINER_ID
     }
 }
+
 export default {
     cookie: {
         prefix: 'ii-'

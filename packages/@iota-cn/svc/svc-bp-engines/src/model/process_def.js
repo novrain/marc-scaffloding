@@ -1,24 +1,33 @@
 export default function (dc) {
     let ProcessDef = dc.orm.define('ProcessDef',
         {
-            id: {
+            processDefinitionKey: { // 与 flowable processDefinitionKey 一致
                 type: dc.ORM.STRING,
                 primaryKey: true,
-                defaultValue: dc.ORM.UUIDV4,
                 allowNull: false
             },
             name: {
                 type: dc.ORM.STRING,
                 allowNull: false
             },
-            flowableInstance: { // 与flowable ACT_RE_PROCDEF.id 一致
+            desc: {
                 type: dc.ORM.STRING,
-                allowNull: false,
-                unique: true
+            },
+            category: {
+                type: dc.ORM.STRING,
             },
             formDef: {          // 存储 ncform 定义的 form，目前实现上，全程使用同一个form，根据流程的环节控制字段
                 type: dc.ORM.TEXT,
                 allowNull: false
+            },
+            helperScript: {
+                type: dc.ORM.STRING
+            },
+            widget: {
+                type: dc.ORM.STRING
+            },
+            component: {
+                type: dc.ORM.STRING
             },
             belongTo: {
                 type: dc.ORM.STRING,
@@ -26,7 +35,7 @@ export default function (dc) {
             }
         },
         {
-            tableName: 'ProcessDef'
+            tableName: 'ProcessDef', createdAt: false, updatedAt: false
         }
     );
     dc.models.ProcessDef = ProcessDef;
