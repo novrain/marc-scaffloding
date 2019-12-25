@@ -146,15 +146,7 @@ export default {
         },
         refetch() {
             const instanceId = this.flow.processInstanceId
-            // 如果没有定义，则查询一下，通过watch来触发刷新form
-            if (!this.processdef) {
-                this.$axios.silentGet(`/fl/process/${instanceId}`, true)
-                    .then((res) => {
-                        this.processdef = res.data
-                    })
-            } else {
-                this.updateForm()
-            }
+            this.updateForm()
             // 刷新flow的状态 通过Task去查询的
             if (this.flow.suspended === undefined && !this.flow.finished) {
                 this.$axios.silentGet(`/fl/process/runtime/process-instances/${instanceId}`, true)

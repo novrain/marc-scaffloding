@@ -39,6 +39,8 @@ export default {
                 }}>前往处理</a>
                 {
                     this.helper ? <assignee-explorer
+                        id={this.id}
+                        containerId={this.containerId}
                         processDefinitionKey={this.processDefinitionKey}
                         processdef={this.processdef}
                         flowHelper={this.helper}

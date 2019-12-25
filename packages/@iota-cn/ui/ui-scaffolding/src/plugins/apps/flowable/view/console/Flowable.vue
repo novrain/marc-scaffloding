@@ -112,6 +112,8 @@ export default {
                 if (this.helper && this.processdef) {
                     return <component
                         is={component}
+                        id={this.id}
+                        containerId={this.containerId}
                         processDefinitionKey={this.processDefinitionKey}
                         processdef={this.processdef}
                         flowHelper={this.helper}
@@ -126,6 +128,8 @@ export default {
             } else {
                 return <component
                     is={component}
+                    id={this.id}
+                    containerId={this.containerId}
                     layout={this.layout}
                     user={this.$user}
                     selectedFlow={this.selectedFlowsOfTab[key]}

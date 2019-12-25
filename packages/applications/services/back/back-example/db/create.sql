@@ -724,8 +724,6 @@ CREATE TABLE "ProcessDef" (
     "processDefinitionKey" character varying(255) NOT NULL,
     "formDef" text NOT NULL,
     "belongTo" character varying(255),
-    "createdAt" timestamp with time zone NOT NULL,
-    "updatedAt" timestamp with time zone NOT NULL,
     "desc" character varying(255),
     category character varying(255),
     "helperScript" character varying(255),
@@ -2673,6 +2671,7 @@ ALTER TABLE ONLY act_hi_tsk_log ALTER COLUMN id_ SET DEFAULT nextval('act_hi_tsk
 
 INSERT INTO "Dictionary" (id, name, key, "belongTo", "createdAt", "updatedAt") VALUES ('c563fee9-dc87-44c9-8778-0345b915615b', '学历', 'frame_education', NULL, '2019-12-05 18:34:09.809+08', '2019-12-05 18:34:09.809+08');
 INSERT INTO "Dictionary" (id, name, key, "belongTo", "createdAt", "updatedAt") VALUES ('b2d6d9a3-37cb-4ea8-9563-81f2d047547f', '政治面貌', 'frame_politics', NULL, '2019-12-18 16:00:07.237+08', '2019-12-18 16:00:07.237+08');
+INSERT INTO "Dictionary" (id, name, key, "belongTo", "createdAt", "updatedAt") VALUES ('55948ef3-26c6-4e51-9e80-e8d4cb00d66f', '流程分类', 'frame_flowable_categories', NULL, '2019-12-25 15:23:23.177+08', '2019-12-25 15:23:23.177+08');
 
 
 --
@@ -2696,26 +2695,21 @@ INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "d
 
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('0', '管理控制台', '/console', NULL, NULL, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', NULL);
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1', '总览', '/console/overview', '/console/overview', 'overview', '', '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4', '项目管理', '/console/applications/project', '', 'antv-layout', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:26:41+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4.1', '年度工程项目', '/console/applications/project_of_year', '/console/applications/project_of_year', 'antv-audit', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:27:31+08', '4');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4.2', '中小修项目', '/console/applications/minor_repair', '/console/applications/minor_repair', 'antv-audit', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:27:31+08', '4');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4.3', '月度例行任务', '/console/applications/monthly_routine_task', '/console/applications/monthly_routine_task', 'antv-audit', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:27:31+08', '4');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4.4', '临时任务', '/console/applications/temporary_task', '/console/applications/temporary_task', 'antv-audit', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:27:31+08', '4');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5', '党建管理', '/console.cpp', '', 'antv-hdd', NULL, '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1', '党建台账任务', '/console/applications/cpp_party_construction', '/console/applications/cpp_party_construction', 'antv-schedule', NULL, '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '5');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.2', '临时任务', '/console/applications/cpp_temporary_task', '/console/applications/cpp_temporary_task', 'antv-schedule', NULL, '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '5');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6', '权限管理', '/console/authorizations', NULL, 'authorization', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.1', '菜单与操作', '/console/authorizations/overview', '/console/authorizations/overview', 'menu', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.2', '角色', '/console/authorizations/roles', '/console/authorizations/roles', 'role', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.3', '组织', '/console/authorizations/organizations', '/console/authorizations/organizations', 'organization', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.4', '职位', '/console/authorizations/positions', '/console/authorizations/positions', 'user-position', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.5', '用户', '/console/authorizations/users', '/console/authorizations/users', 'subuser', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8', '系统管理', '/console/system', NULL, 'system', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1', '字典管理', '/console/system/dictionaries', '/console/system/dictionaries', 'dictionary', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '8');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.2', '系统配置', '/console/system/sysconfig', '/console/system/sysconfig', 'system', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '8');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.3', '操作记录', '/console/system/event_record', '/console/system/event_record', 'antv-profile', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '8');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('9', '账号管理', '/console/account', NULL, 'account-sec', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('9.1', '账号安全', '/console/account/profile', '/console/account/profile', 'profile', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '9');
+-- INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1500', '流程管理', '/console/flowables', '/console/flowables', 'calculate', NULL, '2019-12-25 10:06:43+08', '2019-12-25 10:06:48+08', '0');
+-- INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1500.1', '所有流程', '/console/flowables/portal', '/console/flowables/portal', 'antv-project', NULL, '2019-12-25 10:08:44+08', '2019-12-25 10:08:49+08', '1500');
+-- INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1500.2', '待我协同', '/console/flowables/instances', '/console/flowables/instances', 'antv-ordered-list', NULL, '2019-12-25 10:14:49+08', '2019-12-25 10:14:53+08', '1500');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1600', '权限管理', '/console/authorizations', NULL, 'authorization', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1600.1', '菜单与操作', '/console/authorizations/overview', '/console/authorizations/overview', 'menu', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1600');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1600.2', '角色', '/console/authorizations/roles', '/console/authorizations/roles', 'role', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1600');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1600.3', '组织', '/console/authorizations/organizations', '/console/authorizations/organizations', 'organization', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1600');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1600.4', '职位', '/console/authorizations/positions', '/console/authorizations/positions', 'user-position', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1600');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1600.5', '用户', '/console/authorizations/users', '/console/authorizations/users', 'subuser', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1600');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1800', '系统管理', '/console/system', NULL, 'system', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1800.1', '字典管理', '/console/system/dictionaries', '/console/system/dictionaries', 'dictionary', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1800');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1800.2', '系统配置', '/console/system/sysconfig', '/console/system/sysconfig', 'system', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1800');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1800.3', '操作记录', '/console/system/event_record', '/console/system/event_record', 'antv-profile', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1800');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1900', '账号管理', '/console/account', NULL, 'account-sec', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1900.1', '账号安全', '/console/account/profile', '/console/account/profile', 'profile', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1900');
 
 --
 -- Data for Name: MenuPreDepends; Type: TABLE DATA; Schema: public; Owner: postgres

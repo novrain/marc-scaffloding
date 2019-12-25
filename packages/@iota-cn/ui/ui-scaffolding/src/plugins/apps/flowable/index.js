@@ -5,8 +5,8 @@ import Flowable from './view/console/Flowable'
 import FlowableWidget from './view/overview/FlowableWidget'
 import FlowHelperMixin from './view/components/FlowHelperMixin'
 
-
 const entry = (opts, Vue) => {
+    window.$IOTA_FLOW_HELPERS = window.$IOTA_FLOW_HELPERS || {}
     // 应用可以包装
     Vue.component('ii-flowable', Flowable)
     Vue.component('ii-flowable-widget', FlowableWidget)
