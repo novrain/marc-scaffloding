@@ -61,18 +61,19 @@ export default {
         const showTopPagination = this.showPagination === 'top' || this.showPagination === 'both';
         let headHeight = this.headheight || TABLE_HEAD_HEIGHT;
         const space = headHeight;
+        const size = this.size || 'middle'
         const pagination = showBottomPagination || showTopPagination ? (
             <APagination onChange={this.onEvent('paginationChange')}
                 defaultCurrent={this.currentPage}
                 current={this.currentPage}
                 total={this.total}
+                size={size}
                 showSizeChanger={this.showSizeChanger}
                 pageSize={this.pageSize}
                 onShowSizeChange={this.onEvent('showSizeChange')}
                 pageSizeOptions={this.pageSizeOptions}
                 showTotal={total => this.$t('iota.frame.components.tablelayout.total', { total })} />
         ) : null;
-        const size = this.size || 'middle'
         let rowSelection = this.rowSelection
         if (rowSelection && rowSelection.type === 'radio') {
             rowSelection = Object.assign({
@@ -153,7 +154,7 @@ export default {
 
     &__controls {
         margin-top: 0;
-        margin-bottom: 10px;
+        margin-bottom: 0px;
         height: 30px;
         display: flex;
         justify-content: flex-start;

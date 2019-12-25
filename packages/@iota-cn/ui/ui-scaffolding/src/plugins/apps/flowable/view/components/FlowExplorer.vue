@@ -1,13 +1,11 @@
 <script>
 import { message } from 'ant-design-vue/es'
 import * as U from '../../util'
-import ListItem from './ExplorerListItem'
+import StoreReaderMixin from './StoreReaderMixin'
 
 export default {
-    components: {
-        "ii-list-item": ListItem
-    },
-    props: ['processDefinitionKey', 'processdef', 'flowHelper', 'user', 'selectedFlow', 'active', 'layout'],
+    mixins: [StoreReaderMixin],
+    props: ['id', 'containerId', 'processDefinitionKey', 'processdef', 'flowHelper', 'user', 'selectedFlow', 'active', 'layout'],
     data() {
         return {
             flows: [],
@@ -115,57 +113,37 @@ export default {
         },
         renderConrols() {
             return [
+                // 非单流程模式下显示刷新
+                !this.processDefinitionKey ?
+                    <a-button style={{ marginRight: '8px' }} key="refresh" size='small' onClick={this.refetch}>
+                        <a-icon type="reload" /> 刷新
+                    </a-button>
+                    :
+                    null,
                 this.history.disabled ?
                     null
-                    : <a-radio-group key='dataType'
+                    :
+                    <a-radio-group key='dataType'
+                        size='small'
                         buttonStyle='solid'
                         v-model={this.dataType}>
                         <a-radio-button value="running">未处理</a-radio-button>
                         <a-radio-button value="finished">已处理</a-radio-button>
                     </a-radio-group>
                 ,
-                <a-input-search key='search'
-                    placeholder={this.flowHelper.queryPlaceHolder}
-                    class="search"
-                    style={{ width: '280px' }}
-                    v-model={this.fuzzyQuery}
-                    onSearch={this.refetch}
-                    enterButton />
+                // 单流程模式下显示带参数检索
+                this.processDefinitionKey ?
+                    <a-input-search key='search'
+                        placeholder={this.flowHelper.queryPlaceHolder}
+                        class="search"
+                        size='small'
+                        style={{ width: '280px' }}
+                        v-model={this.fuzzyQuery}
+                        onSearch={this.refetch}
+                        enterButton />
+                    :
+                    null
             ]
-        },
-        renderList() {
-            return (<div class="ii-flow-list">
-                <div class="toolbar">
-                    {this.renderConrols()}
-                </div>
-                {
-                    this.flows.length <= 0 ?
-                        <div class="flows">
-                            <ii-empty class="empty" />
-                        </div>
-                        :
-                        <div class="flows">
-                            <div class="list">
-                                {this.flows.map((flow) => {
-                                    return <ii-list-item key='index'
-                                        onClick={this.onSelectFlow}
-                                        flow={flow}
-                                        user={this.user}
-                                        onCancel={this.onCancel}
-                                        onSuspend={this.onSuspend}
-                                        onActive={this.onActive}
-                                        selected={this.selectedFlow ? this.selectedFlow.processInstanceId === flow.processInstanceId : false}
-                                    />
-                                })}
-                            </div>
-                            <a-pagination size="small"
-                                class="pagination"
-                                total={this.total}
-                                v-model={this.page}
-                                showTotal={() => `共 ${this.total} 条`} />
-                        </div>
-                }
-            </div>)
         },
         onPageChange(page) {
             this.page = page
@@ -184,12 +162,54 @@ export default {
             }
         },
         renderTable() {
-            let columns = this.flowHelper.columns
-            if (typeof this.flowHelper.columns === 'function') {
-                columns = this.flowHelper.columns.call(this)
+            //通用的字段列表
+            let columns = [
+                {
+                    title: '流程',
+                    dataIndex: 'processName',
+                    key: 'processName',
+                    customRender: (text, flow) => {
+                        let processDefinitionKey = flow.processDefinitionKey
+                        let processdef = this.findProcessdef(processDefinitionKey)
+                        if (processdef) {
+                            return processdef.name
+                        }
+                    }
+                },
+                {
+                    title: '发起人',
+                    dataIndex: 'formData.initiatorName',
+                    key: 'formData.initiatorName',
+                    width: '15%'
+                },
+                {
+                    title: '发起时间',
+                    dataIndex: 'createTime',
+                    key: 'createTime',
+                    width: '15%'
+                },
+                {
+                    title: '截至时间',
+                    dataIndex: 'dueDate',
+                    key: 'dueDate',
+                    width: '15%'
+                }
+            ]
+            if (this.dataType === 'finished') {
+                columns.push(
+                    {
+                        title: '结束时间',
+                        dataIndex: 'endTime',
+                        key: 'endTime',
+                        width: '15%'
+                    }
+                )
             }
-            if (!columns) {
-                return this.renderList()
+            if (this.processDefinitionKey && this.flowHelper) { // 单一流程方式
+                columns = this.flowHelper.columns
+                if (typeof this.flowHelper.columns === 'function') {
+                    columns = this.flowHelper.columns.call(this)
+                }
             }
             if (this.showNode) { // 扩展类提供
                 const taskNodeColumn = {
@@ -299,7 +319,7 @@ export default {
         }
     },
     render() {
-        return this.layout === 'list' ? this.renderList() : this.renderTable()
+        return this.renderTable()
     }
 }
 </script>

@@ -54,25 +54,21 @@ export default {
             this.$axios.silentPost(url, query, true)
                 .then((res) => {
                     this.flows = res.data.data.map(flow => {
+                        // 非单流程模式下，依赖flowable的processDefinitionId
+                        let processDefinitionKey = this.processDefinitionKey || flow.processDefinitionId.split(':')[0]
+                        if (!this.findProcessdef(processDefinitionKey)) {
+                            return
+                        }
                         const formData = {}
                         U.decodeFormVariables(flow.variables).forEach(v => {
                             formData[v.name] = v.value
                         })
-                        const { name, summary, desc } = this.flowHelper.simplified.call(this, { formData })
-
-                        let processDefinitionKey = this.processDefinitionKey
-                        if (!processDefinitionKey) {// 非单流程模式下，依赖flowable的processDefinitionId
-                            processDefinitionKey = flow.processDefinitionId.split[':'][0]
-                        }
                         return {
                             id: flow.id,
                             processInstanceId: flow.id,
                             createTime: moment(flow.createTime).format('YYYY-MM-DD HH:mm:ss'),
-                            dueDate: flow.dueDate,
+                            dueDate: flow.dueDate ? moment(flow.dueDate).format('YYYY-MM-DD HH:mm:ss') : '',
                             suspended: flow.suspended,
-                            name,
-                            summary,
-                            desc,
                             formData,
                             finished: this.dataType === 'finished',
                             deleteReason: flow.deleteReason,
@@ -81,6 +77,9 @@ export default {
                         }
                     })
                     this.total = res.data.total
+                    this.flows = this.flows.filter(f => {
+                        return !!f
+                    })
                     if (this.flows.length > 0) {
                         this.$emit('select', this.flows[0])
                     } else {
