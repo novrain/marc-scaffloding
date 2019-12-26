@@ -64,6 +64,11 @@ export default {
     flex-direction: column;
     width: 100%;
     height: 100%;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+
+    &:hover {
+        box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
+    }
 
     a {
         color: $primary-color;

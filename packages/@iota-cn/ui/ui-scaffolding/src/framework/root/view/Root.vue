@@ -50,9 +50,9 @@ export default {
     watch: {
         $settings: {
             handler() {
-                // ÉèÖÃtitle
+                // è®¾ç½®title
                 document.title = this.$settings.title
-                // ÉèÖÃ favorite icon
+                // è®¾ç½® favorite icon
                 let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
                 link.rel = 'icon'
                 link.href = this.$settings.favicon || link.href
