@@ -46,6 +46,21 @@ export default {
         this[T.ROOT_CHANGE_THEME](localStorage.getItem('ii:theme') || 'default')
         // @TODO change locale
     },
+
+    watch: {
+        $settings: {
+            handler() {
+                // …Ë÷√title
+                document.title = this.$settings.title
+                // …Ë÷√ favorite icon
+                let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+                link.rel = 'icon'
+                link.href = this.$settings.favicon || link.href
+                document.getElementsByTagName('head')[0].appendChild(link);
+            },
+            immediately: true,
+        }
+    }
 }
 </script>
 

@@ -2922,6 +2922,8 @@ INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defa
 INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('disableProcessCommentEdit', '禁止编辑/删除流程跟踪信息', 'false', 'boolean', '{"icon":"protocol"}', '选中后，流程跟踪信息将不可删除或编辑', NULL, 150, NULL);
 INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('dsiableUsernameEdit', '禁止编辑用户名', 'false', 'boolean', '{"icon":"antv-user"}', '选中后，用户名将不可修改', NULL, 160, NULL);
 INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('title', '系统名称', '管理控制台', 'string', '{"icon":"application"}', NULL, '管理控制台', 100, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('favicon', '系统Favicon', NULL, 'image', '{"icon":"device","width":"38","height":"38","color":"transport","radius":"0"}', '最佳尺寸100x100', '/favicon.png', 90, NULL);
+
 -- Data for Name: User; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
