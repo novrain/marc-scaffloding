@@ -1,6 +1,8 @@
 <script>
 
-const TABLE_HEAD_HEIGHT = 56;
+const TABLE_DEFAULT_HEIGHT = 80
+const TABLE_HEAD_HEIGHT = 40
+const TABLE_BOTTOM_HEIGHT = 20
 // const TABLE_CONTROL_HEIGHT = 40;
 export default {
     name: 'IiTableLayout',
@@ -60,7 +62,10 @@ export default {
         const showBottomPagination = this.showPagination === 'bottom' || this.showPagination === 'both';
         const showTopPagination = this.showPagination === 'top' || this.showPagination === 'both';
         let headHeight = this.headheight || TABLE_HEAD_HEIGHT;
-        const space = headHeight;
+        let bottomHeight = this.bottomHeight || TABLE_BOTTOM_HEIGHT;
+        var space = TABLE_DEFAULT_HEIGHT
+        space += showTopPagination ? headHeight : 0
+        space += showBottomPagination ? bottomHeight : 0
         const size = this.size || 'middle'
         const pagination = showBottomPagination || showTopPagination ? (
             <APagination onChange={this.onEvent('paginationChange')}
@@ -92,9 +97,6 @@ export default {
                             class='layout__controls__item layout__controls__selected'>
                             {this.selected ? this.$t('iota.frame.components.tablelayout.selected', { count: this.selected }) : ''}
                         </span>
-                        <span class={'layout__controls__pagination'}>
-                            {showTopPagination ? pagination : null}
-                        </span>
                     </div> : null
                 }
                 {
@@ -106,6 +108,13 @@ export default {
                 }
                 <div class={'layout__table'} ref='_tableContainer'>
                     <resize-observer onNotify={this.onResize} />
+                    {
+                        showTopPagination ? <div class='layout__controls layout__controls__top'>
+                            <span class={'layout__controls__pagination'}>
+                                {pagination}
+                            </span>
+                        </div> : null
+                    }
                     <ATable rowSelection={rowSelection}
                         columns={this.columns}
                         scroll={{ y: this.tabScroll.y - space }}
@@ -168,6 +177,10 @@ export default {
             display: inline-block;
             position: absolute;
             right: 12px;
+        }
+
+        &__top {
+            margin-bottom: 10px;
         }
 
         &__bottom {
