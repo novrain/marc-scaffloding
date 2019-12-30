@@ -91,7 +91,7 @@ export default {
         return (
             <div class='layout'>
                 {
-                    this.controls ? <div class={'layout__controls'}>
+                    this.controls || showTopPagination ? <div class={'layout__controls'}>
                         {this.controls}
                         <span
                             class='layout__controls__item layout__controls__selected'>
@@ -117,7 +117,7 @@ export default {
                     }
                     <ATable rowSelection={rowSelection}
                         columns={this.columns}
-                        scroll={{ y: this.tabScroll.y - space }}
+                        scroll={{ y: this.tabScroll.y - space, x: true }}
                         dataSource={this.rows}
                         expandedRowRender={this.expandedRowRender}
                         onExpand={this.onEvent('expand')}
@@ -204,6 +204,10 @@ export default {
         // margin-bottom: 10px;
         flex: 1;
         overflow: hidden;
+
+        /deep/ .ant-table td {
+            white-space: nowrap;
+        }
     }
 }
 </style>

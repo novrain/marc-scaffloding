@@ -197,23 +197,22 @@ export default {
                         display: "flex",
                         flexDirection: "column"
                     }}>
-                    {this.$p("") ? (
-                        <AButton
-                            style={{ marginRight: "8px" }}
-                            slot="extra"
-                            size="small"
-                            key="add"
-                            onClick={this.reloadRecords}>
-                            <AIcon type="reload" />
-                            刷新
-                        </AButton>
-                    ) : null}
                     <IiTableLayout
                         size="small"
                         headheight={68}
                         total={this.total}
                         pageSize={this.limit}
                         currentPage={this.page}
+                        controls={[
+                            <AButton
+                                style={{ marginRight: "8px" }}
+                                slot="extra"
+                                size="small"
+                                key="add"
+                                onClick={this.reloadRecords}>
+                                <AIcon type="reload" />
+                                刷新
+                        </AButton>]}
                         showSizeChanger={true}
                         onShowSizeChange={this.onLimitChange}
                         onPaginationChange={this.onPageChange}

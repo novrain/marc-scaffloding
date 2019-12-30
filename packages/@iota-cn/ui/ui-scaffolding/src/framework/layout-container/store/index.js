@@ -38,6 +38,11 @@ export default (opts) => {
                         items: []
                     }
                 },
+                navigation: {
+                    bar: {
+                        items: []
+                    },
+                },
                 left: {
                     collapsed: false,
                     top: {
