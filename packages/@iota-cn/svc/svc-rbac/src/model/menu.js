@@ -24,6 +24,9 @@ export default function (dc) {
             },
             desc: {
                 type: dc.ORM.STRING
+            },
+            affix: {
+                type: dc.ORM.STRING
             }
         },
         {

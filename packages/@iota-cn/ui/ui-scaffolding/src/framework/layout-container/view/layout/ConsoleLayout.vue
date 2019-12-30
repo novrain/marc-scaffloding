@@ -38,6 +38,15 @@
                     </component>
                 </div>
             </div>
+            <!-- 标签导航 -->
+            <div class="navigation">
+                <div class="n-toolbar">
+                    <component v-for="(item, i) in layout.navigation.bar.items"
+                        :key="i"
+                        :is="item.component"
+                        v-bind="item.props" />
+                </div>
+            </div>
             <div class="ii-background-color content">
                 <transition>
                     <router-view />
@@ -165,6 +174,10 @@ export default {
                 display: flex;
                 flex-direction: row;
             }
+        }
+
+        .navigation{
+            padding: 8px 14px;
         }
 
         .content {
