@@ -97,6 +97,9 @@ export default {
                             class='layout__controls__item layout__controls__selected'>
                             {this.selected ? this.$t('iota.frame.components.tablelayout.selected', { count: this.selected }) : ''}
                         </span>
+                        <span class={'layout__controls__pagination'}>
+                            {showTopPagination ? pagination : null}
+                        </span>
                     </div> : null
                 }
                 {
@@ -108,13 +111,6 @@ export default {
                 }
                 <div class={'layout__table'} ref='_tableContainer'>
                     <resize-observer onNotify={this.onResize} />
-                    {
-                        showTopPagination ? <div class='layout__controls layout__controls__top'>
-                            <span class={'layout__controls__pagination'}>
-                                {pagination}
-                            </span>
-                        </div> : null
-                    }
                     <ATable rowSelection={rowSelection}
                         columns={this.columns}
                         scroll={{ y: this.tabScroll.y - space, x: true }}
