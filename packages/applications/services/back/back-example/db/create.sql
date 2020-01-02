@@ -596,7 +596,8 @@ CREATE TABLE "Menu" (
     "desc" character varying(255),
     "createdAt" timestamp with time zone NOT NULL,
     "updatedAt" timestamp with time zone NOT NULL,
-    "parentId" character varying(255)
+    "parentId" character varying(255),
+    "affix" boolean DEFAULT false
 );
 
 
@@ -2694,7 +2695,7 @@ INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "d
 --
 
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('0', '管理控制台', '/console', NULL, NULL, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', NULL);
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1', '总览', '/console/overview', '/console/overview', 'overview', '', '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '0');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId", "affix") VALUES ('1', '总览', '/console/overview', '/console/overview', 'overview', '', '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '0', true);
 -- INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1500', '流程管理', '/console/flowables', '/console/flowables', 'calculate', NULL, '2019-12-25 10:06:43+08', '2019-12-25 10:06:48+08', '0');
 -- INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1500.1', '所有流程', '/console/flowables/portal', '/console/flowables/portal', 'antv-project', NULL, '2019-12-25 10:08:44+08', '2019-12-25 10:08:49+08', '1500');
 -- INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1500.2', '待我协同', '/console/flowables/instances', '/console/flowables/instances', 'antv-ordered-list', NULL, '2019-12-25 10:14:49+08', '2019-12-25 10:14:53+08', '1500');

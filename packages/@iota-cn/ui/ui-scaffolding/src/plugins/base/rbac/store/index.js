@@ -32,7 +32,7 @@ export default (opts) => {
                                     },
                                     navigation: {
                                         bar: {
-                                            items: [{ component: 'ii-tagbar' }]
+                                            items: [{ component: 'ii-tagbar', props: { id, containerId } }]
                                         },
                                     },
                                 }

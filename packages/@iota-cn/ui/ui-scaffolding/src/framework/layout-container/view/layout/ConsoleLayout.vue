@@ -177,7 +177,7 @@ export default {
         }
 
         .navigation{
-            padding: 8px 14px;
+            padding: 8px 10px;
         }
 
         .content {
