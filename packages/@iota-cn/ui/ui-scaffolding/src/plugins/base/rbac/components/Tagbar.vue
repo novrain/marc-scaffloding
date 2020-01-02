@@ -21,6 +21,7 @@
 
 <script>
 export default {
+    props: ['id', 'containerId'],
     data() {
         const tags = [{
             id: "",
@@ -110,7 +111,7 @@ export default {
     },
     computed: {
         $pathMap() {
-            const state = this.$store.state.iota['console'].rbac.menus
+            const state = this.$store.state.iota[this.containerId || 'console'][this.id || 'rbac'].menus
             const pathMap = state.pathMap
             return pathMap
         }
@@ -118,7 +119,7 @@ export default {
 }
 </script>
 
-<style  lang="stylus" scoped>
+<style lang="stylus" scoped>
 .tags-view-container {
     .tags-view-wrapper {
         .tags-view-item {
@@ -128,8 +129,7 @@ export default {
             height: 28px;
             line-height: 28px;
             padding: 0 8px;
-            margin-left: 5px;
-            margin-top: 4px;
+            margin-right: 5px;
 
             .el-icon-close {
                 width: 20px;
