@@ -85,7 +85,7 @@ export default {
                     } else {
                         this.$emit('select', undefined)
                     }
-                }).catch(() => { })
+                }).catch((err) => { console.log(err) })
         }
     }
 }
