@@ -180,63 +180,40 @@ export default {
                 }
             ];
             return (
-                <a-card
-                    title={
-                        <div class="ii-card-head">
-                            <IiIcon type="list" />
-                            <span>记录列表</span>
-                        </div>
-                    }
-                    bordered={false}
-                    bodyStyle={{ padding: "2px", flex: 1, height: 0 }}
-                    style={{
-                        height: "100%",
-                        width: "100%",
-                        overflow: "hidden",
-                        backgroundColor: "white",
-                        display: "flex",
-                        flexDirection: "column"
-                    }}>
-                    <IiTableLayout
-                        size="small"
-                        headheight={68}
-                        total={this.total}
-                        pageSize={this.limit}
-                        currentPage={this.page}
-                        controls={[
-                            <AButton
-                                style={{ marginRight: "8px" }}
-                                slot="extra"
-                                size="small"
-                                key="add"
-                                onClick={this.reloadRecords}>
-                                <AIcon type="reload" />
-                                刷新
+                <IiTableLayout
+                    size="small"
+                    headheight={68}
+                    total={this.total}
+                    pageSize={this.limit}
+                    currentPage={this.page}
+                    controls={[
+                        <AButton
+                            style={{ marginRight: "8px" }}
+                            slot="extra"
+                            size="small"
+                            key="add"
+                            onClick={this.reloadRecords}>
+                            <AIcon type="reload" />
+                            刷新
                         </AButton>]}
-                        showSizeChanger={true}
-                        onShowSizeChange={this.onLimitChange}
-                        onPaginationChange={this.onPageChange}
-                        pageSizeOptions={pageSizeOptions}
-                        onRowClick={this.onDictionaryClick}
-                        class={"table"}
-                        showPagination="both"
-                        columns={columns}
-                        rows={this.items}
-                    ></IiTableLayout>
-                </a-card>
+                    showSizeChanger={true}
+                    onShowSizeChange={this.onLimitChange}
+                    onPaginationChange={this.onPageChange}
+                    pageSizeOptions={pageSizeOptions}
+                    onRowClick={this.onDictionaryClick}
+                    class={"table"}
+                    showPagination="both"
+                    columns={columns}
+                    rows={this.items} />
             );
         }
     },
     render() {
         return (
             <div class="ii-event-record">
-                <splitpanes class="default-theme">
-                    <splitpane size="65" style={{ flex: 1 }}>
-                        {this.renderItems()}
-                    </splitpane>
-                </splitpanes>
-            </div>
-        );
+                {this.renderItems()}
+            </div >
+        )
     }
 };
 </script>
