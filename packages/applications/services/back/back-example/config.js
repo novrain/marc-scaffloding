@@ -131,7 +131,7 @@ function createConfig(args) {
         opts: {
             flowable: {
                 routes: ['/fl/process/*', '/fl/content/*', '/fl/iota/*'],
-                target: 'http://49.4.2.82:8888'
+                target: 'http://localhost:8888'
             }
         }
     }
