@@ -23,7 +23,8 @@ export default {
         'rowClassName',
         'rows',
         'columns',
-        'size'
+        'size',
+        'rowKey'
     ],
     data() {
         return {
@@ -112,6 +113,7 @@ export default {
                 <div class={'layout__table'} ref='_tableContainer'>
                     <resize-observer onNotify={this.onResize} />
                     <ATable rowSelection={rowSelection}
+                        rowKey={this.rowKey || 'key'}
                         columns={this.columns}
                         scroll={{ y: this.tabScroll.y - space, x: true }}
                         dataSource={this.rows}
