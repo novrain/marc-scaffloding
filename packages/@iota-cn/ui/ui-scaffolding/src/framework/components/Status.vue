@@ -1,7 +1,8 @@
 
 <script>
 export default {
-    props: ['value', 'text'],
+    name: 'IiStatus',
+    props: ['value', 'text', 'revert'],
     methods: {
         getValue() {
             return this.value;
@@ -9,7 +10,8 @@ export default {
     },
 
     render() {
-        let icon = this.value ? (<AIcon type="check-circle" style={{ color: '#32CD32' }} />) : (
+        let value = this.revert ? !this.value : this.value
+        let icon = value ? (<AIcon type="check-circle" style={{ color: '#32CD32' }} />) : (
             <AIcon type="close-circle" style={{ color: '#DC143C' }} />);
         return this.text ? <span>{icon} {this.text}</span> : icon;
     }

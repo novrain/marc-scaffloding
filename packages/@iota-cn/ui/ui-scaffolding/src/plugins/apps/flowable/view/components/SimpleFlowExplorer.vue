@@ -1,9 +1,11 @@
 <script>
 import { message } from 'ant-design-vue/es'
 import * as U from '../../util'
+import StoreReaderMixin from './StoreReaderMixin'
 
 export default {
-    props: ['processDef', 'user', 'selectedFlow', 'flowHelper', 'active'],
+    mixins: [StoreReaderMixin],
+    props: ['id', 'containerId', 'processDefinitionKey', 'processdef', 'user', 'selectedFlow', 'flowHelper', 'active'],
     data() {
         return {
             flows: [],
@@ -17,7 +19,7 @@ export default {
         this.refetch()
     },
     watch: {
-        processDef: {
+        processdef: {
             handler() {
                 this.callRefetch(true)
             }

@@ -58,6 +58,9 @@ function createConfig(args) {
     const cppEntry = require('@iota-app/svc-communist-party-process').entry
     const cppModel = require('@iota-app/svc-communist-party-process').models
 
+    const sysconfigEntry = require('@iota-cn/svc-sysconfig').entry
+    const sysconfigModel = require('@iota-cn/svc-sysconfig').models
+
     const user = { entry: userEntry, opts: {} }
     const authentication = {
         entry: authenticationEntry,
@@ -72,6 +75,7 @@ function createConfig(args) {
                 { p: '/oauth2/third_parties/wechat', o: 'GET' },
                 { p: '/oauth2/third_parties/wechat/signin', o: 'POST' },
                 { p: '/oauth2/third_parties/wechat/signup', o: 'POST' },
+                { p: '/sysconfig', o: 'GET' },
             ],
             remMaxAge: 30,
             redirect: {
@@ -137,9 +141,15 @@ function createConfig(args) {
         opts: {}
     }
 
+    const sysconfig = {
+        entry: sysconfigEntry,
+        opts: {}
+    }
     //entry
     config.mws.push(user)
     config.mws.push(authentication)
+    //sysconfig 特殊，需要放置在这里，避开RBAC的鉴权 @Todo 需要优化为无顺序性
+    config.mws.push(sysconfig)
     config.mws.push(rbac)
     config.mws.push(eventRecord)
     config.mws.push(oauth2)
@@ -154,7 +164,6 @@ function createConfig(args) {
     ]
     config.mws.push(bpEngines)
     config.mws.push(cpp)
-
     //models
     config.dc.models.push(userModel)
     config.dc.models.push(eventRecordModel)
@@ -164,6 +173,7 @@ function createConfig(args) {
     config.dc.models.push(dictionariesModel)
     config.dc.models.push(bpEnginesModel)
     config.dc.models.push(cppModel)
+    config.dc.models.push(sysconfigModel)
 
     return config
 }

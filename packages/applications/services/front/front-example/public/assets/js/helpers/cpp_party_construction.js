@@ -186,6 +186,6 @@
         layout: 'table'
     }
     const helpers = window.$IOTA_FLOW_HELPERS || {}
-    helpers['cpp_party_construction'] = helper
+    helpers['process_cpp_party'] = helper
     window.$IOTA_FLOW_HELPERS = helpers
 }())

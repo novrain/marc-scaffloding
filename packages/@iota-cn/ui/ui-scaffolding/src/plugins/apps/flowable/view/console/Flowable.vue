@@ -15,7 +15,9 @@ export default {
         'flow': Flow
     },
     mixins: [FlowHelperMixin],
-    props: ['flowId'],
+    props: [
+        'processDefinitionKey'
+    ],
     data() {
         // 这里无法使用全局的计算属性
         const state = this.$store.state.iota.global.authentication
@@ -25,7 +27,6 @@ export default {
             initiatorUser: U.idOfUser(state.user)
         }
         return {
-            processDef: undefined,
             activeTab: 'assignee',
             selectedFlowsOfTab: {},
             // new process
@@ -37,44 +38,20 @@ export default {
         }
     },
     mounted() {
-        this.$axios.silentGet(`/v1/api/processdefs/${this.flowId}`, true)
-            .then((res) => {
-                this.processDef = res.data
-            }).catch(() => { })
     },
     computed: {
         selectedFlow() {
             return this.selectedFlowsOfTab[this.activeTab]
         },
-        formDef() {
-            if (this.processDef) {
-                let def = JSON.parse(this.processDef.formDef)
-                def.globalConfig = {
-                    style: {
-                        formCls: 'ii-nc-form'
-                    },
-                    constants: {
-                        initiatorId: this.$user.id,
-                        initiatorName: U.nameOfUser(this.$user),
-                        currentTaskId: 'start'
-                    }
-                }
-                return def
-            } else {
-                return undefined
-            }
-        },
-        formWidth() {
-            const formUi = this.processDef ? (this.processDef.formDef.ui || { width: 700 }) : { width: 700 }
-            return formUi.width || 700
+        layout() {
+            return this.helper ? this.helper.layout || 'table' : 'table'
         }
     },
     methods: {
         onSelectFlow(flow) {
             this.selectedFlowsOfTab = Object.assign({}, this.selectedFlowsOfTab, { [this.activeTab]: flow })
         },
-        onSwitchTabs() {
-        },
+        // 单流程模式的新建
         onAddItem() {
             this.showAdd = true
         },
@@ -95,13 +72,13 @@ export default {
                         })
                     })
                     let process = {
-                        processDefinitionKey: this.processDef.flowableInstance,
+                        processDefinitionKey: this.processDefinitionKey,
                         returnVariables: true,
                         variables: variables
                     }
                     // 允许增加参数
-                    if (this.innerFlowHelper && this.innerFlowHelper.create) {
-                        process = this.innerFlowHelper.create({ processDef: this.processDef, process: process })
+                    if (this.helper && this.helper.create) {
+                        process = this.helper.create({ processdef: this.processdef, process: process })
                     }
                     process.variables = U.encodeFormVariables(process.variables)
                     this.$axios.silentPost(`/fl/process/runtime/process-instances`, process, true)
@@ -130,71 +107,85 @@ export default {
                 task: task
             })
         },
+        renderTab(component, key) {
+            if (this.processDefinitionKey) {
+                if (this.helper && this.processdef) {
+                    return <component
+                        is={component}
+                        id={this.id}
+                        containerId={this.containerId}
+                        processDefinitionKey={this.processDefinitionKey}
+                        processdef={this.processdef}
+                        flowHelper={this.helper}
+                        layout={this.layout}
+                        user={this.$user}
+                        selectedFlow={this.selectedFlowsOfTab[key]}
+                        active={this.activeTab === key}
+                        onSelect={this.onSelectFlow} />
+                } else {
+                    return null
+                }
+            } else {
+                return <component
+                    is={component}
+                    id={this.id}
+                    containerId={this.containerId}
+                    layout={this.layout}
+                    user={this.$user}
+                    selectedFlow={this.selectedFlowsOfTab[key]}
+                    active={this.activeTab === key}
+                    onSelect={this.onSelectFlow} />
+            }
+        },
         renderFlows() {
-            return this.innerFlowHelper ?
-                <div class={this.innerFlowHelper.layout || 'table'}>
-                    <a-modal title="新建任务"
-                        bodyStyle={{ maxHeight: "80%", padding: "10px" }}
-                        width={this.formWidth}
-                        visible={this.showAdd}
-                        onOk={this.onAddItemOk}
-                        onCancel={this.onAddItemCancel}>
-                        {
-                            this.formDef ?
-                                <ncform formName='_addItemForm'
-                                    formSchema={this.formDef}
-                                    v-model={this.processVariables} />
-                                :
-                                null
-                        }
-                    </a-modal>
-                    {
-                        this.$p('/fl/process/runtime/process-instances:POST') ?
-                            <a-button size='small'
-                                disabled={!this.formDef}
-                                class="new-flow"
-                                onClick={this.onAddItem}
-                                icon='plus'>新建</a-button>
-                            : null
-                    }
-                    <a-tabs defaultActiveKey="assignee"
-                        v-model={this.activeTab}
-                        size="small"
-                        class="flowtabs">
-                        <a-tab-pane tab="待我处理"
-                            class="tabpanel"
-                            key="assignee">
-                            <assignee-explorer processDef={this.processDef}
-                                layout={this.layout}
-                                user={this.$user}
-                                flowHelper={this.innerFlowHelper}
-                                selectedFlow={this.selectedFlowsOfTab.assignee}
-                                active={this.activeTab === "assignee"}
-                                onSelect={this.onSelectFlow} />
-                        </a-tab-pane>
-                        <a-tab-pane tab="由我发起"
-                            key="startBySelf">
-                            <startby-explorer processDef={this.processDef}
-                                layout={this.layout}
-                                user={this.$user}
-                                flowHelper={this.innerFlowHelper}
-                                selectedFlow={this.selectedFlowsOfTab.startBySelf}
-                                active={this.activeTab === "startBySelf"}
-                                onSelect={this.onSelectFlow} />
-                        </a-tab-pane>
-                        <a-tab-pane tab="与我有关"
-                            key="involved">
-                            <involved-explorer processDef={this.processDef}
-                                layout={this.layout}
-                                user={this.$user}
-                                flowHelper={this.innerFlowHelper}
-                                selectedFlow={this.selectedFlowsOfTab.involved}
-                                active={this.activeTab === "involved"}
-                                onSelect={this.onSelectFlow} />
-                        </a-tab-pane>
-                    </a-tabs>
-                </div>
-                : null
+            return <div class={this.layout}>
+                {
+                    this.processDefinitionKey ? // 单流程模式
+                        <a-modal title="新建任务"
+                            bodyStyle={{ maxHeight: "80%", padding: "10px" }}
+                            width={this.formWidth}
+                            visible={this.showAdd}
+                            onOk={this.onAddItemOk}
+                            onCancel={this.onAddItemCancel}>
+                            {
+                                this.formDef ?
+                                    <ncform formName='_addItemForm'
+                                        formSchema={this.formDef}
+                                        v-model={this.processVariables} />
+                                    :
+                                    null
+                            }
+                        </a-modal>
+                        : null
+                }
+                {
+                    this.processDefinitionKey && this.$p('/fl/process/runtime/process-instances:POST') ? // 单流程模式
+                        <a-button size='small'
+                            disabled={!this.formDef}
+                            class="new-flow"
+                            onClick={this.onAddItem}
+                            icon='plus'>新建</a-button>
+                        : null
+                }
+                <a-tabs defaultActiveKey="assignee"
+                    v-model={this.activeTab}
+                    size="small"
+                    class="flowtabs">
+                    <a-tab-pane tab="待我处理"
+                        class="tabpanel"
+                        key="assignee">
+                        {this.renderTab('assignee-explorer', 'assignee')}
+                    </a-tab-pane>
+                    <a-tab-pane tab="由我发起"
+                        key="startBySelf">
+                        {this.renderTab('startby-explorer', 'startBySelf')}
+                    </a-tab-pane>
+                    <a-tab-pane tab="与我有关"
+                        key="involved">
+                        {this.renderTab('involved-explorer', 'involved')}
+                    </a-tab-pane>
+                </a-tabs>
+            </div>
         },
         renderSigleFlow() {
             return (
@@ -204,7 +195,7 @@ export default {
                             <flow
                                 flow={this.selectedFlow}
                                 user={this.$user}
-                                processDef={this.processDef}
+                                processdef={this.findProcessdef(this.selectedFlow.processDefinitionKey)}
                                 onSubmit={this.onSubmit} />
                             :
                             <ii-empty />

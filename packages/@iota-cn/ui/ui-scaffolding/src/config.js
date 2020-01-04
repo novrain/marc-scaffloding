@@ -8,6 +8,12 @@ export const rootContainerPlugin = {
     plugin: require('./framework/root'), opts: {}
 }
 
+export const sysconfigPlugin = {
+    plugin: require('./plugins/base/sysconfig'), opts: {
+        containerId: COMPLEX_CONTAINER_ID
+    }
+}
+
 export const layoutContainerPlugin = {
     plugin: require('./framework/layout-container'), opts: {
         simple: { // 简单页面，用于包裹简单的登录、404等页面 
@@ -73,16 +79,25 @@ export const dictionaryPlugin = {
     }
 }
 
+export const eventRecordPlugin = {
+    plugin: require('./plugins/apps/event-record'), opts: {
+        id: 'eventRecord', // 实例id
+        containerId: COMPLEX_CONTAINER_ID
+    }
+}
+
 export default {
     cookie: {
         prefix: 'ii-'
     },
     plugins: [
         rootContainerPlugin,
+        sysconfigPlugin,
         layoutContainerPlugin,
         generalPagePlugin,
         rbacPlugin,
         authenticationPlugin,
-        dictionaryPlugin
+        dictionaryPlugin,
+        eventRecordPlugin
     ]
 }

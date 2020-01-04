@@ -23,15 +23,20 @@ export default {
         }
     },
 
-    mounted() {
+    created() {
         const initActions = this.$store.state.iota[this.id || 'container'].initActions
         initActions.forEach(action => {
             if (typeof action === 'string') {
-                this.$store.dispatch(action)
+                this.$store.dispatch(action, { vm: this })
             } else if (typeof action === 'object' && typeof action.action === 'string') {
+                action.params = action.params || {}
+                action.params.vm = this
                 this.$store.dispatch(action.action, action.params)
             }
         })
+    },
+
+    mounted() {
     },
 
     computed: {

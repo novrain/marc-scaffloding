@@ -29,7 +29,12 @@ export default (opts) => {
                                         right: {
                                             items: [{ component: 'ii-user-profile-control' }]
                                         }
-                                    }
+                                    },
+                                    navigation: {
+                                        bar: {
+                                            items: [{ component: 'ii-tagbar', props: { id, containerId } }]
+                                        },
+                                    },
                                 }
                             }
                         },

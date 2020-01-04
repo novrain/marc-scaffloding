@@ -28,6 +28,15 @@ const LoadScript = {
                 resolve()
             })
         }
+
+        // 暂存，暂无使用场景
+        if (window) {
+            if (!window.iota) {
+                window.iota = {}
+            }
+            window.iota.loadScript = Vue.loadScript
+            window.iota.unloadScript = Vue.unloadScript
+        }
     }
 }
 

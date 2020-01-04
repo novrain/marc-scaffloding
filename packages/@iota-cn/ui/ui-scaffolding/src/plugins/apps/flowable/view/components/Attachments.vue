@@ -208,7 +208,9 @@ export default {
                             v-model={this.showPreview}
                             closable={true}
                             footer={null} >
-                            <embed width='100%' src={this.previewDoc.link} type={this.previewDoc.mimeType} class='ii-preview-embed' />
+                            <object>
+                                <embed src={this.previewDoc.link} type={this.previewDoc.mimeType} class='ii-preview-embed' />
+                            </object>
                         </a-modal>
                         : null
                 }
@@ -228,11 +230,14 @@ export default {
         .ant-modal-body {
             height: 100%;
             overflow-y: auto;
+            text-align: center;
         }
     }
 }
 
 .ii-preview-embed {
+    width: 96%;
+    min-height: 100%;
     margin: 0 auto;
 }
 </style>

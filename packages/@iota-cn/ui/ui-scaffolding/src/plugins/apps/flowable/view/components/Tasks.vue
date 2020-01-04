@@ -2,10 +2,14 @@
 <script>
 import { message } from 'ant-design-vue/es'
 import moment from 'moment'
+import BpmnViewer from './BpmnViewer'
 import * as U from '../../util'
 
 export default {
-    props: ['user', 'flow', 'active', 'processDef'],
+    props: ['user', 'flow', 'active', 'processdef'],
+    components: {
+        'ii-bpmn-viewer': BpmnViewer
+    },
     data() {
         return {
             running: {
@@ -277,7 +281,7 @@ export default {
                     <h6>流程图</h6>
                     {
                         this.bpmnDef ?
-                            <ii-bpmn defineXML={this.bpmnDef} ref='_bpmn' />
+                            <ii-bpmn-viewer bpmnXML={this.bpmnDef} ref='_bpmn' />
                             :
                             <ii-empty />
                     }

@@ -23,7 +23,7 @@
             <iota-avatar @avatar='getFile'
                 class='avatar-viewer'
                 :width='132'
-                :height='200'
+                :height='186'
                 :radius='0'
                 title="上传个人照片"
                 previewHint="图像预览"
@@ -34,7 +34,7 @@
                 <iota-avatar-viewer :img='photo'
                     slot="controller"
                     :width='132'
-                    :height='200'
+                    :height='186'
                     :radius='0'
                     showUpload />
             </iota-avatar>

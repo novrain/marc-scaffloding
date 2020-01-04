@@ -1,6 +1,8 @@
 <script>
 
-const TABLE_HEAD_HEIGHT = 56;
+const TABLE_DEFAULT_HEIGHT = 80
+const TABLE_HEAD_HEIGHT = 40
+const TABLE_BOTTOM_HEIGHT = 20
 // const TABLE_CONTROL_HEIGHT = 40;
 export default {
     name: 'IiTableLayout',
@@ -21,7 +23,8 @@ export default {
         'rowClassName',
         'rows',
         'columns',
-        'size'
+        'size',
+        'rowKey'
     ],
     data() {
         return {
@@ -60,19 +63,23 @@ export default {
         const showBottomPagination = this.showPagination === 'bottom' || this.showPagination === 'both';
         const showTopPagination = this.showPagination === 'top' || this.showPagination === 'both';
         let headHeight = this.headheight || TABLE_HEAD_HEIGHT;
-        const space = headHeight;
+        let bottomHeight = this.bottomHeight || TABLE_BOTTOM_HEIGHT;
+        var space = TABLE_DEFAULT_HEIGHT
+        space += showTopPagination ? headHeight : 0
+        space += showBottomPagination ? bottomHeight : 0
+        const size = this.size || 'middle'
         const pagination = showBottomPagination || showTopPagination ? (
             <APagination onChange={this.onEvent('paginationChange')}
                 defaultCurrent={this.currentPage}
                 current={this.currentPage}
                 total={this.total}
+                size={size}
                 showSizeChanger={this.showSizeChanger}
                 pageSize={this.pageSize}
                 onShowSizeChange={this.onEvent('showSizeChange')}
                 pageSizeOptions={this.pageSizeOptions}
                 showTotal={total => this.$t('iota.frame.components.tablelayout.total', { total })} />
         ) : null;
-        const size = this.size || 'middle'
         let rowSelection = this.rowSelection
         if (rowSelection && rowSelection.type === 'radio') {
             rowSelection = Object.assign({
@@ -85,7 +92,7 @@ export default {
         return (
             <div class='layout'>
                 {
-                    this.controls ? <div class={'layout__controls'}>
+                    this.controls || showTopPagination ? <div class={'layout__controls'}>
                         {this.controls}
                         <span
                             class='layout__controls__item layout__controls__selected'>
@@ -106,8 +113,9 @@ export default {
                 <div class={'layout__table'} ref='_tableContainer'>
                     <resize-observer onNotify={this.onResize} />
                     <ATable rowSelection={rowSelection}
+                        rowKey={this.rowKey || 'key'}
                         columns={this.columns}
-                        scroll={{ y: this.tabScroll.y - space }}
+                        scroll={{ y: this.tabScroll.y - space, x: true }}
                         dataSource={this.rows}
                         expandedRowRender={this.expandedRowRender}
                         onExpand={this.onEvent('expand')}
@@ -153,7 +161,7 @@ export default {
 
     &__controls {
         margin-top: 0;
-        margin-bottom: 10px;
+        margin-bottom: 0px;
         height: 30px;
         display: flex;
         justify-content: flex-start;
@@ -167,6 +175,10 @@ export default {
             display: inline-block;
             position: absolute;
             right: 12px;
+        }
+
+        &__top {
+            margin-bottom: 10px;
         }
 
         &__bottom {
@@ -190,6 +202,10 @@ export default {
         // margin-bottom: 10px;
         flex: 1;
         overflow: hidden;
+
+        /deep/ .ant-table td {
+            white-space: nowrap;
+        }
     }
 }
 </style>

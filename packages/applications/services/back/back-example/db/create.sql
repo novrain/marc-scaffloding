@@ -316,6 +316,7 @@ ALTER TABLE IF EXISTS ONLY public."UserPosition" DROP CONSTRAINT IF EXISTS "User
 ALTER TABLE IF EXISTS ONLY public."UserOrganization" DROP CONSTRAINT IF EXISTS "UserOrganization_userId_organizationId_key";
 ALTER TABLE IF EXISTS ONLY public."UserOrganization" DROP CONSTRAINT IF EXISTS "UserOrganization_pkey";
 ALTER TABLE IF EXISTS ONLY public."UserExtention" DROP CONSTRAINT IF EXISTS "UserExtention_pkey";
+ALTER TABLE IF EXISTS ONLY public."Sysconfig" DROP CONSTRAINT IF EXISTS "Sysconfig_pkey";
 ALTER TABLE IF EXISTS ONLY public."SubUser" DROP CONSTRAINT IF EXISTS "SubUser_pkey";
 ALTER TABLE IF EXISTS ONLY public."Role" DROP CONSTRAINT IF EXISTS "Role_pkey";
 ALTER TABLE IF EXISTS ONLY public."RoleOperation" DROP CONSTRAINT IF EXISTS "RoleOperation_pkey";
@@ -336,6 +337,7 @@ ALTER TABLE IF EXISTS ONLY public."OperationPreDepends" DROP CONSTRAINT IF EXIST
 ALTER TABLE IF EXISTS ONLY public."Menu" DROP CONSTRAINT IF EXISTS "Menu_pkey";
 ALTER TABLE IF EXISTS ONLY public."MenuPreDepends" DROP CONSTRAINT IF EXISTS "MenuPreDepends_pkey";
 ALTER TABLE IF EXISTS ONLY public."MenuPreDepends" DROP CONSTRAINT IF EXISTS "MenuPreDepends_menuId_dependMenuId_key";
+ALTER TABLE IF EXISTS ONLY public."EventRecord" DROP CONSTRAINT IF EXISTS "Log_pkey";
 ALTER TABLE IF EXISTS ONLY public."Dictionary" DROP CONSTRAINT IF EXISTS "Dictionary_pkey";
 ALTER TABLE IF EXISTS ONLY public."Dictionary" DROP CONSTRAINT IF EXISTS "Dictionary_name_key";
 ALTER TABLE IF EXISTS ONLY public."Dictionary" DROP CONSTRAINT IF EXISTS "Dictionary_key_key";
@@ -430,6 +432,7 @@ DROP TABLE IF EXISTS public."UserOrganization";
 DROP SEQUENCE IF EXISTS public."UserExtention_id_seq";
 DROP TABLE IF EXISTS public."UserExtention";
 DROP TABLE IF EXISTS public."User";
+DROP TABLE IF EXISTS public."Sysconfig";
 DROP TABLE IF EXISTS public."SubUser";
 DROP TABLE IF EXISTS public."RoleOperation";
 DROP TABLE IF EXISTS public."RoleMenu";
@@ -443,12 +446,12 @@ DROP TABLE IF EXISTS public."OperationPreDepends";
 DROP TABLE IF EXISTS public."Operation";
 DROP TABLE IF EXISTS public."MenuPreDepends";
 DROP TABLE IF EXISTS public."Menu";
+DROP TABLE IF EXISTS public."EventRecord";
 DROP TABLE IF EXISTS public."DictionaryItem";
 DROP TABLE IF EXISTS public."Dictionary";
 DROP TABLE IF EXISTS public."CommunistPartyProcessCategory";
 DROP TYPE IF EXISTS public."enum_User_type";
 DROP TYPE IF EXISTS public."enum_UserExtention_sex";
-DROP TABLE IF EXISTS public."EventRecord";
 DROP EXTENSION IF EXISTS plpgsql;
 DROP SCHEMA IF EXISTS public;
 --
@@ -561,6 +564,24 @@ CREATE TABLE "DictionaryItem" (
 
 
 ALTER TABLE "DictionaryItem" OWNER TO postgres;
+CREATE TABLE "EventRecord" (
+    id character varying(100) NOT NULL,
+    username character varying(20) DEFAULT NULL::character varying,
+    "userId" character varying(255) DEFAULT NULL::character varying,
+    method character varying(20) DEFAULT NULL::character varying NOT NULL,
+    host character varying(50) DEFAULT NULL::character varying NOT NULL,
+    url character varying(255) NOT NULL,
+    status character varying(11) NOT NULL,
+    description character varying(255),
+    exception_detail text,
+    log_type character varying(255),
+    request_ip character varying(20),
+    "time" character varying(15) NOT NULL,
+    browser character varying(255) NOT NULL,
+    _v character varying(50),
+    "createdAt" timestamp(0) with time zone NOT NULL
+);
+ALTER TABLE "EventRecord" OWNER TO postgres;
 
 --
 -- Name: Menu; Type: TABLE; Schema: public; Owner: postgres
@@ -575,7 +596,8 @@ CREATE TABLE "Menu" (
     "desc" character varying(255),
     "createdAt" timestamp with time zone NOT NULL,
     "updatedAt" timestamp with time zone NOT NULL,
-    "parentId" character varying(255)
+    "parentId" character varying(255),
+    "affix" boolean DEFAULT false
 );
 
 
@@ -699,13 +721,20 @@ ALTER TABLE "PositionRole" OWNER TO postgres;
 --
 
 CREATE TABLE "ProcessDef" (
-    id character varying(255) NOT NULL,
     name character varying(255) NOT NULL,
-    "flowableInstance" character varying(255) NOT NULL,
-    "formDef" text NOT NULL,
+    "processDefinitionKey" character varying(255) NOT NULL,
     "belongTo" character varying(255),
+    "desc" character varying(255),
+    "disabled" boolean DEFAULT false,
+    "deployed" boolean DEFAULT false,
+    category character varying(255),
+    "helperScript" character varying(255),
+    widget character varying,
+    component character varying,
     "createdAt" timestamp with time zone NOT NULL,
-    "updatedAt" timestamp with time zone NOT NULL
+    "updatedAt" timestamp with time zone NOT NULL,
+    "formDef" text,
+    "bpmnXML" text
 );
 
 
@@ -772,6 +801,18 @@ CREATE TABLE "SubUser" (
 
 
 ALTER TABLE "SubUser" OWNER TO postgres;
+CREATE TABLE "Sysconfig" (
+    key character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    value character varying(255),
+    type character varying(40) DEFAULT false,
+    "widgetSettings" character varying(255) DEFAULT false,
+    "desc" character varying(255),
+    "defaultValue" character varying(255),
+    index smallint,
+    category character varying(255)
+);
+ALTER TABLE "Sysconfig" OWNER TO postgres;
 
 --
 -- Name: User; Type: TABLE; Schema: public; Owner: postgres
@@ -877,43 +918,6 @@ CREATE TABLE "UserRole" (
 
 
 ALTER TABLE "UserRole" OWNER TO postgres;
-
---
--- Name: EventRecord; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE "public"."EventRecord" (
-  "id" varchar(100) COLLATE "pg_catalog"."default" NOT NULL,
-  "username" varchar(20) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "userId" varchar(255) COLLATE "pg_catalog"."default" DEFAULT NULL::character varying,
-  "method" varchar(20) COLLATE "pg_catalog"."default" NOT NULL DEFAULT NULL::character varying,
-  "host" varchar(50) COLLATE "pg_catalog"."default" NOT NULL DEFAULT NULL::character varying,
-  "url" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "status" varchar(11) COLLATE "pg_catalog"."default" NOT NULL,
-  "description" varchar(255) COLLATE "pg_catalog"."default",
-  "exception_detail" text COLLATE "pg_catalog"."default",
-  "log_type" varchar(255) COLLATE "pg_catalog"."default",
-  "request_ip" varchar(20) COLLATE "pg_catalog"."default",
-  "time" varchar(15) COLLATE "pg_catalog"."default" NOT NULL,
-  "browser" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "_v" varchar(50) COLLATE "pg_catalog"."default",
-  "createdAt" timestamptz(0) NOT NULL
-);
-
-
-ALTER TABLE "EventRecord" OWNER TO postgres;
-
-COMMENT ON COLUMN "public"."EventRecord"."method" IS '请求类型';
-COMMENT ON COLUMN "public"."EventRecord"."host" IS '访问地址';
-COMMENT ON COLUMN "public"."EventRecord"."url" IS '访问路径';
-COMMENT ON COLUMN "public"."EventRecord"."status" IS '状态码 200  404  500 503 ...';
-COMMENT ON COLUMN "public"."EventRecord"."description" IS '描述';
-COMMENT ON COLUMN "public"."EventRecord"."exception_detail" IS '异常日志';
-COMMENT ON COLUMN "public"."EventRecord"."log_type" IS '日志类型';
-COMMENT ON COLUMN "public"."EventRecord"."request_ip" IS '真实ip地址';
-COMMENT ON COLUMN "public"."EventRecord"."time" IS '耗时';
-COMMENT ON COLUMN "public"."EventRecord"."browser" IS '浏览器类型';
-COMMENT ON COLUMN "public"."EventRecord"."createdAt" IS '发起时间';
 
 --
 -- Name: act_adm_databasechangelog; Type: TABLE; Schema: public; Owner: postgres
@@ -2673,6 +2677,7 @@ ALTER TABLE ONLY act_hi_tsk_log ALTER COLUMN id_ SET DEFAULT nextval('act_hi_tsk
 
 INSERT INTO "Dictionary" (id, name, key, "belongTo", "createdAt", "updatedAt") VALUES ('c563fee9-dc87-44c9-8778-0345b915615b', '学历', 'frame_education', NULL, '2019-12-05 18:34:09.809+08', '2019-12-05 18:34:09.809+08');
 INSERT INTO "Dictionary" (id, name, key, "belongTo", "createdAt", "updatedAt") VALUES ('b2d6d9a3-37cb-4ea8-9563-81f2d047547f', '政治面貌', 'frame_politics', NULL, '2019-12-18 16:00:07.237+08', '2019-12-18 16:00:07.237+08');
+INSERT INTO "Dictionary" (id, name, key, "belongTo", "createdAt", "updatedAt") VALUES ('55948ef3-26c6-4e51-9e80-e8d4cb00d66f', '流程分类', 'frame_flowable_categories', NULL, '2019-12-25 15:23:23.177+08', '2019-12-25 15:23:23.177+08');
 
 
 --
@@ -2695,26 +2700,23 @@ INSERT INTO "DictionaryItem" (id, name, key, index, "createdAt", "updatedAt", "d
 --
 
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('0', '管理控制台', '/console', NULL, NULL, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', NULL);
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1', '总览', '/console/overview', '/console/overview', 'overview', '', '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4', '项目管理', '/console/applications/project', '', 'antv-layout', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:26:41+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4.1', '年度工程项目', '/console/applications/project_of_year', '/console/applications/project_of_year', 'antv-audit', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:27:31+08', '4');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4.2', '中小修项目', '/console/applications/minor_repair', '/console/applications/minor_repair', 'antv-audit', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:27:31+08', '4');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4.3', '月度例行任务', '/console/applications/monthly_routine_task', '/console/applications/monthly_routine_task', 'antv-audit', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:27:31+08', '4');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('4.4', '临时任务', '/console/applications/temporary_task', '/console/applications/temporary_task', 'antv-audit', NULL, '2018-05-15 19:26:27.603+08', '2019-11-13 17:27:31+08', '4');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5', '党建管理', '/console.cpp', '', 'antv-hdd', NULL, '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1', '党建台账任务', '/console/applications/cpp_party_construction', '/console/applications/cpp_party_construction', 'antv-schedule', NULL, '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '5');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.2', '临时任务', '/console/applications/cpp_temporary_task', '/console/applications/cpp_temporary_task', 'antv-schedule', NULL, '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '5');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6', '权限管理', '/console/authorizations', NULL, 'authorization', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.1', '菜单与操作', '/console/authorizations/overview', '/console/authorizations/overview', 'menu', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.2', '角色', '/console/authorizations/roles', '/console/authorizations/roles', 'role', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.3', '组织', '/console/authorizations/organizations', '/console/authorizations/organizations', 'organization', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.4', '职位', '/console/authorizations/positions', '/console/authorizations/positions', 'user-position', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.5', '用户', '/console/authorizations/users', '/console/authorizations/users', 'subuser', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '6');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8', '系统管理', '/console/system', NULL, 'system', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1', '字典管理', '/console/system/dictionaries', '/console/system/dictionaries', 'dictionary', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '8');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.3', '操作记录', '/console/system/event_record', '/console/system/event_record', 'antv-profile', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '8');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('9', '账号管理', '/console/account', NULL, 'account-sec', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
-INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('9.1', '账号安全', '/console/account/profile', '/console/account/profile', 'profile', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '9');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId", "affix") VALUES ('1', '总览', '/console/overview', '/console/overview', 'overview', '', '2018-05-15 19:26:27.603+08', '2018-05-15 19:26:27.603+08', '0', true);
+-- INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1500', '流程管理', '/console/flowables', '/console/flowables', 'calculate', NULL, '2019-12-25 10:06:43+08', '2019-12-25 10:06:48+08', '0');
+-- INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1500.1', '所有流程', '/console/flowables/portal', '/console/flowables/portal', 'antv-project', NULL, '2019-12-25 10:08:44+08', '2019-12-25 10:08:49+08', '1500');
+-- INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1500.2', '待我协同', '/console/flowables/instances', '/console/flowables/instances', 'antv-ordered-list', NULL, '2019-12-25 10:14:49+08', '2019-12-25 10:14:53+08', '1500');
+-- INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1500.3', '流程定义', '/console/flowables/definitions', '/console/flowables/definitions', 'antv-share-alt', NULL, '2019-12-25 10:14:49+08', '2019-12-25 10:14:53+08', '1500');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1600', '权限管理', '/console/authorizations', NULL, 'authorization', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1600.1', '菜单与操作', '/console/authorizations/overview', '/console/authorizations/overview', 'menu', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1600');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1600.2', '角色', '/console/authorizations/roles', '/console/authorizations/roles', 'role', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1600');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1600.3', '组织', '/console/authorizations/organizations', '/console/authorizations/organizations', 'organization', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1600');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1600.4', '职位', '/console/authorizations/positions', '/console/authorizations/positions', 'user-position', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1600');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1600.5', '用户', '/console/authorizations/users', '/console/authorizations/users', 'subuser', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1600');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1800', '系统管理', '/console/system', NULL, 'system', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1800.1', '字典管理', '/console/system/dictionaries', '/console/system/dictionaries', 'dictionary', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1800');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1800.2', '系统配置', '/console/system/sysconfig', '/console/system/sysconfig', 'system', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1800');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1800.3', '操作记录', '/console/system/event_record', '/console/system/event_record', 'antv-profile', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1800');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1900', '账号管理', '/console/account', NULL, 'account-sec', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
+INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1900.1', '账号安全', '/console/account/profile', '/console/account/profile', 'profile', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1900');
 
 --
 -- Data for Name: MenuPreDepends; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -2730,7 +2732,7 @@ INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "up
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1', '总览', '', '', false, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', '0');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5', '流程管理', '', NULL, false, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '0');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1', '基础查询', '', NULL, false, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5');
-INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1.0.1', '查询流程定义', '/processdefs/:id', 'GET', false, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.1');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1.0.1', '查询流程定义', '/processdefs/:processDefinitionKey?', 'GET', false, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.1');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1.0.2', '查询流程BPMN模型', '/fl/process/repository/process-definitions/:flowableInstance/resourcedata', 'GET', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.1');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1.0.3', '查询流程', '/fl/iota/query/process-instances', 'POST', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.1');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1.0.4', '查询历史流程', '/fl/iota/query/historic-process-instances', 'POST', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.1');
@@ -2764,6 +2766,11 @@ INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "up
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.5.0.2', '添加附件', '/fl/content/content-service/content-items', 'POST', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.5');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.5.0.3', '删除附件', '/fl/content/content-service/content-items/:id', 'DELETE', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.5');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.5.0.4', '下载附件', '/fl/content/content-service/content-items/:attachmentId/data', 'GET', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.5');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6', '流程定义', '', NULL, false, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6.0.1', '增加流程', '/processdefs', 'POST', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.6');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6.0.2', '修改流程', '/processdefs/:processDefinitionKey', 'PUT', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.6');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6.0.3', '删除流程', '/processdefs/:processDefinitionKey', 'DELETE', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.6');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6.0.4', '部署流程', '/processdefs/deploy/:processDefinitionKey', 'POST', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.6');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6', '权限管理', '', '', false, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', '0');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.1', '角色', '', '', false, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', '6');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.1.0.1', '查询角色', '/authorizations/roles', 'GET', true, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', '6.1');
@@ -2850,6 +2857,7 @@ INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "up
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.4.3.4', '删除用户已赋予职位', '/authorizations/users/:userId/positions/:id?', 'DELETE', true, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', '6.4.3');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8', '系统管理', '', '', false, '', '2019-12-05 10:21:09+08', '2019-12-05 10:21:12+08', '0');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1', '字典管理', '', '', false, '', '2019-12-05 10:22:52+08', '2019-12-05 10:22:57+08', '8');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.2', '系统配置', '', '', false, '', '2019-12-05 10:22:52+08', '2019-12-05 10:22:57+08', '8');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1.0.1', '查询字典', '/dictionaries/:key?', 'GET', false, ' ', '2019-12-05 10:26:09+08', '2019-12-05 10:26:12+08', '8.1');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1.0.2', '创建字典', '/dictionaries', 'POST', true, '', '2019-12-05 10:39:21+08', '2019-12-05 10:39:23+08', '8.1');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('8.1.0.3', '修改字典', '/dictionaries/:id', 'PUT', true, '', '2019-12-05 10:40:18+08', '2019-12-05 10:40:20+08', '8.1');
@@ -2919,6 +2927,15 @@ INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "up
 
 
 --
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('copyright', '版权说明', NULL, 'string', '{"icon":"notice"}', NULL, '@Copyright 2019~2020 ', 120, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('consoleLogo', '控制台Logo', NULL, 'image', '{"icon":"antv-menu-unfold","width":"192","height":"38","color":"#0d3ae3","radius":"0"}', '最佳尺寸192x38', '/assets/imgs/defaultLogo.png', 130, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('consoleCollapsedLogo', '控制台Mini Logo', NULL, 'image', '{"icon":"antv-menu-fold","width":"72","height":"38","color":"#0d3ae3","radius":"0"}', '最佳尺寸72x38', '/assets/imgs/defaultLogoCollapsed.png', 140, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('logo', '系统Logo', NULL, 'image', '{"icon":"antv-desktop","width":"192","height":"38","color":"transport","radius":"0"}', '最佳比例192:38', '/assets/imgs/logo.png', 110, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('disableProcessCommentEdit', '禁止编辑/删除流程跟踪信息', 'false', 'boolean', '{"icon":"protocol"}', '选中后，流程跟踪信息将不可删除或编辑', NULL, 150, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('dsiableUsernameEdit', '禁止编辑用户名', 'false', 'boolean', '{"icon":"antv-user"}', '选中后，用户名将不可修改', NULL, 160, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('title', '系统名称', '管理控制台', 'string', '{"icon":"application"}', NULL, '管理控制台', 100, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('favicon', '系统Favicon', NULL, 'image', '{"icon":"device","width":"38","height":"38","color":"transport","radius":"0"}', '最佳尺寸100x100', '/favicon.png', 90, NULL);
+
 -- Data for Name: User; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -3265,10 +3282,9 @@ INSERT INTO act_ge_property (name_, value_, rev_) VALUES ('cfg.task-related-enti
 
 
 --
+--
 -- Data for Name: act_hi_actinst; Type: TABLE DATA; Schema: public; Owner: postgres
 --
-
-
 
 --
 -- Data for Name: act_hi_attachment; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -3567,8 +3583,8 @@ ALTER TABLE ONLY "Dictionary"
 -- Name: EventRecord Log_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE "public"."EventRecord" 
-    ADD CONSTRAINT "Log_pkey" PRIMARY KEY ("id");
+ALTER TABLE ONLY "EventRecord"
+    ADD CONSTRAINT "Log_pkey" PRIMARY KEY (id);
 
 --
 -- Name: MenuPreDepends MenuPreDepends_menuId_dependMenuId_key; Type: CONSTRAINT; Schema: public; Owner: postgres
@@ -3671,7 +3687,7 @@ ALTER TABLE ONLY "Position"
 --
 
 ALTER TABLE ONLY "ProcessDef"
-    ADD CONSTRAINT "ProcessDef_flowableInstance_key" UNIQUE ("flowableInstance");
+    ADD CONSTRAINT "ProcessDef_flowableInstance_key" UNIQUE ("processDefinitionKey");
 
 
 --
@@ -3679,7 +3695,7 @@ ALTER TABLE ONLY "ProcessDef"
 --
 
 ALTER TABLE ONLY "ProcessDef"
-    ADD CONSTRAINT "ProcessDef_pkey" PRIMARY KEY (id);
+    ADD CONSTRAINT "ProcessDef_pkey" PRIMARY KEY ("processDefinitionKey");
 
 
 --
@@ -3728,6 +3744,8 @@ ALTER TABLE ONLY "Role"
 
 ALTER TABLE ONLY "SubUser"
     ADD CONSTRAINT "SubUser_pkey" PRIMARY KEY ("userId");
+ALTER TABLE ONLY "Sysconfig"
+    ADD CONSTRAINT "Sysconfig_pkey" PRIMARY KEY (key);
 
 
 --

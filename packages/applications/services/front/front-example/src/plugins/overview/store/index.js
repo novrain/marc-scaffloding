@@ -2,18 +2,20 @@ import mutations from './mutations'
 import actions from './actions'
 
 export default (opts) => {
-    const { containerId } = opts
-    const state = {}
+    const { containerId, id } = opts
+    const state = {
+        widgets: []
+    }
     const store = {
         modules: {
             iota: {
                 modules: {
                     [containerId || 'container']: {
                         modules: {
-                            communistPartyProcess: {
+                            [id || 'app-overview']: {
                                 namespaced: true,
                                 state,
-                                mutations,
+                                mutations: mutations(),
                                 actions
                             }
                         }

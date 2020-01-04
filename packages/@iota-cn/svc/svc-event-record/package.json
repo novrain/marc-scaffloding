@@ -15,6 +15,7 @@
     "author": "",
     "license": "MIT",
     "dependencies": {
+        "@iota-cn/svc-util": "^1.0.0",
         "moment": "^2.24.0",
         "path-to-regexp": "^6.1.0"
     },

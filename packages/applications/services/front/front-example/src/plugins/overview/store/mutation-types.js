@@ -1,0 +1,1 @@
+export const REGISTER_WIDGETS = 'iota.app.plguins.overview.registerWidgets'

@@ -1,35 +1,52 @@
-/**
- * 强制路由刷新
- * @param {} flowId 
- */
-const createFlowableContainer = (flowId) => {
-    const Flowable = () => import("./view/console/Flowable")
-    return {
-        props: ['flowId', 'flowHelper'],
-        name: flowId,
-        components: {
-            flowable: Flowable
-        },
-        render() {
-            return (<flowable flowId={this.flowId} flowHelper={this.flowHelper} />)
-        }
-    }
-}
+const SingleFlowable = () => import('./view/SingleFlowable')
+const FlowsPortal = () => import('./view/FlowsPortal')
+const Flowable = () => import('./view/console/Flowable')
+const FlowDefinitions = () => import('./view/FlowDefinitions')
 
 export default (opts) => {
-    const containerId = opts.containerId
+    const { id, containerId, path } = opts
     let routes = {}
-    opts.flows.forEach(f => {
-        routes[f.flowId] = {
-            path: f.path,
-            component: createFlowableContainer(f.flowId),
-            props: { flowId: f.flowId, flowHelper: f.flowHelper }
+    // 通用（all in one）流程管理模块
+    routes.allinone = {
+        portal: {
+            path: '/console/flowables/portal',
+            component: FlowsPortal,
+            props: {
+                id: id,
+                containerId: containerId
+            }
+        },
+        management: {
+            path: '/console/flowables/instances',
+            component: Flowable,
+            props: {
+                id: id,
+                containerId: containerId
+            }
         }
-    })
+    }
+    // 单一流程页面模块，根据路由参数切换, 放后面，防止前面的路由被覆盖
+    routes.sigleflow = {
+        path: `${path || '/console/flowables'}/:processDefinitionKey`,
+        component: SingleFlowable,
+        props: (route) => ({
+            id: id,
+            containerId: containerId,
+            processDefinitionKey: route.params.processDefinitionKey
+        })
+    }
+    routes.flowdefinitions = {
+        path: '/console/flowables/definitions',
+        component: FlowDefinitions,
+        props: {
+            id: id,
+            containerId: containerId
+        }
+    }
     return {
         iota: {
             [containerId || 'container']: {
-                flowable: {
+                [id || 'flowables']: {
                     ...routes
                 }
             }

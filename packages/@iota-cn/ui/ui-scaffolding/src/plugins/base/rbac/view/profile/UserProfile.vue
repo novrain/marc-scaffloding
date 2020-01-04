@@ -34,7 +34,8 @@
                         <a-tag v-if='$user.isAdmin'
                             color="#f50">{{t('administrator')}}</a-tag>
                     </a-col>
-                    <a-col :span="4">
+                    <a-col :span="4"
+                        v-if='!$settings.dsiableUsernameEdit'>
                         <a-button icon="edit"
                             @click="onChangeUsername"
                             type='link'>

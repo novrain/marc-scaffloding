@@ -1,6 +1,7 @@
 import {
     event_record
 } from './model';
+import api from './api'
 
 import uid from 'uuid';
 
@@ -72,7 +73,9 @@ function judgeTerminalBrowser(userAgent) {
     return data;
 }
 
-export function entry(app) {
+export function entry(app, router, opts) {
+    app.iota.logger.log('info', '[iOTA-EVENT-RECORD]', 'Inject event record mw into router.');
+    api(app, router, opts)
     return async function (ctx, next) {
         ctx.iota.logger.log('info', '[iOTA-EVENT-RECORD]', 'Inject event record mw into router.');
         let rbac = app.iota.rbac

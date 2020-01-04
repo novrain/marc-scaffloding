@@ -1,10 +1,17 @@
 {
     "type": "object",
     "properties": {
+        "_title_basicInfo": {
+            "type": "HTML",
+            "value": "<div style=\"border-left: 4px solid orange; padding-left: 6px; color: orange\">  基础信息</div>",
+            "ui": {
+                "hidden": false
+            }
+        },
         "projectId": {
             "type": "string",
             "ui": {
-                "columns": 5,
+                "columns": 6,
                 "label": "项目ID",
                 "hidden": true
             }
@@ -12,41 +19,87 @@
         "projectYear": {
             "type": "string",
             "ui": {
-                "columns": 5,
+                "columns": 6,
                 "label": "年度",
                 "disabled": "dx: !({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit_modify')",
-                "widget": "select"
+                "widget": "select",
+                "widgetConfig": {
+                    "placeholder": "选择年份……",
+                    "enumSource": [{
+                            "value": 2020,
+                            "label": "2020"
+                        },
+                        {
+                            "value": 2021,
+                            "label": "2021"
+                        },
+                        {
+                            "value": 2022,
+                            "label": "2022"
+                        },
+                        {
+                            "value": 2023,
+                            "label": "2023"
+                        },
+                        {
+                            "value": 2024,
+                            "label": "2024"
+                        },
+                        {
+                            "value": 2025,
+                            "label": "2025"
+                        }
+                    ]
+                }
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请选择年度"
+                }
             }
         },
-
         "initiatorName": {
             "type": "string",
             "ui": {
-                "columns": 5,
+                "columns": 6,
                 "label": "发起人",
                 "disabled": true
             }
         },
-
         "projectNumber": {
-            "type": "select",
+            "type": "string",
             "ui": {
                 "label": "项目编号",
+                "columns": 12,
                 "disabled": "dx: !({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit_modify')"
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请输入项目编号"
+                }
             }
         },
-
         "projectName": {
             "type": "string",
             "ui": {
                 "label": "项目名称",
+                "columns": 12,
                 "disabled": "dx: !({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit_modify')"
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请输入项目名称"
+                }
             }
         },
         "projectDescribe": {
             "type": "string",
             "ui": {
                 "label": "项目描述",
+                "columns": 12,
                 "disabled": "dx: !({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit_modify')",
                 "widget": "textarea",
                 "widgetConfig": {
@@ -58,148 +111,116 @@
                 }
             }
         },
-
         "startTime": {
             "type": "string",
             "ui": {
                 "disabled": "dx: !({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit_modify')",
-                "columns": 5,
+                "columns": 6,
                 "widget": "date-picker",
                 "label": "开始时间"
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请选开始时间"
+                }
             }
         },
-        "finishTime": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === 'acceptance' || {{$const.currentTaskId}} === 'acceptance_modify')",
-                "columns": 5,
-                "widget": "date-picker",
-                "label": "结束时间"
-            }
-        },
-
         "constructionCost": {
             "type": "string",
             "ui": {
-                "columns": 5,
+                "columns": 6,
                 "label": "施工费用",
                 "disabled": "dx: !({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit_modify')"
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请填写施工费用"
+                }
             }
         },
         "deviceCost": {
-            "type": "select",
+            "type": "string",
             "ui": {
-                "columns": 5,
+                "columns": 6,
                 "label": "设备费用",
                 "disabled": "dx: !({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit_modify')"
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请填写设备费用"
+                }
             }
         },
-
         "memo": {
             "type": "text",
             "ui": {
                 "label": "备注",
+                "columns": 12,
                 "widget": "textarea"
             }
         },
-
-        "contractTime": {
-            "type": "string",
+        "_title_auditInfo": {
+            "type": "HTML",
+            "value": "<div style=\"border-left: 4px solid orange; padding-left: 6px; color: orange\">  立项审核信息</div>",
             "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === 'contact' || {{$const.currentTaskId}} === 'contact_modify')",
-                "columns": 5,
-                "widget": "date-picker",
-                "label": "合同时间"
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start')"
             }
         },
-        "constructCorp": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === 'contact' || {{$const.currentTaskId}} === 'contact_modify')",
-                "columns": 5,
-                "label": "施工单位"
-            }
-        },
-
-        "constructSponsor": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === 'contact' || {{$const.currentTaskId}} === 'contact_modify')",
-                "columns": 5,
-                "label": "施工联系人"
-            }
-        },
-        "constructSponsorPhone": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === 'contact' || {{$const.currentTaskId}} === 'contact_modify')",
-                "columns": 5,
-                "label": "联系人电话"
-            }
-        },
-
-        "process": {
+        "audit_modifyOpt": {
             "type": "number",
-            "disabled": "dx: !({{$const.currentTaskId}} === 'acceptance' || {{$const.currentTaskId}} === 'acceptance_modify')",
-            "ui": {
-                "widget": "slider",
-                "label": "施工进度"
-            }
-        },
-
-        "finalReportTime": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === 'finalReport' || {{$const.currentTaskId}} === 'finalReport_modify')",
-                "columns": 5,
-                "widget": "date-picker",
-                "label": "决算时间"
-            }
-        },
-        "finalReportSponsor": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === 'finalReport' || {{$const.currentTaskId}} === 'adjustVacationRequestTask')",
-                "columns": 5,
-                "label": "决算负责人"
-            }
-        },
-
-        "finalReportConstructionCost": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === 'finalReport' || {{$const.currentTaskId}} === 'adjustVacationRequestTask')",
-                "columns": 5,
-                "label": "决算施工费"
-            }
-        },
-        "finalReportDeviceCost": {
-            "type": "string",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === 'finalReport' || {{$const.currentTaskId}} === 'adjustVacationRequestTask')",
-                "columns": 5,
-                "label": "决算设备费"
-            }
-        },
-
-
-        "resendRequest": {
-            "type": "boolean",
             "value": "",
             "ui": {
                 "disabled": "dx: !({{$const.currentTaskId}} === 'audit_modify')",
                 "hidden": "dx: !({{$const.currentTaskId}} === 'audit_modify')",
-                "label": "重新提交"
+                "label": "重新提交",
+                "widget": "radio",
+                "widgetConfig": {
+                    "enumSource": [{
+                            "value": 1,
+                            "label": "销毁单据"
+                        },
+                        {
+                            "value": 2,
+                            "label": "再次提交审核"
+                        }
+                    ]
+                }
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请选择销毁单据还是再次重新提交？"
+                }
             }
         },
-
-        "vacationApproved": {
-            "type": "boolean",
+        "auditOpt": {
+            "type": "number",
             "value": "",
             "ui": {
-                "disabled": "dx: {{$const.currentTaskId}} !== 'audit'",
-                "hidden": "dx: {{$const.currentTaskId}} !== 'audit' ",
-                "label": "审核通过"
+                "disabled": "dx: !({{$const.currentTaskId}} === 'audit')",
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start')",
+                "label": "审核",
+                "widget": "radio",
+                "widgetConfig": {
+                    "enumSource": [{
+                            "value": 1,
+                            "label": "驳回"
+                        },
+                        {
+                            "value": 2,
+                            "label": "审核通过"
+                        }
+                    ]
+                }
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请选择驳回还是审核通过？"
+                }
             }
         },
         "vacationReason": {
@@ -207,99 +228,332 @@
             "value": "",
             "ui": {
                 "disabled": "dx: {{$const.currentTaskId}} !== 'audit'",
-                "hidden": "dx: !({{$const.currentTaskId}} === 'audit' || {{$const.currentTaskId}} === 'audit_modify') ",
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start') ",
                 "label": "审核意见",
+                "columns": 12,
                 "widget": "textarea"
             }
         },
+        "_title_contactInfo": {
+            "type": "HTML",
+            "value": "<div style=\"border-left: 4px solid orange; padding-left: 6px; color: orange\">  合同签订信息</div>",
+            "ui": {
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' || {{$const.currentTaskId}} === 'audit_modify')"
+            }
+        },
+        "contractTime": {
+            "type": "string",
+            "ui": {
+                "disabled": "dx: !({{$const.currentTaskId}} === 'contact')",
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' ||{{$const.currentTaskId}} === 'audit_modify')",
+                "columns": 6,
+                "widget": "date-picker",
+                "label": "合同时间"
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请选择合同时间"
+                }
+            }
+        },
+        "constructCorp": {
+            "type": "string",
+            "ui": {
+                "disabled": "dx: !({{$const.currentTaskId}} === 'contact')",
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' ||{{$const.currentTaskId}} === 'audit_modify')",
+                "columns": 6,
+                "label": "施工单位"
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请选择施工单位"
+                }
+            }
+        },
+        "constructSponsor": {
+            "type": "string",
+            "ui": {
+                "disabled": "dx: !({{$const.currentTaskId}} === 'contact')",
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' ||{{$const.currentTaskId}} === 'audit_modify')",
+                "columns": 6,
+                "label": "施工联系人"
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请填写施工联系人"
+                }
+            }
+        },
+        "constructSponsorPhone": {
+            "type": "string",
+            "ui": {
+                "disabled": "dx: !({{$const.currentTaskId}} === 'contact')",
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' ||{{$const.currentTaskId}} === 'audit_modify')",
+                "columns": 6,
+                "label": "联系人电话"
+            }
+        },
+        "_title_constructionInfo": {
+            "type": "HTML",
+            "value": "<div style=\"border-left: 4px solid orange; padding-left: 6px; color: orange\">  施工信息</div>",
+            "ui": {
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' || {{$const.currentTaskId}} === 'audit_modify' ||{{$const.currentTaskId}} === 'contact')"
+            }
+        },
+        "processBar": {
+            "type": "number",
+            "ui": {
+                "disabled": "dx: !({{$const.currentTaskId}} === 'construction')",
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' ||{{$const.currentTaskId}} === 'audit_modify' ||{{$const.currentTaskId}} === 'contact')",
+                "widget": "slider",
+                "columns": 12,
+                "label": "施工进度"
+            },
+            "rules": {
+                "customRule": [{
+                    "script": "dx: !(({{$root.constructionOpt}}===2) && ({{$root.processBar}} !== 100))",
+                    "errMsg": "进度未达到100，不能提交验收！",
+                    "linkItems": [{
+                        "fieldPath": "constructionOpt",
+                        "customRuleIdx": 0
+                    }]
+                }]
+            }
+        },
+        "finishTime": {
+            "type": "string",
+            "ui": {
+                "disabled": "dx: !({{$const.currentTaskId}} === 'construction')",
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' ||{{$const.currentTaskId}} === 'audit_modify' ||{{$const.currentTaskId}} === 'contact')",
+                "columns": 6,
+                "widget": "date-picker",
+                "label": "结束时间"
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请选择结束时间"
+                }
+            }
+        },
+        "constructionOpt": {
+            "type": "number",
+            "value": "",
+            "ui": {
+                "disabled": "dx: !({{$const.currentTaskId}} === 'construction')",
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' ||{{$const.currentTaskId}} === 'audit_modify' ||{{$const.currentTaskId}} === 'contact')",
+                "label": "施工操作",
+                "widget": "radio",
+                "widgetConfig": {
+                    "enumSource": [{
+                            "value": 0,
+                            "label": "开始施工，填写施工信息"
+                        },
+                        {
+                            "value": 1,
+                            "label": "合同信息错误，回退合同处理"
+                        },
+                        {
+                            "value": 2,
+                            "label": "施工完毕，提交验收审核"
+                        }
+                    ]
+                }
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请选择操作类型"
+                },
+                "customRule": [{
+                    "script": "dx: !(({{$root.constructionOpt}}===2) && ({{$root.processBar}} !== 100))",
+                    "errMsg": "进度未达到100，不能提交验收！",
+                    "linkItems": [{
+                        "fieldPath": "processBar",
+                        "customRuleIdx": 0
+                    }]
+                }]
+            }
+        },
+        "_title_acceptanceInfo": {
+            "type": "HTML",
+            "value": "<div style=\"border-left: 4px solid orange; padding-left: 6px; color: orange\">  验收审核信息</div>",
+            "ui": {
+                "hidden": "dx: (({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' || {{$const.currentTaskId}} === 'audit_modify' ||{{$const.currentTaskId}} === 'contact') || {{$const.currentTaskId}} === 'construction' && {{$root.acceptanceOpt}}!==1)"
+            }
+        },
+        "acceptanceOpt": {
+            "type": "number",
+            "value": "",
+            "ui": {
+                "disabled": "dx: !({{$const.currentTaskId}} === 'acceptance')",
+                "hidden": "dx: (({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' || {{$const.currentTaskId}} === 'audit_modify' ||{{$const.currentTaskId}} === 'contact') || {{$const.currentTaskId}} === 'construction' && {{$root.acceptanceOpt}}!==1)",
+                "label": "验收审核",
+                "widget": "radio",
+                "widgetConfig": {
+                    "enumSource": [{
+                            "value": 0,
+                            "label": "开始验收"
+                        },
+                        {
+                            "value": 1,
+                            "label": "验收不同过，回退施工"
+                        },
+                        {
+                            "value": 2,
+                            "label": "验收通过，提交决算"
+                        }
+                    ]
+                }
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请选择操作类型"
+                }
+            }
+        },
+        "_title_finalReportInfo": {
+            "type": "HTML",
+            "value": "<div style=\"border-left: 4px solid orange; padding-left: 6px; color: orange\">  决算信息</div>",
+            "ui": {
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' ||{{$const.currentTaskId}} === 'audit_modify' ||{{$const.currentTaskId}} === 'contact' ||{{$const.currentTaskId}} === 'construction' || {{$const.currentTaskId}} === 'acceptance')"
 
-        "resendContact": {
-            "type": "boolean",
-            "value": "",
-            "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === 'contact_modify')",
-                "hidden": "dx: !({{$const.currentTaskId}} === 'contact_modify')",
-                "label": "重新提交"
             }
         },
-        "contactApproved": {
-            "type": "boolean",
-            "value": "",
+        "finalReportTime": {
+            "type": "string",
             "ui": {
-                "disabled": "dx: {{$const.currentTaskId}} !== 'acceptance'",
-                "hidden": "dx: {{$const.currentTaskId}} !== 'acceptance' ",
-                "label": "接受施工"
+                "disabled": "dx: !({{$const.currentTaskId}} === 'finalReport')",
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' ||{{$const.currentTaskId}} === 'audit_modify' ||{{$const.currentTaskId}} === 'contact' ||{{$const.currentTaskId}} === 'construction' || {{$const.currentTaskId}} === 'acceptance')",
+                "columns": 6,
+                "widget": "date-picker",
+                "label": "决算时间"
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请选择决算时间"
+                }
             }
         },
-        "contactReason": {
-            "type": "text",
-            "value": "",
+        "finalReportSponsor": {
+            "type": "string",
             "ui": {
-                "disabled": "dx: {{$const.currentTaskId}} !== 'contact_modify'",
-                "hidden": "dx: !({{$const.currentTaskId}} === 'contact_modify' || {{$const.currentTaskId}} === 'acceptance')",
-                "label": "施工意见",
-                "widget": "textarea"
+                "disabled": "dx: !({{$const.currentTaskId}} === 'finalReport')",
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' ||{{$const.currentTaskId}} === 'audit_modify' ||{{$const.currentTaskId}} === 'contact' ||{{$const.currentTaskId}} === 'construction' || {{$const.currentTaskId}} === 'acceptance')",
+                "columns": 6,
+                "label": "决算人"
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请填写决算人"
+                }
             }
         },
-
-        "resendAcceptance": {
-            "type": "boolean",
-            "value": "",
+        "finalReportConstructionCost": {
+            "type": "string",
             "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === 'acceptance_modify')",
-                "hidden": "dx: !({{$const.currentTaskId}} === 'acceptance_modify')",
-                "label": "重新提交"
+                "disabled": "dx: !({{$const.currentTaskId}} === 'finalReport')",
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' ||{{$const.currentTaskId}} === 'audit_modify' ||{{$const.currentTaskId}} === 'contact' ||{{$const.currentTaskId}} === 'construction' || {{$const.currentTaskId}} === 'acceptance')",
+                "columns": 6,
+                "label": "决算施工费"
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请填写决算施工费用"
+                }
             }
         },
-        "acceptanceApproved": {
-            "type": "boolean",
-            "value": "",
+        "finalReportDeviceCost": {
+            "type": "string",
             "ui": {
-                "disabled": "dx: {{$const.currentTaskId}} !== 'finalReport'",
-                "hidden": "dx: {{$const.currentTaskId}} !== 'finalReport' ",
-                "label": "接受决算"
+                "disabled": "dx: !({{$const.currentTaskId}} === 'finalReport')",
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' ||{{$const.currentTaskId}} === 'audit_modify' ||{{$const.currentTaskId}} === 'contact' ||{{$const.currentTaskId}} === 'construction' || {{$const.currentTaskId}} === 'acceptance')",
+                "columns": 6,
+                "label": "决算设备费"
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请填写决算设备费用"
+                }
             }
         },
-        "acceptanceReason": {
-            "type": "text",
+        "finalReportOpt": {
+            "type": "number",
             "value": "",
             "ui": {
-                "disabled": "dx: {{$const.currentTaskId}} !== 'acceptance_modify'",
-                "hidden": "dx: !({{$const.currentTaskId}} === 'acceptance_modify' || {{$const.currentTaskId}} === 'finalReport')",
-                "label": "决算意见",
-                "widget": "textarea"
+                "disabled": "dx: !({{$const.currentTaskId}} === 'finalReport')",
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' ||{{$const.currentTaskId}} === 'audit_modify' ||{{$const.currentTaskId}} === 'contact' ||{{$const.currentTaskId}} === 'construction' || {{$const.currentTaskId}} === 'acceptance')",
+                "label": "决算操作",
+                "widget": "radio",
+                "widgetConfig": {
+                    "enumSource": [{
+                            "value": 0,
+                            "label": "开始决算，更新决算信息信息"
+                        },
+                        {
+                            "value": 1,
+                            "label": "验收信息错误，回退验收处理"
+                        },
+                        {
+                            "value": 2,
+                            "label": "决算完毕，提交付款"
+                        }
+                    ]
+                }
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请选择操作类型"
+                }
             }
         },
-
-        "resendFinalReport": {
-            "type": "boolean",
-            "value": "",
+        "_title_paymentInfo": {
+            "type": "HTML",
+            "value": "<div style=\"border-left: 4px solid orange; padding-left: 6px; color: orange\">  付款信息</div>",
             "ui": {
-                "disabled": "dx: !({{$const.currentTaskId}} === 'finalReport_modify')",
-                "hidden": "dx: !({{$const.currentTaskId}} === 'finalReport_modify')",
-                "label": "重新提交"
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' ||{{$const.currentTaskId}} === 'audit_modify' ||{{$const.currentTaskId}} === 'contact' ||{{$const.currentTaskId}} === 'construction' || {{$const.currentTaskId}} === 'acceptance' ||{{$const.currentTaskId}} === 'finalReport')"
             }
         },
-        "finalReportApproved": {
-            "type": "boolean",
+        "paymentOpt": {
+            "type": "number",
             "value": "",
             "ui": {
-                "disabled": "dx: {{$const.currentTaskId}} !== 'payment'",
-                "hidden": "dx: {{$const.currentTaskId}} !== 'payment' ",
-                "label": "接受付款"
-            }
-        },
-        "finalReportReason": {
-            "type": "text",
-            "value": "",
-            "ui": {
-                "disabled": "dx: {{$const.currentTaskId}} !== 'payment'",
-                "hidden": "dx: !({{$const.currentTaskId}} === 'finalReport_modify' || {{$const.currentTaskId}} === 'payment')",
-                "label": "付款意见",
-                "widget": "textarea"
+                "disabled": "dx: !({{$const.currentTaskId}} === 'payment')",
+                "hidden": "dx: ({{$const.currentTaskId}} === 'start' || {{$const.currentTaskId}} === 'audit' ||{{$const.currentTaskId}} === 'audit_modify' ||{{$const.currentTaskId}} === 'contact' ||{{$const.currentTaskId}} === 'construction' || {{$const.currentTaskId}} === 'acceptance' ||{{$const.currentTaskId}} === 'finalReport')",
+                "label": "付款操作",
+                "widget": "radio",
+                "widgetConfig": {
+                    "enumSource": [{
+                            "value": 0,
+                            "label": "开始付款，更新付款信息"
+                        },
+                        {
+                            "value": 1,
+                            "label": "决算信息错误，回退上一流程处理"
+                        },
+                        {
+                            "value": 2,
+                            "label": "付款完毕，提交归档"
+                        }
+                    ]
+                }
+            },
+            "rules": {
+                "required": {
+                    "value": true,
+                    "errMsg": "请选择操作类型"
+                }
             }
         }
-
     },
     "ui": {
         "width": 700,
