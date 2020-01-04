@@ -25,12 +25,12 @@
 import BpmnJS from 'bpmn-js/dist/bpmn-navigated-viewer.production.min.js';
 
 export default {
-    name: 'ii-bpmn',
+    name: 'ii-bpmn-viewer',
     props: {
         url: {
             type: String
         },
-        defineXML: {
+        bpmnXML: {
             type: String
         }
     },
@@ -58,8 +58,8 @@ export default {
             self.bpmnViewer.get('canvas').zoom('fit-viewport');
             self.done = true
         });
-        if (this.defineXML) {
-            this.bpmnViewer.importXML(this.defineXML)
+        if (this.bpmnXML) {
+            this.bpmnViewer.importXML(this.bpmnXML)
         }
         if (this.url) {
             this.fetchDiagram(this.url);
@@ -121,7 +121,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../styles/vars';
+@import '../../../../../styles/vars';
 
 .ii-bpmn-diagram-container {
     height: 100%;
