@@ -36,6 +36,7 @@
                     </div>
                 </div>
             </template>
+            <ii-empty v-if="processdefsCategoried.length === 0" />
         </div>
     </div>
 </template>
@@ -81,6 +82,9 @@ export default {
             let categoried = {}
             let others = []
             processdefsAsArray.forEach(p => {
+                if (p.disabled || !p.deployed) {
+                    return
+                }
                 if (p.category && this.categories[p.category]) {
                     let theCategory = categoried[p.category] || []
                     theCategory.push(p)

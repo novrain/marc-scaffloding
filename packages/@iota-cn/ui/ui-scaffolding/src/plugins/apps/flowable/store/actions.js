@@ -40,7 +40,7 @@ export default () => {
             if (Object.keys(state.processdefs).length > 0) {
                 return state.processdefs
             }
-            return silentGet('/v1/api/processdefs').then((res) => {
+            return silentGet('/v1/api/processdefs?limit=1000').then((res) => {
                 if (res) {
                     let processdefs = {}
                     res.data.processdefs.forEach(def => {
