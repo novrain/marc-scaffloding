@@ -1,7 +1,7 @@
 <script>
 import merge from 'deepmerge'
 import moment from 'moment'
-import { AuthCheckStrictlyTree, Status, UserEditor } from '../../components'
+import { AuthCheckStrictlyTree, UserEditor } from '../../components'
 import RoleOfUser from './RoleOfUser'
 import { Menu as AMenu } from 'ant-design-vue'
 
@@ -335,7 +335,7 @@ export default {
                     width: '15%',
                     onFilter: (value, record) => record.subExt.enable + '' == value,
                     customRender: (text, record) => {
-                        return (<Status value={record.subExt.enable} text={record.subExt.enable ? '活跃' : '已禁用'} />)
+                        return (<IiStatus value={record.subExt.enable} text={record.subExt.enable ? '活跃' : '已禁用'} />)
                     }
                 },
                 {
@@ -352,7 +352,7 @@ export default {
                     width: '15%',
                     onFilter: (value, record) => record.isAdmin + '' == value,
                     customRender: (text, record) => {
-                        return (<Status value={record.isAdmin} text={record.isAdmin ? '' : ''} />)
+                        return (<IiStatus value={record.isAdmin} text={record.isAdmin ? '' : ''} />)
                     }
                 },
                 {
@@ -491,10 +491,10 @@ export default {
     render() {
         return (
             <splitpanes class="default-theme">
-                <splitpane size='35' min-size="20" max-size="60">
+                <splitpane size='40' min-size="30" max-size="60">
                     {this.renderUser()}
                 </splitpane>
-                <splitpane size='65' style={{ flex: 1 }}>
+                <splitpane size='60' style={{ flex: 1 }}>
                     {this.renderRelated()}
                 </splitpane>
             </splitpanes>
@@ -534,7 +534,7 @@ export default {
     /deep/ .ant-tabs-content {
         padding-left: 0;
         height: 0;
-        flex 1
+        flex: 1;
     }
 
     .tabpanel {

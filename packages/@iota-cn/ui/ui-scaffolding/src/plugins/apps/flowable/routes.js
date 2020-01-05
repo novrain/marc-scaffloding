@@ -1,6 +1,7 @@
 const SingleFlowable = () => import('./view/SingleFlowable')
 const FlowsPortal = () => import('./view/FlowsPortal')
 const Flowable = () => import('./view/console/Flowable')
+const FlowDefinitions = () => import('./view/FlowDefinitions')
 
 export default (opts) => {
     const { id, containerId, path } = opts
@@ -33,6 +34,14 @@ export default (opts) => {
             containerId: containerId,
             processDefinitionKey: route.params.processDefinitionKey
         })
+    }
+    routes.flowdefinitions = {
+        path: '/console/flowables/definitions',
+        component: FlowDefinitions,
+        props: {
+            id: id,
+            containerId: containerId
+        }
     }
     return {
         iota: {

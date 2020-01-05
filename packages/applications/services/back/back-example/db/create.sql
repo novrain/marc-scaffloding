@@ -723,13 +723,18 @@ ALTER TABLE "PositionRole" OWNER TO postgres;
 CREATE TABLE "ProcessDef" (
     name character varying(255) NOT NULL,
     "processDefinitionKey" character varying(255) NOT NULL,
-    "formDef" text NOT NULL,
     "belongTo" character varying(255),
     "desc" character varying(255),
+    "disabled" boolean DEFAULT false,
+    "deployed" boolean DEFAULT false,
     category character varying(255),
     "helperScript" character varying(255),
     widget character varying,
-    component character varying
+    component character varying,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    "formDef" text,
+    "bpmnXML" text
 );
 
 
@@ -2699,6 +2704,7 @@ INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updated
 -- INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1500', '流程管理', '/console/flowables', '/console/flowables', 'calculate', NULL, '2019-12-25 10:06:43+08', '2019-12-25 10:06:48+08', '0');
 -- INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1500.1', '所有流程', '/console/flowables/portal', '/console/flowables/portal', 'antv-project', NULL, '2019-12-25 10:08:44+08', '2019-12-25 10:08:49+08', '1500');
 -- INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1500.2', '待我协同', '/console/flowables/instances', '/console/flowables/instances', 'antv-ordered-list', NULL, '2019-12-25 10:14:49+08', '2019-12-25 10:14:53+08', '1500');
+-- INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1500.3', '流程定义', '/console/flowables/definitions', '/console/flowables/definitions', 'antv-share-alt', NULL, '2019-12-25 10:14:49+08', '2019-12-25 10:14:53+08', '1500');
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1600', '权限管理', '/console/authorizations', NULL, 'authorization', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '0');
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1600.1', '菜单与操作', '/console/authorizations/overview', '/console/authorizations/overview', 'menu', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1600');
 INSERT INTO "Menu" (id, name, key, "linkTo", icon, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1600.2', '角色', '/console/authorizations/roles', '/console/authorizations/roles', 'role', '', '2018-05-15 19:26:27.651+08', '2018-05-15 19:26:27.651+08', '1600');
@@ -2726,7 +2732,7 @@ INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "up
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('1', '总览', '', '', false, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', '0');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5', '流程管理', '', NULL, false, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '0');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1', '基础查询', '', NULL, false, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5');
-INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1.0.1', '查询流程定义', '/processdefs/:id', 'GET', false, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.1');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1.0.1', '查询流程定义', '/processdefs/:processDefinitionKey?', 'GET', false, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.1');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1.0.2', '查询流程BPMN模型', '/fl/process/repository/process-definitions/:flowableInstance/resourcedata', 'GET', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.1');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1.0.3', '查询流程', '/fl/iota/query/process-instances', 'POST', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.1');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.1.0.4', '查询历史流程', '/fl/iota/query/historic-process-instances', 'POST', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.1');
@@ -2760,6 +2766,11 @@ INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "up
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.5.0.2', '添加附件', '/fl/content/content-service/content-items', 'POST', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.5');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.5.0.3', '删除附件', '/fl/content/content-service/content-items/:id', 'DELETE', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.5');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.5.0.4', '下载附件', '/fl/content/content-service/content-items/:attachmentId/data', 'GET', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.5');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6', '流程定义', '', NULL, false, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6.0.1', '增加流程', '/processdefs', 'POST', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.6');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6.0.2', '修改流程', '/processdefs/:processDefinitionKey', 'PUT', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.6');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6.0.3', '删除流程', '/processdefs/:processDefinitionKey', 'DELETE', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.6');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6.0.4', '部署流程', '/processdefs/deploy/:processDefinitionKey', 'POST', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.6');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6', '权限管理', '', '', false, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', '0');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.1', '角色', '', '', false, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', '6');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.1.0.1', '查询角色', '/authorizations/roles', 'GET', true, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', '6.1');

@@ -18,7 +18,11 @@ export default function (dc) {
             },
             formDef: {          // 存储 ncform 定义的 form，目前实现上，全程使用同一个form，根据流程的环节控制字段
                 type: dc.ORM.TEXT,
-                allowNull: false
+                allowNull: true
+            },
+            bpmnXML: {          // 存储BPMN模型
+                type: dc.ORM.TEXT,
+                allowNull: true
             },
             helperScript: {
                 type: dc.ORM.STRING
@@ -32,10 +36,20 @@ export default function (dc) {
             belongTo: {
                 type: dc.ORM.STRING,
                 allowNull: true
+            },
+            disabled: {
+                type: dc.ORM.BOOLEAN,
+                allowNull: false,
+                defaultValue: false
+            },
+            deployed: {
+                type: dc.ORM.BOOLEAN,
+                allowNull: false,
+                defaultValue: false
             }
         },
         {
-            tableName: 'ProcessDef', createdAt: false, updatedAt: false
+            tableName: 'ProcessDef'
         }
     );
     dc.models.ProcessDef = ProcessDef;

@@ -77,6 +77,7 @@ export function entry(app, router, opts) {
     app.iota.logger.log('info', '[iOTA-EVENT-RECORD]', 'Inject event record mw into router.');
     api(app, router, opts)
     return async function (ctx, next) {
+        ctx.iota.logger.log('info', '[iOTA-EVENT-RECORD]', 'Inject event record mw into router.');
         let rbac = app.iota.rbac
         let operations = rbac.operations
         const path = ctx.path
