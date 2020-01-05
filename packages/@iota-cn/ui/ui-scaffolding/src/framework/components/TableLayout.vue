@@ -1,8 +1,9 @@
 <script>
 
-const TABLE_DEFAULT_HEIGHT = 80
-const TABLE_HEAD_HEIGHT = 40
-const TABLE_BOTTOM_HEIGHT = 20
+const TABLE_DEFAULT_HEAD_HEIGHT = 68
+const TABLE_MIDDLE_HEAD_HEIGHT = 58
+const TABLE_SMALL_HEAD_HEIGHT = 48
+const TABLE_CONTROLS_HEIGHT = 20
 // const TABLE_CONTROL_HEIGHT = 40;
 export default {
     name: 'IiTableLayout',
@@ -62,9 +63,17 @@ export default {
     render() {
         const showBottomPagination = this.showPagination === 'bottom' || this.showPagination === 'both';
         const showTopPagination = this.showPagination === 'top' || this.showPagination === 'both';
-        let headHeight = this.headheight || TABLE_HEAD_HEIGHT;
-        let bottomHeight = this.bottomHeight || TABLE_BOTTOM_HEIGHT;
-        var space = TABLE_DEFAULT_HEIGHT
+        let headHeight = this.headheight || TABLE_CONTROLS_HEIGHT;
+        let bottomHeight = this.bottomHeight || TABLE_CONTROLS_HEIGHT;
+        let space = TABLE_DEFAULT_HEAD_HEIGHT
+        switch (this.size) {
+            case 'small':
+                space = TABLE_SMALL_HEAD_HEIGHT
+                break
+            case 'middle':
+                space = TABLE_MIDDLE_HEAD_HEIGHT
+                break
+        }
         space += showTopPagination ? headHeight : 0
         space += showBottomPagination ? bottomHeight : 0
         const size = this.size || 'middle'
@@ -153,7 +162,7 @@ export default {
 <style lang="stylus" scoped>
 .layout {
     background-color: white;
-    padding: 10px 10px 0 10px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -204,6 +213,11 @@ export default {
         overflow: hidden;
 
         /deep/ .ant-table td {
+            white-space: nowrap;
+        }
+
+        /deep/ .ant-table th {
+            word-break: keep-all;
             white-space: nowrap;
         }
     }
