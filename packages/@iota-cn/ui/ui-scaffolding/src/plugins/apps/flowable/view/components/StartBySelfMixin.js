@@ -73,7 +73,7 @@ export default {
                             formData,
                             // 任务是否挂起，必须明确有值，否则认为无法处理
                             suspended: process.suspended !== undefined ? process.suspended : undefined,
-                            endTime: process.endTime ? process.endTime.format('YYYY-MM-DD HH:mm:ss') : '',
+                            endTime: process.endTime ? moment(process.endTime).format('YYYY-MM-DD HH:mm:ss') : '',
                             dueDate: process.dueDate ? moment(process.dueDate).format('YYYY-MM-DD HH:mm:ss') : '',
                             finished: this.dataType === 'finished',
                             deleteReason: process.deleteReason,
@@ -90,7 +90,7 @@ export default {
                     } else {
                         this.$emit('select', undefined)
                     }
-                }).catch(() => { })
+                }).catch((err) => { console.log(err) })
         }
     }
 }
