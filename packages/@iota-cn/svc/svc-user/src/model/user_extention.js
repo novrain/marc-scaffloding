@@ -9,7 +9,7 @@ export default function (dc) {
             type: dc.ORM.STRING
         },
         sex: {
-            type: dc.ORM.ENUM('male', 'famale')
+            type: dc.ORM.ENUM('male', 'female')
         },
         education: {
             type: dc.ORM.STRING
