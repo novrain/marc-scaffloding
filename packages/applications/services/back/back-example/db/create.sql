@@ -492,7 +492,7 @@ SET search_path = public, pg_catalog;
 
 CREATE TYPE "enum_UserExtention_sex" AS ENUM (
     'male',
-    'famale'
+    'female'
 );
 
 
