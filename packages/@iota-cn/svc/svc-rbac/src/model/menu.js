@@ -26,7 +26,7 @@ export default function (dc) {
                 type: dc.ORM.STRING
             },
             affix: {
-                type: dc.ORM.STRING
+                type: dc.ORM.BOOLEAN
             }
         },
         {
