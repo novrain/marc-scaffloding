@@ -34,7 +34,7 @@ export default {
                 let fd = new FormData()
                 let uploaded
                 fd.append("fileBlob", blob, `${this.$settings[this.item.key]}.png`); //目前后端做的验证必须加后缀
-                this.$axios.silentPost('/v1/api/attachment/sysclogo', fd, true)
+                this.$axios.silentPost('/v1/api/attachment/sysconfig', fd, true)
                     .then((res) => {
                         uploaded = res.data.uploaded
                         return this.$axios.silentPut(`/v1/api/sysconfig/${this.item.key}`, { value: uploaded }, true)
