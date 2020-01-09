@@ -4,6 +4,7 @@ import {
 import api from './api'
 
 import uid from 'uuid';
+import NodeUtil from 'util'
 
 export function models(dc) {
     event_record(dc)
@@ -77,7 +78,6 @@ export function entry(app, router, opts) {
     app.iota.logger.log('info', '[iOTA-EVENT-RECORD]', 'Inject event record mw into router.');
     api(app, router, opts)
     return async function (ctx, next) {
-        ctx.iota.logger.log('info', '[iOTA-EVENT-RECORD]', 'Inject event record mw into router.');
         let rbac = app.iota.rbac
         let operations = rbac.operations
         const path = ctx.path
@@ -111,7 +111,7 @@ export function entry(app, router, opts) {
 
             //系统日志
             _log_type = 'sys_record'
-            _exception_detail = err
+            _exception_detail = NodeUtil.inspect(err, { depth: 4 })
         } finally {
             /**  
              * @TODO 
@@ -136,7 +136,7 @@ export function entry(app, router, opts) {
                     _exception_detail = ctx.response.message
                 }
 
-                var _host = ctx.request.headers.origin
+                var _host = ctx.request.headers.origin || ctx.request.headers.host
                 if (_host.includes('http://')) {
                     _host = _host.substring(7)
                 } else if (_host.includes('https://')) {
