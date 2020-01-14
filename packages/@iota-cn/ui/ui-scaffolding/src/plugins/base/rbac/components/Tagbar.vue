@@ -8,7 +8,7 @@
             class="tags-view-wrapper">
             <template>
                 <a-radio-button v-for="tag in tags"
-                    :key="tag"
+                    :key="tag.key"
                     :value="tag.linkTo"
                     class="tags-view-item">{{tag.name}}
                     <span v-if="!isAffix(tag)"
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+
 export default {
     props: ['id', 'containerId'],
     data() {
@@ -31,7 +32,8 @@ export default {
             icon: "",
             desc: "",
             parentId: "",
-            affix: false
+            affix: false,
+            componentName: ''
         }]
 
         return {
@@ -42,9 +44,14 @@ export default {
     methods: {
         //添加Tag
         handleTag(tagPath) {
+            if (!tagPath) {
+                return
+            }
             let path = tagPath
             let tags = this.tags
-            if (path.id !== "1" && tags.indexOf(path) === -1) {
+            const defaultComponent = this.$route.matched[2].components.default;
+            path.componentName = defaultComponent.name
+            if (tags.indexOf(path) === -1) {
                 tags = [...tags, path]
             }
             tags.forEach(tag => {
@@ -56,6 +63,7 @@ export default {
             Object.assign(this, {
                 tags
             })
+            this.handleCacheView(defaultComponent)
         },
         //移除Tag
         removeTag(targetTag) {
@@ -74,6 +82,8 @@ export default {
             this.activeTag = activeTag
 
             this.updatePath(activeTag)
+
+            this.removeOneCacheView(targetTag.componentName)
         },
         //判断是否可移除
         isAffix(tag) {
@@ -86,7 +96,9 @@ export default {
         },
         //点击切换地址
         updatePath(targetPath) {
-            this.$router.push({ path: targetPath })
+            if (targetPath !== this.$route.path) {
+                this.$router.push({ path: targetPath })
+            }
         },
         findAllAffixPath() {
             //找出所有的在pathMap中affix为true的路由
@@ -99,6 +111,31 @@ export default {
             }
             this.tags = tags
             this.handleTag(this.$pathMap[this.$route.path])
+        },
+        //添加cachedViews
+        handleCacheView(defaultComponent) {
+            const cachedViews = this.$store.state.iota[this.containerId || 'console'].cachedViews.map(v => v);
+            if (defaultComponent.name &&
+                defaultComponent.name != null &&
+                cachedViews.indexOf(defaultComponent.name) === -1) {
+                cachedViews.push(defaultComponent.name)
+            }
+            this.handleStoreCacheViews(cachedViews)
+        },
+        removeOneCacheView(name) {
+            const cachedViews = this.$store.state.iota[this.containerId || 'console'].cachedViews.map(v => v);
+            var i = cachedViews.indexOf(name)
+            if (i !== -1) {
+                cachedViews.splice(i, 1)
+            }
+            this.handleStoreCacheViews(cachedViews)
+        },
+        clearAllCacheView() {
+            let cachedViews = []
+            this.handleStoreCacheViews(cachedViews)
+        },
+        handleStoreCacheViews(cacheViews) {
+            this.$store.commit(`iota/${this.containerId}/iota.container.console.cachedViews`, cacheViews)
         }
     },
     watch: {
@@ -121,7 +158,12 @@ export default {
 
 <style lang="stylus" scoped>
 .tags-view-container {
+    overflow: auto;
+    overflow-y: hidden;
+
     .tags-view-wrapper {
+        white-space: nowrap;
+
         .tags-view-item {
             display: inline-block;
             position: relative;

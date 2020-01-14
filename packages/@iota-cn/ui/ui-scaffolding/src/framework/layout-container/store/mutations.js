@@ -7,5 +7,8 @@ export default {
     },
     [T.LEFT_COLLAPSE](state) {
         state.layout.console.left.collapsed = !state.layout.console.left.collapsed
+    },
+    [T.CACHED_VIEWS](state, views) {
+        state.cachedViews = views
     }
 }
