@@ -10,7 +10,7 @@ export const idOfUser = (user) => {
 }
 
 export const nameOfUser = (user) => {
-    return user.userExt && user.userExt.fullname ? user.userExt.fullname : user.username
+    return user.userExt && user.userExt.fullname ? user.userExt.fullname + `(${user.username})` : user.username
 }
 
 export const fullnameOfUser = (user) => {
