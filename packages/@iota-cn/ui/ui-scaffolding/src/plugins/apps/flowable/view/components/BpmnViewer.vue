@@ -36,7 +36,7 @@ export default {
     },
     data: function () {
         return {
-            diagramXML: null,
+            diagramXML: this.bpmnXML,
             fullscreen: false,
             done: false
         };
@@ -58,9 +58,7 @@ export default {
             self.bpmnViewer.get('canvas').zoom('fit-viewport');
             self.done = true
         });
-        if (this.bpmnXML) {
-            this.bpmnViewer.importXML(this.bpmnXML)
-        }
+        this.load()
         if (this.url) {
             this.fetchDiagram(this.url);
         }
@@ -73,14 +71,29 @@ export default {
             this.$emit('loading');
             this.fetchDiagram(val);
         },
-        diagramXML: function (val) {
-            this.bpmnViewer.importXML(val);
+        bpmnXML: function (val) {
+            this.diagramXML = val
+            this.load()
+        },
+        diagramXML: function () {
+            this.load()
         }
     },
     updated() {
         // this.bpmnViewer.get('canvas').zoom('fit-viewport');
     },
     methods: {
+        load() {
+            if (this.diagramXML) {
+                this.bpmnViewer.importXML(this.diagramXML, (err) => {
+                    if (err) {
+                        this.$emit('load-error', err)
+                    } else {
+                        this.$emit('loaded')
+                    }
+                })
+            }
+        },
         fetchDiagram: function (url) {
             var self = this;
             fetch(url)
@@ -91,7 +104,7 @@ export default {
                     self.diagramXML = text;
                 })
                 .catch(function (err) {
-                    self.$emit('error', err);
+                    self.$emit('load-error', err);
                 });
         },
         onResize() {

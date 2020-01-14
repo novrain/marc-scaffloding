@@ -13,7 +13,7 @@
                     :size='50'
                     :style='{ flex: 1 }'>
                     <ncform formName='_ncformEditor'
-                        :formSchema='innerSchema' />
+                        :formSchema='jsonSchema' />
                 </splitpane>
             </splitpanes>
         </div>
@@ -81,6 +81,17 @@ export default {
                     this.editor.setText(this.innerSchema)
                 }
             }
+        }
+    },
+    computed: {
+        jsonSchema() {
+            let jsonObject = { type: 'object' }
+            try {
+                jsonObject = JSON.parse(this.innerSchema)
+                // eslint-disable-next-line
+            } catch (e) {
+            }
+            return jsonObject
         }
     }
 }
