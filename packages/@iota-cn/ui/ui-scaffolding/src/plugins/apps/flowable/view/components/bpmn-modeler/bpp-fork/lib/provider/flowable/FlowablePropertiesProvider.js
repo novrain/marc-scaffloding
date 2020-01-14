@@ -27,7 +27,7 @@ var serviceTaskDelegateProps = require('./parts/ServiceTaskDelegateProps'),
     conditionalProps = require('./parts/ConditionalProps'),
     scriptProps = require('./parts/ScriptTaskProps'),
     errorProps = require('./parts/ErrorEventProps'),
-    formProps = require('./parts/FormProps'),
+    // formProps = require('./parts/FormProps'),
     startEventInitiator = require('./parts/StartEventInitiator'),
     variableMapping = require('./parts/VariableMappingProps'),
     versionTag = require('./parts/VersionTagProps');
@@ -282,18 +282,18 @@ function createVariablesTabGroups(element, bpmnFactory, elementRegistry, transla
     ];
 }
 
-function createFormsTabGroups(element, bpmnFactory, elementRegistry, translate) {
-    var formGroup = {
-        id: 'forms',
-        label: translate('Forms'),
-        entries: []
-    };
-    formProps(formGroup, element, bpmnFactory, translate);
+// function createFormsTabGroups(element, bpmnFactory, elementRegistry, translate) {
+//     var formGroup = {
+//         id: 'forms',
+//         label: translate('Forms'),
+//         entries: []
+//     };
+//     formProps(formGroup, element, bpmnFactory, translate);
 
-    return [
-        formGroup
-    ];
-}
+//     return [
+//         formGroup
+//     ];
+// }
 
 function createListenersTabGroups(element, bpmnFactory, elementRegistry, translate) {
 
@@ -469,11 +469,11 @@ function FlowablePropertiesProvider(
             groups: createVariablesTabGroups(element, bpmnFactory, elementRegistry, translate)
         };
 
-        var formsTab = {
-            id: 'forms',
-            label: translate('Forms'),
-            groups: createFormsTabGroups(element, bpmnFactory, elementRegistry, translate)
-        };
+        // var formsTab = {
+        //     id: 'forms',
+        //     label: translate('Forms'),
+        //     groups: createFormsTabGroups(element, bpmnFactory, elementRegistry, translate)
+        // };
 
         var listenersTab = {
             id: 'listeners',
@@ -518,7 +518,7 @@ function FlowablePropertiesProvider(
             generalTab,
             variablesTab,
             connectorTab,
-            formsTab,
+            // formsTab,
             listenersTab,
             inputOutputTab,
             fieldInjectionsTab,
