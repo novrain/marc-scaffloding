@@ -147,7 +147,7 @@ export default {
                 let that = this
                 this.modeler.importXML(this.innerXML, function (err) {
                     if (err) {
-                        that.$emit('error', err)
+                        that.$emit('load-error', err)
                     } else {
                         that.loaded = true
                         that.commandStack = that.modeler.get('commandStack')
@@ -176,7 +176,7 @@ export default {
                         let doc = parser.parseFromString(data, "text/xml")
                         let process = doc.querySelector('process')
                         if (!process) {
-                            that.$emit('error', new Error('invalid xml file'))
+                            that.$emit('parse-error', new Error('invalid xml file'))
                             return
                         }
                         if (that.processId) {
@@ -187,7 +187,7 @@ export default {
                         that.innerXML = data
                         that.loaded = true
                     } catch (err) {
-                        that.$emit('error', err)
+                        that.$emit('parse-error', err)
                     }
                 }
             })
@@ -195,7 +195,7 @@ export default {
         onSave() {
             this.modeler.saveXML({ format: true }, (err, xml) => {
                 if (err) {
-                    this.$emit('error', err)
+                    this.$emit('save-error', err)
                 } else {
                     this.$emit('save', xml)
                 }
@@ -338,7 +338,7 @@ export default {
 
     /deep/ .bjs-container {
         .djs-palette {
-            background: none;
+            background-color: white;
             width: 48px;
 
             .djs-palette-entries {
