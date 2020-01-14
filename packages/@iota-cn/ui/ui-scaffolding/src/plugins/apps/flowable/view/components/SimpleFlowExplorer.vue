@@ -59,8 +59,8 @@ export default {
         // 通用方法，与权限相关的应放置后端处理
         // 相关方法是全局注入的
         async fetchUserInvolvedGroups() {
-            const organizations = await this.$fetchAssignedOrganizations()
-            const positions = await this.$fetchAssignedPositions()
+            const organizations = await this.$fetchAssignedOrganizations(true)
+            const positions = await this.$fetchAssignedPositions(true)
             const roles = await this.$fetchAssignedRoles()
             let involvedGroups = organizations.map(organization => {
                 return U.idOfQueryOrganization(organization)

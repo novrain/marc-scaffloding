@@ -430,7 +430,7 @@ export const checkRsByUser = async (user, dc, rss) => {
  * @param {*} throughAs 
  * @param {*} includeAttributes 
  */
-export const findAssignedByUser = async (user, model, through, throughAs, includeAttributes = []) => {
+export const findAssignedByUser = async (user, model, through, throughAs, includeAttributes = [], includeChildren = false) => {
     let assignedCondition = {
         include: [
             {
@@ -444,7 +444,13 @@ export const findAssignedByUser = async (user, model, through, throughAs, includ
         ],
         distinct: true
     };
+    if (user.isAdmin) {
+        assignedCondition = {}
+    }
     let assigned = await model.findAndCountAll(assignedCondition);
+    if (includeChildren) {
+        assigned.rows = await fillAllChildren(assigned.rows, model);
+    }
     return assigned.rows
 }
 
@@ -562,11 +568,17 @@ export const findUserIn = async (ctx, through, target, targetAs, targetKey, allo
         model: models.User,
         as: 'user',
         attributes: ['id', 'username', 'email', 'type'],
-        include: {
-            model: models.SubUser,
-            as: 'subExt',
-            attributes: ['enable']
-        },
+        include: [
+            {
+                model: models.SubUser,
+                as: 'subExt',
+                attributes: ['enable']
+            },
+            {
+                model: models.UserExtention,
+                as: 'userExt',
+            }
+        ],
         where: {
             $and: [
                 { id: { $not: user.id } }
@@ -619,6 +631,7 @@ export const findUserIn = async (ctx, through, target, targetAs, targetKey, allo
             [targetKey]: u[targetKey],
             email: u.user.email,
             username: u.user.username,
+            fullname: u.user.userExt ? u.user.userExt.fullname : '',
             accept: u.accept,
             enable: u.enable,
             type: u.type,
@@ -677,11 +690,17 @@ export const findUserNotIn = async (ctx, through, target, targetAs, targetKey, a
     let condition = {
         where: { $and: [{ id: { $not: user.id } }] },
         attributes: ['id', 'username', 'email', 'type', 'createdAt'],
-        include: {
-            model: models.SubUser,
-            as: 'subExt',
-            attributes: ['enable']
-        },
+        include: [
+            {
+                model: models.SubUser,
+                as: 'subExt',
+                attributes: ['enable']
+            },
+            {
+                model: models.UserExtention,
+                as: 'userExt',
+            }
+        ],
         distinct: true,
         limit: limit,
         offset: offset,
@@ -895,7 +914,7 @@ export const findSourceNotIn = async (ctx, source, sourceAs, sourceKey, outKey, 
  * @param {*} through 
  * @param {*} page 
  */
-export const findSourceAssignToUser = async (ctx, source, sourceAs, outKey, through, page = true, fillParents = false, includeAssigned = false) => {
+export const findSourceAssignToUser = async (ctx, source, sourceAs, outKey, through, page = true, fillParents = false, includeAssigned = false, fillChildren = false) => {
     const user = ctx.session.user;
     const userId = ctx.session.user.id;
     const targetId = ctx.params.userId;
@@ -1756,3 +1775,24 @@ export const unbindASourceToUsers = async (ctx, source, sourceKey, through, thro
 
 export const userAttributesWhenInclude = [['userId'], 'username', 'email', 'mobile', 'gravatar', 'actEmail', 'type', 'isAdmin', 'deletedAt'];
 export const userAttributes = ['id', 'username', 'email', 'mobile', 'gravatar', 'actEmail', 'type', 'isAdmin', 'deletedAt'];
+
+/**
+ * 
+ * @param {*} parents 
+ * @param {*} model 
+ * @param {*} allIds 
+ */
+export const fillAllChildren = async (parents, model, allIds) => {
+    let ids = parents.map(p => p.parentId);
+    allIds = !!allIds ? allIds.concat(ids) : ids;
+    let parentIds = parents.filter(p => p.id !== null && p.id !== undefined && allIds.indexOf(p.id) === -1).map(p => p.id);
+    if (parentIds.length > 0) {
+        let children = await model.findAll({
+            raw: true,
+            where: { parentId: { $in: parentIds } }
+        })
+        children = await fillAllChildren(children, model, allIds);
+        parents = parents.concat(children)
+    }
+    return parents;
+}

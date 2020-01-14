@@ -23,14 +23,12 @@ export default {
             assignedOrganizations: [],
             assignedPositions: [],
             // 可操作的组和用户
-            subUsers: [],
-            roles: [],
-            organizations: [],
-            positions: [],
+            usersOfOrganization: [],
             // 任务操作
             currentTask: undefined,
             // 更新指派
             showAssignee: false,
+            currentOrganization: undefined,
             currentAssigneeUser: undefined,
             // 更新candidateUsers
             candidateUsersSearch: undefined,
@@ -47,13 +45,16 @@ export default {
     },
     mounted() {
         this.refetchRBAC()//只获取一次权限信息
-        this.refetch()
-        this.fetchBPMNDef()
+        this.refetch().then(() => {
+            this.fetchBPMNDef()
+        })
     },
     watch: {
         flow: {
             handler() {
-                this.refetch()
+                this.refetch().then(() => {
+                    this.fetchBPMNDef()
+                })
             },
             deep: true
         },
@@ -65,38 +66,36 @@ export default {
     },
     methods: {
         async fetchBPMNDef() {
+            this.bpmnDef = undefined
             this.bpmnDef = await U.fetchBPMNDef(this.flow.processDefinitionId)
         },
         refetchRBAC() {
-            // 拥有的
-            this.$fetchUsers().then((subUsers) => {
-                this.subUsers = subUsers
-            })
-            this.$fetchOrganizations().then((organizations) => {
-                this.organizations = organizations
-            })
-            this.$fetchPositions().then((positions) => {
-                this.positions = positions
-            })
-            this.$fetchRoles().then((roles) => {
-                this.roles = roles
-            })
             // 被赋予的
-            this.$fetchAssignedOrganizations().then((assignedOrganizations) => {
+            this.$fetchAssignedOrganizations(true).then((assignedOrganizations) => {
                 this.assignedOrganizations = assignedOrganizations
             })
-            this.$fetchAssignedPositions().then((assignedPositions) => {
+            this.$fetchAssignedPositions(true).then((assignedPositions) => {
                 this.assignedPositions = assignedPositions
             })
             this.$fetchAssignedRoles().then((assignedRoles) => {
                 this.assignedRoles = assignedRoles
             })
         },
+        fetchUsersOfOrganization(organizationId) {
+            this.currentAssigneeUser = undefined
+            this.usersOfOrganization = []
+            this.$axios.silentGet(`/v1/api/organizations/${organizationId}/users`, true).then((res) => {
+                this.usersOfOrganization = res.data.users
+            }).catch(() => {
+                this.usersOfOrganization = []
+            })
+        },
         refetch() {
             if (!this.active) {
                 return
             }
-            this.$axios.silentPost(`/fl/process/query/historic-task-instances`, {
+            const that = this
+            return this.$axios.silentPost(`/fl/process/query/historic-task-instances`, {
                 size: 2000,// 不支持分页，暂时认为没有这么多任务流程
                 processInstanceId: this.flow.processInstanceId,
                 includeIdentityLinks: true,
@@ -104,28 +103,32 @@ export default {
                 order: 'desc'
             }, true)
                 .then((res) => {
-                    this.running.items = []
-                    this.finished.items = []
+                    that.running.items = []
+                    that.finished.items = []
                     res.data.data.forEach(d => {
                         d.assignee = U.parseAssignee(d.assignee)
                         d.startTime = moment(d.startTime).format('YYYY-MM-DD')
                         if (d.endTime) {
                             d.endTime = moment(d.endTime).format('YYYY-MM-DD')
-                            this.finished.items.push(d)
+                            that.finished.items.push(d)
                         } else {
                             if (d.dueDate) {
                                 d.dueDate = moment(d.dueDate).format('YYYY-MM-DD')
                             }
-                            if (this.$refs._bpmn) {
-                                this.$refs._bpmn.colorNode(d.taskDefinitionKey)
-                            }
-                            this.running.items.push(d)
+                            that.running.items.push(d)
                         }
                     })
                 }).catch(() => {
-                    this.running.items = []
-                    this.finished.items = []
+                    that.running.items = []
+                    that.finished.items = []
                 })
+        },
+        onBpmnLoaded() {
+            this.running.items.forEach(t => {
+                if (this.$refs._bpmn) {
+                    this.$refs._bpmn.colorNode(t.taskDefinitionKey)
+                }
+            })
         },
         // Assignee 
         onAssignee(task) {
@@ -281,7 +284,7 @@ export default {
                     <h6>流程图</h6>
                     {
                         this.bpmnDef ?
-                            <ii-bpmn-viewer bpmnXML={this.bpmnDef} ref='_bpmn' />
+                            <ii-bpmn-viewer bpmnXML={this.bpmnDef} ref='_bpmn' onLoaded={this.onBpmnLoaded} />
                             :
                             <ii-empty />
                     }
@@ -290,6 +293,11 @@ export default {
         },
         renderRunning() {
             const disabled = this.flow.finished || this.flow.suspended
+            let editCandidateUsers = this.$p('/fl/process/runtime/tasks/:taskId/identitylinks/users:POST')
+                || this.$p('/fl/process/runtime/tasks/:taskId/identitylinks/users/:user/:type:DELETE')
+            let editCandidateGroups = this.$p('/fl/process/runtime/tasks/:taskId/identitylinks/groups:POST')
+                || this.$p('/fl/process/runtime/tasks/:taskId/identitylinks/groups/:group/:type:DELETE')
+            let dueDateable = this.$p('/fl/process/runtime/tasks/:id/duedate:PUT')
             const columns = [
                 {
                     title: '流程节点',
@@ -312,12 +320,12 @@ export default {
                     key: 'startTime',
                     width: '20% '
                 },
-                {
+                dueDateable ? {
                     title: '截至时间',
                     dataIndex: 'dueDate',
                     key: 'dueDate',
                     width: '20% '
-                },
+                } : {},
                 {
                     title: '操作',
                     dataIndex: 'operation',
@@ -333,10 +341,6 @@ export default {
                             })
                         let assigneeable = this.$p('/fl/process/runtime/tasks/:id/assignee:PUT')
                             && U.isTaskAssigneeable({ task: record, user: this.user })
-                        let editCandidateUsers = this.$p('/fl/process/runtime/tasks/:taskId/identitylinks/users:POST')
-                            || this.$p('/fl/process/runtime/tasks/:taskId/identitylinks/users/:user/:type:DELETE')
-                        let editCandidateGroups = this.$p('/fl/process/runtime/tasks/:taskId/identitylinks/groups:POST')
-                            || this.$p('/fl/process/runtime/tasks/:taskId/identitylinks/groups/:group/:type:DELETE')
                         return disabled ?
                             null
                             : <div class='operation' >
@@ -344,7 +348,7 @@ export default {
                                 {claimable ? <a onClick={() => this.onClaim(record)}>认领</a> : null}
                                 {editCandidateUsers ? <a onClick={() => this.onCandidateUsers(record)}>候选人</a> : null}
                                 {editCandidateGroups ? <a onClick={() => this.onCandidateGroups(record)}>候选组</a> : null}
-                                <a onClick={() => this.onDueDate(record)}>{record.dueDate ? '更新到期时间' : '设置到期时间'}</a>
+                                {dueDateable ? <a onClick={() => this.onDueDate(record)}>{record.dueDate ? '更新到期时间' : '设置到期时间'}</a> : null}
                             </div>
                     }
                 }
@@ -413,14 +417,29 @@ export default {
             let filter = (input, option) => {
                 return option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }
-            const users = this.subUsers.concat(this.user)
+            const users = this.usersOfOrganization.filter(u => {
+                return u.id != this.user.id
+            }).concat(this.user)
             return (
                 <a-modal title="重新指派"
-                    bodyStyle={{ maxHeight: "80%", padding: "10px" }}
+                    width={850}
+                    bodyStyle={{ maxHeight: "80%", padding: "10px", textAlign: 'center' }}
                     visible={this.showAssignee}
                     onOk={this.onAssigneeOk}
                     onCancel={this.onAssigneeCancel}>
-                    <div class='assignee-select' style={{ textAlign: 'center' }}>
+                    <div class='assignee-select' style={{ textAlign: 'center', display: 'inline-block', marginRight: '10px' }}>
+                        <span style={{ marginRight: '10px' }}> 组织: </span>
+                        <a-select vModel={this.currentOrganization} showSearch
+                            onChange={this.fetchUsersOfOrganization}
+                            style={{ width: '200px' }} filterOption={filter}>
+                            {
+                                this.assignedOrganizations.map((organization) => {
+                                    return <a-select-option value={organization.id}>{organization.name}</a-select-option>
+                                })
+                            }
+                        </a-select>
+                    </div>
+                    <div class='assignee-select' style={{ textAlign: 'center', display: 'inline-block', marginRight: '10px' }}>
                         <span style={{ marginRight: '10px' }}> 指派给: </span>
                         <a-select vModel={this.currentAssigneeUser} showSearch
                             style={{ width: '200px' }} filterOption={filter}>
@@ -438,7 +457,12 @@ export default {
             if (!this.currentTask) {
                 return null
             }
-            const users = this.subUsers.concat(this.user)
+            let filter = (input, option) => {
+                return option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            const users = this.usersOfOrganization.filter(u => {
+                return u.id != this.user.id
+            }).concat(this.user)
             return (
                 <a-modal title="候选人"
                     bodyStyle={{ padding: "10px", height: '400px', display: 'flex', flexDirection: 'column' }}
@@ -446,8 +470,22 @@ export default {
                     width={600}
                     onCancel={this.onCandidateUsersCancel}
                     footer={null}>
-                    <a-input-search style={{ width: '250px', margin: '0 auto' }} placeholder="用户名" vModel={this.candidateUsersSearch}></a-input-search>
-                    <div style={{ flex: 1 }} >
+                    <div style={{ textAlign: 'center' }}>
+                        <div style={{ textAlign: 'center', display: 'inline-block', marginRight: '10px' }}>
+                            <span style={{ marginRight: '10px' }}> 组织: </span>
+                            <a-select vModel={this.currentOrganization} showSearch
+                                onChange={this.fetchUsersOfOrganization}
+                                style={{ width: '200px' }} filterOption={filter}>
+                                {
+                                    this.assignedOrganizations.map((organization) => {
+                                        return <a-select-option value={organization.id}>{organization.name}</a-select-option>
+                                    })
+                                }
+                            </a-select>
+                        </div>
+                        <a-input-search style={{ width: '250px', display: 'inline-block' }} placeholder="用户名" vModel={this.candidateUsersSearch}></a-input-search>
+                    </div>
+                    <div style={{ flex: 1, overflow: 'auto' }} >
                         {users.map((user) => {
                             let fullname = user.userExt ? user.userExt.fullname : ''
                             if (this.candidateUsersSearch
@@ -471,7 +509,7 @@ export default {
             if (!this.currentTask) {
                 return null
             }
-            const colStyle = { height: '100%', overflowY: 'auto' }
+            const colStyle = { height: '100%', display: 'flex', flexDirection: 'column' }
             const titleStyle = { fontSize: '15px', fontWeight: '700', borderBottom: '1px solid #eeeeee', margin: '5px' }
             return (
                 <a-modal title="候选组"
@@ -481,54 +519,60 @@ export default {
                     onCancel={this.onCandidateGroupsCancel}
                     footer={null}>
                     <a-input-search style={{ width: '250px', margin: '0 auto' }} placeholder="群组名" vModel={this.candidateGroupsSearch}></a-input-search>
-                    <a-row style={{ flex: 1 }}>
+                    <a-row style={{ flex: 1, height: 0 }}>
                         <a-col span={8} style={colStyle}>
                             <div style={titleStyle}>组织</div>
-                            {this.organizations.map((organization) => {
-                                if (this.candidateGroupsSearch
-                                    && organization.name.toLowerCase().indexOf(this.candidateGroupsSearch.toLowerCase()) === -1) {
-                                    return null
-                                }
-                                let link = this.currentTask.identityLinks.find(c => {
-                                    return c.type === 'candidate' && c.group === U.idOfOrganization(organization)
-                                })
-                                return (<a-checkbox style={{ width: '100%', padding: '10px', margin: 0 }}
-                                    checked={link !== undefined} onChange={(e) => this.onCandidateGroupChecked(e, U.idOfOrganization(organization), link)}>
-                                    {organization.name}
-                                </a-checkbox>)
-                            })}
+                            <div style={{ flex: 1, overflow: 'auto', height: 0 }}>
+                                {this.assignedOrganizations.map((organization) => {
+                                    if (this.candidateGroupsSearch
+                                        && organization.name.toLowerCase().indexOf(this.candidateGroupsSearch.toLowerCase()) === -1) {
+                                        return null
+                                    }
+                                    let link = this.currentTask.identityLinks.find(c => {
+                                        return c.type === 'candidate' && c.group === U.idOfOrganization(organization)
+                                    })
+                                    return (<a-checkbox style={{ width: '100%', padding: '10px', margin: 0 }}
+                                        checked={link !== undefined} onChange={(e) => this.onCandidateGroupChecked(e, U.idOfOrganization(organization), link)}>
+                                        {organization.name}
+                                    </a-checkbox>)
+                                })}
+                            </div>
                         </a-col >
                         <a-col span={8} style={colStyle}>
                             <div style={titleStyle}>角色</div>
-                            {this.roles.map((role) => {
-                                if (this.candidateGroupsSearch
-                                    && role.name.toLowerCase().indexOf(this.candidateGroupsSearch.toLowerCase()) === -1) {
-                                    return null
-                                }
-                                let link = this.currentTask.identityLinks.find(c => {
-                                    return c.type === 'candidate' && c.group === U.idOfRole(role)
-                                })
-                                return (<a-checkbox style={{ width: '100%', padding: '10px', margin: 0 }}
-                                    checked={link !== undefined} onChange={(e) => this.onCandidateGroupChecked(e, U.idOfRole(role), link)}>
-                                    {role.name}
-                                </a-checkbox>)
-                            })}
+                            <div style={{ flex: 1, overflow: 'auto', height: 0 }}>
+                                {this.assignedRoles.map((role) => {
+                                    if (this.candidateGroupsSearch
+                                        && role.name.toLowerCase().indexOf(this.candidateGroupsSearch.toLowerCase()) === -1) {
+                                        return null
+                                    }
+                                    let link = this.currentTask.identityLinks.find(c => {
+                                        return c.type === 'candidate' && c.group === U.idOfRole(role)
+                                    })
+                                    return (<a-checkbox style={{ width: '100%', padding: '10px', margin: 0 }}
+                                        checked={link !== undefined} onChange={(e) => this.onCandidateGroupChecked(e, U.idOfRole(role), link)}>
+                                        {role.name}
+                                    </a-checkbox>)
+                                })}
+                            </div>
                         </a-col>
                         <a-col span={8} style={colStyle}>
                             <div style={titleStyle}>职位</div>
-                            {this.positions.map((position) => {
-                                if (this.candidateGroupsSearch
-                                    && position.name.toLowerCase().indexOf(this.candidateGroupsSearch.toLowerCase()) === -1) {
-                                    return null
-                                }
-                                let link = this.currentTask.identityLinks.find(c => {
-                                    return c.type === 'candidate' && c.group === U.idOfPosition(position)
-                                })
-                                return (<a-checkbox style={{ width: '100%', padding: '10px', margin: 0 }}
-                                    checked={link !== undefined} onChange={(e) => this.onCandidateGroupChecked(e, U.idOfPosition(position), link)}>
-                                    {position.name}
-                                </a-checkbox>)
-                            })}
+                            <div style={{ flex: 1, overflow: 'auto', height: 0 }}>
+                                {this.assignedPositions.map((position) => {
+                                    if (this.candidateGroupsSearch
+                                        && position.name.toLowerCase().indexOf(this.candidateGroupsSearch.toLowerCase()) === -1) {
+                                        return null
+                                    }
+                                    let link = this.currentTask.identityLinks.find(c => {
+                                        return c.type === 'candidate' && c.group === U.idOfPosition(position)
+                                    })
+                                    return (<a-checkbox style={{ width: '100%', padding: '10px', margin: 0 }}
+                                        checked={link !== undefined} onChange={(e) => this.onCandidateGroupChecked(e, U.idOfPosition(position), link)}>
+                                        {position.name}
+                                    </a-checkbox>)
+                                })}
+                            </div>
                         </a-col>
                     </a-row>
                 </a-modal>

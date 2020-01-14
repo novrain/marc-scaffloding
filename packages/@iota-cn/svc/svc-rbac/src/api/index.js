@@ -7,6 +7,9 @@ import * as Position from './position'
 import * as Role from './role'
 import * as User from './user'
 
+// 不鉴权的模式
+import * as OrganizationResource from './organization_resource'
+
 /**
  * 
  * @param {*} app 
@@ -117,4 +120,7 @@ export default function (app, router, opts) {
 
     router.get('/authorizations/users/:userId/menus', createMiddleware(User.findMenuOfUser))
     router.get('/authorizations/users/:userId/operations', createMiddleware(User.findOperationOfUser))
+
+    // 
+    router.get('/organizations/:organizationId/users', createMiddleware(OrganizationResource.findUsersOfOrganization))
 }
