@@ -136,18 +136,24 @@ export default {
     },
 
     render() {
+        let canDelete = this.$p('/authorizations/organizations/:organizationId/users/:id?:DELETE')
         const columns = [
             {
-                title: '用户名',
+                title: '登录名',
                 dataIndex: 'username',
                 key: 'username',
                 width: '15%',
             },
             {
+                title: '用户名',
+                dataIndex: 'fullname',
+                key: 'fullname'
+            },
+            {
                 title: '邮箱',
                 dataIndex: 'email',
                 key: 'email',
-                width: '45%',
+                width: '25%',
             },
             {
                 title: '关联时间',
@@ -167,7 +173,7 @@ export default {
                     return (
                         <div class='operation'>
                             {
-                                this.$p('/authorizations/organizations/:organizationId/users/:id?:DELETE') ?
+                                canDelete ?
                                     <IiModal
                                         title="删除关联"
                                         content={(<span>是否删除关联用户：{record.username}</span>)}
@@ -182,15 +188,15 @@ export default {
             }]
         const columnsAdd = [
             {
-                title: '用户名',
+                title: '登录名',
                 dataIndex: 'username',
                 key: 'username',
                 width: '25%',
             },
             {
-                title: '描述',
-                dataIndex: 'desc',
-                key: 'desc',
+                title: '用户名',
+                dataIndex: 'fullname',
+                key: 'fullname',
                 width: '45%',
             },
             {
@@ -214,6 +220,7 @@ export default {
                         key: row.id,
                         id: row.id,
                         username: row.username,
+                        fullname: row.userExt ? row.userExt.fullname : '',
                         email: row.email,
                         mobile: row.mobile,
                         enable: row.subExt ? row.subExt.enable : true,

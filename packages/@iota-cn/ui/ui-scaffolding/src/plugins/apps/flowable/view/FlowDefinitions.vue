@@ -21,6 +21,7 @@ const createBpmnXML = (processDefinitionKey) => {
             `
 }
 export default {
+    name: 'IiFlowDefinitions',
     components: {
         'ii-bpmn-modeler': BpmnModeler,
         'ii-form-editor': FormEditor
@@ -145,11 +146,13 @@ export default {
         },
         refetchDefinistions() {
             this.clearSelect()
+            // if (this.$p('/processdefs_include_bpmn/:processDefinitionKey?:GET')) {
             this.$axios.silentGet(`/v1/api/processdefs_include_bpmn?limit=${this.limit}&offset=${(this.page - 1) * this.limit}`, true)
                 .then((res) => {
                     this.items = res.data.processdefs
                     this.total = res.data.total
                 }).catch(() => { })
+            // }
         },
         onSelect({ processdef, index }) {
             this.editItem = processdef
@@ -301,6 +304,8 @@ export default {
         //             clearFloat={true} />
         //         : null
         // }        
+        let canUpdate = this.$p('/processdefs/:processDefinitionKey:PUT')
+        let canDeploy = this.$p('/processdefs/deploy/:processDefinitionKey:POST')
         const columns = [
             {
                 title: 'Key',
@@ -339,25 +344,25 @@ export default {
                     return (
                         <div class='operation'>
                             {
-                                this.$p('/processdefs/:processDefinitionKey:PUT') ?
+                                canUpdate ?
                                     <a onClick={this.onShowEdit({ processdef: record, index })}>编辑</a>
                                     : null
                             }
                             <ADivider type="vertical" />
                             {
-                                this.$p('/processdefs/:processDefinitionKey:PUT') ?
+                                canUpdate ?
                                     <a onClick={this.onEditBpmn({ processdef: record, index })}>流程模型</a>
                                     : null
                             }
                             <ADivider type="vertical" />
                             {
-                                this.$p('/processdefs/:processDefinitionKey:PUT') ?
+                                canUpdate ?
                                     <a onClick={this.onEditForm({ processdef: record, index })}>表单</a>
                                     : null
                             }
                             <ADivider type="vertical" />
                             {
-                                this.$p('/processdefs/deploy/:processDefinitionKey:POST') && record.bpmnXML && record.formDef ?
+                                canDeploy && record.bpmnXML && record.formDef ?
                                     <IiModal
                                         title="部署"
                                         content={(<span>是否部署流程:{record.name}</span>)}
@@ -373,7 +378,7 @@ export default {
         // const rowSelection = {onChange: this.onSelectChange }
         const pageSizeOptions = ['20', '40', '60', '80']
         const controls = [
-            this.$p('/processdefs/:processDefinitionKey?:GET') ?
+            this.$p('/processdefs_include_bpmn/:processDefinitionKey?:GET') ?
                 <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="refresh" onClick={this.refetchDefinistions}>
                     <AIcon type="reload" /> 刷新
                     </AButton>
@@ -383,7 +388,7 @@ export default {
                     title="新建流程"
                     content={<ncform formName='_addProcessdefForm' formSchema={this.schema} vModel={this.newItem} />}
                     button={
-                        <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="add" onClick={this.onShowAdd}>
+                        <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="add">
                             <AIcon type="plus" /> 创建流程
                             </AButton>
                     }
@@ -440,7 +445,8 @@ export default {
                             onCancel={this.onEditBpmnCancel}>
                             <ii-bpmn-modeler bpmnXML={this.editItem.bpmnXML || createBpmnXML(this.editItem.processDefinitionKey)}
                                 processId={this.editItem.processDefinitionKey}
-                                onSave={this.onSaveBpmn} />
+                                onSave={this.onSaveBpmn}
+                                on={{ ['save-error']: () => { message.error('流程定义不完整，请检查') } }} s />
                         </AModal>
                         : null
                 }

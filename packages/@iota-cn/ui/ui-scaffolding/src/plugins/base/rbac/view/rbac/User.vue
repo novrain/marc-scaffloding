@@ -6,6 +6,7 @@ import RoleOfUser from './RoleOfUser'
 import { Menu as AMenu } from 'ant-design-vue'
 
 export default {
+    name: 'IiRBACUser',
     beforeCreate() {
         this.userExtentionForm = this.$form.createForm(this, { name: 'user_extends' });
     },
@@ -26,17 +27,22 @@ export default {
         this.refetch()
     },
     computed: {
+        selectedUser() {
+            if (this.selectedRowKeys.length === 1) {
+                const id = this.selectedRowKeys[0]
+                return this.users.find(u => {
+                    return u.id === id
+                })
+            }
+            else {
+                return undefined
+            }
+        }
     },
     methods: {
         onPageChange(page) {
             this.page = page
             this.refetch()
-        },
-
-        findUser(id) {
-            return this.users.find(u => {
-                return u.id === id
-            })
         },
 
         onLimitChange(current, pageSize) {
@@ -46,58 +52,49 @@ export default {
         },
 
         refetch() {
+            this.selectedRowKeys = []
+            this.selectedRows = []
+            this.users = []
+            this.total = 0
             this.$axios.silentGet(`/v1/api/authorizations/users`, true)
                 .then((res) => {
                     this.users = res.data.users
                     this.total = res.data.total
-                    this.selectedRowKeys = []
-                    this.selectedRows = []
                 }).catch(() => { })
         },
 
         renderOrganizations() {
-            const { selectedRowKeys } = this
-            let child = null
-            if (selectedRowKeys.length === 1) {
-                const user = this.findUser(this.selectedRowKeys[0])
-                child = <AuthCheckStrictlyTree
-                    target={this.$p('/authorizations/users/:userId/organizations:GET') ? user : undefined}
-                    checkStrictly key={user.id + 'o'}
-                    dispost={!this.$p('/authorizations/users/:userId/organizations:POST')}
-                    disdelete={!this.$p('/authorizations/users/:userId/organizations/:id?:DELETE')}
-                    sourceUrlKey='organizations' targetUrlKey='users' resultKey='organizations' />
-            }
             return (<ATabPane tab="组织" key="organizations" class='tabpanel'>
-                {child}
+                {this.selectedUser ?
+                    <AuthCheckStrictlyTree
+                        target={this.$p('/authorizations/users/:userId/organizations:GET') ? this.selectedUser : undefined}
+                        checkStrictly key={this.selectedUser.id + 'o'}
+                        dispost={!this.$p('/authorizations/users/:userId/organizations:POST')}
+                        disdelete={!this.$p('/authorizations/users/:userId/organizations/:id?:DELETE')}
+                        sourceUrlKey='organizations' targetUrlKey='users' resultKey='organizations' />
+                    :
+                    null}
             </ATabPane>)
         },
 
         renderPositions() {
-            const { selectedRowKeys } = this
-            let child = null
-            if (selectedRowKeys.length === 1) {
-                const user = this.findUser(this.selectedRowKeys[0])
-                child = <AuthCheckStrictlyTree
-                    target={this.$p('/authorizations/users/:userId/positions:GET') ? user : undefined}
-                    checkStrictly key={user.id + 'p'}
-                    dispost={!this.$p('/authorizations/users/:userId/positions:POST')}
-                    disdelete={!this.$p('/authorizations/users/:userId/positions/:id?:DELETE')}
-                    sourceUrlKey='positions' targetUrlKey='users' resultKey='positions' />
-            }
             return (<ATabPane tab="职位" key="positions" class='tabpanel'>
-                {child}
+                {this.selectedUser ?
+                    <AuthCheckStrictlyTree
+                        target={this.$p('/authorizations/users/:userId/positions:GET') ? this.selectedUser : undefined}
+                        checkStrictly
+                        key={this.selectedUser.id + 'p'}
+                        dispost={!this.$p('/authorizations/users/:userId/positions:POST')}
+                        disdelete={!this.$p('/authorizations/users/:userId/positions/:id?:DELETE')}
+                        sourceUrlKey='positions' targetUrlKey='users' resultKey='positions' />
+                    :
+                    null}
             </ATabPane>)
         },
 
         renderRoles() {
-            const { selectedRowKeys } = this
-            let child = null
-            if (selectedRowKeys.length === 1) {
-                const user = this.findUser(this.selectedRowKeys[0])
-                child = <RoleOfUser user={user} key={user.id + 'r'} />
-            }
             return (<ATabPane tab="角色" key="roles" class='tabpanel'>
-                {child}
+                {this.selectedUser ? <RoleOfUser user={this.selectedUser} key={this.selectedUser.id + 'r'} /> : null}
             </ATabPane>)
         },
 
@@ -116,28 +113,27 @@ export default {
         },
 
         renderUserExtention() {
-            const { selectedRowKeys } = this
-            let child = null
-            if (this.$p('/authorizations/users/:userId/extention:GET') && selectedRowKeys.length === 1) {
-                child = <div class='user_extends'>
-                    <AForm form={this.userExtentionForm}>
-                        <ii-user-extends-form form={this.userExtentionForm}
-                            extention={this.currentUserExtention}>
-                            {
-                                this.$p('/authorizations/users/:userId/extention:PUT') ?
-                                    <a-form-item wrapper-col={{ span: 16, offset: 7 }}
-                                        slot="item">
-                                        <a-button type='primary'
-                                            onClick={this.onSaveUserExtention}>保存</a-button>
-                                    </a-form-item>
-                                    : null
-                            }
-                        </ii-user-extends-form>
-                    </AForm>
-                </div>
-            }
+            // this.$p('/authorizations/users/:userId/extention:GET')
             return (<ATabPane tab="详细信息" key="extention" class='tabpanel'>
-                {child}
+                {this.$p('/authorizations/users/:userId/extention:GET') && this.selectedRowKeys.length === 1 ?
+                    <div class='user_extends'>
+                        <AForm form={this.userExtentionForm}>
+                            <ii-user-extends-form form={this.userExtentionForm}
+                                extention={this.currentUserExtention}>
+                                {
+                                    this.$p('/authorizations/users/:userId/extention:PUT') ?
+                                        <a-form-item wrapper-col={{ span: 16, offset: 7 }}
+                                            slot="item">
+                                            <a-button type='primary'
+                                                onClick={this.onSaveUserExtention}>保存</a-button>
+                                        </a-form-item>
+                                        : null
+                                }
+                            </ii-user-extends-form>
+                        </AForm>
+                    </div>
+                    :
+                    null}
             </ATabPane>)
         },
 
@@ -185,7 +181,9 @@ export default {
                     this.$axios.silentGet(`/v1/api/authorizations/users/${userId}/extention`)
                         .then((res) => {
                             this.currentUserExtention = res.data
-                            this.currentUserExtention.birthday = moment(this.currentUserExtention.birthday)
+                            this.currentUserExtention.birthday = this.currentUserExtention.birthday ? moment(this.currentUserExtention.birthday) : undefined
+                            this.currentUserExtention.entryTime = this.currentUserExtention.entryTime ? moment(this.currentUserExtention.entryTime) : undefined
+                            this.currentUserExtention.joinTime = this.currentUserExtention.joinTime ? moment(this.currentUserExtention.joinTime) : undefined
                         })
                 }
             }
@@ -308,18 +306,26 @@ export default {
         },
 
         renderUser() {
+            let canUpdate = this.$p('/authorizations/users/:id:PUT')
+            let canDelete = this.$p('/authorizations/users/:id:DELETE')
             let { $user } = this
             const columns = [
                 {
-                    title: '用户名',
+                    title: '登录名',
                     dataIndex: 'username',
                     key: 'username',
+                },
+                {
+                    title: '用户名',
+                    dataIndex: 'userExt.fullname',
+                    key: 'userExt.fullname',
+                    width: '10%',
                 },
                 {
                     title: '邮箱',
                     dataIndex: 'email',
                     key: 'email',
-                    width: '30% ',
+                    width: '20%',
                 },
                 {
                     title: '状态',
@@ -363,7 +369,7 @@ export default {
                         const operation = (
                             <AMenu styles={{ display: 'inline-block' }} class='noPaddingMenu'>
                                 {
-                                    this.$p('/authorizations/users/:id:PUT') ?
+                                    canUpdate ?
                                         <AMenu.Item key="changePwd" >
                                             <IiModal
                                                 title="修改密码"
@@ -376,7 +382,7 @@ export default {
                                         : null
                                 }
                                 {
-                                    this.$p('/authorizations/users/:id:DELETE') ?
+                                    canDelete ?
                                         <AMenu.Item key="delete">
                                             <IiModal
                                                 title="删除"
@@ -392,7 +398,7 @@ export default {
                         return (
                             <div class='operation'>
                                 {
-                                    this.$p('/authorizations/users/:id:PUT') ?
+                                    canUpdate ?
                                         <IiModal
                                             title="编辑"
                                             content={(<UserEditor type="edit" ref={'edit' + record.id} data={{
@@ -413,7 +419,8 @@ export default {
                             </div>
                         )
                     },
-                }]
+                }
+            ]
             const { selectedRowKeys } = this
             const rowSelection = { type: this.multiSelect ? 'checkbox' : 'radio', selectedRowKeys, onChange: this.onSelectChange }
             const pageSizeOptions = ['20', '40', '60', '80']
@@ -466,6 +473,7 @@ export default {
                         </AButton>
                     </ADropdown>
                     <IiTableLayout
+                        component='el-table'
                         size='small'
                         headheight={68}
                         total={this.total}

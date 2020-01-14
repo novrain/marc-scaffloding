@@ -6,6 +6,7 @@ import { AuthCheckStrictlyTree } from '../../components'
 import UserOfRole from './UserOfRole'
 
 export default {
+    name: 'IiRBACRole',
     props: [],
     data() {
         return {
@@ -246,6 +247,8 @@ export default {
         },
 
         renderRole() {
+            let canUpdate = this.$p('/authorizations/roles/:id:PUT')
+            let canDelete = this.$p('/authorizations/roles/:id?:DELETE')
             const columns = [
                 {
                     title: '名称',
@@ -276,7 +279,7 @@ export default {
                         return (
                             <div class='operation'>
                                 {
-                                    this.$p('/authorizations/roles/:id:PUT') ?
+                                    canUpdate ?
                                         <IiModal
                                             title="编辑"
                                             content={(<Form_IiSimpleEditor ref={'_editor'} data={{ name: record.name, desc: record.desc }} />)}
@@ -288,7 +291,7 @@ export default {
                                 }
                                 <ADivider type="vertical" />
                                 {
-                                    this.$p('/authorizations/roles/:id?:DELETE') ?
+                                    canDelete ?
                                         <IiModal
                                             title="删除"
                                             content={(<span>是否删除角色：{record.name}</span>)}

@@ -25,7 +25,8 @@ export default {
         'rows',
         'columns',
         'size',
-        'rowKey'
+        'rowKey',
+        'component'
     ],
     data() {
         return {
@@ -121,31 +122,77 @@ export default {
                 }
                 <div class={'layout__table'} ref='_tableContainer'>
                     <resize-observer onNotify={this.onResize} />
-                    <ATable rowSelection={rowSelection}
-                        rowKey={this.rowKey || 'key'}
-                        columns={this.columns}
-                        scroll={{ y: this.tabScroll.y - space, x: true }}
-                        dataSource={this.rows}
-                        expandedRowRender={this.expandedRowRender}
-                        onExpand={this.onEvent('expand')}
-                        // onRow={this.onRow}
-                        title={typeof this.title === 'function' ? this.title : (this.title ? () => this.title : undefined)}
-                        rowClassName={this.rowClassName}
-                        customRow={(row, index) => {
-                            return {
-                                on: {
-                                    click: () => {
-                                        this.onEvent('rowClick')(row, index)
+                    {
+                        this.component === 'el-table' ?
+                            <el-table data={this.rows}
+                                border={this.bordered}
+                                rowKey={this.rowKey || 'id'}
+                                maxHeight={this.tabScroll.y}
+                                highlightCurrentRow={this.rowSelection && this.rowSelection.type === 'radio'}
+                                on={{
+                                    'row-click': (row, column) => {
+                                        this.onEvent('rowClick')(row, column.index)
+                                    },
+                                    'current-change': (currentRow) => {
+                                        if (this.rowSelection && typeof this.rowSelection.onChange === 'function') {
+                                            this.rowSelection.onChange([currentRow[this.rowKey || 'id']], [currentRow])
+                                        }
+                                    },
+                                    'selection-change': (selection) => {
+                                        if (this.rowSelection && typeof this.rowSelection.onChange === 'function') {
+                                            this.rowSelection.onChange(selection.map(s => s[this.rowKey || 'id']), selection)
+                                        }
                                     }
+                                }}
+                                size={size}>
+                                {
+                                    this.rowSelection && this.rowSelection.type === 'checkbox' ?
+                                        <el-table-column
+                                            key='checkbox'
+                                            type="selection"
+                                            width="55">
+                                        </el-table-column>
+                                        : null
                                 }
-                            }
-                        }}
-                        onRowDoubleClick={this.onEvent('rowDoubleClick')}
-                        onRowContextMenu={this.onEvent('rowContextMenu')}
-                        bordered={this.bordered}
-                        rowKey={this.rowKey || 'id'}
-                        size={size}
-                        pagination={false} />
+                                {this.columns.map(c => {
+                                    return <el-table-column
+                                        prop={c.dataIndex}
+                                        columnKey={c.key}
+                                        label={c.title}
+                                        filters={c.filters}
+                                        filterMethod={c.onFilter}
+                                        formatter={(row, column, cellValue, index) => {
+                                            return c.customRender ? c.customRender(cellValue, row, index) : cellValue
+                                        }} />
+                                })}
+                            </el-table>
+                            :
+                            <ATable rowSelection={rowSelection}
+                                rowKey={this.rowKey || 'id'}
+                                columns={this.columns}
+                                scroll={{ y: this.tabScroll.y - space, x: true }}
+                                dataSource={this.rows}
+                                expandedRowRender={this.expandedRowRender}
+                                onExpand={this.onEvent('expand')}
+                                // onRow={this.onRow}
+                                title={typeof this.title === 'function' ? this.title : (this.title ? () => this.title : undefined)}
+                                rowClassName={this.rowClassName}
+                                customRow={(row, index) => {
+                                    return {
+                                        on: {
+                                            click: () => {
+                                                this.onEvent('rowClick')(row, index)
+                                            }
+                                        }
+                                    }
+                                }}
+                                onRowDoubleClick={this.onEvent('rowDoubleClick')}
+                                onRowContextMenu={this.onEvent('rowContextMenu')}
+                                bordered={this.bordered}
+                                rowKey={this.rowKey || 'id'}
+                                size={size}
+                                pagination={false} />
+                    }
                     {
                         showBottomPagination ? <div class='layout__controls layout__controls__bottom'>
                             <span class={'layout__controls__pagination'}>
