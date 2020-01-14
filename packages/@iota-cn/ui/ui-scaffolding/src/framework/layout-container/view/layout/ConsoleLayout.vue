@@ -72,6 +72,7 @@ export default {
 
     mounted() {
     },
+
     computed: {
         cachedViews() {
             return this.$store.state.iota['console'].cachedViews

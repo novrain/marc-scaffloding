@@ -135,6 +135,7 @@ export default {
     },
 
     render() {
+        let canDelete = this.$p('/authorizations/positions/:positionId/roles/:id?:DELETE')
         const columns = [
             {
                 title: '角色',
@@ -166,7 +167,7 @@ export default {
                     return (
                         <div class='operation'>
                             {
-                                this.$p('/authorizations/positions/:positionId/roles/:id?:DELETE') ?
+                                 canDelete ?
                                     <IiModal
                                         title="删除关联"
                                         content={(<span>是否删除关联角色：{record.name}</span>)}
