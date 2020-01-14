@@ -1,5 +1,13 @@
 import { RBAC, reset } from '../constants'
 
+const keyFn = (includeChildren) => {
+    let key = 'assigned'
+    if (includeChildren) {
+        key = 'assignedAndChildren'
+    }
+    return key
+}
+
 const createPermission = (opts) => {
     const containerId = opts.containerId
     const id = opts.id
@@ -47,28 +55,31 @@ const createPermission = (opts) => {
         }
         // assgined
         Vue.prototype.$fetchAssignedRoles = async function () {
-            return RBAC.assigned.roles ||
-                this.$axios.silentGet('/v1/api/authorizations/assigned_roles', true).then((res) => {
-                    RBAC.assigned.roles = res.data.roles
-                    return RBAC.assigned.roles
+            let key = 'assigned'
+            return RBAC[key].roles ||
+                this.$axios.silentGet(`/v1/api/authorizations/assigned_roles`, true).then((res) => {
+                    RBAC[key].roles = res.data.roles
+                    return RBAC[key].roles
                 }).catch(() => {
                     return []
                 })
         }
-        Vue.prototype.$fetchAssignedOrganizations = async function () {
-            return RBAC.assigned.organizations ||
-                this.$axios.silentGet('/v1/api/authorizations/assigned_organizations', true).then((res) => {
-                    RBAC.assigned.organizations = res.data.organizations
-                    return RBAC.assigned.organizations
+        Vue.prototype.$fetchAssignedOrganizations = async function (includeChildren) {
+            let key = keyFn(includeChildren)
+            return RBAC[key].organizations ||
+                this.$axios.silentGet(`/v1/api/authorizations/assigned_organizations${includeChildren ? '?include_children=true' : ''}`, true).then((res) => {
+                    RBAC[key].organizations = res.data.organizations
+                    return RBAC[key].organizations
                 }).catch(() => {
                     return []
                 })
         }
-        Vue.prototype.$fetchAssignedPositions = async function () {
-            return RBAC.assigned.positions ||
-                this.$axios.silentGet('/v1/api/authorizations/assigned_positions', true).then((res) => {
-                    RBAC.assigned.positions = res.data.positions
-                    return RBAC.assigned.positions
+        Vue.prototype.$fetchAssignedPositions = async function (includeChildren) {
+            let key = keyFn(includeChildren)
+            return RBAC[key].positions ||
+                this.$axios.silentGet(`/v1/api/authorizations/assigned_positions${includeChildren ? '?include_children=true' : ''}`, true).then((res) => {
+                    RBAC[key].positions = res.data.positions
+                    return RBAC[key].positions
                 }).catch(() => {
                     return []
                 })

@@ -158,7 +158,8 @@ export const findPositionsAssignToSelf = async (ctx, next) => {
     const models = ctx.iota.dc.models;
     const orderBy = ctx.query.order_by || 'createdAt';
     const orderDirection = ctx.query.order_direction || 'DESC';
-    let positions = await Utils.findAssignedByUser(user, models.Position, models.UserPosition, 'members')
+    const includeChildren = ctx.query.include_children ? ctx.query.include_children === 'true' : false
+    let positions = await Utils.findAssignedByUser(user, models.Position, models.UserPosition, 'members', [], includeChildren)
     let convertor = undefined;
     if (orderBy === 'createdAt' || orderBy === 'updatedAt') {
         convertor = moment;
