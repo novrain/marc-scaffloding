@@ -330,9 +330,9 @@ export default {
         this.$axios.silentGet('/v1/api/accounts/profile_extention', true)
             .then((res) => {
                 this.userExtention = res.data
-                this.userExtention.birthday = moment(this.userExtention.birthday)
-                this.userExtention.entryTime = moment(this.userExtention.entryTime)
-                this.userExtention.joinTime = moment(this.userExtention.joinTime)
+                this.userExtention.birthday = this.userExtention.birthday ? moment(this.userExtention.birthday) : undefined
+                this.userExtention.entryTime = this.userExtention.entryTime ? moment(this.userExtention.entryTime) : undefined
+                this.userExtention.joinTime = this.userExtention.joinTime ? moment(this.userExtention.joinTime) : undefined
             })
             .catch(() => { })
     },

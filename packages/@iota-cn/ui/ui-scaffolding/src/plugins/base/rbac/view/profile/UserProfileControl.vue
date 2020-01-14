@@ -9,7 +9,7 @@
                 <a-divider type="vertical"
                     class="divider" />
                 <div class="name-mail">
-                    <div>{{`${$user.username} ${$user.userExt && $user.userExt.fullname ? $user.userExt.fullname : ''}`}}</div>
+                    <div>{{username}}</div>
                     <div>{{$user.email||'--'}}</div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="ii-user-profile-control">
-            <span>{{$user.userExt? ($user.userExt.fullname || $user.username) : $user.username}}</span>
+            <span>{{username}}</span>
             <iota-avatar-viewer :img='$user.gravatar||"/assets/imgs/defaultAvatar.png"'
                 :width='32'
                 :radius='50'
@@ -62,6 +62,9 @@ export default {
     },
 
     computed: {
+        username() {
+            return this.$user.userExt ? (this.$user.userExt.fullname ? this.$user.userExt.fullname + `(${this.$user.username})` : this.$user.username) : this.$user.username
+        }
     }
 }
 </script>
