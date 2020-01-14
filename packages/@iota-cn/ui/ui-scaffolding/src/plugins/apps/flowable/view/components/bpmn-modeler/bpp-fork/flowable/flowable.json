@@ -1,6 +1,7 @@
 {
     "name": "Flowable",
     "prefix": "flowable",
+    "uri": "http://flowable.org/bpmn",
     "xml": {
         "tagAlias": "lowerCase"
     },
