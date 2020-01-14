@@ -56,7 +56,8 @@ export default (opts) => {
                     }
                 }
             }
-        }
+        },
+        cachedViews:[]
     }
     const store = {
         modules: {

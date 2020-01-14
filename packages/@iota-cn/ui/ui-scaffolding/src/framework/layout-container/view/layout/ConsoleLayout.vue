@@ -48,8 +48,11 @@
                 </div>
             </div>
             <div class="ii-background-color content">
-                <transition>
-                    <router-view />
+                <transition name="fade-transform"
+                    mode="out-in">
+                    <keep-alive :include="cachedViews">
+                        <router-view :key="key"/>
+                    </keep-alive>
                 </transition>
             </div>
         </div>
@@ -69,6 +72,14 @@ export default {
 
     mounted() {
     },
+    computed: {
+        cachedViews() {
+            return this.$store.state.iota['console'].cachedViews
+        },
+        key(){
+            return this.$route.fullpath
+        }
+    }
 }
 </script>
 <style lang="stylus">
