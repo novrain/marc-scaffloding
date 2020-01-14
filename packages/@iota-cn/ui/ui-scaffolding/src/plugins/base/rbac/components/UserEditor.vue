@@ -148,6 +148,7 @@ export default Form.create()({
                             <Form.Item
                                 {...formOptions}
                                 hasFeedback label="状态"
+                                class='has-feed-back'
                             >
                                 {getFieldDecorator('enable', {
                                     rules: [{
@@ -164,6 +165,7 @@ export default Form.create()({
                             {user.isAdmin ? <Form.Item
                                 {...formOptions}
                                 hasFeedback label="管理员"
+                                class='has-feed-back'
                             >
                                 {getFieldDecorator('isAdmin', {
                                     rules: [{
@@ -185,6 +187,14 @@ export default Form.create()({
     }
 })
 </script>
+
+<style lang="stylus">
+.has-feed-back {
+    /deep/ .ant-form-item-children {
+        display: block;
+    }
+}
+</style>
 
 <style lang="stylus" scoped>
 .editor {
