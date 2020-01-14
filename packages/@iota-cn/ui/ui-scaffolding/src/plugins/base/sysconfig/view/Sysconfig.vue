@@ -34,6 +34,7 @@ import SetImage from '../components/SetImage'
 import SetBoolean from '../components/SetBoolean'
 
 export default {
+    name: 'IiSysconfig',
     mixins: [StoreHelperMixin],
     components: {
         'ii-image': { mixins: [SetImage, StoreHelperMixin] },

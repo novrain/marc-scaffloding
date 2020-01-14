@@ -1,6 +1,7 @@
 <script>
 import moment from 'moment'
 export default {
+    name: 'IiEventRecord',
     data() {
         return {
             limit: 80,

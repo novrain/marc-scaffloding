@@ -7,6 +7,7 @@
 <script>
 import FlowHelperMixin from './components/FlowHelperMixin'
 export default {
+    name: 'IiSingleFlowable',
     props: ['processDefinitionKey', 'id', 'containerId'],
     mixins: [FlowHelperMixin],
     data() {

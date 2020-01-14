@@ -47,6 +47,7 @@ import * as U from '../util'
 import FlowHelperMixin from './components/FlowHelperMixin'
 
 export default {
+    name: 'IiFlowsPortal',
     props: ['id', 'containerId'],
     mixins: [FlowHelperMixin],
     data() {// 这里无法使用全局的计算属性

@@ -8,6 +8,7 @@ import Flow from '../components/Flow'
 import FlowHelperMixin from '../components/FlowHelperMixin'
 
 export default {
+    name: 'IiFlowable',
     components: {
         'assignee-explorer': TaskAssigneeExplorer,
         'startby-explorer': StartBySelfExplorer,

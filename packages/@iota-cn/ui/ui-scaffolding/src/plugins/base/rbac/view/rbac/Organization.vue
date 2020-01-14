@@ -6,6 +6,7 @@ import UserOfOrganization from './UserOfOrganization'
 import RoleOfOrganization from './RoleOfOrganization'
 
 export default {
+    name: 'IiRBACOrganization',
     props: [],
     data() {
         return {
