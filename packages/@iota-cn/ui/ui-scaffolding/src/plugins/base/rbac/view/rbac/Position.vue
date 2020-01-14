@@ -6,6 +6,7 @@ import UserOfPosition from './UserOfPosition'
 import RoleOfPosition from './RoleOfPosition'
 
 export default {
+    name: 'IiRBACPosition',
     props: [],
     data() {
         return {

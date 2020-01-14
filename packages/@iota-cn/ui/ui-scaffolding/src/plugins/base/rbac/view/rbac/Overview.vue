@@ -2,6 +2,7 @@
 import * as U from '../../util'
 
 export default {
+    name: 'IiRBACOverview',
     data() {
         return {
             menus: [],
