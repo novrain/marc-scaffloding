@@ -324,7 +324,6 @@ ALTER TABLE IF EXISTS ONLY public."RoleOperation" DROP CONSTRAINT IF EXISTS "Rol
 ALTER TABLE IF EXISTS ONLY public."RoleMenu" DROP CONSTRAINT IF EXISTS "RoleMenu_pkey";
 ALTER TABLE IF EXISTS ONLY public."RoleMenu" DROP CONSTRAINT IF EXISTS "RoleMenu_menuId_roleId_key";
 ALTER TABLE IF EXISTS ONLY public."ProcessDef" DROP CONSTRAINT IF EXISTS "ProcessDef_pkey";
-ALTER TABLE IF EXISTS ONLY public."ProcessDef" DROP CONSTRAINT IF EXISTS "ProcessDef_flowableInstance_key";
 ALTER TABLE IF EXISTS ONLY public."Position" DROP CONSTRAINT IF EXISTS "Position_pkey";
 ALTER TABLE IF EXISTS ONLY public."PositionRole" DROP CONSTRAINT IF EXISTS "PositionRole_positionId_roleId_key";
 ALTER TABLE IF EXISTS ONLY public."PositionRole" DROP CONSTRAINT IF EXISTS "PositionRole_pkey";
@@ -2768,9 +2767,10 @@ INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "up
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.5.0.4', '下载附件', '/fl/content/content-service/content-items/:attachmentId/data', 'GET', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.5');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6', '流程定义', '', NULL, false, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6.0.1', '增加流程', '/processdefs', 'POST', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.6');
-INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6.0.2', '修改流程', '/processdefs/:processDefinitionKey', 'PUT', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.6');
-INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6.0.3', '删除流程', '/processdefs/:processDefinitionKey', 'DELETE', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.6');
-INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6.0.4', '部署流程', '/processdefs/deploy/:processDefinitionKey', 'POST', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.6');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6.0.2', '查询流程完整定义', '/processdefs_include_bpmn/:processDefinitionKey?', 'POST', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.6');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6.0.3', '修改流程', '/processdefs/:processDefinitionKey', 'PUT', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.6');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6.0.4', '删除流程', '/processdefs/:processDefinitionKey', 'DELETE', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.6');
+INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('5.6.0.5', '部署流程', '/processdefs/deploy/:processDefinitionKey', 'POST', true, NULL, '1900-01-20 03:49:45.598+07:36:42', '1900-01-20 03:49:45.598+07:36:42', '5.6');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6', '权限管理', '', '', false, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', '0');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.1', '角色', '', '', false, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', '6');
 INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "updatedAt", "parentId") VALUES ('6.1.0.1', '查询角色', '/authorizations/roles', 'GET', true, '', '2018-05-15 19:26:27.598+08', '2018-05-15 19:26:27.598+08', '6.1');
@@ -3686,8 +3686,6 @@ ALTER TABLE ONLY "Position"
 -- Name: ProcessDef ProcessDef_flowableInstance_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY "ProcessDef"
-    ADD CONSTRAINT "ProcessDef_flowableInstance_key" UNIQUE ("processDefinitionKey");
 
 
 --

@@ -80,14 +80,14 @@ export default function (app, router, opts) {
     // include_bpmn
     const processdefsIncludeBpmn = restful.resource({
         model: models.ProcessDef,
-        endpoints: ['/processdefs_include_bpmn'],
+        endpoints: ['/processdefs_include_bpmn', '/processdefs_include_bpmn/:processDefinitionKey'],
         search: [
             { param: 'name', attributes: ['name'] },
             { operator: '$eq', param: 'belongTo', attributes: ['belongTo'] },
         ],
         actions: ['list'],
         sort: {
-            default: 'updatedAt',
+            default: '-updatedAt',
             param: 'orderBy'
         }
     })
