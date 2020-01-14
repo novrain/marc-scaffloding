@@ -23,6 +23,7 @@ import { Validator } from '@iota-cn/util-validation'
 import { message } from 'ant-design-vue/es'
 
 export default {
+    name: 'IiDictionaries',
     data() {
         const dictionaySchema = {
             "type": "object",
@@ -239,6 +240,8 @@ export default {
             this.dictionary.editValue = {}
         },
         renderDictionaries() {
+            let canUpdate = this.$p('/dictionaries/:id:PUT')
+            let canDelete = this.$p('/dictionaries/:id:DELETE')
             const columns = [
                 {
                     title: '字典Key',
@@ -259,13 +262,13 @@ export default {
                         return (
                             <div class='operation'>
                                 {
-                                    this.$p('/dictionaries/:id:PUT') ?
+                                    canUpdate ?
                                         <a onClick={this.onShowEdit(record)}>编辑</a>
                                         : null
                                 }
                                 <ADivider type="vertical" />
                                 {
-                                    this.$p('/dictionaries/:id:DELETE') ?
+                                    canDelete ?
                                         <IiModal
                                             title="删除"
                                             content={(<span>是否删除字典:{record.name}</span>)}
@@ -401,6 +404,8 @@ export default {
             }
         },
         renderItems() {
+            let canUpdate = this.$p('/dictionaries/:dictionaryId/items/:id:PUT')
+            let canDelete = this.$p('/dictionaries/:dictionaryId/items/:id:DELETE')
             const columns = [
                 {
                     title: '条目Key',
@@ -428,13 +433,13 @@ export default {
                         return (
                             <div class='operation'>
                                 {
-                                    this.$p('/dictionaries/:dictionaryId/items/:id:PUT') ?
+                                    canUpdate ?
                                         <a onClick={this.onShowItemEdit(record)}>编辑</a>
                                         : null
                                 }
                                 <ADivider type="vertical" />
                                 {
-                                    this.$p('/dictionaries/:dictionaryId/items/:id:DELETE') ?
+                                    canDelete ?
                                         <IiModal
                                             title="删除"
                                             content={(<span>是否删除字典条目:{record.name}</span>)}
