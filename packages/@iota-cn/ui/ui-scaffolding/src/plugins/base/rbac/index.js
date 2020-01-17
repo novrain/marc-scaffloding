@@ -3,7 +3,7 @@ import messages from './view/locale'
 import routes from './routes'
 
 import createPermission from './components/Permission'
-import Tagbar from './components/Tagbar'
+import Tagbar from './components/TagsView'
 
 import Menu from './view/menu/Menu'
 import UserProfileControl from './view/profile/UserProfileControl'

@@ -189,7 +189,7 @@ export default {
         }
 
         .navigation {
-            padding: 8px 10px;
+            padding: 0px 0px;
         }
 
         .content {
