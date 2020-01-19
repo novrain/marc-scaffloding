@@ -5,7 +5,7 @@
                 :comment='comment'
                 :index='index'
                 :user='user'
-                :disabled='!commentable'
+                :disabled='!editable'
                 :onDelete='onDeleteComment'
                 :onUpdate='onUpdateComment' />
         </template>
@@ -76,6 +76,9 @@ export default {
     },
     computed: {
         commentable() {
+            return !this.flow.finished
+        },
+        editable() {
             return !this.flow.finished && !this.$settings.disableProcessCommentEdit // 全局设置开关
         }
     }
