@@ -220,7 +220,7 @@ export default {
             this.modeler.get('canvas').zoom(this.scale)
         },
         onFit() {
-            this.modeler.get('canvas').zoom('fit-viewport')
+            this.scale = this.modeler.get('canvas').zoom('fit-viewport')
         }
     },
     computed: {
