@@ -76,6 +76,7 @@ var Resource = function (options) {
     this.updateMethod = options.updateMethod;
     this.pagination = options.pagination;
     this.search = options.search;
+    this.disableDefaultQueryParams = options.disableDefaultQueryParams;
     this.sort = options.sort;
     this.reloadInstances = options.reloadInstances;
 

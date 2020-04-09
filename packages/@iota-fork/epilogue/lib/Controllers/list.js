@@ -131,14 +131,16 @@ List.prototype.fetch = function (ctx, context) {
             options.order = order;
     }
 
-    // all other query parameters are passed to search
-    var extraSearchCriteria = _.reduce(ctx.query, function (result, value, key) {
-        if (_.has(model.rawAttributes, key)) result[key] = self._safeishParse(value, model.rawAttributes[key].type, Sequelize);
-        return result;
-    }, {});
+    if (!this.resource.disableDefaultQueryParams) {
+        // all other query parameters are passed to search
+        var extraSearchCriteria = _.reduce(ctx.query, function (result, value, key) {
+            if (_.has(model.rawAttributes, key)) result[key] = self._safeishParse(value, model.rawAttributes[key].type, Sequelize);
+            return result;
+        }, {});
 
-    if (Object.keys(extraSearchCriteria).length)
-        criteria = _.assign(criteria, extraSearchCriteria);
+        if (Object.keys(extraSearchCriteria).length)
+            criteria = _.assign(criteria, extraSearchCriteria);
+    }
 
     // do the actual lookup
     if (Object.keys(criteria).length)

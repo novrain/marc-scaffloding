@@ -1,8 +1,47 @@
 'use strict';
 
-var Sequelize = require('sequelize'),
+var Sequelize = require('@iota-fork/sequelize'),
     epilogue = require('../lib'),
     expect = require('chai').expect;
+
+const Op = Sequelize.Op;
+const operatorsAliases = {
+    $eq: Op.eq,
+    $ne: Op.ne,
+    $gte: Op.gte,
+    $gt: Op.gt,
+    $lte: Op.lte,
+    $lt: Op.lt,
+    $not: Op.not,
+    $in: Op.in,
+    $notIn: Op.notIn,
+    $is: Op.is,
+    $like: Op.like,
+    $notLike: Op.notLike,
+    $iLike: Op.iLike,
+    $notILike: Op.notILike,
+    $regexp: Op.regexp,
+    $notRegexp: Op.notRegexp,
+    $iRegexp: Op.iRegexp,
+    $notIRegexp: Op.notIRegexp,
+    $between: Op.between,
+    $notBetween: Op.notBetween,
+    $overlap: Op.overlap,
+    $contains: Op.contains,
+    $contained: Op.contained,
+    $adjacent: Op.adjacent,
+    $strictLeft: Op.strictLeft,
+    $strictRight: Op.strictRight,
+    $noExtendRight: Op.noExtendRight,
+    $noExtendLeft: Op.noExtendLeft,
+    $and: Op.and,
+    $or: Op.or,
+    $any: Op.any,
+    $all: Op.all,
+    $values: Op.values,
+    $col: Op.col
+};
+
 
 describe('Epilogue', function () {
     it('should throw an exception when initialized without arguments', function (done) {
@@ -28,7 +67,7 @@ describe('Epilogue', function () {
     it('should throw an exception with an invalid updateMethod', function (done) {
         expect(epilogue.initialize.bind(epilogue, {
             app: {},
-            sequelize: {version: 0, STRING: 0, TEXT: 0, and: 0, or: 0},
+            sequelize: { version: 0, STRING: 0, TEXT: 0, and: 0, or: 0 },
             updateMethod: 'dogs'
         })).to.throw('updateMethod must be one of PUT, POST, or PATCH');
         done();
@@ -38,7 +77,8 @@ describe('Epilogue', function () {
         var db = new Sequelize('main', null, null, {
             dialect: 'sqlite',
             storage: ':memory:',
-            logging: (process.env.SEQ_LOG ? console.log : false)
+            logging: true,
+            operatorsAliases
         });
 
         epilogue.initialize({

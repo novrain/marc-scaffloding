@@ -73,7 +73,8 @@ var epilogue = {
             reloadInstances: options.reloadInstances,
             associations: options.associations,
             excludeAttributes: options.excludeAttributes,
-            readOnlyAttributes: options.readOnlyAttributes
+            readOnlyAttributes: options.readOnlyAttributes,
+            disableDefaultQueryParams: options.disableDefaultQueryParams
         });
 
         return resource;
