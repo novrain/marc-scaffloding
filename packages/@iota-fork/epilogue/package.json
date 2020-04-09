@@ -3,10 +3,12 @@
     "description": "Create REST resources and controllers with Sequelize and Koa",
     "version": "0.7.1",
     "author": "David Chester <dchester@shutterstock.com>",
-    "contributors": [{
-        "name": "Matt Broadstone",
-        "email": "mbroadst@gmail.com"
-    }],
+    "contributors": [
+        {
+            "name": "Matt Broadstone",
+            "email": "mbroadst@gmail.com"
+        }
+    ],
     "main": "lib/",
     "scripts": {
         "jshint": "jshint ./lib ./tests",
