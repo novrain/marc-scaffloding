@@ -98,7 +98,7 @@ List.prototype.fetch = function (ctx, context) {
                 search.push(item);
             });
 
-            if (Object.keys(criteria).length)
+            if (Object.keys(criteria).length || Object.getOwnPropertySymbols(criteria).length)
                 criteria = Sequelize.and(criteria, Sequelize.or.apply(null, search));
             else
                 criteria = Sequelize.or.apply(null, search);
@@ -143,7 +143,7 @@ List.prototype.fetch = function (ctx, context) {
     }
 
     // do the actual lookup
-    if (Object.keys(criteria).length)
+    if (Object.keys(criteria).length || Object.getOwnPropertySymbols(criteria).length)
         options.where = criteria;
     if (ctx.query.scope) {
         model = model.scope(ctx.query.scope);

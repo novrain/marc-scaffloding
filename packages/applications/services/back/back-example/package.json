@@ -26,6 +26,7 @@
         "@iota-cn/svc-oauth2": "^1.0.0",
         "@iota-cn/svc-rbac": "^1.0.0",
         "@iota-cn/svc-scaffolding": "^1.0.0",
+        "@iota-cn/svc-sysconfig": "^1.0.0",
         "@iota-cn/svc-user": "^1.0.0",
         "@iota-cn/svc-util": "^1.0.0",
         "@iota-cn/util-validation": "^1.0.10",
