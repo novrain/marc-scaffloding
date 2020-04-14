@@ -84,7 +84,7 @@ export default {
                             "itemLabelField": "name",
                             "itemValueField": "key",
                             "enumSourceRemote": {
-                                "remoteUrl": "/v1/api/dictionaries/frame_flowable_categories",
+                                "remoteUrl": `${this.$axios.baseURL()}/v1/api/dictionaries/frame_flowable_categories`,
                                 "resField": "items"
                             }
                         }
@@ -514,6 +514,6 @@ export default {
 .ii-processdef-definitions {
     height: 100%;
     width: 100%;
-    overprocessdef: hidden;
+    overflow: hidden;
 }
 </style>

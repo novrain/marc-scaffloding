@@ -16,7 +16,7 @@ import '@iota-cn/avatar/dist/avatar.css'
 import FrameComponents from './framework/components'
 
 // ncform 或者可以按需配置
-import axios from 'axios'
+import { axios } from './axios'
 import vueNcform from '@ncform/ncform'
 import Element from 'element-ui'
 // import 'element-ui/lib/theme-chalk/index.css'

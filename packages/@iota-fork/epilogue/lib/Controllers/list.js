@@ -42,14 +42,14 @@ List.prototype.fetch = function (ctx, context) {
         Sequelize = this.resource.sequelize,
         defaultCount = 100,
         count = +context.count || +ctx.query.limit || defaultCount,
-        // offset = +context.offset || +ctx.query.offset || 0;
-        offset = 0;
+        offset = +context.offset || +ctx.query.offset || 0;
+    // offset = 0;
 
     // only look up attributes we care about
     options.attributes = options.attributes || this.resource.attributes;
 
     // account for offset and count
-    offset += context.page * count || ctx.query.page * count || 0;
+    // offset += context.page * count || ctx.query.page * count || 0;
     if (count > 1000) count = 1000;
     if (count < 0) count = defaultCount;
 
