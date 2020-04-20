@@ -57,7 +57,7 @@ export default {
             this.showAdd = true
         },
         onAddItemOk() {
-            this.$ncformValidate('_addItemForm').then(data => {
+            this.$ncformValidate('_addTaskItemForm').then(data => {
                 if (data.result) {
                     const variables = []
                     Object.keys(this.processVariables).forEach(k => {
@@ -150,7 +150,7 @@ export default {
                             onCancel={this.onAddItemCancel}>
                             {
                                 this.formDef ?
-                                    <ncform formName='_addItemForm'
+                                    <ncform formName='_addTaskItemForm'
                                         formSchema={this.formDef}
                                         v-model={this.processVariables} />
                                     :

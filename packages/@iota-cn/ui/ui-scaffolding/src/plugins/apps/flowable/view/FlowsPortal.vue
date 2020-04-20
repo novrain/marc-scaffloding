@@ -8,7 +8,7 @@
                 :visible='showAdd'
                 @ok='onAddItemOk'
                 @cancel='onAddItemCancel'>
-                <ncform formName='_addItemForm'
+                <ncform formName='_addFlowItemForm'
                     :formSchema='formDef'
                     v-model='processVariables' />
             </a-modal>
@@ -117,7 +117,7 @@ export default {
             }
         },
         onAddItemOk() {
-            this.$ncformValidate('_addItemForm').then(async data => {
+            this.$ncformValidate('_addFlowItemForm').then(async data => {
                 if (data.result) {
                     const variables = []
                     Object.keys(this.processVariables).forEach(k => {

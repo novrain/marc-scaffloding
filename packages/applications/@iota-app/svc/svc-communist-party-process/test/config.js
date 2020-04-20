@@ -2,7 +2,7 @@ import path from 'path';
 import os from 'os';
 import { entry as userEntry, models as userModels } from '@iota-cn/svc-user';
 import { entry as authenticationEntry, models as authenticationModels } from '@iota-cn/svc-authentication';
-import { entry as dictEntry, models as dictModels } from '../src';
+import { entry as cppEntry, models as cppModels } from '../src';
 
 export default {
     port: 4000,
@@ -39,7 +39,7 @@ export default {
                 }
             }
         },
-        { entry: dictEntry, opts: {} },
+        { entry: cppEntry, opts: {} },
     ],
     dc: {
         orm: {
@@ -50,7 +50,7 @@ export default {
             host: '127.0.0.1',
             port: '6379'
         },
-        models: [userModels, dictModels]
+        models: [userModels, cppModels]
     },
     logger: {
         koa: true,

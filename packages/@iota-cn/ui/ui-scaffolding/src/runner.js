@@ -10,13 +10,14 @@ import VChart from 'v-charts'
 import VueI18n from 'vue-i18n'
 
 // iota-cn
+import '@iota-cn/icon/dist/css/iota_icons.css'
 import Avatar from '@iota-cn/avatar'
 import '@iota-cn/avatar/dist/avatar.css'
 // Add to Vue prototype
 import FrameComponents from './framework/components'
 
 // ncform 或者可以按需配置
-import axios from 'axios'
+import { axios } from './axios'
 import vueNcform from '@ncform/ncform'
 import Element from 'element-ui'
 // import 'element-ui/lib/theme-chalk/index.css'

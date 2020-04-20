@@ -2928,13 +2928,13 @@ INSERT INTO "Operation" (id, name, key, method, verify, "desc", "createdAt", "up
 
 --
 INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('copyright', '版权说明', NULL, 'string', '{"icon":"notice"}', NULL, '@Copyright 2019~2020 ', 120, NULL);
-INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('consoleLogo', '控制台Logo', NULL, 'image', '{"icon":"antv-menu-unfold","width":"192","height":"38","color":"#0d3ae3","radius":"0"}', '最佳尺寸192x38', '/assets/imgs/defaultLogo.png', 130, NULL);
-INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('consoleCollapsedLogo', '控制台Mini Logo', NULL, 'image', '{"icon":"antv-menu-fold","width":"72","height":"38","color":"#0d3ae3","radius":"0"}', '最佳尺寸72x38', '/assets/imgs/defaultLogoCollapsed.png', 140, NULL);
-INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('logo', '系统Logo', NULL, 'image', '{"icon":"antv-desktop","width":"192","height":"38","color":"transport","radius":"0"}', '最佳比例192:38', '/assets/imgs/logo.png', 110, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('consoleLogo', '控制台Logo', NULL, 'image', '{"icon":"antv-menu-unfold","width":192,"height":38,"color":"#0d3ae3","radius":0}', '最佳尺寸192x38', '/assets/imgs/defaultLogo.png', 130, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('consoleCollapsedLogo', '控制台Mini Logo', NULL, 'image', '{"icon":"antv-menu-fold","width":72,"height":38,"color":"#0d3ae3","radius":0}', '最佳尺寸72x38', '/assets/imgs/defaultLogoCollapsed.png', 140, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('logo', '系统Logo', NULL, 'image', '{"icon":"antv-desktop","width":192,"height":38,"color":"transport","radius":0}', '最佳比例192:38', '/assets/imgs/logo.png', 110, NULL);
 INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('disableProcessCommentEdit', '禁止编辑/删除流程跟踪信息', 'false', 'boolean', '{"icon":"protocol"}', '选中后，流程跟踪信息将不可删除或编辑', NULL, 150, NULL);
 INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('dsiableUsernameEdit', '禁止编辑用户名', 'false', 'boolean', '{"icon":"antv-user"}', '选中后，用户名将不可修改', NULL, 160, NULL);
 INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('title', '系统名称', '管理控制台', 'string', '{"icon":"application"}', NULL, '管理控制台', 100, NULL);
-INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('favicon', '系统Favicon', NULL, 'image', '{"icon":"device","width":"38","height":"38","color":"transport","radius":"0"}', '最佳尺寸100x100', '/favicon.png', 90, NULL);
+INSERT INTO "Sysconfig" (key, name, value, type, "widgetSettings", "desc", "defaultValue", index, category) VALUES ('favicon', '系统Favicon', NULL, 'image', '{"icon":"device","width":38,"height":38,"color":"transport","radius":0}', '最佳尺寸100x100', '/favicon.png', 90, NULL);
 
 -- Data for Name: User; Type: TABLE DATA; Schema: public; Owner: postgres
 --
