@@ -284,13 +284,8 @@ export default {
             // const rowSelection = { onChange: this.onSelectChange }
             const pageSizeOptions = ['20', '40', '60', '80']
             return (
-                <a-card title={<div class='ii-card-head'><IiIcon type='dictionary' /><span>字典管理</span></div>}
-                    bordered={false}
-                    bodyStyle={{ padding: "2px", flex: 1 }}
-                    style={{
-                        height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white',
-                        display: 'flex', flexDirection: 'column'
-                    }}>
+                <ii-card title='字典管理'>
+                    <IiIcon type='dictionary' slot='icon' />
                     {
                         this.$p('/dictionaries/:key?:GET') ?
                             <AButton style={{ marginRight: '8px' }} slot="extra" size='small' key="refresh" onClick={this.refetchDictionaries}>
@@ -338,7 +333,7 @@ export default {
                         columns={columns}
                         rows={this.dictionary.items}>
                     </IiTableLayout>
-                </a-card>
+                </ii-card>
             )
         },
         //dictionary items
@@ -492,14 +487,10 @@ export default {
                 ]
             }
             return (
-                <a-card title={<div class='ii-card-head'><IiIcon type='list' /><span>字典条目</span></div>}
-                    bordered={false}
-                    bodyStyle={{ padding: "2px", flex: 1 }}
-                    style={{
-                        height: '100%', width: '100%', overflow: 'hidden', backgroundColor: 'white',
-                        display: 'flex', flexDirection: 'column'                    }}>
+                <ii-card title='字典条目'>
+                    <IiIcon type='list' slot='icon' />
                     {children}
-                </a-card>
+                </ii-card>
             )
         }
     },
