@@ -441,10 +441,8 @@ export default {
             )
             const users = this.users
             return (
-                <a-card title={<div class='ii-card-head'><IiIcon type='subuser' /><span>用户管理</span></div>}
-                    bordered={false}
-                    bodyStyle={{ padding: "2px", flex: 1 }}
-                    class='ii-card'>
+                <ii-card title='用户管理'>
+                    <IiIcon type='subuser' slot='icon' />
                     <a-checkbox vModel={this.multiSelect} slot='extra' onChange={this.onMultiSelectChange}>多选</a-checkbox>
                     {
                         this.$p('/authorizations/users:GET') ?
@@ -492,7 +490,7 @@ export default {
                         columns={columns}
                         rows={users}>
                     </IiTableLayout>
-                </a-card>
+                </ii-card>
             )
         }
     },
@@ -522,15 +520,6 @@ export default {
     a {
         color: $primary-color;
     }
-}
-
-.ii-card {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
 }
 
 .ii-tabs {

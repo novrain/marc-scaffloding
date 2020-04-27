@@ -25,20 +25,16 @@ export default {
         return (
             <splitpanes class="default-theme">
                 <splitpane size='50' min-size="20" max-size="80">
-                    <a-card title={<div class='ii-card-head'><IiIcon type='menu' /><span>我的菜单</span></div>}
-                        bordered={false}
-                        bodyStyle={{ padding: '2px', overflow: 'auto', height: '100%' }}
-                        class='ii-card'>
+                    <ii-card title='我的菜单'>
+                        <IiIcon type='menu' slot='slot' />
                         {this.menus.length > 0 ? <IiArrayTree tree={this.menus} /> : null}
-                    </a-card>
+                    </ii-card>
                 </splitpane>
                 <splitpane size='50' style={{ flex: 1 }}>
-                    <a-card title={<div class='ii-card-head'><IiIcon type='menu' /><span>我的操作</span></div>}
-                        bordered={false}
-                        bodyStyle={{ padding: '2px', overflow: 'auto', height: '100%' }}
-                        class='ii-card'>
+                    <ii-card title='我的操作'>
+                        <IiIcon type='menu' slot='icon' />
                         {this.operations.length > 0 ? <IiArrayTree tree={this.operations} /> : null}
-                    </a-card>
+                    </ii-card>
                 </splitpane>
             </splitpanes>
         )
@@ -48,13 +44,4 @@ export default {
 
 <style lang="stylus" scoped>
 @import '../../../../../styles/imports';
-
-.ii-card {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-}
 </style>

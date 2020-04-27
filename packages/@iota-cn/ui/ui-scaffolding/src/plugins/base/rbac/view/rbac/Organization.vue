@@ -245,10 +245,8 @@ export default {
         return (
             <splitpanes class="default-theme">
                 <splitpane size='35' min-size="20" max-size="60">
-                    <a-card title={<div class='ii-card-head'><IiIcon type='organization' /><span>组织管理</span></div>}
-                        bordered={false}
-                        bodyStyle={{ padding: '2px', overflow: 'auto', height: '100%' }}
-                        class='ii-card'>
+                    <ii-card title='组织管理'>
+                        <IiIcon type='organization' slot='icon' />
                         {
                             this.$p('/authorizations/organizations:GET') ?
                                 <AButton style={{ marginRight: '8px' }} slot='extra' size='small' key="refresh" onClick={this.refetch}>
@@ -287,7 +285,7 @@ export default {
                             onCancel={this.onEditCancel}>
                             <Form_IiSimpleEditor ref={'_editForm'} data={{ name: this.currentEditNode ? this.currentEditNode.title : '' }} disableDesc />
                         </AModal>
-                    </a-card>
+                    </ii-card>
                 </splitpane>
                 <splitpane size='65' style={{ flex: 1 }}>
                     {this.renderRelated()}
@@ -304,15 +302,6 @@ export default {
 
 .rightMenu {
     box-shadow: $ii-box-shadow;
-}
-
-.ii-card {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
 }
 
 .ii-tabs {

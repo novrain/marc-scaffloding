@@ -13,6 +13,7 @@ import Empty from './Empty'
 import ArrayTree from './ArrayTree'
 import LoadScript from './LoadScript'
 import Status from './Status'
+import Card from './Card'
 
 const components = [
     Icon,
@@ -25,7 +26,8 @@ const components = [
     SimpleEditor,
     Empty,
     ArrayTree,
-    Status
+    Status,
+    Card
 ]
 
 export {
@@ -39,7 +41,8 @@ export {
     SimpleEditor,
     Empty,
     ArrayTree,
-    Status
+    Status,
+    Card
 }
 
 const install = function (Vue) {

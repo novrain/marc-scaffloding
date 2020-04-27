@@ -62,15 +62,6 @@ export default {
         border-right: 1px solid $primary-color;
     }
 
-    .ii-card {
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-        background-color: white;
-        display: flex;
-        flex-direction: column;
-    }
-
     .categories {
         height: 100%;
         width: 100%;

@@ -310,10 +310,8 @@ export default {
             const hasSelected = selectedRowKeys.length > 0
             const roles = this.roles
             return (
-                <a-card title={<div class='ii-card-head'><IiIcon type='role' /><span>角色管理</span></div>}
-                    bordered={false}
-                    bodyStyle={{ padding: "2px", flex: 1 }}
-                    class='ii-card'>
+                <ii-card title='角色管理'>
+                    <IiIcon type='role' slot='icon' />
                     <a-checkbox v-model={this.multiSelect} slot='extra' onChange={this.onMultiSelectChange}>多选</a-checkbox>
                     {
                         this.$p('/authorizations/roles:GET') ?
@@ -372,7 +370,7 @@ export default {
                         columns={columns}
                         rows={roles}>
                     </IiTableLayout>
-                </a-card>
+                </ii-card>
             )
         }
     },
@@ -404,15 +402,6 @@ export default {
     a {
         color: $primary-color;
     }
-}
-
-.ii-card {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
 }
 
 .ii-tabs {
