@@ -11,9 +11,5 @@
         "packages/applications/@iota-app/svc/*",
         "packages/applications/services/back/*",
         "packages/applications/services/front/*"
-    ],
-    "scripts": {
-        "metapak": "metapak",
-        "postinstall": "npm run metapak --silent"
-    }
+    ]
 }
