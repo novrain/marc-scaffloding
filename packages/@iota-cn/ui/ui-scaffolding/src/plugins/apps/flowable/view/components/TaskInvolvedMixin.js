@@ -66,7 +66,7 @@ export default {
                         return {
                             id: flow.id,
                             processInstanceId: flow.id,
-                            createTime: moment(flow.createTime).format('YYYY-MM-DD HH:mm:ss'),
+                            createTime: moment(flow.startTime).format('YYYY-MM-DD HH:mm:ss'),
                             dueDate: flow.dueDate ? moment(flow.dueDate).format('YYYY-MM-DD HH:mm:ss') : '',
                             suspended: flow.suspended,
                             formData,

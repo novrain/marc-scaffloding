@@ -56,7 +56,7 @@ export default {
                         return {
                             id: task.id,
                             processInstanceId: task.processInstanceId,
-                            createTime: moment(task.createTime).format('YYYY-MM-DD HH:mm:ss'),
+                            createTime: moment(task.startTime).format('YYYY-MM-DD HH:mm:ss'),
                             dueDate: task.dueDate ? moment(task.dueDate).format('YYYY-MM-DD HH:mm:ss') : '',
                             suspended: task.suspended,
                             formData,
