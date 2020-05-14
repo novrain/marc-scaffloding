@@ -14,6 +14,8 @@ import ArrayTree from './ArrayTree'
 import LoadScript from './LoadScript'
 import Status from './Status'
 import Card from './Card'
+import MomentUtil from './MomentUtil'
+import PaginationSelect from './PaginationSelect'
 
 const components = [
     Icon,
@@ -27,7 +29,8 @@ const components = [
     Empty,
     ArrayTree,
     Status,
-    Card
+    Card,
+    PaginationSelect
 ]
 
 export {
@@ -42,11 +45,13 @@ export {
     Empty,
     ArrayTree,
     Status,
-    Card
+    Card,
+    PaginationSelect
 }
 
 const install = function (Vue) {
     Vue.use(Cookie)
+    Vue.use(MomentUtil)
     Vue.use(axios)
     Vue.use(LoadScript)
     components.forEach(c => {
