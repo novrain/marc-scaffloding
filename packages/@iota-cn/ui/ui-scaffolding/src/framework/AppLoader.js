@@ -41,7 +41,7 @@ class AppLoader {
         if (!AppLoader.isObject(routes)) {
             return null
         }
-        if (routes.path) {
+        if (typeof routes.path === 'string') {
             current = {}
             for (let key of ROUTE_CONFIG_KEYS) {
                 current[key] = routes[key]
