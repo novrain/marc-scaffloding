@@ -21,6 +21,13 @@ export default {
             useAntIcon: useAntIcon,
             icon
         }
+    },
+    watch: {
+        type: {
+            handler(val) {
+                this.icon = val
+            }
+        }
     }
 }
 </script>
