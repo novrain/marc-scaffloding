@@ -51,7 +51,8 @@
                 <transition name="fade-transform"
                     mode="out-in">
                     <keep-alive :include="cachedViews">
-                        <router-view :key="key"/>
+                        <router-view :key="key"
+                            v-if="isRouterAlive" />
                     </keep-alive>
                 </transition>
             </div>
@@ -61,23 +62,36 @@
 
 <script>
 export default {
+    provide() {
+        return { reload: this.reload }
+    },
     props: {
         layout: Object
     },
 
     data() {
         return {
-        }
+            isRouterAlive: true
+        };
     },
 
     mounted() {
+    },
+
+    methods: {
+        reload() {
+            this.isRouterAlive = false;
+            this.$nextTick(function () {
+                this.isRouterAlive = true;
+            });
+        }
     },
 
     computed: {
         cachedViews() {
             return this.$store.state.iota['console'].cachedViews
         },
-        key(){
+        key() {
             return this.$route.fullpath
         }
     }
